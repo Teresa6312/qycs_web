@@ -1,0 +1,50 @@
+{% extends "main/addpackage_old.html" %}
+
+
+{% block shippingset %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+
+	<div class="w3-container">
+		<h2>Confirm the Receiver Information :</h2>
+		<div class="w3-row">
+			<div class="w3-third w3-container">
+				First Name:
+				<input class="w3-input w3-border" type="text" name="first_name" onfocus="this.value=''" value = "{{user.first_name}}" required><br/>
+			</div>
+			<div class="w3-third w3-container">
+				Last Name:
+				<input class="w3-input w3-border" type="text" name="last_name" onfocus="this.value=''" value = "{{user.last_name}}" required ><br/>
+			</div>
+			<div class="w3-third w3-container">
+				Phone:
+				<input class="w3-input w3-border" type="text" name="phone" onfocus="this.value=''" value = "{{user.userprofile.phone}}" required ><br/>
+			</div>
+		</div>
+	</div>
+	<hr>
+	
+	<div class="w3-row">
+		<div class="w3-half w3-container">
+			<h2>Selected Collection Point:</h2><button>Change</button>
+
+	        <div class="w3-container"><h4>{{selected_col.name}}
+		        {% if selected_col.store %}
+		            (Store)
+		        {% else %}
+		            (Personal Place)
+		        {% endif %}</h4>
+		        {{selected_col.address}}<br/>
+		        {% if selected_col.apt %}{{selected_col.apt}}<br/>{% endif %}
+		        {{selected_col.city}}, {{selected_col.state}} {{selected_col.zipcode}}<br/>
+		        {{selected_col.country}}<br/>
+	    	</div>
+
+	    </div>
+        <div class="w3-third w3-right">
+            {% if selected_col.image%}
+                <img src = "{{selected_col.image.url}}" style="width:100%">
+            {% endif %}
+        </div>
+	</div>
+	<hr>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "main/addpackage_old.html" %}
+{% block shippingset %}
+
+<form action="{% url 'add_direct_shipping' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+<div class="w3-container">
+	<h2>Direct Shipping</h2>
+	<div class="w3-container">
+        <h3>Ship to: </h3>
+
+            {% if user.userprofile.default_address %}
+                <div id="default_address_card" class="w3-card-2 w3-round w3-container w3-mobile" style="width:400px">
+                    <h4>{{user.userprofile.default_address.location_name}}</h4>
+                    {% if not user.userprofile.default_address.follow_user_infor %}
+                        <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}</h5>
+                        {% if user.userprofile.default_address.phone and user.userprofile.default_address.email%}
+                            {{user.userprofile.default_address.phone}} | {{user.userprofile.default_address.email}}<br/> 
+                        {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
+                            {{user.userprofile.default_address.phone}}{{user.userprofile.default_address.email}}<br/> 
+                        {% endif %}
+                    {% else %}
+                        {{user.last_name}}, {{user.first_name}}<br/>
+                        {% if user.email and user.userprofile.phone %}
+                            {{user.email}} | {{user.userprofile.phone}}<br/>
+                        {% elif user.email or user.userprofile.phone%}
+                            {{user.email}}{{user.userprofile.phone}}<br/>
+                        {% endif %}
+                    {% endif %}
+                        {{user.userprofile.default_address.address}}<br/>
+                        {{user.userprofile.default_address.apt}}<br/>
+                        {{user.userprofile.default_address.city}}, {{user.userprofile.default_address.state}} {{user.userprofile.default_address.zipcode}}<br/>
+                        {{user.userprofile.default_address.country}}<br/>
+                </div>
+            {% endif %}
+
+            <button id="add_new_address_btn">New address</button>
+            {% if user.address_set.all %}
+                <button id="select_address_btn"> Select from address book</button>
+            {% endif %}
+
+            <div id = "addressForm" class=" w3-row" >
+
+                <div class="w3-half w3-container">
+                    <label for="first_name">First Name: </label>
+                    <input id="first_name" type="text" class= "w3-input w3-border" name="first_name" onfocus="this.value=''" value="{{ user.first_name }}" required>
+                </div>
+                <div class="w3-half w3-container">
+                    <label for="last_name">Last Name: </label>
+                    <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" onfocus="this.value=''" value="{{ user.last_name }}" required>
+                </div>
+                <div class="w3-half w3-container">
+                    <label for="phone">Phone: </label>
+
+                    <input id="phone" type="text" class= "w3-input w3-border" name="phone" onfocus="this.value=''" value="{{ user.userprofile.phone }}" required>
+                </div>
+                <div class="w3-half w3-container">            
+
+                    <label for="email">Email Address:</label> 
+                    <input id="email" type="text" class= "w3-input w3-border" onfocus="this.value=''" name="email" value="{{ user.email }}" required>
+
+                </div>
+
+                <div class="w3-container w3-mobile">
+                    Address:<input type="text"  class= "w3-input w3-border" name="address" maxlength="300" required id="id_address" onfocus="this.value=''" value="{{ user.userprofile.default_address.address}}">
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-container">
+                        Apartment(optional):<input type="text" class= "w3-input w3-border" name="apt" maxlength="10" id="id_apt"onfocus="this.value=''" value="{{ user.userprofile.default_address.apt}}" >
+                    </div>
+                </div>
+                <div class="w3-quarter w3-container">
+                    City:<input type="text" class= "w3-input w3-border" name="city" maxlength="100" required id="id_city" onfocus="this.value=''" value="{{ user.userprofile.default_address.city}}">
+                </div>
+                <div class="w3-quarter w3-container">
+                    State:<input type="text" class= "w3-input w3-border" name="state" maxlength="100" required id="id_state" onfocus="this.value=''" value="{{ user.userprofile.default_address.state}}">
+                </div>
+                <div class="w3-quarter w3-container">
+                Country:<input type="text" class= "w3-input w3-border" name="country" maxlength="100" required id="id_country" onfocus="this.value=''" value="{{ user.userprofile.default_address.country}}">
+                </div>
+                <div class="w3-quarter w3-container">
+                Zip code:<input type="text" class= "w3-input w3-border" name="zipcode" maxlength="5" required id="id_zipcode" onfocus="this.value=''" value="{{ user.userprofile.default_address.zipcode}}">
+                </div>
+                <div class="w3-quarter w3-container">
+                Nikename(optional):<input type="text" class= "w3-input w3-border" name="location_name" maxlength="100" id="id_location_name" onfocus="this.value=''" value="{{ user.userprofile.default_address.location_name}}">
+                </div>
+                <div class="w3-row">
+                    <button id="save_address_btn">Save</button>
+                </div>
+            </div>
+
+
+            <div id="address_book" class="w3-cell-row" >
+                
+                {% for choice in user.address_set.all %}
+                    <table class="w3-half w3-mobile"><tr class="w3-half"><td>
+                        <input type="radio" class=" w3-radio" name="choice" id="choice{{ forloop.counter }}"
+                             {% if choice == user.userprofile.default_address %} checked="checked" {% endif %} 
+                            value="{{ choice.id }}">
+                        </td><td>
+
+                        <label for="choice{{ forloop.counter }}">
+
+                            <div class="w3-card-2 w3-round w3-container w3-mobile" style="width:300px">
+                                <h4>{{choice.location_name}}</h4>
+                                {% if not choice.follow_user_infor %}
+                                    <h5>{{choice.last_name}}, {{choice.first_name}}</h5>
+                                    {% if choice.phone and choice.email%}
+                                        {{choice.phone}} | {{choice.email}}<br/> 
+                                    {% elif choice.phone or choice.email%}
+                                        {{choice.phone}}{{choice.email}}<br/> 
+                                    {% endif %}
+                                {% endif %}
+                                    {{choice.address}}<br/>
+                                    {{choice.apt}}<br/>
+                                    {{choice.city}}, {{choice.state}} {{choice.zipcode}}<br/>
+                                    {{choice.country}}<br/>
+                            </div>
+
+                        </label>
+                    </td></tr></table>
+
+                {% endfor %}
+                <div class="w3-row">
+                    <button id="selected_address_btn">Save</button>
+                </div>
+                
+            </div>
+
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block more_script %}
+
+
+
+{% endblock %}

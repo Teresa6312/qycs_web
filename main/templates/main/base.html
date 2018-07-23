@@ -1,0 +1,176 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+
+<!-- FOR ALL SIDE -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Qycs Founders">
+
+
+    <link rel="icon" href="{% static 'image/logo.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- CAN BE MODIFIED FOR SPECIFIC PAGE -->
+{% block head_static%}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous">
+  </script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+{% endblock%}
+
+
+<!-- FOR EACH PAGETITLE -->
+{% block title%}
+<title>Qycs Global Shipping Inc. | Home | English Official Website </title>
+{% endblock%}
+
+
+</head>
+
+<body>
+
+
+<header>
+    <div class = "navlogo">
+      <img src="{% static 'image/logo.png' %}" alt="logo" width="60" height="60" />
+      <div class ="search">
+        <input type="text" placeholder="Search..." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+
+</header>
+
+<div class="w3-bar">
+    <div class="topnav " id="myTopnav">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'add_direct_shipping' %}">Direct Shipping</a>
+      <a href="{% url 'collection_points' %}">Co-Shipping</a>
+      <a href="">Price List</a>
+      <a href="">Global Shop</a>
+
+
+      <div class="topnav-right">
+          {% if user.is_authenticated %}
+
+            <!--Dropdown Click Button-->
+            <div class="dropdown">
+              <button class="dropbtn">{{user.username}} 
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <a href="{% url 'userprofile' %}">User Information</a>
+                <a href="{% url 'useraddress' %}">Address List</a>
+                <a href="{% url 'userpackage' %}">Packages History</a>
+                <a href="{% url 'userwallet' %}">Wallet</a>
+                <a href="/accounts/logout/">Logout</a>
+              </div>
+            </div> 
+          {% else %}
+
+            <div class="dropdown">
+              <button class="dropbtn">Login/Sign Up 
+                <i class="fa fa-caret-down"></i>
+              </button>
+
+              <div class="dropdown-content">
+                <a href="/accounts/login/">Login</a>
+                <a href="{% url 'register' %}">Sign Up</a>
+              </div>
+            </div> 
+
+          {% endif %}
+
+        <a href="{% url 'packagecard' %}">Upcoming Packages
+        <img src="{% static 'image/box.png' %}" width="20" height="20"></a>
+      </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <div class="w3-cell-row w3-mobile" style="width:80%;margin-left:auto;margin-right: auto">
+  {% block content %}
+
+
+  {% endblock %}
+
+  </div>
+
+
+    <div id="footer">
+      <div class="w3-row">
+        <div class="w3-quarter w3-container">
+          <center><h5><a href="{% url 'home' %}"><img width="100" height="100" src="{% static 'image/logo.png'%}"></a></h5></center>
+        </div>
+        <div class = "w3-threequarter">
+          <div class="w3-quarter w3-container">
+                <h5 class="w3-text-orange" >My Qycs</h5>
+
+                <a class="w3-text-white w3-medium" href="">About Us</a><br/>
+                <a class="w3-text-white w3-medium" href="">QR Codes</a><br/>
+
+          </div>
+          <div class="w3-quarter w3-container">
+                <h5 class="w3-text-orange" >Consumer Guide</h5>
+                <a class="w3-text-white w3-medium" href="">Shipping Rules</a><br/>
+            <a class="w3-text-white w3-medium" href="">Shopping Rules</a><br/>
+            <a class="w3-text-white w3-medium" href="">Our Payments</a><br/>
+
+          </div>
+          <div class="w3-quarter w3-container">
+            <h5 class="w3-text-orange">Service Guide</h5>
+            
+            <a class="w3-text-white w3-medium" href="">Qycs Insurance</a><br/>
+            <a class="w3-text-white w3-medium" href="">Collection Points</a><br/>
+            <a class="w3-text-white w3-medium" href="">Users and Collectors</a>
+            
+          </div>
+
+          <div class="w3-quarter w3-container">
+            <div class="social-networks">
+              <a href="#" class="wechat"><img src="{% static 'image/wechat.ico' %}" width="30" height="30"></a>
+
+              <a href="#" class="taobao"><img src="{% static 'image/taobao.ico' %}" width="30" height="30"></a>
+
+              <a href="#" class="google"><img src="{% static 'image/google.ico' %}" width="30" height="30"></a>
+
+            </div>
+
+            <button type="button" class="btn btn-default">Contact us</button><br/>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-copyright">
+                &copy; Qycs Global Shipping Inc. | All Rights Reserved © 2018 | 
+      <a href="">Privacy Policy</a> | <a href="">Terms of Service</a>
+      <span class="float-right"> <a href="">Back to top</a></span>
+    </div>   
+
+</body>
+
+{% block script%}
+
+{% endblock%}
+
+</html>

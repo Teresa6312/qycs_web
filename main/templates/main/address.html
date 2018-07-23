@@ -1,0 +1,136 @@
+{% extends "main/account.html" %}
+
+
+{% block account_content %}
+
+<div class="w3-cell w3-container w3-mobile">
+    <h2>Address Book:</h2>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        {% endif%}
+
+
+<!-- display default address -->
+    <div class="w3-card-2 w3-round w3-container ">
+        {% if user.userprofile.default_address %}
+            <h4>{{user.userprofile.default_address.location_name}}</h4>
+            {% if not user.userprofile.default_address.follow_user_infor %}
+                <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
+
+                    {% if user.userprofile.default_address.phone and user.userprofile.default_address.email %}
+                        {{user.userprofile.default_address.phone}} | 
+                        {{user.userprofile.default_address.email}}<br/>
+                    {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
+                        {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/> 
+                    {% endif %}
+
+
+
+            {% else %}
+                (Default)<br/>
+            {% endif %}
+            {{user.userprofile.default_address.address}}<br/>
+            {{user.userprofile.default_address.apt}}<br/>
+            {{user.userprofile.default_address.city}}<br/>
+            {{user.userprofile.default_address.state}}<br/>
+            {{user.userprofile.default_address.zipcode}}<br/>
+            {{user.userprofile.default_address.country}}<br/>
+            <button>Edit</button><button>Remove</button>
+        {% endif %}
+  </div>
+
+
+<!-- display other addresses -->
+{% if user.address_set.all %}{% for address in user.address_set.all %}
+{% if address != user.userprofile.default_address%}
+    <div class="w3-card-2 w3-round w3-container">
+        <h4>{{address.location_name}}</h4>
+        {% if not address.follow_user_infor %}
+            <h5>{{address.last_name}}, {{address.first_name}}</h5>
+
+                {% if address.phone and address.email%}
+                    {{address.phone}} | {{address.email}}<br/> 
+                {% elif address.phone or address.email%}
+                    {{address.phone}}{{address.email}}<br/> 
+                {% endif %}
+
+ 
+        {% endif %}
+            {{address.address}}<br/>
+            {{address.apt}}<br/>
+            {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
+            {{address.country}}<br/>
+            <button>Edit</button><button>Remove</button><button>Set as Default Address</button>
+    </div>
+
+{% endif %}{% endfor %}{% endif %}
+
+</div>
+<div class="w3-cell w3-container w3-mobile">
+    <div class="w3-card-2 w3-round w3-container w3-mobile" style="width:500px">
+
+        <ul class="messages">
+            {% if form.errors %}
+
+                {% for message in form.errors%}
+                 <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+
+            {% endif %}
+        </ul>
+
+        <form method="post">
+        {% csrf_token %}
+         <h3> Add new address:</h3>
+        <div class="w3-container">
+            {{form.follow_user_infor}} Follow User Information
+        </div>
+        <div class="w3-half w3-container">
+        First Name:
+            {{ form.first_name }}
+        </div>
+        <div class="w3-half w3-container">
+        Last Name:
+            {{ form.last_name }}
+        </div>
+        <div class="w3-container">
+        Address:
+            {{ form.address }}
+        Apartment:
+            {{ form.apt }}
+        </div>
+        <div class="w3-half w3-container">
+        City:
+            {{ form.city }}
+        </div>
+        <div class="w3-half w3-container">
+        State:
+            {{ form.state }}
+        </div>
+        <div class="w3-row w3-container">
+        Country:
+            {{ form.country }}
+        </div>
+        <div class="w3-half w3-container">
+        Zip code:
+            {{ form.zipcode }}
+        </div>
+        <div class="w3-container">
+        Phone:
+            {{ form.phone }}
+        Email:
+            {{ form.email }}
+        Nikename:
+            {{ form.location_name }}
+        </div>
+        <input type="submit" value="Save" >
+        <button>Cancel</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
