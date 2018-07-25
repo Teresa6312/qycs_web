@@ -174,7 +174,7 @@ color:white;
 .input_mini{
   width: 50px;
 }
-.w3-cell-row button, input[type="submit"], .w3-row button{
+.w3-cell-row button, input[type="submit"] {
   background-color: #800080;
   color: #fff;
   padding: 5px 5px 5px 5px;
@@ -185,7 +185,7 @@ color:white;
   margin: 10px;
 }
 
-.w3-cell-row button:hover,  .w3-row button :hover, input[type="submit"]:hover{
+.w3-cell-row button:hover,  input[type="submit"]:hover{
   color:#000;
   border-style: inset;
   border-width: 2px;

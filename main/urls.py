@@ -20,7 +20,7 @@ urlpatterns = [
     # path('image/', views.AddImageView.as_view(), name='image'),
 
 
-# login_required
+# login_required 
     path('accounts/logout/', login_required(auth_views.LogoutView.as_view(template_name='main/logout.html')), name = 'logout'),
 
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
@@ -30,7 +30,7 @@ urlpatterns = [
 
     # path('item/', views.ItemView.as_view(), name='item'),
 
-
+    
     path('myaccount/address', login_required(views.AddressView.as_view()), name='useraddress'),
     path('myaccount/address/<int:add_id>/eidt', login_required(views.EditAddressView.as_view()), name='editaddress'),
     path('myaccount/address/<int:add_id>/delete', login_required(views.DeleteAddressView.as_view()), name='deleteaddress'),
@@ -42,7 +42,7 @@ urlpatterns = [
 
     path('packages/add/', login_required(views.AddPackageView.as_view()), name='add_package'),
     # path('packages/co-shiping/add/', views.AddCoPackageView.as_view(), name='addcopackage'),
-    path('packages/<int:selected_col>/add', login_required(views.AddCoShipping.as_view()), name='add_co_shipping'),
+    path('packages/<int:selected_col>/add', login_required(views.AddPackageView.as_view()), name='add_co_shipping'),
     path('packages/direct-shipping/add', login_required(views.AddDirectShipping.as_view()), name='add_direct_shipping'),
     # path('packages/successfully', login_required(views.PackageAddedView.as_view()), name='package_added'),
     path('packages/', login_required(views.PackagesView.as_view()), name='packages'),
@@ -60,10 +60,10 @@ urlpatterns = [
         {'template_name':'main/resetpassword_done.html'}, name='password_reset_done'),
 
     re_path(r'^accounts/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        auth_views.password_reset_confirm, {'template_name':'main/resetpassword_confirm.html'},
+        auth_views.password_reset_confirm, {'template_name':'main/resetpassword_confirm.html'}, 
         name='password_reset_confirm'),
-
-    path('accounts/reset-password/complete/', auth_views.password_reset_complete,
+    
+    path('accounts/reset-password/complete/', auth_views.password_reset_complete, 
         {'template_name':'main/resetpassword_complete.html'}, name='password_reset_complete'),
-
+    
 ]

@@ -47,32 +47,19 @@ class Address(Address_Common_Info):
 	def __str__(self):
 		return '%s %s\n %s %s, %s %s'%(self.first_name, self.last_name, self.address, self.city, self.state, self.zipcode)
 
-	class Meta:
-		unique_together=('follow_user_infor'
-		,'first_name'
-		,'last_name'
-		,'phone'
-		,'email'
-		,'address'
-		,'apt'
-		,'city'
-		,'state'
-		,'country'
-		,'zipcode'
-		)
 
 
 class Card(models.Model):
 	user = models.ForeignKey(
 		User,
-		on_delete=models.SET_NULL, blank=True, null=True,
+		on_delete=models.SET_NULL, blank=True, null=True, 
 		verbose_name= 'Payment Id'
 	)
 	address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=False, default = '', verbose_name= 'Address')
 	card_num = models.CharField(max_length = 16, unique = True, default='',verbose_name= 'Card Number')
 	card_exp = models.CharField(max_length = 6, default='',verbose_name= 'Expiration Date(MM/YY)')
-	card_security_code = models.CharField(max_length = 6, default='',verbose_name= 'Security Code')
-
+	card_security_code = models.CharField(max_length = 6, default='',verbose_name= 'Security Code') 
+	
 	def __str__(self):
 		if self.pay_method.user.last_name == self.address.last_name and self.pay_method.user.first_name == self.address.first_name:
 			return '%s : %s'%(self.pay_method, self.card_num)
@@ -130,7 +117,7 @@ class CollectionPoint(Address_Common_Info):
 
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
-
+		
 
 
 class UserProfile(models.Model):
@@ -142,7 +129,7 @@ class UserProfile(models.Model):
 	default_col = models.ForeignKey(CollectionPoint, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= 'Default Collection Point')
 
 	reward = models.PositiveIntegerField(default = 0)
-	birthday = models.DateField(blank=True, null=True,verbose_name= 'Date of Birth')
+	birthday = models.DateField(blank=True, null=True,verbose_name= 'Date of Birth')	
 	default_pay_card = models.OneToOneField(Card, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= 'Default Payment')
 	default_pay_account = models.OneToOneField(OtherPayMethod, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= 'Default Payment')
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True)
@@ -171,9 +158,6 @@ class CoReceiver(models.Model):
 			return '%s %s'%(self.user.first_name, self.user.last_name)
 		else:
 			return '%s %s'%(self.first_name, self.last_name)
-
-	class Meta:
-		unique_together=('user','first_name','last_name','phone')
 
 
 def create_coreceiver(sender, **kwargs):
@@ -297,7 +281,7 @@ class Service(models.Model):
 	ready_date = models.DateField(blank=True, null=True, verbose_name= 'Package Ready on')
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= 'Packed by Employee')
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= 'Weight(kg)')
-
+	
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= 'Deposit Amount')
 	deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= 'Deposit Confirmation')
 
@@ -305,10 +289,10 @@ class Service(models.Model):
 	shipping_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= 'Shipping Fee')
 	currency = models.CharField(max_length = 32, blank=True, default='', verbose_name= 'Currency') # need to set up choice
 	paid_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING,  blank=True, null=True, related_name='paid_payment_key', verbose_name= 'Payment Confirmation')
-
+	
 
 	ship_to_add = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_personal_location', verbose_name= 'Ship to User Address')
-
+	
 	ship_to_col = models.ForeignKey(CollectionPoint, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_collection_point', verbose_name= 'Ship to Collection Point')
 	receiver = models.ForeignKey(CoReceiver, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= 'Receiver')
 
@@ -324,7 +308,7 @@ class Service(models.Model):
 	status = models.CharField(max_length = 20, blank=True, default='', verbose_name= 'Packasge Status')
 	issue = models.TextField(blank=True, default='', verbose_name= 'Package Issue')
 	refund_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='refund_payment_key', verbose_name = 'Refund Confirmation')
-
+	
 
 	def __str__(self):
 		if self.ship_to_col != '' and self.ship_to_col != None:
@@ -341,32 +325,32 @@ class Service(models.Model):
 		else:
 			return "%s's package created on %s \n"%(self.user, self.created_date)
 
-
+	   
 
 class Item(models.Model):
 	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = 'Service Key')
-	item_name = models.CharField(max_length = 100, blank=False, default='', verbose_name = 'Item Name')
-	item_detail = models.CharField(max_length = 100, blank=True, default='', verbose_name = 'Item Details')
-	item_quantity = models.PositiveIntegerField(blank=False, default=1, verbose_name = 'quantity')
-	item_value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default= 0.0, verbose_name = 'Item Value')
+	item_name = models.CharField(max_length = 100, blank=False, default='', verbose_name = 'Item Name') 
+	item_detail = models.CharField(max_length = 100, blank=True, default='', verbose_name = 'Item Details') 
+	item_quantity = models.PositiveIntegerField(blank=False, default=1, verbose_name = 'quantity') 
+	item_value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default= 0.0, verbose_name = 'Item Value') 
 	currency = models.CharField(max_length = 16, blank=True, default='', verbose_name = 'Currency')
 	tax_included = models.BooleanField(default=True, verbose_name = 'Included Tax')# for order only
 	order_by = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, verbose_name = 'Order by Employee')# for order only
-	item_url  = models.CharField(max_length = 1000, blank=True, default='', verbose_name = 'Item URL')
+	item_url  = models.CharField(max_length = 1000, blank=True, default='', verbose_name = 'Item URL') 
 	memo = models.TextField(blank=True, default='', verbose_name = 'Memo')
 	low_volume_request = models.BooleanField(default = True,verbose_name= 'Low Volume Request')
-	issue = models.TextField(blank=True, default='', verbose_name = 'Item Issue')
+	issue = models.TextField(blank=True, default='', verbose_name = 'Item Issue') 
 
 	def __str__(self):
 		return self.item_name
 
 
-#
+# 
 # set up the upload path
 class PackageImage(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = 'Service Key')
 	image = models.ImageField(upload_to = 'package_snapshot')
-
+	
 
 class FavoriteWebsite(models.Model):
 	TYPE_CHOICE = (

@@ -1,5 +1,5 @@
 from .models import (
-	Address, Card, OtherPayMethod, Service, CollectionPoint,
+	Address, Card, OtherPayMethod, Service, CollectionPoint, 
 	UserProfile, User, Warehouse, PackageImage, FavoriteWebsite
 	)
 from .forms import (
@@ -111,8 +111,8 @@ class UpdateProfileView(TemplateView):
 				if profile.default_address != selected_add:
 					profile.default_address = selected_add
 					profile.save()
-
-					form.cleaned_data['address']=''
+					
+					form.cleaned_data['address']=''			
 			except:
 				pass
 
@@ -201,7 +201,7 @@ class EditAddressView(TemplateView):
 				if Service.objects.filter(ship_to_add=add).count()>=1:
 					newaddress.user = request.user
 					newaddress.save()
-
+					
 					if add.follow_user_infor:
 						add.first_name = request.user.first_name
 						add.last_name = request.user.last_name
@@ -221,7 +221,7 @@ class EditAddressView(TemplateView):
 					add.zipcode = newaddress.zipcode
 					add.email = newaddress.email
 					add.phone = newaddress.phone
-
+				
 				add.save()
 
 				return redirect(reverse('useraddress'))
@@ -285,16 +285,16 @@ class WalletView(TemplateView):
 class PackagesView(TemplateView):
 	template_name = 'main/packagelist.html'
 
-	def get(self, request):
-		return render(request, self.template_name,
+	def get(self, request):			
+		return render(request, self.template_name, 
 			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
 
 
 class PackageCardView(TemplateView):
 	template_name = 'main/packagecar.html'
 
-	def get(self, request):
-		return render(request, self.template_name,
+	def get(self, request):			
+		return render(request, self.template_name, 
 			{'package_list': Service.objects.filter(user = request.user, paid_key = None)})
 
 
@@ -309,20 +309,17 @@ class AddPackageView(FormView):
 	template_name = 'main/coshipping.html'
 	success_url = '/'
 
-
 	def get_context_data(self, **kwargs):
 
-		data = super().get_context_data(**kwargs)
+		data = super(AddPackageView, self).get_context_data(**kwargs)
 
 		print('-----------------------------------------')
-
-		print("->>>>>>> ",data['selected_col'])
-
+		print(self.get_success_url())
 
 		data['imageset'] = ImageForm()
 		data['package_list'] = Service.objects.filter(
-			user = self.request.user,
-			co_shipping = None,
+			user = self.request.user, 
+			co_shipping = None, 
 			paid_key = None).order_by('-id')
 
 		if self.request.POST:
@@ -362,38 +359,10 @@ class AddPackageView(FormView):
 			print("----------------image----------")
 			print(files)
 			for f in files:
-				newimage = PackageImage(package = self.object, image = f)
-				newimage.save()
-
+				newimage = PackageImage(package = self.object, image = f) 
+				newimage.save() 
+					 
 		return super(AddPackageView, self).form_valid(form)
-
-	def get(self, request, selected_col):
-		context = self.get_context_data()
-		itemset = context['itemset']
-		imageset = context['imageset']
-		package_list = context['package_list']
-
-		receiverform = context['receiver']
-		try:
-			col = CollectionPoint.objects.get(pk=selected_col)
-			if col.status:
-				package_list = Service.objects.filter(
-					user = request.user,
-					co_shipping = True,
-					paid_key = None).order_by('-id')
-
-				return render(request, self.template_name,
-					{'form': self.form_class,
-					'receiverform':receiverform,
-					'package_list': package_list,
-					'itemset': itemset,
-					'imageset': imageset,
-					'selected_col': col,
-					})
-			else:
-				return redirect(reverse('collection_points'))
-		except:
-			return redirect(reverse('collection_points'))
 
 
 
@@ -415,8 +384,8 @@ class AddDirectShipping(FormView):
 		data = super(AddDirectShipping, self).get_context_data(**kwargs)
 		data['imageset'] = ImageForm()
 		data['package_list'] = Service.objects.filter(
-			user = self.request.user,
-			co_shipping = False,
+			user = self.request.user, 
+			co_shipping = False, 
 			paid_key = None).order_by('-id')
 
 		if self.request.POST:
@@ -440,9 +409,9 @@ class AddDirectShipping(FormView):
 				address.save()
 
 		files = self.request.FILES.getlist('image')
-
+		
 		with transaction.atomic():
-
+			
 			self.object = form.save(commit=False)
 			self.object.user = User.objects.get(pk = self.request.user.id)
 			self.object.wh_received = Warehouse.objects.get(pk=1)
@@ -451,17 +420,17 @@ class AddDirectShipping(FormView):
 			print(address)
 			self.object.ship_to_add = address or Address.objects.get(pk=self.cleaned_data['ship_to_add'])
 			self.object.save()
-
+			
 			if items.is_valid():
 				items.instance = self.object
 				items.save()
 
 
-# Does it save to just save the image directly?
+# Does it save to just save the image directly? 
 			for f in files:
-				newimage = PackageImage(package = self.object, image = f)
-				newimage.save()
-
+				newimage = PackageImage(package = self.object, image = f) 
+				newimage.save() 
+			 
 		return super(AddDirectShipping, self).form_valid(form)
 
 
@@ -475,16 +444,15 @@ class SetPickupPointView(TemplateView):
 	col_list = CollectionPoint.objects.filter(status=True)
 
 	def get(self, request):
-
+		
 		return render(request, self.template_name, {'col_list': self.col_list,})
 
 	def post(self, request):
 		try:
 			selected_col = CollectionPoint.objects.get(pk=request.POST['choice'])
-
+			
 			if selected_col.status:
 				return redirect(reverse('add_co_shipping',args = (selected_col.pk,)))
-				# return redirect('/packages/?selected_col=1/add')
 			else:
 				return render(request, self.template_name, {
 				'col_list': self.col_list,
@@ -498,29 +466,28 @@ class SetPickupPointView(TemplateView):
 				'error_message': "You didn't select a Collection Point.",
 			})
 
-
+			
 
 
 
 class AddCoShipping(TemplateView):
-	form_class = CoShippingForm
 	template_name = 'main/coshipping.html'
-
+	
 
 	def get(self, request, selected_col):
 		form = CoShippingForm()
 		itemset = ItemFormset()
-		imageset = ImageForm()
+		imageset = ImageFormset()
 		receiverform = CoReceiverForm()
 		try:
 			col = CollectionPoint.objects.get(pk=selected_col)
 			if col.status:
 				package_list = Service.objects.filter(
 					user = request.user,
-					co_shipping = True,
+					co_shipping = True, 
 					paid_key = None).order_by('-id')
 
-				return render(request, self.template_name,
+				return render(request, self.template_name, 
 					{'form': form,
 					'receiverform':receiverform,
 					'package_list': package_list,
@@ -529,30 +496,28 @@ class AddCoShipping(TemplateView):
 					'selected_col': col,
 					})
 			else:
-				messages.info('The selected collection point is not avaliable at this time.')
 				return redirect(reverse('collection_points'))
 		except:
-			messages.info('Collection point not found!')
 			return redirect(reverse('collection_points'))
 
-
+			
 
 
 	def post(self, request, selected_col):
 		form = CoShippingForm(request.POST)
 		receiverform = CoReceiverForm(request.POST)
 		itemset = ItemFormset(request.POST)
-		imageset = ImageForm(request.POST)
-		files = self.request.FILES.getlist('image')
+		imageset = ImageFormset(request.POST)
+
 		package_list = Service.objects.filter(
-			user = request.user,
-			co_shipping = True,
+			user = request.user, 
+			co_shipping = True, 
 			paid_key = None).order_by('-id')
 
 		col = CollectionPoint.objects.get(pk=selected_col)
 
 
-		if form.is_valid() and receiverform.is_valid():
+		if form.is_valid and receiverform.is_valid():
 
 			package = form.save(commit = False)
 
@@ -567,28 +532,33 @@ class AddCoShipping(TemplateView):
 
 				receiver = receiverform.save(request.user)
 				package.receiver = receiver
-				package.save()
+				package = package.save()
 
 
 				if itemset.is_valid():
 					itemset.instance = package
-
+# no id................??????????????
 					itemset.save()
 
-				for f in files:
-					newimage = PackageImage(package = package, image = f)
-					newimage.save()
+					print("--------------itemset---------------")
+					print(itemset)
+				if imageset.is_valid():
+					imageset.instance = package
+					imageset.save()
+
+					print("--------------imageset---------------")
+					print(imageset.image)
 
 			return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
 			messages.info(request, 'Invalid form!')
 
-			return render(request, self.template_name,
-			{'form': form,
-			'receiverform':receiverform,
+			return render(request, self.template_name, 
+			{'form': self.form,
+			'receiverform':self.receiverform,
 			'package_list': package_list,
-			'itemset': itemset,
-			'imageset': imageset,
+			'itemset': self.itemset,
+			'imageset': self.imageset,
 			'selected_col': col,
 			})
 
@@ -620,3 +590,6 @@ class PackageAddedView(TemplateView):
 
 			# return render(request, 'main/addpackage.html' , {'form': form})
 			return redirect(reverse('userpackages'))
+
+
+
