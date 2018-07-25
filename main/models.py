@@ -172,6 +172,9 @@ class CoReceiver(models.Model):
 		else:
 			return '%s %s'%(self.first_name, self.last_name)
 
+	class Meta:
+		unique_together=('user','first_name','last_name','phone')
+
 
 def create_coreceiver(sender, **kwargs):
 	if kwargs['created']:

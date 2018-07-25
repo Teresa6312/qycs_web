@@ -63,6 +63,7 @@
             {% if user.address_set.all %}
                 <button id="select_address_btn"> Select from address book</button>
             {% endif %}
+            {% if user.userprofile.default_address %}
                 <div id="default_address_card" class="w3-card-2 w3-round w3-container w3-mobile" style="width:500px">
                     <h4>{{user.userprofile.default_address.location_name}}</h4>
                     {% if not user.userprofile.default_address.follow_user_infor %}
@@ -78,6 +79,7 @@
                         {{user.userprofile.default_address.city}}, {{user.userprofile.default_address.state}} {{user.userprofile.default_address.zipcode}}<br/>
                         {{user.userprofile.default_address.country}}<br/>
                 </div>
+            {% endif%}
         </div>            
 
             <div id = "addressForm" class=" w3-row" style="display: none">
