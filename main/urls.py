@@ -67,3 +67,5 @@ urlpatterns = [
         {'template_name':'main/resetpassword_complete.html'}, name='password_reset_complete'),
 
 ]
+
+# change
