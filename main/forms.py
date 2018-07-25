@@ -1,13 +1,13 @@
 from django import forms
 from .models import (
 	User, UserProfile, Address, Service, Warehouse, CollectionPoint, 
-	Item, PackageImage, CoReceiver
+	Item, PackageImage, CoReceiver, FavoriteWebsite
 	)
 
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import inlineformset_factory
 from .code import checkAddress
-
+from django.forms import formset_factory
 
 
 #-----------------------------------------------------------------------------------------
@@ -44,6 +44,40 @@ class RegisterForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+
+
+class FavoriteWebsiteForm(forms.ModelForm):
+
+	TYPE_CHOICE = (
+		('---', '---'),
+		('Clothing', 'Clothing'),
+		('Bag', 'Bag'),
+		('Jewelry', 'Jewelry'),
+		('Sport', 'Sport'),
+		('Beauty', 'Beauty'),
+		('Baby', 'Baby'),
+		('Other', 'Other'),
+	)
+
+	web_type = forms.ChoiceField(required = True, choices = TYPE_CHOICE, widget=forms.Select(attrs={"class":"w3-select w3-border"
+				}))
+	web_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+				}))
+	class Meta:
+		model = FavoriteWebsite
+		fields = ['web_type', 'web_name']
+
+WebFormSet = formset_factory(FavoriteWebsiteForm, extra = 3)
+
+class UserProfileForm(forms.ModelForm):
+	country = forms.CharField(required = True)
+
+	class Meta:
+		model = UserProfile
+		fields = ['country', 'birthday', 'phone', 'language']
+
+
 
 #-----------------------------------------------------------------------------------------
 '''

@@ -362,7 +362,7 @@ class FavoriteWebsite(models.Model):
 		('Baby', 'Baby'),
 		('Other', 'Other'),
 	)
-
+	country = models.CharField(max_length=100, blank=True, default='',verbose_name= 'Country')
 	web_type = models.CharField(max_length = 32, choices = TYPE_CHOICE, blank=True, default='',verbose_name = 'Websit Type')
 	web_name = models.CharField(max_length = 64, blank=True, default='', verbose_name = 'Websit Name')
 	web_url = models.URLField (max_length = 128, blank=True, default='', verbose_name = 'Websit url')

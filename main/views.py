@@ -1,7 +1,10 @@
-from .models import Address, Card, OtherPayMethod, Service, CollectionPoint, UserProfile, User, Warehouse, PackageImage
+from .models import (
+	Address, Card, OtherPayMethod, Service, CollectionPoint, 
+	UserProfile, User, Warehouse, PackageImage, FavoriteWebsite
+	)
 from .forms import (
-	RegisterForm, ProfileUpdateForm, AddressForm, ItemFormset, PackageForm, 
-	CoShippingForm, DirectShippingForm, ImageFormset, CoReceiverForm, ImageForm
+	RegisterForm, ProfileUpdateForm, AddressForm, ItemFormset, PackageForm, UserProfileForm,
+	CoShippingForm, DirectShippingForm, ImageFormset, CoReceiverForm, ImageForm, WebFormSet
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -30,13 +33,34 @@ class RegisterView(TemplateView):
 
 	def get(self, request):
 		form = RegisterForm()
-		return render(request, self.template_name, {'form': form})
+		webformset = WebFormSet()
+		profileform = UserProfileForm()
+		return render(request, self.template_name, {'form': form, 'webformset':webformset, 'profileform':profileform})
 
 	def post(self, request):
 		form = RegisterForm(request.POST)
 
 		if form.is_valid():
-			form.save()
+			user = form.save()
+			webformset = WebFormSet(request.POST)
+			profileform = UserProfileForm(request.POST)
+
+			# if webformset.is_valid():
+				# web = FavoriteWebsite.objects.get(web_name = webform.cleaned_data['web_name'], country = webform.cleaned_data['country'])
+				# if web.count() == 1:
+				# 	web.rate = web.rate +1
+				# 	web.save()
+				# else:
+				# 	webform.save()
+
+			if profileform.is_valid():
+				profile = UserProfile.objects.get(user = user)
+				profile.phone = profileform.cleaned_data['phone']
+				profile.birthday = profileform.cleaned_data['birthday']
+				profile.country = profileform.cleaned_data['country']
+				profile.language = profileform.cleaned_data['language']
+				profile.save()
+
 			return redirect(request, reverse('account'))
 		else:
 			return render(request, self.template_name, {'form': form})
