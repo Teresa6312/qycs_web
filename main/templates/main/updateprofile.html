@@ -145,7 +145,7 @@
                 {% if user.userprofile.default_col %}
                     <button id="change_col_btn"> Change</button><br/>
                         
-                        <div class="w3-card-2 w3-round w3-mobile w3-container" style="width:500px">
+                        <div id="default_col_card" class="w3-card-2 w3-round w3-mobile w3-container" style="width:500px">
                             <h4>{{user.userprofile.default_col.name}}
                                 {% if user.userprofile.default_col.store %}
                                     (Store)
@@ -239,6 +239,12 @@
         $("#select_col_btn").click(function(){
              $("#collection_points_list").show();
              $("#select_col_btn").remove();
+
+        });
+        $("#change_col_btn").click(function(){
+             $("#collection_points_list").show();
+             $("#change_col_btn").remove();
+             $("#default_col_card").remove();
 
         });
     })

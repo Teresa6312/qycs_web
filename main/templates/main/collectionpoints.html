@@ -36,7 +36,7 @@
             <table>
                 {% for choice in col_list %}
                     <tr><td>
-                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.pk }}"
+                        <input type="radio" name="choice" class=" w3-radio" id="choice{{ forloop.counter }}" value="{{ choice.pk }}"
                             {% if choice == user.userprofile.default_col %} checked="checked" {% endif %} /> 
                         </td>
                     

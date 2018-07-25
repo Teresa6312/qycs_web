@@ -125,7 +125,7 @@ class UserProfile(models.Model):
 	bound_email = models.BooleanField(default =False)
 	bound_email.boolean = True
 	phone = models.CharField(validators=[phone_regex], max_length=25, blank=True, default='',verbose_name= 'Phone Number')
-	default_address = models.OneToOneField(Address, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= 'Default Mailing Address')
+	default_address = models.OneToOneField(Address, on_delete=models.CASCADE, blank=True, null=True, verbose_name= 'Default Mailing Address')
 	default_col = models.ForeignKey(CollectionPoint, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= 'Default Collection Point')
 
 	reward = models.PositiveIntegerField(default = 0)

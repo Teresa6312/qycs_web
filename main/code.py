@@ -4,7 +4,7 @@ from .models import Address, Service, UserProfile
 def checkAddressWithService(add):
     return Service.objects.filter(ship_to_add=add).count()>=1
 
-def checkAddress(add_id):
+def checkAddress(add_id, new_input_add=None):
     add = Address.objects.get(pk=add_id)
     profile = UserProfile.objects.get(user = add.user)
 

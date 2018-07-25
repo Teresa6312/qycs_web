@@ -11,9 +11,9 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.forms import PasswordChangeForm
 
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.contrib.auth.decorators import login_required
-
+from .code import checkAddress
 from django.urls import reverse
 # used to reverse the url name as a url path
 
@@ -49,9 +49,23 @@ class AccountView(TemplateView):
 		return render(request, self.template_name)
 
 
+class LoginView(TemplateView):
+	template_name = 'main/login.html'
 
+	def get(self, request):
+		return render(request, self.template_name)
 
-
+	def post(self, request):
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			print('----------------------------------------')
+			print(request.path_info)
+			return redirect(reverse('home'))
+		else:
+			return render(request, self.template_name)
 # -----------------------------------------------------------
 '''
 Update User Profile
@@ -73,7 +87,7 @@ class UpdateProfileView(TemplateView):
 				if profile.default_address != selected_add:
 					profile.default_address = selected_add
 					profile.save()
-					print(form.cleaned_data['address'])		
+					
 					form.cleaned_data['address']=''			
 			except:
 				pass
@@ -121,16 +135,13 @@ class AddressView(TemplateView):
 		form = AddressForm()
 		return render(request, self.template_name, {'form': form})
 
-	def get(self, request, add_id):
-		form = AddressForm()
-		add = Address.objects.get(pk=add_id)
-		return render(request, self.template_name, {'form': form, 'add':add})
 
 	def post(self, request):
 		form = AddressForm(request.POST)
 		if form.is_valid():
 			newaddress = form.save(commit = False)
-			if newaddress.cleaned_data['address'] == None or newaddress.cleaned_data['address'] == ''
+
+			if newaddress.address != None and newaddress.address != '':
 				newaddress.user = request.user
 				newaddress.save()
 
@@ -141,6 +152,92 @@ class AddressView(TemplateView):
 			messages.info(request, 'Invalid address, please try again!')
 			return render(request, self.template_name, {'form': form})
 
+
+# Use updateView?
+
+class EditAddressView(TemplateView):
+	template_name = 'main/address.html'
+
+	def get(self, request, add_id):
+		form = AddressForm()
+		add = Address.objects.get(pk=add_id)
+		return render(request, self.template_name, {'form': form, 'add':add})
+
+
+	def post(self, request, add_id):
+		if "cancel" in request.POST:
+			return redirect(reverse('useraddress'))
+		else:
+			form = AddressForm(request.POST)
+
+			add = Address.objects.get(pk=add_id)
+
+			if form.is_valid():
+				newaddress = form.save(commit = False)
+				if Service.objects.filter(ship_to_add=add).count()>=1:
+					newaddress.user = request.user
+					newaddress.save()
+					
+					if add.follow_user_infor:
+						add.first_name = request.user.first_name
+						add.last_name = request.user.last_name
+						add.email = request.user.email
+						add.phone = request.user.userprofile.phone
+						add.follow_user_infor = False
+					add.user = None
+				else:
+					add.first_name = newaddress.first_name
+					add.last_name = newaddress.last_name
+					add.follow_user_infor = newaddress.follow_user_infor
+					add.address = newaddress.address
+					add.apt = newaddress.apt
+					add.city = newaddress.city
+					add.country = newaddress.country
+					add.state = newaddress.state
+					add.zipcode = newaddress.zipcode
+					add.email = newaddress.email
+					add.phone = newaddress.phone
+				
+				add.save()
+
+				return redirect(reverse('useraddress'))
+
+			else:
+				form = AddressForm(request.POST)
+				messages.info(request, 'Invalid address, please try again!')
+				return render(request, self.template_name, {'form': form})
+
+
+class DeleteAddressView(TemplateView):
+	template_name = 'main/address.html'
+
+	def get(self, request, add_id):
+		add = Address.objects.get(pk=add_id)
+
+		if add.follow_user_infor:
+			add.first_name = request.user.first_name
+			add.last_name = request.user.last_name
+			add.email = request.user.email
+			add.phone = request.user.userprofile.phone
+			add.follow_user_infor = False
+		add.user = None
+		add.save()
+
+		if add == request.user.userprofile.default_address:
+			profile = UserProfile.objects.get(user = request.user)
+			profile.default_address = None
+			profile.save()
+		return redirect(reverse('useraddress'))
+
+class SetDefaultAddressView(TemplateView):
+	template_name = 'main/address.html'
+
+	def get(self, request, add_id):
+		add = Address.objects.get(pk=add_id)
+		profile = UserProfile.objects.get(user = request.user)
+		profile.default_address = add
+		profile.save()
+		return redirect(reverse('useraddress'))
 
 
 class WalletView(TemplateView):
@@ -166,11 +263,11 @@ class PackagesView(TemplateView):
 
 	def get(self, request):			
 		return render(request, self.template_name, 
-			{'package_list': Service.objects.filter(user = request.user)})
+			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
 
 
 class PackageCardView(TemplateView):
-	template_name = 'main/packagecard.html'
+	template_name = 'main/packagecar.html'
 
 	def get(self, request):			
 		return render(request, self.template_name, 
@@ -189,7 +286,12 @@ class AddPackageView(FormView):
 	success_url = '/'
 
 	def get_context_data(self, **kwargs):
+
 		data = super(AddPackageView, self).get_context_data(**kwargs)
+
+		print('-----------------------------------------')
+		print(self.get_success_url())
+
 		data['imageset'] = ImageForm()
 		data['package_list'] = Service.objects.filter(
 			user = self.request.user, 
@@ -316,7 +418,6 @@ Create Co-shipping Package
 class SetPickupPointView(TemplateView):
 	template_name = 'main/collectionpoints.html'
 	col_list = CollectionPoint.objects.filter(status=True)
-	# col_list = CollectionPoint.objects.filter()
 
 	def get(self, request):
 		

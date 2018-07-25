@@ -41,8 +41,9 @@
 				Country: {{user.userprofile.default_address.country}}<br/>
 
 				{% if user.userprofile.default_col%}
+				<div class="w3-row">
 					<h3>Default Collection Point</h3>
-					<div class="w3-card-2 w3-round w3-container">
+					<div class="w3-card-2 w3-round w3-half w3-container">
 						<div class="w3-half">
 							<h4>{{user.userprofile.default_col.name}}
                             {% if user.userprofile.default_col.store %}
@@ -64,6 +65,7 @@
                             {% endif %}
                         </div>
                     </div>
+                </div>
                 {% endif %}
 			<button><a href="{% url 'updateprofile'%}"> Update Profile</a></button>
 			<button><a href="{% url 'changepassword'%}"> Change Password</a></button><br/><br/>

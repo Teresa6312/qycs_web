@@ -53,7 +53,7 @@ admin.site.register(UserProfile, UserProfileAdmin)
 
 
 class AddressAdmin(admin.ModelAdmin):
-	list_display = ('id','follow_user_infor', 'user', 'first_name', 'last_name', 'address', 'city', 'state','country', 'zipcode')
+	list_display = ('id','follow_user_infor', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
 	list_filter = ['follow_user_infor', 'country', 'state','city']
 	search_fields = ['first_name', 'last_name', ]
 

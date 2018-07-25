@@ -14,7 +14,6 @@
         {% else %}
         {% endif%}
 
-
 <!-- display default address -->
     <div class="w3-card-2 w3-round w3-container ">
         {% if user.userprofile.default_address %}
@@ -40,7 +39,8 @@
             {{user.userprofile.default_address.state}}<br/>
             {{user.userprofile.default_address.zipcode}}<br/>
             {{user.userprofile.default_address.country}}<br/>
-            <button>Edit</button><button>Remove</button>
+            <button><a href="{% url 'editaddress' user.userprofile.default_address.id %}" >Edit</a></button>
+            <button><a href="{% url 'deleteaddress' user.userprofile.default_address.id %}" >Delete</a></button>
         {% endif %}
   </div>
 
@@ -65,7 +65,9 @@
             {{address.apt}}<br/>
             {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
             {{address.country}}<br/>
-            <button>Edit</button><button>Remove</button><button>Set as Default Address</button>
+            <button><a href="{% url 'editaddress' address.pk %}" >Edit</a></button>
+            <button><a href="{% url 'deleteaddress' address.pk %}" >Delete</a></button>
+            <button><a href="{% url 'set_dedault_address' address.pk %}" >Set as Default Address</a></button>
     </div>
 
 {% endif %}{% endfor %}{% endif %}
@@ -88,48 +90,48 @@
         {% csrf_token %}
          <h3> Add new address:</h3>
         <div class="w3-container">
-            {{form.follow_user_infor}} Follow User Information
+            <input type="checkbox" name="follow_user_infor" id="id_follow_user_infor" value="{{add.follow_user_infor}}"> Follow User Information
         </div>
         <div class="w3-half w3-container">
         First Name:
-            {{ form.first_name }}
+            <input type="text" name="first_name" class="w3-input w3-border" id="id_first_name" value="{{add.first_name}}">
         </div>
         <div class="w3-half w3-container">
         Last Name:
-            {{ form.last_name }}
+            <input type="text" name="last_name" class="w3-input w3-border" id="id_last_name" value="{{add.last_name}}">
         </div>
         <div class="w3-container">
         Address:
-            {{ form.address }}
+            <input type="text" name="address" class="w3-input w3-border" id="id_address" value="{{add.address}}">
         Apartment:
-            {{ form.apt }}
+            <input type="text" name="apt" class="w3-input w3-border" id="id_apt" value="{{add.apt}}">
         </div>
         <div class="w3-half w3-container">
         City:
-            {{ form.city }}
+            <input type="text" name="city" class="w3-input w3-border" id="id_city" value="{{add.city}}">
         </div>
         <div class="w3-half w3-container">
         State:
-            {{ form.state }}
+            <input type="text" name="state" class="w3-input w3-border" id="id_state" value="{{add.state}}">
         </div>
         <div class="w3-row w3-container">
         Country:
-            {{ form.country }}
+            <input type="text" name="country" class="w3-input w3-border" id="id_country" value="{{add.country}}">
         </div>
         <div class="w3-half w3-container">
         Zip code:
-            {{ form.zipcode }}
+            <input type="text" name="zipcode" class="w3-input w3-border" id="id_zipcode" value="{{add.zipcode}}">
         </div>
         <div class="w3-container">
         Phone:
-            {{ form.phone }}
+            <input type="text" name="phone" class="w3-input w3-border" id="id_phone"  value="{{add.phone}}">
         Email:
-            {{ form.email }}
+            <input type="text" name="email" class="w3-input w3-border" id="id_email" value="{{add.email}}">
         Nikename:
-            {{ form.location_name }}
+            <input type="text" name="location_name" class="w3-input w3-border" id="id_location_name" value="{{add.location_name}}">
         </div>
         <input type="submit" value="Save" >
-        <button>Cancel</button>
+        <button class="btn" type="submit" name="cancel" value="Cancel" >Cancel</button>
         </form>
     </div>
 </div>
