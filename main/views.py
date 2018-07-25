@@ -312,7 +312,13 @@ class AddPackageView(FormView):
 
 	def get_context_data(self, **kwargs):
 
-		data = super(AddPackageView, self).get_context_data(**kwargs)
+		data = super().get_context_data(**kwargs)
+
+		print('-----------------------------------------')
+
+		print("->>>>>>> ",data['selected_col'])
+
+
 		data['imageset'] = ImageForm()
 		data['package_list'] = Service.objects.filter(
 			user = self.request.user,
@@ -466,8 +472,7 @@ Create Co-shipping Package
 #-----------------------------------------------------------------------------------------
 class SetPickupPointView(TemplateView):
 	template_name = 'main/collectionpoints.html'
-	# col_list = CollectionPoint.objects.filter(status=True)
-	col_list = CollectionPoint.objects.all()
+	col_list = CollectionPoint.objects.filter(status=True)
 
 	def get(self, request):
 
@@ -479,6 +484,7 @@ class SetPickupPointView(TemplateView):
 
 			if selected_col.status:
 				return redirect(reverse('add_co_shipping',args = (selected_col.pk,)))
+				# return redirect('/packages/?selected_col=1/add')
 			else:
 				return render(request, self.template_name, {
 				'col_list': self.col_list,
@@ -502,12 +508,10 @@ class AddCoShipping(TemplateView):
 
 
 	def get(self, request, selected_col):
-		context = self.get_context_data()
-		itemset = context['itemset']
-		imageset = context['imageset']
-		package_list = context['package_list']
-
-		receiverform = context['receiver']
+		form = CoShippingForm()
+		itemset = ItemFormset()
+		imageset = ImageForm()
+		receiverform = CoReceiverForm()
 		try:
 			col = CollectionPoint.objects.get(pk=selected_col)
 			if col.status:
@@ -538,8 +542,8 @@ class AddCoShipping(TemplateView):
 		form = CoShippingForm(request.POST)
 		receiverform = CoReceiverForm(request.POST)
 		itemset = ItemFormset(request.POST)
-		imageset = ImageFormset(request.POST)
-
+		imageset = ImageForm(request.POST)
+		files = self.request.FILES.getlist('image')
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = True,
@@ -548,7 +552,7 @@ class AddCoShipping(TemplateView):
 		col = CollectionPoint.objects.get(pk=selected_col)
 
 
-		if form.is_valid and receiverform.is_valid():
+		if form.is_valid() and receiverform.is_valid():
 
 			package = form.save(commit = False)
 
@@ -563,33 +567,28 @@ class AddCoShipping(TemplateView):
 
 				receiver = receiverform.save(request.user)
 				package.receiver = receiver
-				package = package.save()
+				package.save()
 
 
 				if itemset.is_valid():
 					itemset.instance = package
-# no id................??????????????
+
 					itemset.save()
 
-					print("--------------itemset---------------")
-					print(itemset)
-				if imageset.is_valid():
-					imageset.instance = package
-					imageset.save()
-
-					print("--------------imageset---------------")
-					print(imageset.image)
+				for f in files:
+					newimage = PackageImage(package = package, image = f)
+					newimage.save()
 
 			return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
 			messages.info(request, 'Invalid form!')
 
 			return render(request, self.template_name,
-			{'form': self.form,
-			'receiverform':self.receiverform,
+			{'form': form,
+			'receiverform':receiverform,
 			'package_list': package_list,
-			'itemset': self.itemset,
-			'imageset': self.imageset,
+			'itemset': itemset,
+			'imageset': imageset,
 			'selected_col': col,
 			})
 
