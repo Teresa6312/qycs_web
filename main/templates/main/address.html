@@ -5,6 +5,7 @@
 
 <div class="w3-cell w3-container w3-mobile">
     <h2>Address Book:</h2>
+identify error to load this page in cmd
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -22,10 +23,10 @@
                 <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
 
                     {% if user.userprofile.default_address.phone and user.userprofile.default_address.email %}
-                        {{user.userprofile.default_address.phone}} | 
+                        {{user.userprofile.default_address.phone}} |
                         {{user.userprofile.default_address.email}}<br/>
                     {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-                        {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/> 
+                        {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/>
                     {% endif %}
 
 
@@ -54,12 +55,12 @@
             <h5>{{address.last_name}}, {{address.first_name}}</h5>
 
                 {% if address.phone and address.email%}
-                    {{address.phone}} | {{address.email}}<br/> 
+                    {{address.phone}} | {{address.email}}<br/>
                 {% elif address.phone or address.email%}
-                    {{address.phone}}{{address.email}}<br/> 
+                    {{address.phone}}{{address.email}}<br/>
                 {% endif %}
 
- 
+
         {% endif %}
             {{address.address}}<br/>
             {{address.apt}}<br/>
