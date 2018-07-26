@@ -11,7 +11,7 @@
 	{% if user.is_authenticated %}
 			<br/><h1>Page not found!</h1>
 
-			
+
 	{% else %}
 
 		<br/><h2> Create My Qycs Account</h2>
@@ -29,18 +29,18 @@
 
 			<div class='w3-row w3-container'>
 				<label for="id_username">Username:</label> <input type="text" name="username" class="w3-input w3-border" autofocus id="id_username" />
-				<label for="id_password1">Password1:</label> <input type="text" name="password1" class="w3-input w3-border" required id="id_password1" />
-				<label for="id_password2">Password2:</label> <input type="text" name="password2" class="w3-input w3-border" required id="id_password2" />
+				<label for="id_password1">Password1:</label> <input type="password" name="password1" class="w3-input w3-border" required id="id_password1" />
+				<label for="id_password2">Password2:</label> <input type="password" name="password2" class="w3-input w3-border" required id="id_password2" />
 				<label for="id_country">Country:</label> <input type="text" name="country" class="w3-input w3-border" id="id_country" />
 			</div>
 			{{ webformset.management_form }}
 		 	{% for subform in webformset%}
 		 	<div class='w3-row'>
-			 	<div class='w3-half w3-container'>
+			 	<div class='w3-third w3-container'>
 				 	Website Type:
 				 	{{subform.web_type}}
 				</div>
-			 	<div class='w3-half w3-container'>
+			 	<div class='w3-rest w3-container'>
 			 		Website Name:
 			 		{{subform.web_name}}
 			 	</div>
@@ -70,9 +70,10 @@
 					<label for="id_phone">Phone Number:</label> <input type="text" name="phone" class="w3-input w3-border" id="id_phone" />
 				</div>
 			</div>
-			<input type = "submit" value = "Register">
+			<input type = "submit" value = "Register">  <button class="btn" type="submit" name="cancel" value="Cancel" >Cancel</button>
+			<button class="btn" type="submit" name="colregister" value="colregister" >Register as Collector</button>
 		</form>
 	{% endif %}
-
+{% block col_form%}{% endblock %}
 </div>
 {% endblock %}
