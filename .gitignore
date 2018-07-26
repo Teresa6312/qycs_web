@@ -54,7 +54,7 @@ coverage.xml
 *.log
 .static_storage/
 #.media/
-local_settings.py
+local.py
 #*.sqlite3
 
 # Flask stuff:
