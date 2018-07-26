@@ -4,7 +4,8 @@ from .models import (
 	)
 from .forms import (
 	RegisterForm, ProfileUpdateForm, AddressForm, ItemFormset, PackageForm, UserProfileForm,
-	CoShippingForm, DirectShippingForm, ImageFormset, CoReceiverForm, ImageForm, WebFormSet
+	CoShippingForm, DirectShippingForm, ImageFormset, CoReceiverForm, ImageForm, WebFormSet,
+	ColResigterForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -60,10 +61,42 @@ class RegisterView(TemplateView):
 				profile.country = profileform.cleaned_data['country']
 				profile.language = profileform.cleaned_data['language']
 				profile.save()
+			if "colregister" in request.POST:
+				return redirect(reverse('colregister'))
+			else:
+				return redirect(request, reverse('account'))
+		else:
+			return render(request, self.template_name, {'form': form})
+
+
+class ColRegisterView(TemplateView):
+	template_name = 'main/colregister.html'
+
+	def get(self, request):
+		colform = ColResigterForm()
+		return render(request, self.template_name, {
+		 'colform': colform,
+		 })
+
+	def post(self, request):
+		colform = ColResigterForm(request.POST)
+
+		if colform.is_valid():
+			user = User.objects.get(user = request.user)
+			collector = CollectionPoint.objects.get(collector = user)
+			collector.name = colform.cleaned_data['name']
+			collector.license = colform.cleaned_data['license']
+			collector.license_type = colform.cleaned_data['license_type']
+			collector.store = colform.cleaned_data['store']
+			# save image then save instance
+			# collector.id_image
+			# collector.license_image
+			# collector.image
+			# collector.save()
 
 			return redirect(request, reverse('account'))
 		else:
-			return render(request, self.template_name, {'form': form})
+			return render(request, self.template_name, {'colform': colform})
 
 
 class AccountView(TemplateView):

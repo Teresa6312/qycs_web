@@ -55,7 +55,6 @@ class AddPackageView(FormView):
 			data['itemset'] = ItemFormset(self.request.POST)
 		else:
 			data['itemset'] = ItemFormset()
-
 		return data
 
 	def form_valid(self, form):
@@ -159,12 +158,8 @@ Create Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 
-
-
-
 class AddCoShipping(TemplateView):
 	template_name = 'main/coshipping.html'
-
 
 	def get(self, request, selected_col):
 		form = CoShippingForm()

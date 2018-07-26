@@ -46,6 +46,10 @@ class RegisterForm(UserCreationForm):
 		return user
 
 
+class ColResigterForm(forms.ModelForm):
+	class Meta:
+		model = CollectionPoint
+		fields = ['name', 'license', 'license_type', 'store', 'license_image','id_image', 'image']
 
 class FavoriteWebsiteForm(forms.ModelForm):
 
