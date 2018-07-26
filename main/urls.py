@@ -1,4 +1,5 @@
 from . import views
+from . import package_views as pk_views
 from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -15,7 +16,7 @@ urlpatterns = [
     # path('accounts/login/', views.LoginView.as_view, name = 'login'),
 
 
-    path('collection-points/', views.SetPickupPointView.as_view(), name='collection_points'),
+    path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
 
     # path('image/', views.AddImageView.as_view(), name='image'),
 
@@ -38,15 +39,15 @@ urlpatterns = [
 
 
     path('myaccount/wallet', login_required(views.WalletView.as_view()), name='userwallet'),
-    path('myaccount/packages', login_required(views.PackagesView.as_view()), name='userpackage'),
+    path('myaccount/packages', login_required(pk_views.PackagesView.as_view()), name='userpackage'),
 
-    path('packages/add/', login_required(views.AddPackageView.as_view()), name='add_package'),
+    path('packages/add/', login_required(pk_views.AddPackageView.as_view()), name='add_package'),
     # path('packages/co-shiping/add/', views.AddCoPackageView.as_view(), name='addcopackage'),
-    path('packages/<int:selected_col>/add', login_required(views.AddCoShipping.as_view()), name='add_co_shipping'),
-    path('packages/direct-shipping/add', login_required(views.AddDirectShipping.as_view()), name='add_direct_shipping'),
+    path('packages/<int:selected_col>/add', login_required(pk_views.AddCoShipping.as_view()), name='add_co_shipping'),
+    path('packages/direct-shipping/add', login_required(pk_views.AddDirectShipping.as_view()), name='add_direct_shipping'),
     # path('packages/successfully', login_required(views.PackageAddedView.as_view()), name='package_added'),
-    path('packages/', login_required(views.PackagesView.as_view()), name='packages'),
-    path('packages/card/', login_required(views.PackageCardView.as_view()), name='packagecard'),
+    path('packages/', login_required(pk_views.PackagesView.as_view()), name='packages'),
+    path('packages/card/', login_required(pk_views.PackageCardView.as_view()), name='packagecard'),
 
 
 

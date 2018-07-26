@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-	User, UserProfile, Address, Service, Warehouse, CollectionPoint, 
+	User, UserProfile, Address, Service, Warehouse, CollectionPoint,
 	Item, PackageImage, CoReceiver, FavoriteWebsite
 	)
 
@@ -29,15 +29,15 @@ class RegisterForm(UserCreationForm):
 									}))
 	password2 = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	
+
 	class Meta:
 		model = User
 		fields = ['username', 'email', 'first_name','last_name', 'password1', 'password2']
 
 	def save(self, commit = True):
-		user = super(RegisterForm, self).save(commit = False) 
+		user = super(RegisterForm, self).save(commit = False)
 		user.first_name = self.cleaned_data['first_name'].title() # or try .capitalize()
-		user.last_name = self.cleaned_data['last_name'].title() 
+		user.last_name = self.cleaned_data['last_name'].title()
 		user.email = self.cleaned_data['email'].lower()
 		user.username = self.cleaned_data['username']
 
@@ -106,7 +106,7 @@ class ProfileUpdateForm(forms.Form):
 	city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									})) 
+									}))
 	country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
@@ -118,13 +118,13 @@ class ProfileUpdateForm(forms.Form):
 		profile = UserProfile.objects.get(user = user)
 
 		if commit:
-			
+
 # -------------------------------------------------------------------------------------------
 # '''
-# for address with follow user information 
+# for address with follow user information
 # '''
 # ------------------------------------------------------------------------------------------
-# if any address follow user information, then create a new address that follow user 
+# if any address follow user information, then create a new address that follow user
 # information and use the old user information to update the address
 
 			for add in Address.objects.filter(user = user,  follow_user_infor = True):
@@ -139,7 +139,7 @@ class ProfileUpdateForm(forms.Form):
 			user.first_name = self.cleaned_data['first_name'].title() or user.first_name
 			user.last_name = self.cleaned_data['last_name'].title() or user.last_name
 			if self.cleaned_data['email']!='' and self.cleaned_data['email']!=None:
-				user.email = self.cleaned_data['email'].lower() 			
+				user.email = self.cleaned_data['email'].lower()
 # send email to bound this email
 			user.save()
 
@@ -151,7 +151,7 @@ class ProfileUpdateForm(forms.Form):
 			if self.cleaned_data['address'] != None and self.cleaned_data['address'] != '':
 				new_add = Address(
 					user = user,
-					follow_user_infor = True, 
+					follow_user_infor = True,
 					address = self.cleaned_data['address'],
 					apt = self.cleaned_data['apt'],
 					city = self.cleaned_data['city'],
@@ -168,7 +168,7 @@ class ProfileUpdateForm(forms.Form):
 # ------------------------------------------------------------------------------------------
 
 			profile.birthday = self.cleaned_data['birthday'] or profile.birthday or None
-			 
+
 			profile.phone = self.cleaned_data['phone'] or profile.phone or None
 
 			profile.save()
@@ -179,7 +179,7 @@ class ProfileUpdateForm(forms.Form):
 
 #-----------------------------------------------------------------------------------------
 '''
-Create new Address  
+Create new Address
 '''
 #-----------------------------------------------------------------------------------------
 class AddressForm(forms.ModelForm):
@@ -200,7 +200,7 @@ class AddressForm(forms.ModelForm):
 	city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									})) 
+									}))
 	country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
@@ -210,13 +210,13 @@ class AddressForm(forms.ModelForm):
 	class Meta:
 		model = Address
 		fields = ('follow_user_infor',
-			'first_name', 
+			'first_name',
 			'last_name',
-			'address', 
-			'apt', 
-			'city', 
+			'address',
+			'apt',
+			'city',
 			'state',
-			'country', 
+			'country',
 			'zipcode',
 			'phone',
 			'email',
@@ -227,7 +227,7 @@ class AddressForm(forms.ModelForm):
 
 #-----------------------------------------------------------------------------------------
 '''
-Package Common Form (abstract)  
+Package Common Form (abstract)
 '''
 #-----------------------------------------------------------------------------------------
 class PackageCommonForm(forms.ModelForm):
@@ -244,10 +244,10 @@ class PackageCommonForm(forms.ModelForm):
 	CARRIER_CHOICE = (
 		('ZhongTong', 'ZhongTong'),
 	)
-	
+
 	# package_type = forms.ChoiceField(choices = TYPE_CHOICE)
 	# # wh_received = forms.ModelChoiceField(queryset = Warehouse.objects.all(), label = "From Warehouse")
-	
+
 	# shoule be related to the wh_received
 	cust_carrier = forms.ChoiceField(label = "Mailing Carriers", choices = CARRIER_CHOICE,
 									widget=forms.Select(attrs={"class":"w3-select w3-border"
@@ -261,7 +261,7 @@ class PackageCommonForm(forms.ModelForm):
 	memo = forms.CharField(label = 'Note', required=False,
 							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this package',
 												"class":"w3-input w3-border"
-												}))	
+												}))
 
 	class Meta:
 		abstract = True
@@ -270,7 +270,7 @@ class PackageCommonForm(forms.ModelForm):
 
 #-----------------------------------------------------------------------------------------
 '''
-Create new Package 
+Create new Package
 '''
 #-----------------------------------------------------------------------------------------
 class PackageForm(PackageCommonForm):
@@ -278,28 +278,27 @@ class PackageForm(PackageCommonForm):
 
 	class Meta:
 		model = Service
-		fields = ('package_type', 
-			'wh_received',
-			'cust_carrier', 
-			'cust_tracking_num', 
-			'low_volume_request', 
+		fields = (
+			# 'wh_received',
+			'cust_carrier',
+			'cust_tracking_num',
+			'low_volume_request',
 			'no_rush_request',
-			'memo', 
-			'co_shipping',
+			'memo',
 			)
 
 #-----------------------------------------------------------------------------------------
 '''
-Create new Co-shipping Package 
+Create new Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class CoShippingForm(PackageCommonForm):
 
 	class Meta:
 		model = Service
-		fields = ('cust_carrier', 
-			'cust_tracking_num', 
-			'low_volume_request', 
+		fields = ('cust_carrier',
+			'cust_tracking_num',
+			'low_volume_request',
 			'no_rush_request',
 			'memo',
 			'ship_to_add',
@@ -309,7 +308,7 @@ class CoShippingForm(PackageCommonForm):
 
 #-----------------------------------------------------------------------------------------
 '''
-Create Direct Shipping Package 
+Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class DirectShippingForm(PackageCommonForm):
@@ -317,11 +316,11 @@ class DirectShippingForm(PackageCommonForm):
 	class Meta:
 		model = Service
 		fields = (
-			'cust_carrier', 
-			'cust_tracking_num', 
-			'low_volume_request', 
+			'cust_carrier',
+			'cust_tracking_num',
+			'low_volume_request',
 			'no_rush_request',
-			'memo', 
+			'memo',
 			)
 
 #-----------------------------------------------------------------------------------------
@@ -351,18 +350,18 @@ class ItemForm(forms.ModelForm):
 
 	low_volume_request = forms.BooleanField(required=False, label = "Minimize this item's volume")
 
-	memo = forms.CharField( label = 'Note', required=False, 
+	memo = forms.CharField( label = 'Note', required=False,
 							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this item',
 												"class":"w3-input w3-border"}))
-		
+
 	class Meta:
 		model = Item
 		fields = ('item_name', 'item_detail', 'item_quantity', 'item_url', 'low_volume_request', 'memo', )
-	
+
 
 #-----------------------------------------------------------------------------------------
 '''
-Item formset in Package 
+Item formset in Package
 '''
 #-----------------------------------------------------------------------------------------
 ItemFormset = inlineformset_factory(Service,
@@ -376,7 +375,7 @@ ItemFormset = inlineformset_factory(Service,
 
 #-----------------------------------------------------------------------------------------
 '''
-Image form and formset in Package 
+Image form and formset in Package
 '''
 #-----------------------------------------------------------------------------------------
 class PackageImageForm(forms.ModelForm):
@@ -398,7 +397,7 @@ class ImageForm(forms.Form):
 
 #-----------------------------------------------------------------------------------------
 '''
-CoReceiver form in Co-shipping Package 
+CoReceiver form in Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class CoReceiverForm(forms.ModelForm):
