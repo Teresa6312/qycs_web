@@ -35,7 +35,7 @@ DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    # 'django.contrib.sites',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
@@ -69,7 +69,7 @@ MIDDLEWARE = [
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
 MIGRATION_MODULES = {
-    'sites': 'basat.contrib.sites.migrations'
+    # 'sites': 'qycs_web.sites.migrations'
 }
 
 # DEBUG
@@ -103,7 +103,7 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    # 'default': env.db('DATABASE_URL', default='postgres:///basat'),
+    # 'default': env.db('DATABASE_URL', default='postgres:///qycs_web'),
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -215,7 +215,7 @@ MEDIA_URL = '/media/'
 ROOT_URLCONF = 'qycs_web.urls'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'qycs_web.wsgi.application'
 
 # PASSWORD STORAGE SETTINGS
 # ------------------------------------------------------------------------------
@@ -260,8 +260,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', False)
-ACCOUNT_ADAPTER = 'basat.users.adapters.AccountAdapter'
-SOCIALACCOUNT_ADAPTER = 'basat.users.adapters.SocialAccountAdapter'
+ACCOUNT_ADAPTER = 'qycs_web.users.adapters.AccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'qycs_web.users.adapters.SocialAccountAdapter'
 
 # Custom user app defaults
 # Select the correct user model
@@ -280,44 +280,15 @@ ADMIN_URL = r'^admin/'
 # ------------------------------------------------------------------------------
 
 #
-# Set some BASAT constants to make our lives easier later
+# Set some qycs_web constants to make our lives easier later
 #
 
 # Order in which subsystems of a survey should be displayed
-# List of tuples
-BASAT_SURVEY_SYSTEMS_MAP = [
-    ( 'General'       , [  ] ),  # General is the default for any sub-system not found elsewhere
-    ( 'Ambient'       , [ "OutdoorConditions" ] ),
-    ( 'Heating Plant' , [ "Boiler", "HotWaterLoop", "HotWaterPump", "HeatExchanger" ] ),
-    ( 'Cooling Plant' , [ "Chiller", "ChilledWaterLoop", "ChilledWaterPump", "CondenserWaterLoop", "CondenserWaterPump", "CoolingTower" ] ),
-    ( 'Air Side'      , [ "AirHandlerUnit" ] ),
-    ( 'Terminal'      , [ "OperationalZones" ] ),
-    ( 'Electrical'    , [ "HvacUnit", "LightingSystem", "DemandResponseSystem", "MiscEquipment" ] ),
-    ]
-BASAT_SURVEY_SUBSYSTEMS_ORDERED = [ "OutdoorConditions",
-                                    "Boiler",
-                                    "HotWaterLoop",
-                                    "HotWaterPump",
-                                    "HeatExchanger",
-                                    "Chiller",
-                                    "ChilledWaterLoop",
-                                    "ChilledWaterPump",
-                                    "CondenserWaterLoop",
-                                    "CondenserWaterPump",
-                                    "CoolingTower",
-                                    "AirHandlerUnit",
-                                    "OperationalZones",
-                                    "DemandResponseSystem",
-                                    "LightingSystem",
-                                    "HvacUnit",
-                                    "MiscEquipment",
-                                    ]
 
-BASAT_REPORT_CACHE_MINUTES = 15
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    )
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.BasicAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#     )
+# }
