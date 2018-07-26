@@ -50,23 +50,22 @@
 
 
 
-                    
+
                     {{form.low_volume_request}} Minimize your package&#39;s volume<br/>
                     {{form.no_rush_request}} No Rush Shipping (Double Points)
                     </div>
                 </div>
                 <hr>
-                <div class="w3-container">
+                <button id = "add_snapshot_btn">Add Snapshot</button>
+                <button id = "add_item_btn">Add Items Detail</button><hr>
+                <div class="w3-container" id = "add_snapshot_form" style="display: none">
                     <h3>Add Order Snapshot of the Package:</h3>
 
                     {{imageset}}
                     How to display the images'names after selected the images!
                 </div>
-                <hr>
 
-                <center><h3>Or<h3></center>
-                <hr>
-                <div class="w3-container">
+                <div id = "add_item_form" class="w3-container" style="display: none">
                     <h3>Add details of each item in the package:</h3>
 
                     {{ itemset.management_form }}
@@ -83,7 +82,7 @@
                                             </div>
                                             <div class="w3-row">
                                                 <div class="w3-half w3-container">
-                                                    Item Detail: {{subform.item_detail}}  
+                                                    Item Detail: {{subform.item_detail}}
                                                 </div>
                                                 <div class="w3-half w3-container">
                                                     Quantity: {{subform.item_quantity}}
@@ -111,7 +110,7 @@
                 <button>Cancel</button>
 
                 <input type="submit" value="Save and add new package" />
-                
+
                 <button>Save</button>
             </form>
         </div>
@@ -153,12 +152,12 @@
         $("#add_new_address_btn").click(function(){
              $("#addressForm").show();
              $("#default_address_card").remove();
-            
+
         });
         $("#select_address_btn").click(function(){
              $("#address_book").show();
              $("#default_address_card").remove();
-             
+
         });
         $("#save_address_btn").click(function(){
             $("#select_address_btn").remove();
@@ -181,6 +180,14 @@
         deleteText: 'remove',
         prefix: 'item_set'
     });
+    $(document).ready(function(){
+        $("#add_snapshot_btn").click(function(){
+             $("#add_snapshot_form").show();
+        });
+        $("#add_item_btn").click(function(){
+             $("#add_item_form").show();
+        });
+  })
 </script>
 
 

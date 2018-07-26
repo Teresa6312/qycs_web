@@ -8,7 +8,7 @@
 {% block account_content %}
     <div class="w3-cell w3-container">
         <h2> Update My Profile</h2>
-
+identify error to load this page in cmd
         <ul class="messages">
             {% if messages %}
 
@@ -42,9 +42,9 @@
 
                 <input id="phone" type="text" class= "w3-input w3-border" name="phone" onfocus="this.value=''" value="{{ user.userprofile.phone }}" required>
             </div>
-            <div class="w3-half w3-container">            
+            <div class="w3-half w3-container">
                 {% if not user.email and  not user.userprofile.bound_email %}
-                    <label for="email">Email Address:</label> 
+                    <label for="email">Email Address:</label>
                     <input id="email" type="text" class= "w3-input w3-border" onfocus="this.value=''" name="email" value="{{ user.email }}" required>
                 {% endif %}
             </div>
@@ -69,9 +69,9 @@
                     {% if not user.userprofile.default_address.follow_user_infor %}
                         <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}</h5>
                         {% if user.userprofile.default_address.phone and user.userprofile.default_address.email%}
-                            {{user.userprofile.default_address.phone}} | {{user.userprofile.default_address.email}}<br/> 
+                            {{user.userprofile.default_address.phone}} | {{user.userprofile.default_address.email}}<br/>
                         {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-                            {{user.userprofile.default_address.phone}}{{user.userprofile.default_address.email}}<br/> 
+                            {{user.userprofile.default_address.phone}}{{user.userprofile.default_address.email}}<br/>
                         {% endif %}
                     {% endif %}
                         {{user.userprofile.default_address.address}}<br/>
@@ -80,7 +80,7 @@
                         {{user.userprofile.default_address.country}}<br/>
                 </div>
             {% endif%}
-        </div>            
+        </div>
 
             <div id = "addressForm" class=" w3-row" style="display: none">
                 <div class="w3-container w3-mobile">
@@ -110,11 +110,11 @@
 
 
             <div id="address_book" class="w3-cell-row w3-container" style="display: none">
-                
+
                 {% for choice in user.address_set.all %}
                     <table class="w3-half w3-mobile"><tr class="w3-half"><td>
                         <input type="radio" class=" w3-radio" name="choice" id="choice{{ forloop.counter }}"
-                            {% if choice == user.userprofile.default_address %} checked="checked" {% endif %} 
+                            {% if choice == user.userprofile.default_address %} checked="checked" {% endif %}
                             value="{{ choice.id }}">
                         </td><td>
 
@@ -125,9 +125,9 @@
                                 {% if not choice.follow_user_infor %}
                                     <h5>{{choice.last_name}}, {{choice.first_name}}</h5>
                                     {% if choice.phone and choice.email%}
-                                        {{choice.phone}} | {{choice.email}}<br/> 
+                                        {{choice.phone}} | {{choice.email}}<br/>
                                     {% elif choice.phone or choice.email%}
-                                        {{choice.phone}}{{choice.email}}<br/> 
+                                        {{choice.phone}}{{choice.email}}<br/>
                                     {% endif %}
                                 {% endif %}
                                     {{choice.address}}<br/>
@@ -140,13 +140,13 @@
                     </td></tr></table>
 
                 {% endfor %}
-                
+
             </div>
             <div class = "w3-container">
                 <h4>Default Collection Point:</h4>
                 {% if user.userprofile.default_col %}
                     <button id="change_col_btn"> Change</button><br/>
-                        
+
                         <div id="default_col_card" class="w3-card-2 w3-round w3-mobile w3-container" style="width:500px">
                             <h4>{{user.userprofile.default_col.name}}
                                 {% if user.userprofile.default_col.store %}
@@ -164,13 +164,13 @@
                 {% else %}
                     <button id="select_col_btn"> Select a Collection Point</button>
                 {% endif %}
-                    
+
                 <div id="collection_points_list" class="w3-cell-row" style="display: none">
                     {% if col_list %}
                         {% for col_choice in col_list %}
                             <table class="w3-half w3-mobile"><tr class="w3-half"><td>
                                 <input type="radio" class=" w3-radio" name="col_choice" id="col_choice{{ forloop.counter }}" value="{{ col_choice.pk }}"
-                            {% if col_choice == user.userprofile.default_col %} checked="checked" {% endif %}  /> 
+                            {% if col_choice == user.userprofile.default_col %} checked="checked" {% endif %}  />
 
                                 </td><td>
 
@@ -230,11 +230,11 @@
         });
         // $("#update_btn").click(function(){
 
-        //     if ($('#default_address_card').length > 0) { 
+        //     if ($('#default_address_card').length > 0) {
         //         $("#address_book").remove();
         //         $("#addressForm").remove();
         //     }
-        //     if($('#select_col_btn').length > 0) { 
+        //     if($('#select_col_btn').length > 0) {
         //         $("#collection_points_list").remove();
         //     }
         // }
