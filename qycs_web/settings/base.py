@@ -8,8 +8,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 import environ
+import os
 
-ROOT_DIR = environ.Path(__file__) - 3  # (qycs_web/config/settings/base.py - 3 = qycs_web/)
+ROOT_DIR = environ.Path(__file__) -4  # (qycs_web/config/settings/base.py - 3 = qycs_web/)
 APPS_DIR = ROOT_DIR.path('qycs_web')
 
 # Load operating system environment variables and then prepare to use them
@@ -103,12 +104,20 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # 'default': env.db('DATABASE_URL', default='postgres:///basat'),
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'qycs_web',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+# DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
 # GENERAL CONFIGURATION
@@ -203,7 +212,7 @@ MEDIA_URL = '/media/'
 
 # URL Configuration
 # ------------------------------------------------------------------------------
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'qycs_web.urls'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -256,7 +265,7 @@ SOCIALACCOUNT_ADAPTER = 'basat.users.adapters.SocialAccountAdapter'
 
 # Custom user app defaults
 # Select the correct user model
-AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/myaccount/'
 # LOGIN_URL = '/acounts/login/'
 
