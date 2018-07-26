@@ -8,7 +8,8 @@ Production Configurations
 
 """
 
-from boto.s3.connection import OrdinaryCallingFormat
+# from boto.s3.connection import OrdinaryCallingFormat
+
 
 
 from .base import *  # noqa
@@ -17,8 +18,17 @@ from .base import *  # noqa
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Raises ImproperlyConfigured exception if DJANGO_SECRET_KEY not in os.environ
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+# SECRET_KEY = env('DJANGO_SECRET_KEY')
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
+SECRET_KEY = 'i&v=itrz5dqtu*d&-#(*x+jt9@=h*5fq5i7r69sgcw%$8kavd+'
+# SECRET_KEY = config('SECRET_KEY')
+# DEBUG = config('DEBUG', default=False, cast=bool)
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+}
 
 # This ensures that Django will be able to detect a secure connection
 # properly on Heroku.
@@ -52,7 +62,7 @@ X_FRAME_OPTIONS = 'DENY'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-# ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['.cunybpl.org','127.0.0.1'])
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['google.com','127.0.0.1'])
 # END SITE CONFIGURATION
 
 INSTALLED_APPS += ['gunicorn', ]
@@ -88,7 +98,7 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
 
 # Use the Heroku-style specification
 # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-DATABASES['default'] = env.db('DATABASE_URL')
+DATABASES['default'] = os.environ.get('DATABASE_URL')
 
 # CACHING
 # ------------------------------------------------------------------------------
@@ -158,7 +168,7 @@ LOGGING = {
 }
 
 # Custom Admin URL, use {% url 'admin:index' %}
-ADMIN_URL = env('DJANGO_ADMIN_URL')
+ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------

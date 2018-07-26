@@ -117,7 +117,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-# DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
 # GENERAL CONFIGURATION
