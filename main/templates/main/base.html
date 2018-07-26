@@ -55,14 +55,14 @@
       <a href="{% url 'collection_points' %}">Co-Shipping</a>
       <a href="">Price List</a>
       <a href="">Global Shop</a>
-
+      <a href="/admin">Admin</a>
 
       <div class="topnav-right">
           {% if user.is_authenticated %}
 
             <!--Dropdown Click Button-->
             <div class="dropdown">
-              <button class="dropbtn">{{user.username}} 
+              <button class="dropbtn">{{user.username}}
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-content">
@@ -72,11 +72,11 @@
                 <a href="{% url 'userwallet' %}">Wallet</a>
                 <a href="/accounts/logout/">Logout</a>
               </div>
-            </div> 
+            </div>
           {% else %}
 
             <div class="dropdown">
-              <button class="dropbtn">Login/Sign Up 
+              <button class="dropbtn">Login/Sign Up
                 <i class="fa fa-caret-down"></i>
               </button>
 
@@ -84,7 +84,7 @@
                 <a href="{% url 'login' %}">Login</a>
                 <a href="{% url 'register' %}">Sign Up</a>
               </div>
-            </div> 
+            </div>
 
           {% endif %}
 
@@ -136,11 +136,11 @@
           </div>
           <div class="w3-quarter w3-container">
             <h5 class="w3-text-orange">Service Guide</h5>
-            
+
             <a class="w3-text-white w3-medium" href="">Qycs Insurance</a><br/>
             <a class="w3-text-white w3-medium" href="">Collection Points</a><br/>
             <a class="w3-text-white w3-medium" href="">Users and Collectors</a>
-            
+
           </div>
 
           <div class="w3-quarter w3-container">
@@ -162,10 +162,10 @@
     </div>
 
     <div class="footer-copyright">
-                &copy; Qycs Global Shipping Inc. | All Rights Reserved © 2018 | 
+                &copy; Qycs Global Shipping Inc. | All Rights Reserved © 2018 |
       <a href="">Privacy Policy</a> | <a href="">Terms of Service</a>
       <span class="float-right"> <a href="">Back to top</a></span>
-    </div>   
+    </div>
 
 </body>
 

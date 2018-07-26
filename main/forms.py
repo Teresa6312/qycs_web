@@ -183,30 +183,30 @@ Create new Address
 '''
 #-----------------------------------------------------------------------------------------
 class AddressForm(forms.ModelForm):
-	follow_user_infor = forms.BooleanField(required=False, label = "Follow user information")
-
-	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+	# follow_user_infor = forms.BooleanField(required=False, label = "Follow user information")
+	#
+	# first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
+	# location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	# 								}))
 	class Meta:
 		model = Address
 		fields = ('follow_user_infor',

@@ -158,27 +158,6 @@ class AddDirectShipping(FormView):
 Create Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class SetPickupPointView(TemplateView):
-	template_name = 'main/collectionpoints.html'
-	col_list = CollectionPoint.objects.filter(status=True)
-
-	def get(self, request):
-
-		return render(request, self.template_name, {'col_list': self.col_list,})
-
-	def post(self, request):
-		try:
-			selected_col = CollectionPoint.objects.get(pk=request.POST['choice'])
-
-			return redirect(reverse('add_co_shipping',args = (selected_col.pk,)))
-
-		except (KeyError, CollectionPoint.DoesNotExist):
-			# Redisplay the question voting form.
-			return render(request, self.template_name, {
-				'col_list': self.col_list,
-				'error_message': "You didn't select a Collection Point.",
-			})
-
 
 
 

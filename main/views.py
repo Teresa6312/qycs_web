@@ -128,7 +128,6 @@ class UpdateProfileView(TemplateView):
 			return redirect(reverse('account'), user = user)
 		else:
 			messages.info(request, 'Invalid address, please try again!')
-
 			return render(request, self.template_name, {'form':form})
 
 
@@ -161,20 +160,22 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-		form = AddressForm(request.POST)
-		if form.is_valid():
-			newaddress = form.save(commit = False)
-
-			if newaddress.address != None and newaddress.address != '':
-				newaddress.user = request.user
-				newaddress.save()
-
+		if "cancel" in request.POST:
 			return redirect(reverse('useraddress'))
-
 		else:
 			form = AddressForm(request.POST)
-			messages.info(request, 'Invalid address, please try again!')
-			return render(request, self.template_name, {'form': form})
+			if form.is_valid():
+				newaddress = form.save(commit = False)
+
+				if newaddress.address != None and newaddress.address != '':
+					newaddress.user = request.user
+					newaddress.save()
+
+				return redirect(reverse('useraddress'))
+
+			else:
+				messages.info(request, 'Invalid address, please try again!')
+				return render(request, self.template_name, {'form': form})
 
 
 # Use updateView?
