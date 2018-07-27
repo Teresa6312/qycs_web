@@ -56,17 +56,17 @@
                     </div>
                 </div>
                 <hr>
-                <center><button id = "add_snapshot_btn">Add Snapshot</button>
-                <button id = "add_item_btn">Add Items Detail</button></center>
+                <!-- <center><button id = "add_snapshot_btn">Add Snapshot</button>
+                <button id = "add_item_btn">Add Items Detail</button></center> -->
                 <hr>
-                <div class="w3-container" id = "add_snapshot_form" style="display: none">
+                <div class="w3-container" id = "add_snapshot_form" >
                     <h3>Add Order Snapshot of the Package:</h3>
 
                     {{imageset}}
                     How to display the images'names after selected the images!
                 </div>
 
-                <div id = "add_item_form" class="w3-container" style="display: none">
+                <div id = "add_item_form" class="w3-container" >
                     <h3>Add details of each item in the package:</h3>
 
                     {{ itemset.management_form }}
