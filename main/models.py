@@ -7,7 +7,9 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 	message="Invalid phone number format. Enter as 123-456-0987. Optionally enter extensions using 'x' followed by the number.")
 
 
-
+# from django.contrib.auth import get_user_model
+# UserModel = get_user_model()
+# to set email is required
 
 class Employee(models.Model):
 	user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key = True)
@@ -46,6 +48,10 @@ class Address(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True)
 	def __str__(self):
 		return '%s %s\n %s %s, %s %s'%(self.first_name, self.last_name, self.address, self.city, self.state, self.zipcode)
+
+	def get_absolute_url(self):
+	    from django.urls import reverse
+	    return reverse('editaddress', args=[str(self.id)])
 
 	class Meta:
 		unique_together=('follow_user_infor'
@@ -118,17 +124,19 @@ class CollectionPoint(Address_Common_Info):
 		primary_key=True,
 		verbose_name= 'Collector'
 	)
+	address = models.ForeignKey(Address, on_delete=models.PROTECT, blank=False, default='')
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True)
 	name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Collection Point Name')
 	license = models.CharField(max_length = 32, default='',verbose_name= 'License Number')
 	license_type = models.CharField(max_length = 32, default='',verbose_name= 'License Type')
 	license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
 	id_image = models.ImageField(upload_to = 'collector_id', default = '')
+	store_name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Store Name')
 	store = models.BooleanField(default = True, verbose_name= 'Store')
 	store.boolean = True
 	status = models.BooleanField(default = False, verbose_name= 'Avaliable')
 	status.boolean = True
-	image = models.ImageField(upload_to = 'collector_image', blank ='True')
+	location_image = models.ImageField(upload_to = 'collector_image', blank ='True')
 
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)

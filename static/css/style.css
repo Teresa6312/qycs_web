@@ -73,7 +73,7 @@ body {
 }
 
 .dropdown .dropbtn {
-    font-size: 17px;    
+    font-size: 17px;
     border: none;
     outline: none;
     color: white;
@@ -168,12 +168,11 @@ color:white;
   margin: 10px;
 }
 
-.input_long{
-  width: 75%;
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
 }
-.input_mini{
-  width: 50px;
-}
+
 .w3-cell-row button, input[type="submit"] {
   background-color: #800080;
   color: #fff;
@@ -185,6 +184,7 @@ color:white;
   margin: 10px;
 }
 
+
 .w3-cell-row button:hover,  input[type="submit"]:hover{
   color:#000;
   border-style: inset;
@@ -193,6 +193,9 @@ color:white;
   background-color: #fff;
 }
 
+#btn-red{
+  background-color: rgb(230,0,0);
+}
 input[type="textarea"], textarea{
     height: 100px;
 }
@@ -205,7 +208,7 @@ input[type="textarea"], textarea{
 margin: 10px;
 }
 
-.w3-card-2 hr { 
+.w3-card-2 hr {
     display: block;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -223,7 +226,7 @@ margin: 10px;
   bottom:0;
   margin-bottom: 0;
   padding-bottom: 0;
-  
+
 }
 
 #footer h5 {
@@ -267,4 +270,3 @@ margin: 10px;
     margin: 0;
     padding: 5px;
   }
-

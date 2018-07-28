@@ -237,8 +237,13 @@ admin.site.register(Service, ServiceAdmin, )
 class PackageImageAdmin(admin.ModelAdmin):
 	list_display = ('package', 'image')
 	search_fields = ['package']
-	
+
 admin.site.register(PackageImage, PackageImageAdmin, )
 
 
 
+class FavoriteWebsiteAdmin(admin.ModelAdmin):
+	list_display = ('web_name', 'web_type', 'country', 'rate')
+	search_fields = ['web_name']
+
+admin.site.register(FavoriteWebsite, FavoriteWebsiteAdmin)

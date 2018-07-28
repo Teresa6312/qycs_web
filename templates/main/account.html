@@ -17,6 +17,10 @@
 	<div class="w3-cell w3-container w3-mobile">
 
 			<h2>{{user.username}}</h2>
+				{% if not user.collectionpoint %}
+				<button><a href="{% url 'colregister'%}"> Register as Collector</a></button><br/>
+				{% endif%}
+				<div class = "w3-container">
 				First Name: {{user.first_name}}<br/>
 				Last Name: {{user.last_name}}<br/>
 				Email address:{{user.email}}
@@ -67,8 +71,10 @@
                     </div>
                 </div>
                 {% endif %}
+			</div>
 			<button><a href="{% url 'updateprofile'%}"> Update Profile</a></button>
 			<button><a href="{% url 'changepassword'%}"> Change Password</a></button><br/><br/>
+
 
 		</div>
 	{% endblock %}

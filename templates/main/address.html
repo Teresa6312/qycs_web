@@ -5,7 +5,8 @@
 
 <div class="w3-cell w3-container w3-mobile">
     <h2>Address Book:</h2>
-identify error to load this page in cmd
+      Use get_absolute_url would be better inseat of using address.id but how?<br/>
+      Identify error to load this page in cmd?
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -40,6 +41,7 @@ identify error to load this page in cmd
             {{user.userprofile.default_address.state}}<br/>
             {{user.userprofile.default_address.zipcode}}<br/>
             {{user.userprofile.default_address.country}}<br/>
+            {{user.userprofile.default_address.get_absolute_url}}
             <button><a href="{% url 'editaddress' user.userprofile.default_address.id %}" >Edit</a></button>
             <button><a href="{% url 'deleteaddress' user.userprofile.default_address.id %}" >Delete</a></button>
         {% endif %}
@@ -66,9 +68,9 @@ identify error to load this page in cmd
             {{address.apt}}<br/>
             {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
             {{address.country}}<br/>
-            <button><a href="{% url 'editaddress' address.pk %}" >Edit</a></button>
-            <button><a href="{% url 'deleteaddress' address.pk %}" >Delete</a></button>
-            <button><a href="{% url 'set_dedault_address' address.pk %}" >Set as Default Address</a></button>
+            <button><a href="{% url 'editaddress' address.id %}" >Edit</a></button>
+            <button><a href="{% url 'deleteaddress' address.id %}" >Delete</a></button>
+            <button><a href="{% url 'set_dedault_address' address.id %}" >Set as Default Address</a></button>
     </div>
 
 {% endif %}{% endfor %}{% endif %}

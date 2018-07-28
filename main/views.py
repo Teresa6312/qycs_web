@@ -11,6 +11,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 
+
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.forms import PasswordChangeForm
@@ -40,33 +41,42 @@ class RegisterView(TemplateView):
 
 	def post(self, request):
 		form = RegisterForm(request.POST)
+		webformset = WebFormSet(request.POST)
+		profileform = UserProfileForm(request.POST)
 
-		if form.is_valid():
+		if form.is_valid() and webformset.is_valid() and profileform.is_valid():
 			user = form.save()
-			webformset = WebFormSet(request.POST)
-			profileform = UserProfileForm(request.POST)
+			profile = UserProfile.objects.get(user = user)
+			profile.phone = profileform.cleaned_data['phone']
+			profile.birthday = profileform.cleaned_data['birthday']
+			profile.country = profileform.cleaned_data['country'].title()
+			profile.language = profileform.cleaned_data['language'].title()
+			profile.save()
 
-			# if webformset.is_valid():
-				# web = FavoriteWebsite.objects.get(web_name = webform.cleaned_data['web_name'], country = webform.cleaned_data['country'])
-				# if web.count() == 1:
-				# 	web.rate = web.rate +1
-				# 	web.save()
-				# else:
-				# 	webform.save()
+			for webform in webformset:
+				web = webform.save(commit = False)
+				web.country = profile.country
+				web.web_name = web.web_name.title()
 
-			if profileform.is_valid():
-				profile = UserProfile.objects.get(user = user)
-				profile.phone = profileform.cleaned_data['phone']
-				profile.birthday = profileform.cleaned_data['birthday']
-				profile.country = profileform.cleaned_data['country']
-				profile.language = profileform.cleaned_data['language']
-				profile.save()
+				if webform.is_valid():
+					existed_web = FavoriteWebsite.objects.filter(
+						web_name = web.web_name,
+						web_type = web.web_type,
+						country = profile.country)
+
+					if existed_web.count() == 1:
+						existed_web = existed_web.first()
+						existed_web.rate = existed_web.rate +1
+						existed_web.save()
+					else:
+						web.save()
+
 			if "colregister" in request.POST:
 				return redirect(reverse('colregister'))
 			else:
-				return redirect(request, reverse('account'))
+				return redirect(reverse('account'))
 		else:
-			return render(request, self.template_name, {'form': form})
+			return render(request, self.template_name, {'form': form, 'webformset':webformset, 'profileform':profileform})
 
 
 class ColRegisterView(TemplateView):
@@ -74,30 +84,47 @@ class ColRegisterView(TemplateView):
 
 	def get(self, request):
 		colform = ColResigterForm()
+		addform = AddressForm()
+		addform.fields['first_name'].required = True
+		addform.fields['last_name'].required = True
 		return render(request, self.template_name, {
 		 'colform': colform,
+		 'addform': addform,
 		 })
 
 	def post(self, request):
+		addform = AddressForm(request.POST)
 		colform = ColResigterForm(request.POST)
+		if colform.is_valid() and addform.is_vaild():
+			user = User.objects.get(user=request.user)
+			profile = UserProfile.objects.get(user = user)
+			add = addform.save()
+			collector = colform.save(commit=False)
+			collector.user = user
+			collector.address = add
+			# collector.id_image = request.FILES['id_image']
+			# collector.license_image = request.FILES['license_image']
+			# collector.location_image = request.FILES['location_image']
+			collector.save()
 
-		if colform.is_valid():
-			user = User.objects.get(user = request.user)
-			collector = CollectionPoint.objects.get(collector = user)
-			collector.name = colform.cleaned_data['name']
-			collector.license = colform.cleaned_data['license']
-			collector.license_type = colform.cleaned_data['license_type']
-			collector.store = colform.cleaned_data['store']
-			# save image then save instance
-			# collector.id_image
-			# collector.license_image
-			# collector.image
-			# collector.save()
+
+			profile.default_col = collector
+
+			user.first_name = add.first_name
+			user.last_name = add.last_name
+			if user.email == None or user.email =='':
+				user.email = add.email
+			if profile.phone  == None or profile.phone =='':
+				profile.phone = add.phone
+			profile.save()
+			user.save()
 
 			return redirect(request, reverse('account'))
 		else:
-			return render(request, self.template_name, {'colform': colform})
-
+			return render(request, self.template_name, {
+					 'colform': colform,
+					 'addform': addform,
+					 })
 
 class AccountView(TemplateView):
 	template_name = 'main/account.html'
@@ -118,8 +145,6 @@ class LoginView(TemplateView):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			login(request, user)
-			print('----------------------------------------')
-			print(request.path_info)
 			return redirect(reverse('home'))
 		else:
 			return render(request, self.template_name)
@@ -189,6 +214,14 @@ class AddressView(TemplateView):
 
 	def get(self, request):
 		form = AddressForm()
+		form.fields['follow_user_infor'].required = False
+		form.fields['first_name'].required = False
+		form.fields['last_name'].required = False
+		form.fields['address'].required = False
+		form.fields['city'].required = False
+		form.fields['state'].required = False
+		form.fields['country'].required = False
+		form.fields['zipcode'].required = False
 		return render(request, self.template_name, {'form': form})
 
 

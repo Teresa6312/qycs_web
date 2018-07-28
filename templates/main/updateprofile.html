@@ -31,21 +31,21 @@ identify error to load this page in cmd
         <div class="w3-row">
             <div class="w3-half w3-container">
                 <label for="first_name">First Name: </label>
-                <input id="first_name" type="text" class= "w3-input w3-border" name="first_name" onfocus="this.value=''" value="{{ user.first_name }}" required>
+                <input id="first_name" type="text" class= "w3-input w3-border" name="first_name" value="{{ user.first_name }}" required>
             </div>
             <div class="w3-half w3-container">
                 <label for="last_name">Last Name: </label>
-                <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" onfocus="this.value=''" value="{{ user.last_name }}" required>
+                <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" value="{{ user.last_name }}" required>
             </div>
             <div class="w3-half w3-container">
                 <label for="phone">Phone: </label>
 
-                <input id="phone" type="text" class= "w3-input w3-border" name="phone" onfocus="this.value=''" value="{{ user.userprofile.phone }}" required>
+                <input id="phone" type="text" class= "w3-input w3-border" name="phone" value="{{ user.userprofile.phone }}" required>
             </div>
             <div class="w3-half w3-container">
                 {% if not user.email and  not user.userprofile.bound_email %}
                     <label for="email">Email Address:</label>
-                    <input id="email" type="text" class= "w3-input w3-border" onfocus="this.value=''" name="email" value="{{ user.email }}" required>
+                    <input id="email" type="text" class= "w3-input w3-border"  name="email" value="{{ user.email }}" required>
                 {% endif %}
             </div>
             <div class="w3-half w3-container">
@@ -214,6 +214,9 @@ identify error to load this page in cmd
 {% block script%}
 <script>
     $(document).ready(function(){
+        $("input").focus(function(){
+          $(this).val('');
+        });
         $("#add_new_address_btn").click(function(){
              $("#addressForm").show();
              $("#address_book").remove();

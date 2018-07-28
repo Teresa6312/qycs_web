@@ -6,9 +6,73 @@
 
 
 {% block content %}
+
+{% if form.errors %}
+<ul class="form.errors">
+    {% for message in form.errors %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <form method = "post">
 	{% csrf_token %}
-	{{colform.as_p}}
+ <div class="w3-half w3-container">
+ First Name:
+		 {{addform.first_name}}
+ </div>
+ <div class="w3-half w3-container">
+ Last Name:
+		 {{addform.last_name}}
+ </div>
+ <div class="w3-container">
+	 {{colform.store}}Store Location(js ckeck then display store_name_input)
+ </div>
+	<div id ="store_name_input" class="w3-container">
+	 Store Name:
+		 	{{colform.store_name}}
+	</div>
+ <div class="w3-container">
+
+ Address:
+		 {{addform.address}}
+ Apartment:
+		 {{addform.apt}}
+ </div>
+ <div class="w3-quarter w3-container">
+ City:
+		 {{addform.city}}
+ </div>
+ <div class="w3-quarter w3-container">
+ State:
+		 {{addform.state}}
+ </div>
+ <div class="w3-quarter w3-container">
+ Country:
+		 {{addform.country}}
+ </div>
+ <div class="w3-quarter w3-container">
+ Zip code:
+		 {{addform.zipcode}}
+ </div>
+ <div class="w3-container">
+ Phone:
+		 {{addform.phone}}
+ Email:
+		 {{addform.email}}
+ </div>
+ <div class="w3-container">
+	License Type:
+			{{colform.license_type}}
+	License Number:
+		 {{colform.license}}
+	License Image:
+		 {{colform.license_image}}
+	ID Image
+		{{colform.id_image}}
+	Location Image:
+		{{colform.location_image}}
+ </div>
 	<input type = "submit" value = "Register">
 	<button class="btn" type="submit" name="cancel" value="Cancel" >Cancel</button>
 	</form>
