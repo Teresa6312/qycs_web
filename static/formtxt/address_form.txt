@@ -1,0 +1,44 @@
+<div id = "addressForm" class=" w3-row">
+      <div class="w3-container">
+          {{addform.follow_user_infor}}Follow User Information
+      </div>
+      <div class="w3-half w3-container">
+      First Name:{{addform.first_name}}
+      </div>
+      <div class="w3-half w3-container">
+      Last Name:
+          {{addform.last_name}}
+      </div>
+      <div class="w3-half w3-container">
+      Phone:
+          {{addform.phone}}</div>
+      <div class="w3-half w3-container">
+      Email:
+          {{addform.email}}</div>
+      <div class="w3-container">
+      Address:
+          {{addform.address}}
+      Apartment:
+          {{addform.apt}}
+      </div>
+      <div class="w3-quarter w3-container">
+      City:
+          {{addform.city}}
+      </div>
+      <div class="w3-quarter w3-container">
+      State:
+          {{addform.state}}
+      </div>
+      <div class="w3-quarter w3-container">
+      Country:
+          {{addform.country}}
+      </div>
+      <div class="w3-quarter w3-container">
+      Zip code:
+          {{addform.zipcode}}
+      </div>
+      <div class="w3-half w3-container">
+      Nikename:
+          {{addform.location_name}}
+      </div>
+</div>

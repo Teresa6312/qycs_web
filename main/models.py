@@ -124,7 +124,6 @@ class CollectionPoint(Address_Common_Info):
 		primary_key=True,
 		verbose_name= 'Collector'
 	)
-	address = models.ForeignKey(Address, on_delete=models.PROTECT, blank=False, default='')
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True)
 	name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Collection Point Name')
 	license = models.CharField(max_length = 32, default='',verbose_name= 'License Number')
@@ -137,6 +136,13 @@ class CollectionPoint(Address_Common_Info):
 	status = models.BooleanField(default = False, verbose_name= 'Avaliable')
 	status.boolean = True
 	location_image = models.ImageField(upload_to = 'collector_image', blank ='True')
+	longitude = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
+	dimension = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
+	food = models.BooleanField(default = False)
+	regular = models.BooleanField(default = False)
+	luxury = models.BooleanField(default = False)
+
+
 
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)

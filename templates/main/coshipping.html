@@ -9,7 +9,7 @@
 		<div class="w3-row">
 			<div class="w3-third w3-container">
 				First Name:
-				<input class="w3-input w3-border" type="text" name="first_name" onfocus="this.value=''" value = "{{user.first_name}}" required><br/>
+				<input class="w3-input w3-border" type="text" name="first_name" onfocus="this.value=''" value = "{% firstof receiverform.first_name user.first_name %}" required><br/>
 			</div>
 			<div class="w3-third w3-container">
 				Last Name:
@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<hr>
-	
+
 	<div class="w3-row">
 		<div class="w3-half w3-container">
 			<h2>Selected Collection Point:</h2><button>Change</button>

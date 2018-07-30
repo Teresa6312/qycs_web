@@ -4,8 +4,7 @@ from .models import Address, Service, UserProfile
 def checkAddressWithService(add):
     return Service.objects.filter(ship_to_add=add).count()>=1
 
-def checkAddress(add_id, new_input_add=None):
-    add = Address.objects.get(pk=add_id)
+def checkAddress(add, new_input_add=None):
     profile = UserProfile.objects.get(user = add.user)
 
     if add.follow_user_infor and checkAddressWithService(add):
@@ -29,13 +28,3 @@ def checkAddress(add_id, new_input_add=None):
         if add == profile.default_address:
             profile.default_address = newadd
             profile.save()
-
-    
-
-
-
-
-
-
-
-

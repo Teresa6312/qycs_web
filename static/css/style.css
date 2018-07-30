@@ -168,11 +168,6 @@ color:white;
   margin: 10px;
 }
 
-/* Mark input boxes that gets an error on validation: */
-input.invalid {
-  background-color: #ffdddd;
-}
-
 .w3-cell-row button, input[type="submit"] {
   background-color: #800080;
   color: #fff;
@@ -183,7 +178,6 @@ input.invalid {
   min-width: 70px;
   margin: 10px;
 }
-
 
 .w3-cell-row button:hover,  input[type="submit"]:hover{
   color:#000;
