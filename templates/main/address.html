@@ -41,9 +41,10 @@
             {{user.userprofile.default_address.state}}<br/>
             {{user.userprofile.default_address.zipcode}}<br/>
             {{user.userprofile.default_address.country}}<br/>
-            {{user.userprofile.default_address.get_absolute_url}}
-            <button><a href="{% url 'editaddress' user.userprofile.default_address.id %}" >Edit</a></button>
-            <button><a href="{% url 'deleteaddress' user.userprofile.default_address.id %}" >Delete</a></button>
+
+
+            <button><a href={{user.userprofile.default_address.get_absolute_url.edit}} >Edit</a></button>
+            <button><a href={{user.userprofile.default_address.get_absolute_url.delete}} >Delete</a></button>
         {% endif %}
   </div>
 
@@ -68,9 +69,9 @@
             {{address.apt}}<br/>
             {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
             {{address.country}}<br/>
-            <button><a href="{% url 'editaddress' address.id %}" >Edit</a></button>
-            <button><a href="{% url 'deleteaddress' address.id %}" >Delete</a></button>
-            <button><a href="{% url 'set_dedault_address' address.id %}" >Set as Default Address</a></button>
+            <button><a href={{address.get_absolute_url.edit}} >Edit</a></button>
+            <button><a href={{address.get_absolute_url.delete}} >Delete</a></button>
+            <button><a href={{address.get_absolute_url.set_default}}>Set as Default Address</a></button>
     </div>
 
 {% endif %}{% endfor %}{% endif %}

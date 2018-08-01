@@ -51,7 +51,10 @@ class Address(Address_Common_Info):
 
 	def get_absolute_url(self):
 	    from django.urls import reverse
-	    return reverse('editaddress', args=[str(self.id)])
+	    return dict(edit=reverse('editaddress', args=[str(self.id)]),
+					delete=reverse('deleteaddress', args=[str(self.id)]),
+					set_default=reverse('set_dedault_address', args=[str(self.id)])
+					)
 
 	class Meta:
 		unique_together=('follow_user_infor'
