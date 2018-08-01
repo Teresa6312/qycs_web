@@ -157,6 +157,12 @@ color:white;
   float: right;
 }
 
+.centerBtn{
+  text-align: center;
+  border-top: solid 1px #eee;
+  border-bottom: solid 1px #eee;
+}
+
 
 .aside-bar-background-color{
   background-color:rgb(249,248,252);
