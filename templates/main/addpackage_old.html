@@ -110,6 +110,7 @@
                 <input type="submit" value="Save and add new package" />
 
                 <button>Save</button>
+                <button class="cleanBtn">Clear Form</button>
             </form>
         </div>
     </div>
@@ -215,6 +216,10 @@ function AddSnapshotBlock(imageSet){
 
     $(".cancelBtn").click(function(){
         window.location="{% url 'collection_points' %}";
+    });
+
+    $(".cleanBtn").click(function(){
+      $(this).closest('form').find("input[type=text], textarea").val("");
     });
   })//end of ready
 
