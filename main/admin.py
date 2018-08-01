@@ -88,9 +88,9 @@ class CollectionPointAdmin(admin.ModelAdmin):
 
 	def collector_image(self, obj):
 		return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-			url = obj.image.url,
-			width=obj.image.width,
-			height=obj.image.height,
+			url = obj.location_image.url,
+			width=obj.location_image.width,
+			height=obj.location_image.height,
 			)
 		)
 
@@ -98,7 +98,7 @@ class CollectionPointAdmin(admin.ModelAdmin):
 		('Collector', 				{'fields': ['collector', 'store', 'status']}),
 		('Address',               	{'fields': ['address', 'city', 'state','country', 'zipcode','memo','name']}),
 		('License',					{'fields': ['license', 'license_type']}),
-		('Image',					{'fields': ['image', 'collector_image']}),
+		('Image',					{'fields': ['location_image', 'collector_image']}),
 	]
 
 

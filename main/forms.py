@@ -509,7 +509,7 @@ Item formset in Package
 ItemFormset = inlineformset_factory(Service,
 									Item,
 									form=ItemForm,
-									extra=1),
+									extra=1)
 
 # ItemFormset = inlineformset_factory(Service,
 # 									Item,
