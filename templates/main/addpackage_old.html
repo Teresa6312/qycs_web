@@ -105,7 +105,7 @@
                     {% endif %}
                 </div>
 
-                  <button class="cancelBtn" type="submit" name="cancel" value="Cancel" >Cancel</button>
+                  <button class="cancelBtn" type="button" name="cancel" value="Cancel" >Cancel</button>
 
                 <input type="submit" value="Save and add new package" />
 
@@ -211,6 +211,10 @@ function AddSnapshotBlock(imageSet){
 
     $("#add_item_btn").click(function(){
         $("#add_item_form").show();
+    });
+
+    $(".cancelBtn").click(function(){
+        window.location="{% url 'collection_points' %}";
     });
   })//end of ready
 
