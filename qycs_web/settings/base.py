@@ -110,7 +110,7 @@ DATABASES = {
     # }
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'qycs_web',
+        'NAME': 'qycs_db',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',

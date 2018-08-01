@@ -5,7 +5,8 @@
 
 <div class="w3-cell w3-container w3-mobile">
     <h2>Address Book:</h2>
-identify error to load this page in cmd
+      Use get_absolute_url would be better inseat of using address.id but how?<br/>
+      Identify error to load this page in cmd?
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -40,8 +41,10 @@ identify error to load this page in cmd
             {{user.userprofile.default_address.state}}<br/>
             {{user.userprofile.default_address.zipcode}}<br/>
             {{user.userprofile.default_address.country}}<br/>
-            <button><a href="{% url 'editaddress' user.userprofile.default_address.id %}" >Edit</a></button>
-            <button><a href="{% url 'deleteaddress' user.userprofile.default_address.id %}" >Delete</a></button>
+
+
+            <button><a href={{user.userprofile.default_address.get_absolute_url.edit}} >Edit</a></button>
+            <button><a href={{user.userprofile.default_address.get_absolute_url.delete}} >Delete</a></button>
         {% endif %}
   </div>
 
@@ -66,9 +69,9 @@ identify error to load this page in cmd
             {{address.apt}}<br/>
             {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
             {{address.country}}<br/>
-            <button><a href="{% url 'editaddress' address.pk %}" >Edit</a></button>
-            <button><a href="{% url 'deleteaddress' address.pk %}" >Delete</a></button>
-            <button><a href="{% url 'set_dedault_address' address.pk %}" >Set as Default Address</a></button>
+            <button><a href={{address.get_absolute_url.edit}} >Edit</a></button>
+            <button><a href={{address.get_absolute_url.delete}} >Delete</a></button>
+            <button><a href={{address.get_absolute_url.set_default}}>Set as Default Address</a></button>
     </div>
 
 {% endif %}{% endfor %}{% endif %}
@@ -90,47 +93,50 @@ identify error to load this page in cmd
         <form method="post">
         {% csrf_token %}
          <h3> Add new address:</h3>
-        <div class="w3-container">
-            <input type="checkbox" name="follow_user_infor" id="id_follow_user_infor" value="{{add.follow_user_infor}}"> Follow User Information
-        </div>
-        <div class="w3-half w3-container">
-        First Name:
-            <input type="text" name="first_name" class="w3-input w3-border" id="id_first_name" value="{{add.first_name}}">
-        </div>
-        <div class="w3-half w3-container">
-        Last Name:
-            <input type="text" name="last_name" class="w3-input w3-border" id="id_last_name" value="{{add.last_name}}">
-        </div>
-        <div class="w3-container">
-        Address:
-            <input type="text" name="address" class="w3-input w3-border" id="id_address" value="{{add.address}}">
-        Apartment:
-            <input type="text" name="apt" class="w3-input w3-border" id="id_apt" value="{{add.apt}}">
-        </div>
-        <div class="w3-half w3-container">
-        City:
-            <input type="text" name="city" class="w3-input w3-border" id="id_city" value="{{add.city}}">
-        </div>
-        <div class="w3-half w3-container">
-        State:
-            <input type="text" name="state" class="w3-input w3-border" id="id_state" value="{{add.state}}">
-        </div>
-        <div class="w3-row w3-container">
-        Country:
-            <input type="text" name="country" class="w3-input w3-border" id="id_country" value="{{add.country}}">
-        </div>
-        <div class="w3-half w3-container">
-        Zip code:
-            <input type="text" name="zipcode" class="w3-input w3-border" id="id_zipcode" value="{{add.zipcode}}">
-        </div>
-        <div class="w3-container">
-        Phone:
-            <input type="text" name="phone" class="w3-input w3-border" id="id_phone"  value="{{add.phone}}">
-        Email:
-            <input type="text" name="email" class="w3-input w3-border" id="id_email" value="{{add.email}}">
-        Nikename:
-            <input type="text" name="location_name" class="w3-input w3-border" id="id_location_name" value="{{add.location_name}}">
-        </div>
+         <div id = "addressForm" class=" w3-row">
+               <div class="w3-container">
+                   {{addform.follow_user_infor}}Follow User Information
+               </div>
+               <div class="w3-half w3-container">
+               First Name:{{addform.first_name}}
+               </div>
+               <div class="w3-half w3-container">
+               Last Name:
+                   {{addform.last_name}}
+               </div>
+               <div class="w3-half w3-container">
+               Phone:
+                   {{addform.phone}}</div>
+               <div class="w3-half w3-container">
+               Email:
+                   {{addform.email}}</div>
+               <div class="w3-container">
+               Address:
+                   {{addform.address}}
+               Apartment:
+                   {{addform.apt}}
+               </div>
+               <div class="w3-quarter w3-container">
+               City:
+                   {{addform.city}}
+               </div>
+               <div class="w3-quarter w3-container">
+               State:
+                   {{addform.state}}
+               </div>
+               <div class="w3-quarter w3-container">
+               Country:
+                   {{addform.country}}
+               </div>
+               <div class="w3-quarter w3-container">
+               Zip code:
+                   {{addform.zipcode}}
+               </div>
+               <div class="w3-half w3-container">
+               Nikename:
+                   {{addform.location_name}}
+               </div>
+         </div>
         <input type="submit" value="Save" >
         <button class="btn" type="submit" name="cancel" value="Cancel" >Cancel</button>
         </form>
