@@ -32,7 +32,8 @@ ADMINS = (('MyQycs','myqycs@gmail.com'),)
 MANAGERS = ADMINS
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY','i&v=itrz5dqtu*d&-#(*x+jt9@=h*5fq5i7r69sgcw%$8kavd+')
+# SECRET_KEY = os.environ.get('SECRET_KEY','i&v=itrz5dqtu*d&-#(*x+jt9@=h*5fq5i7r69sgcw%$8kavd+')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_e8s9-lbfhv-') 
 # SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG', default=False, cast=bool)
 DEBUG = False
