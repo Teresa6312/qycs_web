@@ -36,7 +36,6 @@ urlpatterns = [
 
     path('myaccount/address', login_required(views.AddressView.as_view()), name='useraddress'),
     path('myaccount/address/<int:add_id>/eidt', login_required(views.EditAddressView.as_view()), name='editaddress'),
-    # re_path(r'^myaccount/address/(?P<add_id>[0-9]+)/eidt$',login_required(views.EditAddressView.as_view()), name='editaddress'),
 
     path('myaccount/address/<int:add_id>/delete', login_required(views.DeleteAddressView.as_view()), name='deleteaddress'),
     path('myaccount/address/<int:add_id>/set_dedault_address', login_required(views.SetDefaultAddressView.as_view()), name='set_dedault_address'),

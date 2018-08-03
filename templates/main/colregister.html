@@ -25,31 +25,9 @@
 <form method = "post" enctype="multipart/form-data">
 	{% csrf_token %}
   <h2>Register my location as a Package Collection Point</h2>
-  <div class="w3-row" id ="Personal_infor_form">
-      <div class="w3-half w3-container">
-          <label for="first_name">First Name: </label>
-          <input id="first_name" type="text" class= "w3-input w3-border" name="first_name" value="{{user.first_name}}" required>
-      </div>
-      <div class="w3-half w3-container">
-          <label for="last_name">Last Name: </label>
-          <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" value="{{user.last_name}}" required>
-      </div>
-      <div class="w3-half w3-container">
-          <label for="phone">Phone: </label>
+{% include "main/profile_block.html"%}
 
-          <input id="phone" type="text" class= "w3-input w3-border" name="phone" value="{{user.userprofile.phone}}" required>
-      </div>
-      <div class="w3-half w3-container">
-        <label for="email">Email Address:</label>
-              <input id="email" type="text" class= "w3-input w3-border"  name="email" value="{{user.email}}" {% if not user.email%}  required {% else %} disabled {% endif %}>
-      </div>
-      <div class="w3-half w3-container">
 
-            <label for="birthday">Birthday: </label>
-            <input id="birthday" class= "w3-input w3-border" type="date" name="birthday" value="{{user.userprofile.birthday}}">
-
-      </div>
-  </div>
  <div class="w3-container">
 	 {{colform.store}}Store Location(js ckeck then display store_name_input)
  </div>
@@ -93,7 +71,7 @@
 		{{colform.location_image}}
  </div>
 	<input type = "submit" value = "Register">
-	<button class="btn" type="submit" name="cancel" value="Cancel" >Cancel</button>
+	<button  type="button" onclick="window.location.href = document.referrer" >Cancel</button>
 	</form>
 {% endblock %}
 

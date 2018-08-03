@@ -1,0 +1,34 @@
+<div id="default_address_block">
+<button type="button" id="add_new_address_btn"> Add new address</button>
+{% if user.address_set.all %}
+    <button type="button" id="select_address_btn"> Select from address book</button>
+{% endif %}
+{% if user.userprofile.default_address %}
+    <div id="default_address_card" class="w3-card-2 w3-round w3-container w3-mobile" style="width:500px">
+        <h4>{{user.userprofile.default_address.location_name}}</h4>
+        {% if not user.userprofile.default_address.follow_user_infor %}
+            <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}</h5>
+            {% if user.userprofile.default_address.phone and user.userprofile.default_address.email%}
+                {{user.userprofile.default_address.phone}} | {{user.userprofile.default_address.email}}<br/>
+            {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
+                {{user.userprofile.default_address.phone}}{{user.userprofile.default_address.email}}<br/>
+            {% endif %}
+        {% endif %}
+            {{user.userprofile.default_address.address}}<br/>
+            {{user.userprofile.default_address.apt}}<br/>
+            {{user.userprofile.default_address.city}}, {{user.userprofile.default_address.state}} {{user.userprofile.default_address.zipcode}}<br/>
+            {{user.userprofile.default_address.country}}<br/>
+    </div>
+{% endif%}
+</div>
+
+
+<div id="address_from_block" style="display: none">
+{% include "main/new_address_form.html" with addform=addform%}
+1. When save button was click use ajax to post the data to address and then return the address.id
+2. create the address card for this new address
+</div>
+
+<div id="address_book_block" style="display: none">
+{% include "main/select_address.html"%}
+</div>

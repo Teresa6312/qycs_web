@@ -320,39 +320,43 @@ class AddressForm(forms.ModelForm):
 									}))
 	class Meta:
 		model = Address
-		fields = '__all__'
+		exclude = ['meno']
 
-
-	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
-		if self.instance:
-			try:
-				add = Address.objects.get(id = self.instance.id)
-			except ObjectDoesNotExist as err:
-				self.fields['follow_user_infor'].initial = ''
-				self.fields['last_name'].initial = ''
-				self.fields['address'].initial = ''
-				self.fields['apt'].initial = ''
-				self.fields['city'].initial = ''
-				self.fields['state'].initial = ''
-				self.fields['country'].initial = ''
-				self.fields['zipcode'].initial = ''
-				self.fields['phone'].initial = ''
-				self.fields['email'].initial = ''
-				self.fields['location_name'].initial = ''
-				return
-
-			self.fields['follow_user_infor'].initial = add.follow_user_infor
-			self.fields['last_name'].initial = add.last_name
-			self.fields['address'].initial = add.address
-			self.fields['apt'].initial = add.apt
-			self.fields['city'].initial = add.city
-			self.fields['state'].initial = add.state
-			self.fields['country'].initial = add.country
-			self.fields['zipcode'].initial = add.zipcode
-			self.fields['phone'].initial = add.phone
-			self.fields['email'].initial = add.email
-			self.fields['location_name'].initial = add.location_name
+	#
+	# def __init__(self, *args, **kwargs):
+	# 	super().__init__(*args, **kwargs)
+	# 	if self.instance:
+	# 		try:
+	# 			add = Address.objects.get(id = self.instance.id)
+	# 		except ObjectDoesNotExist as err:
+	# 			self.fields['follow_user_infor'].initial = ''
+	# 			self.fields['last_name'].initial = ''
+	# 			self.fields['address'].initial = ''
+	# 			self.fields['apt'].initial = ''
+	# 			self.fields['city'].initial = ''
+	# 			self.fields['state'].initial = ''
+	# 			self.fields['country'].initial = ''
+	# 			self.fields['zipcode'].initial = ''
+	# 			self.fields['phone'].initial = ''
+	# 			self.fields['email'].initial = ''
+	# 			self.fields['location_name'].initial = ''
+	# 			return
+	#
+	# 		self.user['user'].initial = add.user
+	# 		print('---------------initial--------------------')
+	# 		print(self.user['user'])
+	# 		self.fields['follow_user_infor'].initial = add.follow_user_infor
+	# 		self.fields['first_name'].initial = add.first_name
+	# 		self.fields['last_name'].initial = add.last_name
+	# 		self.fields['address'].initial = add.address
+	# 		self.fields['apt'].initial = add.apt
+	# 		self.fields['city'].initial = add.city
+	# 		self.fields['state'].initial = add.state
+	# 		self.fields['country'].initial = add.country
+	# 		self.fields['zipcode'].initial = add.zipcode
+	# 		self.fields['phone'].initial = add.phone
+	# 		self.fields['email'].initial = add.email
+	# 		self.fields['location_name'].initial = add.location_name
 
 	def save(self, commit=True, *args, **kwargs):
 		add = super(AddressForm, self).save(commit=False, *args, **kwargs)

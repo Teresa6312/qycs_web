@@ -88,10 +88,8 @@
 									No default Collection Point!
                 {% endif %}
 			</div>
-			<button><a href="{% url 'updateprofile'%}"> Update Profile</a></button>
-			<button><a href="{% url 'changepassword'%}"> Change Password</a></button><br/><br/>
-<br/>
-
+			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
+			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>
 
 		</div>
 	{% endblock %}

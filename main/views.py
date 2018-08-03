@@ -303,33 +303,36 @@ class EditAddressView(TemplateView):
 
 
 	def post(self, request, add_id):
-		if "cancel" in request.POST:
-			return redirect(reverse('useraddress'))
-		else:
-			add = Address.objects.get(pk=add_id)
+
+		add = Address.objects.get(pk=add_id)
 
 # never update an address that has been shipped with package(s)
-			if Service.objects.filter(ship_to_add=add).count()<1:
-				addform = AddressForm(request.POST, instance = add)
-			else:
-				addform = AddressForm(request.POST)
+		if Service.objects.filter(ship_to_add=add).count()<1:
+			# just update the addresss
+			addform = AddressForm(request.POST, instance = add)
+		else:
+			# create a new addresss
+			addform = AddressForm(request.POST)
 
-			if addform.is_valid():
-				updateaddress = addform.save(commit = False)
-				if updateaddress.id != add.id:
-					add.user = None
-					if add.follow_user_infor:
-						add.first_name = request.user.first_name
-						add.last_name = request.user.last_name
-						add.email = request.user.email
-						add.phone = request.user.userprofile.phone
-						add.follow_user_infor = False
-					add.save()
+		if addform.is_valid():
+			updateaddress = addform.save(commit = False)
+			updateaddress.user = request.user
 
-				return redirect(reverse('useraddress'))
+# when create a new address for update, neet to reset the old one's user to be null
+			if addform.instance == None:
+				add.user = None
+				if add.follow_user_infor:
+					add.first_name = request.user.first_name
+					add.last_name = request.user.last_name
+					add.email = request.user.email
+					add.phone = request.user.userprofile.phone
+					add.follow_user_infor = False
+				add.save()
 
-			else:
-				return render(request, self.template_name, {'addform': addform})
+			updateaddress.save()
+			return redirect(reverse('useraddress'))
+		else:
+			return render(request, self.template_name, {'addform': addform})
 
 
 class DeleteAddressView(TemplateView):
