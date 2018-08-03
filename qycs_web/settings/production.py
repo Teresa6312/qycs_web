@@ -21,14 +21,37 @@ from .base import *  # noqa
 # SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-SECRET_KEY = 'i&v=itrz5dqtu*d&-#(*x+jt9@=h*5fq5i7r69sgcw%$8kavd+'
+EMAIL_HOST = 'smtp.gamil.com'
+EMAIL_HOST_USER = 'myqycs@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'My Qycs <myqycs@gmail.com>'
+
+ADMINS = (('MyQycs','myqycs@gmail.com'),)
+MANAGERS = ADMINS
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY','i&v=itrz5dqtu*d&-#(*x+jt9@=h*5fq5i7r69sgcw%$8kavd+')
 # SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=config('DATABASE_URL')
+#     )
+# }
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+# add this
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+# DATABASES['default']['CONN_MAX_AGE'] = 500
 
 # This ensures that Django will be able to detect a secure connection
 # properly on Heroku.
@@ -62,7 +85,8 @@ X_FRAME_OPTIONS = 'DENY'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['google.com','127.0.0.1'])
+# ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['google.com','127.0.0.1'])
+ALLOWED_HOSTS =  ['qycs-testing.herokuapp.com', '.myqycs.com']
 # END SITE CONFIGURATION
 
 INSTALLED_APPS += ['gunicorn', ]
@@ -169,6 +193,16 @@ LOGGING = {
 
 # Custom Admin URL, use {% url 'admin:index' %}
 ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL')
+
+CORS_REPLACE_HTTPS_REFERER      = True
+HOST_SCHEME                     = "https://"
+SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT             = True
+SESSION_COOKIE_SECURE           = True
+CSRF_COOKIE_SECURE              = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+SECURE_HSTS_SECONDS             = 1000000
+SECURE_FRAME_DENY               = True
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
