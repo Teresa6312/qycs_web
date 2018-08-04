@@ -94,23 +94,8 @@ class ColRegisterView(TemplateView):
 		userform  = ProfileForm(request.POST)
 		colform = ColResigterForm(request.POST, request.FILES)
 		if colform.is_valid() and userform.is_valid():
-			user = User.objects.get(id = request.user.id)
-
-			if user.first_name != userform.cleaned_data['first_name'].title() and user.last_name != userform.cleaned_data['last_name'].title():
-# IF THE NAME CHANGED, FOR ALL follow_user_infor ADDRESS OF THIS USER, IF THERE IS ANY PACKAGE SENT TO IT BEFORE,
-# CREATE NEW ADDRESS WITH THE SAME INPORMATION AND SET THE OLD ONE USER AS NONE, follow_user_infor = FALSE
-				for add in Address.objects.filter(user = user,  follow_user_infor = True):
-					checkAddress(add)
-
-				user.first_name = userform.cleaned_data['first_name'].title() or user.first_name
-				user.last_name = userform.cleaned_data['last_name'].title() or user.last_name
-
-
-			if userform.cleaned_data['email'] !='' and userform.cleaned_data['email'] != None:
-				user.email = userform.cleaned_data['email'].lower()
-
-			user.save()
-
+			# user = User.objects.get(id = request.user.id)
+			user = userform.save(request.user)
 			collector = colform.save(commit=False)
 			collector.collector = user
 			collector.save()
@@ -118,11 +103,7 @@ class ColRegisterView(TemplateView):
 # sst the default_col to the collector
 			profile = UserProfile.objects.get(user = user)
 			profile.default_col = collector
-			profile.phone = userform.cleaned_data['phone']
-			profile.birthday = userform.cleaned_data['birthday']
 			profile.save()
-
-
 			return redirect(reverse('account'))
 		else:
 			return render(request, self.template_name, {
@@ -169,13 +150,10 @@ class UpdateProfileView(TemplateView):
 
 
 	def get(self, request):
-		userform  = ProfileForm()
 		addform = AddressForm()
-		addform.fields['follow_user_infor'].checked = True
 		return render(request, self.template_name, {
 						'col_list': self.col_list,
 						'addform': addform,
-						'userform':userform
 						})
 
 	def post(self, request):
@@ -183,13 +161,13 @@ class UpdateProfileView(TemplateView):
 		addform = AddressForm(request.POST)
 
 		if userform.is_valid():
-			user = User.objects.get(id = request.user.id)
+			user = userform.save(request.user)
 			profile = UserProfile.objects.get(user = user)
 
 # update the user profile
 			try:
 	#  save default_address from select
-				selected_add = Address.objects.get(pk=request.POST['choice'])
+				selected_add = Address.objects.get(pk=request.POST['addchoice'])
 				if profile.default_address != selected_add:
 					profile.default_address = selected_add
 			except:
@@ -202,7 +180,6 @@ class UpdateProfileView(TemplateView):
 					return render(request, self.template_name, {
 											'col_list': self.col_list,
 											'addform': addform,
-											'userform':userform
 											})
 
 			try:
@@ -212,31 +189,13 @@ class UpdateProfileView(TemplateView):
 			except:
 				pass
 
-			profile.phone = userform.cleaned_data['phone']
-			profile.birthday = userform.cleaned_data['birthday']
 			profile.save()
-
-# Update the user account
-			if user.first_name != userform.cleaned_data['first_name'].title() and user.last_name != userform.cleaned_data['last_name'].title():
-	# IF THE NAME CHANGED, FOR ALL follow_user_infor ADDRESS OF THIS USER, IF THERE IS ANY PACKAGE SENT TO IT BEFORE,
-	# CREATE NEW ADDRESS WITH THE SAME INPORMATION AND SET THE OLD ONE USER AS NONE, follow_user_infor = FALSE
-				for add in Address.objects.filter(user = user,  follow_user_infor = True):
-					checkAddress(add)
-
-				user.first_name = userform.cleaned_data['first_name'].title() or user.first_name
-				user.last_name = userform.cleaned_data['last_name'].title() or user.last_name
-
-			if userform.cleaned_data['email'] !='' and userform.cleaned_data['email'] != None:
-				user.email = userform.cleaned_data['email'].lower()
-
-			user.save()
 
 			return redirect(reverse('account'), user = user)
 		else:
 			return render(request, self.template_name, {
 									'col_list': self.col_list,
-									'addform': addform,
-									'userform':userform
+									'addform': addform
 									})
 
 
@@ -303,33 +262,36 @@ class EditAddressView(TemplateView):
 
 
 	def post(self, request, add_id):
-		if "cancel" in request.POST:
-			return redirect(reverse('useraddress'))
-		else:
-			add = Address.objects.get(pk=add_id)
+
+		add = Address.objects.get(pk=add_id)
 
 # never update an address that has been shipped with package(s)
-			if Service.objects.filter(ship_to_add=add).count()<1:
-				addform = AddressForm(request.POST, instance = add)
-			else:
-				addform = AddressForm(request.POST)
+		if Service.objects.filter(ship_to_add=add).count()<1:
+			# just update the addresss
+			addform = AddressForm(request.POST, instance = add)
+		else:
+			# create a new addresss
+			addform = AddressForm(request.POST)
 
-			if addform.is_valid():
-				updateaddress = addform.save(commit = False)
-				if updateaddress.id != add.id:
-					add.user = None
-					if add.follow_user_infor:
-						add.first_name = request.user.first_name
-						add.last_name = request.user.last_name
-						add.email = request.user.email
-						add.phone = request.user.userprofile.phone
-						add.follow_user_infor = False
-					add.save()
+		if addform.is_valid():
+			updateaddress = addform.save(commit = False)
+			updateaddress.user = request.user
 
-				return redirect(reverse('useraddress'))
+# when create a new address for update, neet to reset the old one's user to be null
+			if addform.instance == None:
+				add.user = None
+				if add.follow_user_infor:
+					add.first_name = request.user.first_name
+					add.last_name = request.user.last_name
+					add.email = request.user.email
+					add.phone = request.user.userprofile.phone
+					add.follow_user_infor = False
+				add.save()
 
-			else:
-				return render(request, self.template_name, {'addform': addform})
+			updateaddress.save()
+			return redirect(reverse('useraddress'))
+		else:
+			return render(request, self.template_name, {'addform': addform})
 
 
 class DeleteAddressView(TemplateView):

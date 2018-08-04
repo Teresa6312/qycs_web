@@ -13,6 +13,22 @@
         </ul>
         {% endif %}
 
+        {% if receiverform.errors %}
+        <ul class="receiverform.errors">
+            {% for message in receiverform.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if addform.errors %}
+        <ul class="addform.errors">
+            {% for message in addform.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         {% if form.errors %}
         <ul class="form.errors">
             {% for message in form.errors%}
@@ -21,18 +37,28 @@
         </ul>
         {% endif %}
 
-        {% if formset.errors %}
-        <ul class="formset.errors">
-            {% for message in formset.errors %}
+        {% if itemset.errors %}
+        <ul class="itemset.errors">
+            {% for message in itemset.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if imageset.errors %}
+        <ul class="imageset.errors">
+            {% for message in imageset.errors %}
             <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
 
 
-        <div class="col-md-4">
-                {% block shippingset %} {% endblock%}
 
+
+        <div class="col-md-4">
+          <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                {% block shippingset %} {% endblock%}
 
                 <div class="w3-container">
                     <h2>Add Package:</h2>
@@ -47,9 +73,6 @@
                         </div>
                         <div class="w3-container">
                         Package Note:<br/>{{ form.memo }}
-
-
-
 
                     {{form.low_volume_request}} Minimize your package&#39;s volume<br/>
                     {{form.no_rush_request}} No Rush Shipping (Double Points)
@@ -104,7 +127,7 @@
                     {% endif %}
                 </div>
 
-                  <button class="cancelBtn" type="button">Back to Collection Points</button>
+                <button class="cancelBtn" type="button">Back to Collection Points</button>
 
                 <input type="submit" value="Save and add new package" />
 
@@ -157,7 +180,7 @@ function AddSnapshotBlock(imageSet){
     '</div>';
 
     if($('#add_snapshot_form').length==0){
-      $('.cancelBtn').before(content);
+      $('#add_item_form').before(content);
       $('#add_snapshot_form').hide().slideDown(500);
       $('#add_snapshot_btn').text("Delete Snapshot");
     }//end if #add_snapshot_form exists
@@ -173,26 +196,6 @@ function AddSnapshotBlock(imageSet){
 }//end of AddSnapshotBlock
 
   $(document).ready(function(){
-    $("#add_new_address_btn").click(function(){
-         $("#addressForm").show();
-         $("#default_address_card").remove();
-
-    });
-
-    $("#select_address_btn").click(function(){
-         $("#address_book").show();
-         $("#default_address_card").remove();
-    });
-
-    $("#save_address_btn").click(function(){
-        $("#select_address_btn").remove();
-        $("#address_book").remove();
-    });
-    $("#selected_address_btn").click(function(){
-        $("#addressForm").remove();
-        $("#add_new_address_btn").remove();
-    });
-
     $('.imageset_row').formset({
         addText: 'add Image',
         deleteText: 'remove',
@@ -211,6 +214,7 @@ function AddSnapshotBlock(imageSet){
 
     $("#add_item_btn").click(function(){
         $("#add_item_form").show();
+        $('#add_item_form').hide().slideDown(500);
     });
 
     $(".cancelBtn").click(function(){
@@ -220,12 +224,43 @@ function AddSnapshotBlock(imageSet){
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
+
+    $("input").focus(function(){
+      $(this).val('');
+    });
+    $("#add_new_address_btn").click(function(){
+      $('#address_from_block').show();
+      $('#address_from_block').hide().slideDown(500);
+      $('#default_address_block').hide();
+    });
+    $("#select_address_btn").click(function(){
+         $('#address_book_block').show();
+         $('#address_book_block').hide().slideDown(500);
+         $('#default_address_block').hide();
+    });
+    $(".add_cancel_btn").click(function(){
+         $('#default_address_block').show();
+         $('#default_address_block').hide().slideDown(500);
+         $('#address_from_block').hide();
+    });
+    $(".select_add_cancel_btn").click(function(){
+         $('#default_address_block').show();
+         $('#default_address_block').hide().slideDown(500);
+         $('#address_book_block').hide();
+    });
+
+    // $("#col_change_btn").click(function(){
+    //      window.location="{% url 'collection_points' %}";
+    //
+    // });
+    // $("#change_col_btn").click(function(){
+    //      $("#collection_points_list").show();
+    //      $("#change_col_btn").remove();
+    //      $("#default_col_card").remove();
+    //
+    // });
+
   })//end of ready
-
-
-
-
-
 </script>
 
 

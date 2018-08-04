@@ -4,7 +4,8 @@ from .models import Address, Service, UserProfile
 def checkAddressWithService(add):
     return Service.objects.filter(ship_to_add=add).count()>=1
 
-def checkAddress(add, new_input_add=None):
+# check every time when a user want to update his/her first_name, last_name, and phone
+def checkAddress(add):
     profile = UserProfile.objects.get(user = add.user)
 
     if add.follow_user_infor and checkAddressWithService(add):
@@ -15,7 +16,8 @@ def checkAddress(add, new_input_add=None):
                         city = add.city,
                         state = add.state,
                         country = add.country,
-                        zipcode = add.zipcode)
+                        zipcode = add.zipcode,
+                        location_name = add.location_name)
         newadd.save()
         add.follow_user_infor = False
         add.first_name = add.user.first_name
@@ -28,3 +30,6 @@ def checkAddress(add, new_input_add=None):
         if add == profile.default_address:
             profile.default_address = newadd
             profile.save()
+
+# def updateAddress(add):
+#     if checkAddressWithService(add):

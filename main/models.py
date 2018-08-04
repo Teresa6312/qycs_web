@@ -57,7 +57,8 @@ class Address(Address_Common_Info):
 					)
 
 	class Meta:
-		unique_together=('follow_user_infor'
+		unique_together=('user'
+		,'follow_user_infor'
 		,'first_name'
 		,'last_name'
 		,'phone'

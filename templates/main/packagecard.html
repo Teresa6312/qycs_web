@@ -1,5 +1,10 @@
 {% extends "main/base.html" %}
 
+{% load static%}
+
+{% block title%}
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
+{% endblock%}
 
 {% block content %}
 
@@ -17,7 +22,7 @@
 		    <option value="all"  selected>all</option>
 		    <option value={{year}}>{{year}}</option>
 		    {% endfor %}
-		</select>  
+		</select>
 		<br/>
 		{% for package in package_list %}
 			<div class="w3-card-2 w3-round w3-panel">
@@ -30,8 +35,8 @@
 		        			{{package.weight}}(KG)<br/>{% endif %}
 		    	</div>
 				<div class="w3-quarter w3-container">
-					
-					
+
+
 					{% if package.ship_to_add %}
 					<h4>Co-shipping to Collection Point:</h4>
 
@@ -41,7 +46,7 @@
 				            {% if package.ship_to_add.phone and package.ship_to_add.email %}
 				            	{{package.ship_to_add.phone}} | {{package.ship_to_add.email}}<br/>
 				            {% elif package.ship_to_add.phone or package.ship_to_add.email %}
-				            	{{package.ship_to_add.phone}}{{package.ship_to_add.email}}<br/>	
+				            	{{package.ship_to_add.phone}}{{package.ship_to_add.email}}<br/>
 				            {% endif %}
 				        {% else %}
 
@@ -49,7 +54,7 @@
 				            {% if user.userprofile.phone %}
 				            	{{user.userprofile.phone}}<br/>{% endif %}
 				            {% if user.email %}
-				            	{{user.email}}<br/>{% endif %}          
+				            	{{user.email}}<br/>{% endif %}
 				        {% endif %}
 
 			            {{package.ship_to_add.address}}<br/>

@@ -1,16 +1,63 @@
 {% extends "main/base.html" %}
+{% load static%}
 
 {% block title%}
-<title>Qycs Global Shipping Inc. | Change the title | English Official Website </title>
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
 {% endblock%}
 
-
 {% block content %}
+{% if messages %}
+<ul class="messages">
+		{% for message in messages %}
+		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+		{% endfor %}
+</ul>
+{% endif %}
+
+{% if receiverform.errors %}
+<ul class="receiverform.errors">
+		{% for message in receiverform.errors %}
+		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+		{% endfor %}
+</ul>
+{% endif %}
+
+{% if addform.errors %}
+<ul class="addform.errors">
+		{% for message in addform.errors %}
+		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+		{% endfor %}
+</ul>
+{% endif %}
+
+{% if form.errors %}
+<ul class="form.errors">
+		{% for message in form.errors%}
+		 <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+		{% endfor %}
+</ul>
+{% endif %}
+
+{% if webformset.errors %}
+<ul class="webformset.errors">
+		{% for message in webformset.errors %}
+		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+		{% endfor %}
+</ul>
+{% endif %}
+
+{% if profileform.errors %}
+<ul class="profileform.errors">
+		{% for message in profileform.errors %}
+		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+		{% endfor %}
+</ul>
+{% endif %}
+
 
 <div class="w3-container">
 	{% if user.is_authenticated %}
 			<br/><h1>Page not found!</h1>
-
 
 	{% else %}
 
@@ -76,7 +123,7 @@
 						Phone Number(optional):{{profileform.phone}}
 					</div>
 				</div>
-				<input type = "submit" value = "Register">  <button id="btn-red" type="submit" name="cancel" value="cancel" >Cancel</button>
+				<input type = "submit" value = "Register">  <button type="button" onclick="window.location.href = document.referrer" >Cancel</button>
 				<button class="btn" type="submit" name="colregister" value="colregister" >Register as Collector</button>
 		  </div>
 

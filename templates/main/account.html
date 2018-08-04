@@ -1,5 +1,8 @@
 {% extends "main/base.html" %}
-
+{% load static%}
+{% block title%}
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
+{% endblock%}
 
 {% block content %}
 	<div class="w3-cell aside-bar-background-color w3-mobile" style="width:300px">
@@ -34,64 +37,20 @@
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
 						<h4>Default Address</h4>
 							{% if user.userprofile.default_address %}
-									<div id="default_address_card" class="w3-card-2 w3-round w3-container w3-mobile" style="width:400px">
-											<h4>{{user.userprofile.default_address.location_name}}</h4>
-											{% if not user.userprofile.default_address.follow_user_infor %}
-													<h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}</h5>
-													{% if user.userprofile.default_address.phone and user.userprofile.default_address.email%}
-															{{user.userprofile.default_address.phone}} | {{user.userprofile.default_address.email}}<br/>
-													{% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-															{{user.userprofile.default_address.phone}}{{user.userprofile.default_address.email}}<br/>
-													{% endif %}
-											{% else %}
-													{{user.last_name}}, {{user.first_name}}<br/>
-													{% if user.email and user.userprofile.phone %}
-															{{user.email}} | {{user.userprofile.phone}}<br/>
-													{% elif user.email or user.userprofile.phone%}
-															{{user.email}}{{user.userprofile.phone}}<br/>
-													{% endif %}
-											{% endif %}
-													{{user.userprofile.default_address.address}}<br/>
-													{{user.userprofile.default_address.apt}}<br/>
-													{{user.userprofile.default_address.city}}, {{user.userprofile.default_address.state}} {{user.userprofile.default_address.zipcode}}<br/>
-													{{user.userprofile.default_address.country}}<br/>
-									</div>
+										{% include "blocks/default_address_card.html"%}
 							{% else %}
 									No default address!
 							{% endif %}
+
 							<h4>Default Collection Point</h4>
 								{% if user.userprofile.default_col%}
-									<div class="w3-card-2 w3-round w3-half w3-container">
-										<div class="w3-half">
-											<h4>{{user.userprofile.default_col.name}}
-                            {% if user.userprofile.default_col.store %}
-                                (Store)
-                            {% else %}
-                                (Personal Place)
-                            {% endif %}</h4>
-                            {{user.userprofile.default_col.address}}<br/>
-                            {{user.userprofile.default_col.apt}}<br/>
-                            {{user.userprofile.default_col.city}}, {{user.userprofile.default_col.state}} {{user.userprofile.default_col.zipcode}}<br/>
-                            {{user.userprofile.default_col.country}}<br/>
-
-
-                        </div>
-
-                        <div class="w3-half">
-                            {% if user.userprofile.default_col.image %}
-														{% load static %}
-                                <img src = "{{user.userprofile.default_col.image.url}}" style="width:100%">
-                            {% endif %}
-                        </div>
-                    </div>
-									{% else %}
-									No default Collection Point!
+										{% include "blocks/default_col_card.html"%}
+								{% else %}
+										No default Collection Point!
                 {% endif %}
 			</div>
-			<button><a href="{% url 'updateprofile'%}"> Update Profile</a></button>
-			<button><a href="{% url 'changepassword'%}"> Change Password</a></button><br/><br/>
-<br/>
-
+			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
+			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>
 
 		</div>
 	{% endblock %}
