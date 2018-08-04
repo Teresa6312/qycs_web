@@ -28,7 +28,7 @@
 
 	<div class="w3-row">
 		<div class="w3-half w3-container">
-			<h2>Selected Collection Point:</h2><button type="button" id="col_change_btn">Change</button>
+			<h2>Selected Collection Point:</h2><button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button>
 
 	        <div class="w3-container"><h4>{{selected_col.name}}
 		        {% if selected_col.store %}
