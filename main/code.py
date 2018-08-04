@@ -1,5 +1,5 @@
 from .models import Address, Service, UserProfile
-
+from django.core.mail import send_mail
 
 def checkAddressWithService(add):
     return Service.objects.filter(ship_to_add=add).count()>=1
@@ -31,5 +31,25 @@ def checkAddress(add):
             profile.default_address = newadd
             profile.save()
 
-# def updateAddress(add):
+def boundEmail(user):
+    message = render_to_string('email/acc_active_email.html', {
+                'user': user,
+                'domain': 'myqycs.com',
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+    to_email = user.email
+    email = EmailMessage(
+                mail_subject, message, to=[to_email]
+    )
+    email.send()
+
+    subject = "Confirm your email address"
+    message = "Confirm your email address by click the following link"
+    sender = "myqycs@gmail.com"
+
+    recipients = [recipient, sender]
+
+
+    send_mail(subject, message, sender, recipients)
 #     if checkAddressWithService(add):
