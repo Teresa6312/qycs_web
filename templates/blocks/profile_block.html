@@ -8,6 +8,14 @@
         <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" value="{{user.last_name}}" {% if not user.collectionpoint %}  required {% else %} disabled {% endif %}>
     </div>
     <div class="w3-half w3-container">
+      <label for="country">Country:</label>
+            <input id="country" type="text" class= "w3-input w3-border"  name="country" value="{{user.userprofile.country}}">
+    </div>
+    <div class="w3-half w3-container">
+      <label for="language">Language:</label>
+            <input id="language" type="text" class= "w3-input w3-border"  name="language" value="{{user.userprofile.language}}">
+    </div>
+    <div class="w3-half w3-container">
         <label for="phone">Phone: </label>
 
         <input id="phone" type="text" class= "w3-input w3-border" name="phone" value="{{user.userprofile.phone}}" required>
@@ -19,6 +27,5 @@
     <div class="w3-half w3-container">
             <label for="birthday">Birthday: </label>
             <input id="birthday" class= "w3-input w3-border" type="date" name="birthday" value="{{user.userprofile.birthday}}" {% if userprofile.birthday %} disabled {% endif %}>
-
     </div>
 </div>

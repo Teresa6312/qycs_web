@@ -109,7 +109,7 @@ class AddDirectShipping(FormView):
 		if self.request.POST:
 			data['itemset'] = ItemFormset(self.request.POST)
 			data['addform'] = AddressForm(self.request.POST)
-			data['add_id'] = self.request.POST['choice']
+			data['add_id'] = self.request.POST['addchoice']
 		else:
 			data['itemset'] = ItemFormset()
 			data['addform'] = AddressForm()

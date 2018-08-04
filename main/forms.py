@@ -166,126 +166,43 @@ class ProfileForm(forms.Form):
 									}))
 	birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	# def __init__(self, user, *args, **kwargs):
+	country = forms.CharField(required = True, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	language = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
 
-	#
-	# 	# If the form has been submitted, populate the disabled field
-	# 	if 'data' in kwargs:
-	# 		data = kwargs['data'].copy()
-	# 		self.prefix = kwargs.get('prefix')
-	# 		data[self.add_prefix('email')] = self.request.user.email
-	# 		kwargs['data'] = data
-	#
-	# 	super(ProfileForm, self).__init__(*args, **kwargs)
+	def save(self, user, commit = True):
+		profile = UserProfile.objects.get(user = user)
+		if commit:
+# -------------------------------------------------------------------------------------------
+# '''
+# for address with follow user information
+# '''
+# ------------------------------------------------------------------------------------------
+		# if any address follow user information, then create a new address that follow user
+		# information and use the old user information to update the address
+			if user.first_name != self.cleaned_data['first_name'].title() and user.last_name != self.cleaned_data['last_name'].title():
+				for add in Address.objects.filter(user = user,  follow_user_infor = True):
+					checkAddress(add)
+				user.first_name = self.cleaned_data['first_name'].title() or user.first_name
+				user.last_name = self.cleaned_data['last_name'].title() or user.last_name
 
-	# def __init__(self, user = None, *args, **kwargs):
-	# 	if user != None:
-	# 		self.first_name.initial = user.first_name
-	# 		self.last_name.initial = user.last_name
-	# 		self.email.initial = user.email
-	# 		self.phone.initial = user.userprofile.phone
-	# 		self.birthday.initial = user.userprofile.birthday
-	# 		if user.email != None and user.email != '':
-	# 			self.email.disabled = True
-	# 		if user.userprofile.birthday != None and user.userprofile.birthday != '':
-	# 			self.birthday.disabled = True
-	# 	else:
-	# 		self.first_name.initial = ''
-	# 		self.last_name.initial = ''
-	# 		self.email.initial = ''
-	# 		self.phone.initial = ''
-	# 		self.birthday.initial = ''
+			if self.cleaned_data['email'] !='' and self.cleaned_data['email'] != None:
+				user.email = self.cleaned_data['email'].lower()
+# send email to bound this email
+			user.save()
 
-# class ProfileUpdateForm(forms.Form):
-# 	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	# default_address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 	# 								}))
-# 	# default_pay_method = forms.IntegerField(required = False)
-# 	birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-# 	nikename = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-# 									}))
-#
-# 	def save(self, user, commit = True):
-# 		profile = UserProfile.objects.get(user = user)
-#
-# 		if commit:
-#
-# # -------------------------------------------------------------------------------------------
-# # '''
-# # for address with follow user information
-# # '''
-# # ------------------------------------------------------------------------------------------
-# # if any address follow user information, then create a new address that follow user
-# # information and use the old user information to update the address
-#
-# 			for add in Address.objects.filter(user = user,  follow_user_infor = True):
-# 				checkAddress(add.pk)
-#
-# # -------------------------------------------------------------------------------------------
-# # '''
-# # Update the User Account
-# # '''
-# # ------------------------------------------------------------------------------------------
-#
-# 			user.first_name = self.cleaned_data['first_name'].title() or user.first_name
-# 			user.last_name = self.cleaned_data['last_name'].title() or user.last_name
-# 			if self.cleaned_data['email']!='' and self.cleaned_data['email']!=None:
-# 				user.email = self.cleaned_data['email'].lower()
-# # send email to bound this email
-# 			user.save()
-#
-# # -------------------------------------------------------------------------------------------
-# # '''
-# # Add new default User Address
-# # '''
-# # ------------------------------------------------------------------------------------------
-# 			if self.cleaned_data['address'] != None and self.cleaned_data['address'] != '':
-# 				new_add = Address(
-# 					user = user,
-# 					follow_user_infor = True,
-# 					address = self.cleaned_data['address'],
-# 					apt = self.cleaned_data['apt'],
-# 					city = self.cleaned_data['city'],
-# 					state = self.cleaned_data['state'],
-# 					country = self.cleaned_data['country'],
-# 					zipcode = self.cleaned_data['zipcode'],
-# 					location_name = self.cleaned_data['nikename']
-# 					)
-#
-# # -------------------------------------------------------------------------------------------
-# # '''
-# # Update the UserProfile
-# # '''
-# # ------------------------------------------------------------------------------------------
-#
-# 			profile.birthday = self.cleaned_data['birthday'] or profile.birthday or None
-#
-# 			profile.phone = self.cleaned_data['phone'] or profile.phone or None
-#
-# 			profile.save()
-# 		return user
-
-
+# -------------------------------------------------------------------------------------------
+# '''
+# Update the UserProfile
+# '''
+# ------------------------------------------------------------------------------------------
+			profile.country = self.cleaned_data['country'] or profile.birthday
+			profile.country = self.cleaned_data['language'] or profile.language
+			profile.birthday = self.cleaned_data['birthday'] or profile.birthday
+			profile.phone = self.cleaned_data['phone'] or profile.phone
+			profile.save()
+		return user
 
 
 #-----------------------------------------------------------------------------------------

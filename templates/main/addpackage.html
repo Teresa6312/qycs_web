@@ -13,6 +13,22 @@
         </ul>
         {% endif %}
 
+        {% if receiverform.errors %}
+        <ul class="receiverform.errors">
+            {% for message in receiverform.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if addform.errors %}
+        <ul class="addform.errors">
+            {% for message in addform.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         {% if form.errors %}
         <ul class="form.errors">
             {% for message in form.errors%}
@@ -21,19 +37,28 @@
         </ul>
         {% endif %}
 
-        {% if formset.errors %}
-        <ul class="formset.errors">
-            {% for message in formset.errors %}
+        {% if itemset.errors %}
+        <ul class="itemset.errors">
+            {% for message in itemset.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if imageset.errors %}
+        <ul class="imageset.errors">
+            {% for message in imageset.errors %}
             <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
 
 
+
+
         <div class="col-md-4">
           <form method="post" enctype="multipart/form-data">{% csrf_token %}
                 {% block shippingset %} {% endblock%}
-
 
                 <div class="w3-container">
                     <h2>Add Package:</h2>
@@ -48,9 +73,6 @@
                         </div>
                         <div class="w3-container">
                         Package Note:<br/>{{ form.memo }}
-
-
-
 
                     {{form.low_volume_request}} Minimize your package&#39;s volume<br/>
                     {{form.no_rush_request}} No Rush Shipping (Double Points)

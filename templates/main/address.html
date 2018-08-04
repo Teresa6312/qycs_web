@@ -16,9 +16,15 @@
             <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
-        {% else %}
         {% endif%}
 
+        {% if addform.errors %}
+        <ul class="addform.errors">
+            {% for message in addform.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 <!-- display default address -->
     <div class="w3-card-2 w3-round w3-container ">
         {% if user.userprofile.default_address %}
