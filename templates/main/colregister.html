@@ -1,7 +1,9 @@
 {% extends "main/base.html" %}
 
+{% load static%}
+
 {% block title%}
-<title>Qycs Global Shipping Inc. | Change the title | English Official Website </title>
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
 {% endblock%}
 
 
@@ -25,7 +27,7 @@
 <form method = "post" enctype="multipart/form-data">
 	{% csrf_token %}
   <h2>Register my location as a Package Collection Point</h2>
-{% include "main/profile_block.html"%}
+{% include "blocks/profile_block.html"%}
 
 
  <div class="w3-container">

@@ -1,0 +1,20 @@
+<div id="default_address_block">
+<button type="button" id="add_new_address_btn"> Add new address</button>
+{% if user.address_set.all %}
+    <button type="button" id="select_address_btn"> Select from address book</button>
+{% endif %}
+{% if user.userprofile.default_address %}
+    {% include "blocks/default_address_card.html"%}
+{% endif%}
+</div>
+
+
+<div id="address_from_block" style="display: none">
+{% include "blocks/new_address_form.html" with addform=addform%}
+1. When save button was click use ajax to post the data to address and then return the address.id
+2. create the address card for this new address
+</div>
+
+<div id="address_book_block" style="display: none">
+{% include "blocks/select_address.html"%}
+</div>

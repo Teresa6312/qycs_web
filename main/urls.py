@@ -14,7 +14,7 @@ urlpatterns = [
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
     path('accounts/colregister/', views.ColRegisterView.as_view(), name = 'colregister'),
 
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login_new.html'), name = 'login'),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
     # path('accounts/login/', views.LoginView.as_view, name = 'login'),
 
 

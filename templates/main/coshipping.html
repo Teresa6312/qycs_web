@@ -1,9 +1,12 @@
-{% extends "main/addpackage_old.html" %}
+{% extends "main/addpackage.html" %}
 
+{% load static%}
+
+{% block title%}
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
+{% endblock%}
 
 {% block shippingset %}
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-
 	<div class="w3-container">
 		<h2>Confirm the Receiver Information :</h2>
 		<div class="w3-row">
@@ -25,7 +28,7 @@
 
 	<div class="w3-row">
 		<div class="w3-half w3-container">
-			<h2>Selected Collection Point:</h2><button>Change</button>
+			<h2>Selected Collection Point:</h2><button type="button" id="col_change_btn">Change</button>
 
 	        <div class="w3-container"><h4>{{selected_col.name}}
 		        {% if selected_col.store %}
