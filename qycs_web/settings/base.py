@@ -13,20 +13,22 @@ import os
 ROOT_DIR = environ.Path(__file__) -4  # (qycs_web/config/settings/base.py - 3 = qycs_web/)
 APPS_DIR = ROOT_DIR.path('qycs_web')
 
+
+# --------------------------BASAT HAS A .ENV FILE TO RUN THIS----------------------------------------------------
 # Load operating system environment variables and then prepare to use them
-env = environ.Env()
+# env = environ.Env()
 
 # .env file, should load only in development environment
-READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
+#READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
 
-if READ_DOT_ENV_FILE:
+#if READ_DOT_ENV_FILE:
     # Operating System Environment variables have precedence over variables defined in the .env file,
     # that is to say variables from the .env files will only be used if not defined
     # as environment variables.
-    env_file = str(ROOT_DIR.path('.env'))
-    print('Loading : {}'.format(env_file))
-    env.read_env(env_file)
-    print('The .env file has been loaded. See base.py for more information')
+ #   env_file = str(ROOT_DIR.path('.env'))
+ #   print('Loading : {}'.format(env_file))
+ #   env.read_env(env_file)
+ #   print('The .env file has been loaded. See base.py for more information')
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -35,9 +37,9 @@ DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'django.contrib.sites',
 
     # Admin
     'django.contrib.admin',
@@ -66,48 +68,29 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# MIGRATIONS CONFIGURATION
-# ------------------------------------------------------------------------------
-MIGRATION_MODULES = {
-    # 'sites': 'qycs_web.sites.migrations'
-}
 
 # DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = env.bool('DJANGO_DEBUG', False)
+#DEBUG = env.bool('DJANGO_DEBUG', False)
+
+DEBUG = True
 
 # FIXTURE CONFIGURATION
-# ------------------------------------------------------------------------------
+# ------------------------------------for search usage------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (
-    str(APPS_DIR.path('fixtures')),
-)
+# FIXTURE_DIRS = (
+#     str(APPS_DIR.path('fixtures')),
+# )
 
 # EMAIL CONFIGURATION
-# ------------------------------------------------------------------------------
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+# ------------------------------BASAT has DJANGO_EMAIL_BACKEND see original base------------------------------------------------
 
-# MANAGER CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = [
-    ("""gzr7702""", 'rgraziano.gzr7702@gmail.com'),
-    ('jesse', 'jesse@erlbaum.net'),
-]
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
-MANAGERS = ADMINS
 
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    # 'default': env.db('DATABASE_URL', default='postgres:///qycs_web'),
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qycs_db',
@@ -180,22 +163,22 @@ TEMPLATES = [
     },
 ]
 
+# -------------------------------------may need to install then use-----------------------------------------
 # See: http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+STATIC_ROOT = str(ROOT_DIR('static'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
-
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [
-    str(APPS_DIR.path('static')),
-]
 
+STATICFILES_DIRS = [
+	str(APPS_DIR.path('static')),
+]
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -259,36 +242,16 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', False)
+ACCOUNT_ALLOW_REGISTRATION = False
 ACCOUNT_ADAPTER = 'qycs_web.users.adapters.AccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'qycs_web.users.adapters.SocialAccountAdapter'
 
-# Custom user app defaults
-# Select the correct user model
-# AUTH_USER_MODEL = 'users.User'
+
 LOGIN_REDIRECT_URL = '/myaccount/'
-# LOGIN_URL = '/acounts/login/'
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
-ADMIN_URL = r'^admin/'
-
-# Your common stuff: Below this line define 3rd party library settings
-# ------------------------------------------------------------------------------
-
-#
-# Set some qycs_web constants to make our lives easier later
-#
-
-# Order in which subsystems of a survey should be displayed
-
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.BasicAuthentication',
-#         'rest_framework.authentication.SessionAuthentication',
-#     )
-# }
+# ADMIN_URL = r'^admin/'

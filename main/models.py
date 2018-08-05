@@ -317,7 +317,7 @@ class Service(models.Model):
 	ready_date = models.DateField(blank=True, null=True, verbose_name= 'Package Ready on')
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= 'Packed by Employee')
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= 'Weight(kg)')
-
+	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= 'Volume Weight(kg)')
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= 'Deposit Amount')
 	deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= 'Deposit Confirmation')
 

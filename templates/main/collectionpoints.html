@@ -31,44 +31,7 @@
         <form method="post">
         {% csrf_token %}
 
-            <table>
-                {% for choice in col_list %}
-                    <tr><td>
-                        <input type="radio" name="choice" class=" w3-radio" id="choice{{ forloop.counter }}" value="{{ choice.pk }}"
-                            {% if choice == user.userprofile.default_col %} checked="checked" {% endif %} />
-                        </td>
-
-                        <td><div class="w3-card-2 w3-round w3-container">
-                            <label for="choice{{ forloop.counter }}">
-
-
-                                <div class="w3-half w3-container">
-
-                                    <h4>{{choice.name}}
-                                    {% if choice.store %}
-                                        (Store)
-                                    {% else %}
-                                        (Personal Place)
-                                    {% endif %}</h4>
-                                    {{choice.address}}<br/>
-                                    {{choice.apt}}<br/>
-                                    {{choice.city}}, {{choice.state}} {{choice.zipcode}}<br/>
-                                    {{choice.country}}<br/>
-
-
-                                </div>
-
-                                <div class="w3-half">
-                                    {% if choice.image%}
-                                        <img src = "{{choice.image.url}}" style="width:100%">
-                                    {% endif %}
-                                </div>
-
-                            </label>
-                        </div></td>
-                    </tr>
-                {% endfor %}
-            </table>
+            {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
 
             <input type="submit" value="Add Package" />
         </form>

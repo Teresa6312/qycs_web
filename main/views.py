@@ -148,7 +148,6 @@ class UpdateProfileView(TemplateView):
 	template_name = 'main/updateprofile.html'
 	col_list = CollectionPoint.objects.filter(status=True)
 
-
 	def get(self, request):
 		addform = AddressForm()
 		return render(request, self.template_name, {

@@ -1,40 +1,42 @@
 {% if col_list %}
-    {% for col_choice in col_list %}
-        <table class="w3-half w3-mobile"><tr class="w3-half"><td>
-            <input type="radio" class=" w3-radio" name="col_choice" id="col_choice{{ forloop.counter }}" value="{{ col_choice.pk }}"
-        {% if col_choice == user.userprofile.default_col %} checked="checked" {% endif %} >
+    <table>
+        {% for choice in col_list %}
+            <tr><td>
+                <input type="radio" name="choice" class=" w3-radio" id="choice{{ forloop.counter }}" value="{{ choice.pk }}"
+                    {% if choice == user.userprofile.default_col %} checked="checked" {% endif %} />
+                </td>
 
-            </td><td>
+                <td><div class="w3-card-2 w3-round w3-container">
+                    <label for="choice{{ forloop.counter }}">
 
-            <label for="col_choice{{ forloop.counter }}">
 
-                <div class="w3-card-2 w3-round w3-container w3-mobile" style="width:500px">
-                    <div class= "w3-half">
-                        <h4>{{col_choice.name}}
-                            {% if col_choice.store %}
+                        <div class="w3-half w3-container">
+
+                            <h4>{{choice.name}}
+                            {% if choice.store %}
                                 (Store)
                             {% else %}
                                 (Personal Place)
+                            {% endif %}</h4>
+                            {{choice.address}}<br/>
+                            {{choice.apt}}<br/>
+                            {{choice.city}}, {{choice.state}} {{choice.zipcode}}<br/>
+                            {{choice.country}}<br/>
+
+
+                        </div>
+
+                        <div class="w3-half">
+                            {% if choice.image%}
+                                <img src = "{{choice.image.url}}" style="width:100%">
                             {% endif %}
-                        </h4>
-                            {{col_choice.address}}<br/>
-                            {{col_choice.apt}}<br/>
-                            {{col_choice.city}}, {{col_choice.state}} {{col_choice.zipcode}}<br/>
-                            {{col_choice.country}}<br/>
-                    </div>
-                    <div class="w3-half">
-                        {% if col_choice.image %}
-                        {% load static %}
-                            <img src = "{{col_choice.image.url}}" style="width:100%">
-                        {% endif %}
-                    </div>
+                        </div>
 
-                </div>
-
-            </label>
-        </td></tr></table>
-
-    {% endfor %}
+                    </label>
+                </div></td>
+            </tr>
+        {% endfor %}
+    </table>
 {% else %}
     <h5>No collection point is avaliable at this time!</h5>
 {% endif %}

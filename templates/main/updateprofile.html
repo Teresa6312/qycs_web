@@ -60,7 +60,7 @@
               {% endif %}
 
               <div id="collection_points_list" class="w3-cell-row" style="display: none">
-                {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
+                  {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
               </div>
         </div>
 
@@ -100,11 +100,11 @@
              $('#address_book_block').hide();
         });
 
-        // $("#select_col_btn").click(function(){
-        //      $("#collection_points_list").show();
-        //      $("#select_col_btn").remove();
-        //
-        // });
+        $("#select_col_btn").click(function(){
+             $("#collection_points_list").show();
+             $('#collection_points_list').hide().slideDown(500);
+
+        });
         // $("#change_col_btn").click(function(){
         //      $("#collection_points_list").show();
         //      $("#change_col_btn").remove();
