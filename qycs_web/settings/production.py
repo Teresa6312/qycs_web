@@ -1,37 +1,11 @@
-"""
-Production Configurations
-
-- Use Amazon's S3 for storing static files and uploaded media
-- Use mailgun to send emails
-- Use Redis for cache
-
-
-"""
-
 # from boto.s3.connection import OrdinaryCallingFormat
 
 from .base import *  # noqa
 
-# SECRET CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-# Raises ImproperlyConfigured exception if DJANGO_SECRET_KEY not in os.environ
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_e8s9-lbfhv-')
 
-# This ensures that Django will be able to detect a secure connection
-# properly on Heroku.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# Use Whitenoise to serve static files
-# See: https://whitenoise.readthedocs.io/
-# WHITENOISE_MIDDLEWARE = ['whitenoise.middleware.WhiteNoiseMiddleware', ]
-# MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
-
-
-# SECURITY CONFIGURATION
-# ------------------------------------------------------------------------------
-# See https://docs.djangoproject.com/en/dev/ref/middleware/#module-django.middleware.security
-# and https://docs.djangoproject.com/en/dev/howto/deployment/checklist/#run-manage-py-check-deploy
 
 # set this to 60 seconds and then to 518400 when you can prove it works
 SECURE_HSTS_SECONDS = 60
@@ -51,23 +25,10 @@ CSRF_COOKIE_SECURE              = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
 SECURE_FRAME_DENY               = True
 
-# SITE CONFIGURATION
-# ------------------------------------------------------------------------------
-# Hosts/domain names that are valid for this site
-# See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-# ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['.cunybpl.org','127.0.0.1'])
-# END SITE CONFIGURATION
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS += ['gunicorn', ]
 
-
-# STORAGE CONFIGURATION
-# ------------------------------------------------------------------------------
-
-
-# Static Assets
-# ------------------------
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # EMAIL
@@ -78,14 +39,6 @@ EMAIL_HOST_USER = 'myqycs@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 
-# TEMPLATE CONFIGURATION
-# ------------------------------------------------------------------------------
-# See:
-# https://docs.djangoproject.com/en/dev/ref/templates/api/#django.template.loaders.cached.Loader
-# TEMPLATES[0]['OPTIONS']['loaders'] = [
-#     ('django.template.loaders.cached.Loader', [
-#         'django.template.loaders.filesystem.Loader', 'django.template.loaders.app_directories.Loader', ]),
-# ]
 
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -137,9 +90,3 @@ LOGGING = {
         }
     }
 }
-
-# Custom Admin URL, use {% url 'admin:index' %}
-# ADMIN_URL = env('DJANGO_ADMIN_URL')
-
-# Your production stuff: Below this line define 3rd party library settings
-# ------------------------------------------------------------------------------
