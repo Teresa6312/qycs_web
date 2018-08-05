@@ -1,4 +1,13 @@
-#Byte-compiled / optimized / DLL files
+qycs_web/settings/local.py
+db.sqlite3
+.py[cod]
+
+.DS_Store
+bin/
+include/
+pip-selfcheck.json
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,7 +32,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -52,10 +60,7 @@ coverage.xml
 
 # Django stuff:
 *.log
-.static_storage/
-#.media/
-local.py
-#*.sqlite3
+local_settings.py
 
 # Flask stuff:
 instance/
@@ -88,8 +93,6 @@ celerybeat-schedule
 env/
 venv/
 ENV/
-env.bak/
-venv.bak/
 
 # Spyder project settings
 .spyderproject
@@ -103,15 +106,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-
-# node modules
-node_modules/
-
-# do not include webpack stats
-webpack-stats.dev.json
-webpack-stats.prod.json
-
-# build files
-build/
-bundles/
