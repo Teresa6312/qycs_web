@@ -1,0 +1,101 @@
+{% extends "main/account.html" %}
+
+{% load static%}
+
+{% block title%}
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
+{% endblock%}
+
+{% block account_content %}
+<div class="w3-cell w3-container w3-mobile">
+
+	<h2>Packages History</h2>
+
+	<button><a href="{% url 'collection_points' %}"> Add Co-shipping Package</a></button>
+	<button><a href="{% url 'add_direct_shipping' %}"> Add Direct Shipping Package</a></button>
+	<h4>view packages placed within:</h4>
+	<select>
+		{% for year in package_list.created_date.year %}
+	    <option value="all"  selected>all</option>
+	    <option value={{year}}>{{year}}</option>
+	    {% endfor %}
+	</select>
+	<br/>
+	{% for package in package_list %}
+		<div class="w3-card-2 w3-round w3-panel">
+	        <div class="w3-quarter w3-container">
+	        	<h4>{{package.cust_tracking_num}}</h4>
+	        		{{package.cust_carrier}} ({{package.wh_received.country}})<br/>
+	        		{% if package.created_date %}
+	        			Created on: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
+	        		{% if package.weight %}
+	        			{{package.weight}}(KG)<br/>{% endif %}
+	    	</div>
+			<div class="w3-quarter w3-container">
+
+
+				{% if package.ship_to_add %}
+				<h4>Co-shipping to Collection Point:</h4>
+
+			        <h5>{{package.ship_to_add.location_name}}</h5>
+			        {% if not package.ship_to_add.follow_user_infor %}
+			            {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
+			            {% if package.ship_to_add.phone and package.ship_to_add.email %}
+			            	{{package.ship_to_add.phone}} | {{package.ship_to_add.email}}<br/>
+			            {% elif package.ship_to_add.phone or package.ship_to_add.email %}
+			            	{{package.ship_to_add.phone}}{{package.ship_to_add.email}}<br/>
+			            {% endif %}
+			        {% else %}
+
+			            {{user.last_name}}, {{user.first_name}}<br/>
+			            {% if user.userprofile.phone %}
+			            	{{user.userprofile.phone}}<br/>{% endif %}
+			            {% if user.email %}
+			            	{{user.email}}<br/>{% endif %}
+			        {% endif %}
+
+		            {{package.ship_to_add.address}}<br/>
+		            {% if package.ship_to_add.apt %}
+		            {{package.ship_to_add.apt}}<br/>{% endif %}
+		            {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
+		            {{package.ship_to_add.country}}<br/>
+
+
+
+				{% elif package.ship_to_col %}
+				<h4>Direct Shipping to Collection Point:</h4>
+			        <h5>{{package.ship_to_col.name}}</h5>
+			            {{package.ship_to_col.address}}<br/>
+			            {{package.ship_to_col.apt}}<br/>
+			            {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
+			            {{package.ship_to_col.country}}<br/>
+
+
+
+				{% endif %}
+			</div>
+
+			<div class="w3-quarter w3-container">
+				<h4>Package Status:</h4>
+				{% if package.paid_key.created_date %}
+					Paid on: {{package.paid_key.created_date|date:"M d, Y" }}<br/>{% endif %}
+
+				{% if package.parent_package.shipped_date %}
+					Shipped on: {{package.parent_package.shipped_date|date:"M d, Y" }}<br/>{% endif %}
+				{% if package.picked_up_date %}
+					Picked up on: {{package.picked_up_date|date:"M d, Y" }}<br/>{% endif %}
+			</div>
+
+			<div class="w3-quarter w3-container">
+				<h4>Price:</h4>
+				<div class="w3-ight"><a>detail</a></div>
+				{% if package.storage_fee %}
+					Storage fee: {{package.currency}}<br/>{% endif %}
+				{% if package.shipping_fee %}
+					Shipping fee: {{package.currency}}{{package.shipping_fee}}<br/>{% endif %}
+
+			</div>
+	    </div>
+	{% endfor %}
+</div>
+{% endblock %}

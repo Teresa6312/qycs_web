@@ -1,0 +1,57 @@
+{% extends "main/base.html" %}
+{% load static%}
+{% block title%}
+<title>Update Profile | Qycs Global Shipping Inc. | English Official Website </title>
+{% endblock%}
+
+{% block content %}
+	<div class="w3-cell aside-bar-background-color w3-mobile" style="width:300px">
+		<div class="w3-bar-block">
+
+		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userprofile' %}">User Information</a>
+		    <a class="w3-bar-item w3-hover-purple" href="{% url 'useraddress' %}">Address List</a>
+		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userpackage' %}">Packages History</a>
+		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userwallet' %}">Wallet</a>
+		    <a class="w3-bar-item w3-hover-purple" href="/accounts/logout/">Logout</a>
+		</div>
+	</div>
+
+	{% block account_content%}
+	<div class="w3-cell w3-container w3-mobile">
+
+			<h2>{{user.username}}
+			{% if user.collectionpoint %}
+			(Collector)
+			{% endif %}</h2>
+				{% if not user.collectionpoint %}
+				<button><a href="{% url 'colregister'%}"> Register as Collector</a></button><br/>
+				{% endif%}
+				<div class = "w3-container">
+						First Name: {{user.first_name}}<br/>
+						Last Name: {{user.last_name}}<br/>
+						Email address:{{user.email}}
+						{% if not user.bound_email%}
+							<a>To Bound my Email (this will send a request to the user's email)</a>
+						{% endif %}<br/>
+						Phone Number: {{user.userprofile.phone}}<br/>
+						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
+						<h4>Default Address</h4>
+							{% if user.userprofile.default_address %}
+										{% include "blocks/default_address_card.html"%}
+							{% else %}
+									No default address!
+							{% endif %}
+
+							<h4>Default Collection Point</h4>
+								{% if user.userprofile.default_col%}
+										{% include "blocks/default_col_card.html"%}
+								{% else %}
+										No default Collection Point!
+                {% endif %}
+			</div>
+			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
+			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>
+
+		</div>
+	{% endblock %}
+{% endblock %}

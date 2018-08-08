@@ -1,0 +1,196 @@
+{% extends "main/base.html" %}
+
+
+{% block content %}
+
+<div class="w3-cell w3-container w3-mobile">
+    <div class="w3-card-2 w3-round w3-container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if form.errors %}
+        <ul class="form.errors">
+            {% for message in form.errors%}
+             <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if formset.errors %}
+        <ul class="formset.errors">
+            {% for message in formset.errors %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+        <div class="col-md-4">
+                {% block shippingset %} {% endblock%}
+
+
+                <div class="w3-container">
+                    <h2>Add Package:</h2>
+                        <h4>From China:</h4>
+                        <div class="w3-row">
+                            <div class="w3-half w3-container">
+                                Mailing Carriers: {{ form.cust_carrier }}
+                            </div>
+                            <div class="w3-half w3-container">
+                                Tracking Number: {{form.cust_tracking_num}}
+                            </div>
+                        </div>
+                        <div class="w3-container">
+                        Package Note:<br/>{{ form.memo }}
+
+
+
+
+                    {{form.low_volume_request}} Minimize your package&#39;s volume<br/>
+                    {{form.no_rush_request}} No Rush Shipping (Double Points)
+                    </div>
+                </div>
+                <hr>
+                <!-- <center><button id = "add_snapshot_btn">Add Snapshot</button>
+                <button id = "add_item_btn">Add Items Detail</button></center> -->
+                <hr>
+                <div class="w3-container" id = "add_snapshot_form" >
+                    <h3>Add Order Snapshot of the Package:</h3>
+
+                    {{imageset}}
+                    How to display the images'names after selected the images!
+                </div>
+
+                <div id = "add_item_form" class="w3-container" >
+                    <h3>Add details of each item in the package:</h3>
+
+                    {{ itemset.management_form }}
+
+                    {% if itemset.forms %}
+                        {% for subform in itemset.forms %}
+                            <table class="w3-twothird" >
+                                    <tr class="{% cycle 'row1' 'row2' %} itemset_row">
+
+
+                                        <td class="content-background-color">
+                                            <div class="w3-container">
+                                                Item Name: {{subform.item_name}}
+                                            </div>
+                                            <div class="w3-row">
+                                                <div class="w3-half w3-container">
+                                                    Item Detail: {{subform.item_detail}}
+                                                </div>
+                                                <div class="w3-half w3-container">
+                                                    Quantity: {{subform.item_quantity}}
+                                                </div>
+                                            </div>
+                                            <div class="w3-container">
+                                                Item URL:{{subform.item_url}}
+                                            </div>
+                                            <div class="w3-container">
+                                                {{subform.low_volume_request}} Minimize this item&#39;s volume
+                                            </div>
+                                            <div class="w3-container">
+                                                Note:<br/> {{subform.memo}}
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+
+                            </table>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                  <button class="btn" type="submit" name="cancel" value="Cancel" >Cancel</button>
+
+                <input type="submit" value="Save and add new package" />
+
+                <button>Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="w3-container w3-cell w3-mobile" style="width:400px">
+    <div class="w3-card-2 w3-round w3-container aside-bar-background-color">
+        <h3>Packages</h3>
+            {% if package_list %}
+                {% for package in package_list %}
+                <div class="w3-panel">
+                    <h4>{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
+                    {% if package.co_shipping %}
+                        {{package.receiver}}<br/>
+                        {{package.ship_to_col}}
+                    {% elif not package.co_shipping %}
+                        {{package.ship_to_add}}
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No package.</p>
+            {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block script%}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+{% load static %}
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script>
+    $(document).load(function(){
+        $("#add_new_address_btn").click(function(){
+             $("#addressForm").show();
+             $("#default_address_card").remove();
+
+        });
+        $("#select_address_btn").click(function(){
+             $("#address_book").show();
+             $("#default_address_card").remove();
+
+        });
+        $("#save_address_btn").click(function(){
+            $("#select_address_btn").remove();
+            $("#address_book").remove();
+        });
+        $("#selected_address_btn").clickclick(function(){
+            $("#addressForm").remove();
+            $("#add_new_address_btn").remove();
+        });
+    })
+</script>
+<script type="text/javascript">
+    $('.imageset_row').formset({
+        addText: 'add Image',
+        deleteText: 'remove',
+        prefix: 'packageimage_set'
+    });
+    $('.itemset_row').formset({
+        addText: 'add Item',
+        deleteText: 'remove',
+        prefix: 'item_set'
+    });
+    $(document).ready(function(){
+        $("#add_snapshot_btn").click(function(){
+             $("#add_snapshot_form").show();
+        });
+        $("#add_item_btn").click(function(){
+             $("#add_item_form").show();
+        });
+  })
+</script>
+
+
+
+{% endblock%}

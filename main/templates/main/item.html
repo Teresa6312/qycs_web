@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+
+{% block title%}
+<title>Qycs Global Shipping Inc. | Change the title | English Official Website </title>
+{% endblock%}
+
+
+{% block content %}
+<h1> YOU ARE IN register PAGE</h1>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form method = "post">
+{% csrf_token %}
+    <label for="first_name">First Name: </label>
+    <input id="first_name" type="text" name="first_name" value="{{ user.first_name }}"><br/>
+
+    <label for="last_name">Last Name: </label>
+    <input id="last_name" type="text" name="last_name" value="{{ user.last_name }}"><br/>
+
+    <label for="email">Email Address: </label>
+    <input id="email" type="text" name="email" value="{{ user.email }}"><br/>
+
+    <label for="phone">Phone: </label>
+    <input id="phone" type="text" name="phone" value="{{ user.profile.phone }}"><br/>
+
+    <input type="submit" value="OK">
+</form>
+{% endblock %}
