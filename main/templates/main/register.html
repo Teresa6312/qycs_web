@@ -17,7 +17,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     {% if form.errors %}
     <ul class="messagelist">
         {% for message in form.errors %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -25,7 +25,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     {% if webformset.errors %}
     <ul class="messagelist">
         {% for message in webformset.errors %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -33,7 +33,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     {% if profileform.errors %}
     <ul class="messagelist">
         {% for message in profileform.errors%}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -101,9 +101,12 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Phone Number(optional):{{profileform.phone}}
 					</div>
 				</div>
-				<input type = "submit" value = "Register">  <button type="button" onclick="{% url 'home'%}" >Cancel</button>
-				<button class="btn" type="submit" name="colregister" value="colregister" >Register as Collector</button>
-		  </div>
+				<input type = "submit" value ="Register">
+        <button type="button" onclick="window.location.href = '{% url 'home'%}'" >Cancel</button>
+				<button type="submit" name="colregister" value="colregister" >Register as Collector</button>
+        <button type="button" class="cleanBtn">Clear Form</button>
+
+      </div>
 
 		</form>
 
@@ -148,6 +151,9 @@ $(document).ready(function(){
 		$("input").focus(function(){
 			$(this).val('');
 		});
+    $(".cleanBtn").click(function(){
+      $(this).closest('form').find("input[type=text], textarea").val("");
+    });
 
 		$("#nextform").click(function(){
 			// if(validateUserForm()){

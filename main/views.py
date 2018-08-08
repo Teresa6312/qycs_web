@@ -357,7 +357,7 @@ class CollectionPointView(TemplateView):
 
 		except (KeyError, CollectionPoint.DoesNotExist):
 
-			messages.error(request, "You didn't select a Collection Point.")		
+			messages.error(request, "You didn't select a Collection Point.")
 			return render(request, self.template_name, {
 				'col_list': self.col_list,
 			})
