@@ -13,10 +13,22 @@ import os
 ROOT_DIR = environ.Path(__file__) -4  # (qycs_web/config/settings/base.py - 3 = qycs_web/)
 APPS_DIR = ROOT_DIR.path('qycs_web')
 
-# ------------------------------------------------------------------------------
-# Load operating system environment variables and then prepare to use them
-env = environ.Env()
 
+# --------------------------BASAT HAS A .ENV FILE TO RUN THIS----------------------------------------------------
+# Load operating system environment variables and then prepare to use them
+# env = environ.Env()
+
+# .env file, should load only in development environment
+#READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
+
+#if READ_DOT_ENV_FILE:
+    # Operating System Environment variables have precedence over variables defined in the .env file,
+    # that is to say variables from the .env files will only be used if not defined
+    # as environment variables.
+ #   env_file = str(ROOT_DIR.path('.env'))
+ #   print('Loading : {}'.format(env_file))
+ #   env.read_env(env_file)
+ #   print('The .env file has been loaded. See base.py for more information')
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -78,24 +90,16 @@ DEBUG = True
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# DATABASES = {
-#      'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'qycs_db',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(APPS_DIR, 'db.sqlite3'),
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'qycs_db',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 # DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
@@ -135,7 +139,7 @@ TEMPLATES = [
         ],
         'OPTIONS': {
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
-            # 'debug': DEBUG,
+            'debug': DEBUG,
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
             # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             'loaders': [
