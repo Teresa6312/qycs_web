@@ -3,14 +3,13 @@ from .models import (
 	User, UserProfile, Address, Service, Warehouse, CollectionPoint,
 	Item, PackageImage, CoReceiver, FavoriteWebsite
 	)
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
 
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import inlineformset_factory
-from .code import checkAddress
+from .code import checkAddress, boundEmail
 from django.forms import formset_factory
-from django.core.exceptions import NON_FIELD_ERRORS
 # import datetime
 # datetime.datetime.now().year
 
