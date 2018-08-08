@@ -134,15 +134,3 @@ LOGIN_REDIRECT_URL = '/myaccount/'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
-
-
-
-
-# LOGIN_EXEMPT_URLS = (
-#     r'^acounts/logout/$',
-#     r'^acounts/register/$',
-#     r'^acounts/reset-password/$',
-#     r'^acounts/reset-password/done/$',
-#     r'^acounts/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-#     r'^acounts/reset-password/complete/$',
-# )
