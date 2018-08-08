@@ -5,26 +5,25 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
+{% block messages %}
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
+
+    {% if form.errors %}
+    <ul class="messagelist">
+        {% for message in form.errors%}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock messages %}
+
 {% block account_content %}
     <div class="w3-cell w3-container">
         <h2> Update My Profile</h2>
-        <ul class="messages">
-            {% if messages %}
-
-                {% for message in messages %}
-                <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-
-            {% endif %}
-            {% if form.errors %}
-
-                {% for message in form.errors%}
-                 <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-
-            {% endif %}
-        </ul>
-
         <form method = "post">
         {% csrf_token %}
             {% include "blocks/profile_block.html"%}

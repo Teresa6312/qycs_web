@@ -4,27 +4,14 @@
 {% block title%}
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
+
+
 {% block account_content %}
 
 <div class="w3-cell w3-container w3-mobile">
     <h2>Address Book:</h2>
       Use get_absolute_url would be better inseat of using address.id but how?<br/>
       Identify error to load this page in cmd?
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif%}
-
-        {% if addform.errors %}
-        <ul class="addform.errors">
-            {% for message in addform.errors %}
-            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
 <!-- display default address -->
     <div class="w3-card-2 w3-round w3-container ">
         {% if user.userprofile.default_address %}

@@ -6,23 +6,32 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
 
-{% block content %}
-
+{% block messages %}
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
     {% if userform.errors %}
-    <ul class="form.errors">
+    <ul class="messagelist">
         {% for message in userform.errors %}
-        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
         {% endfor %}
     </ul>
     {% endif %}
 
     {% if colform.errors %}
-    <ul class="form.errors">
+    <ul class="messagelist">
         {% for message in colform.errors %}
-        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
         {% endfor %}
     </ul>
     {% endif %}
+{% endblock messages %}
+
+{% block content %}
+
+
 
 <form method = "post" enctype="multipart/form-data">
   	{% csrf_token %}

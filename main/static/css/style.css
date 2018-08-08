@@ -174,7 +174,7 @@ color:white;
   margin: 10px;
 }
 
-.w3-cell-row button, input[type="submit"] {
+button, input[type="submit"] {
   background-color: #800080;
   color: #fff;
   padding: 5px 5px 5px 5px;

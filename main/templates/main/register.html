@@ -5,71 +5,49 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
+{% block messages %}
+    {% if messages %}
+    <ul class="messagelist">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.errors %}
+    <ul class="messagelist">
+        {% for message in form.errors %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if webformset.errors %}
+    <ul class="messagelist">
+        {% for message in webformset.errors %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if profileform.errors %}
+    <ul class="messagelist">
+        {% for message in profileform.errors%}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+{% endblock messages %}
+
+
+
 {% block content %}
-{% if messages %}
-<ul class="messages">
-		{% for message in messages %}
-		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-		{% endfor %}
-</ul>
-{% endif %}
-
-{% if receiverform.errors %}
-<ul class="receiverform.errors">
-		{% for message in receiverform.errors %}
-		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-		{% endfor %}
-</ul>
-{% endif %}
-
-{% if addform.errors %}
-<ul class="addform.errors">
-		{% for message in addform.errors %}
-		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-		{% endfor %}
-</ul>
-{% endif %}
-
-{% if form.errors %}
-<ul class="form.errors">
-		{% for message in form.errors%}
-		 <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-		{% endfor %}
-</ul>
-{% endif %}
-
-{% if webformset.errors %}
-<ul class="webformset.errors">
-		{% for message in webformset.errors %}
-		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-		{% endfor %}
-</ul>
-{% endif %}
-
-{% if profileform.errors %}
-<ul class="profileform.errors">
-		{% for message in profileform.errors %}
-		<li>{% if message.tags %} class="{{ message.tags }}"{% endif %}{{ message }}</li>
-		{% endfor %}
-</ul>
-{% endif %}
-
-
 <div class="w3-container">
 	{% if user.is_authenticated %}
-			<br/><h1>Page not found!</h1>
-
+			<h1>Page not found!</h1>
 	{% else %}
-
 			<br/><h2> Create My Qycs Account</h2>
-
-			{% if messages %}
-			<ul class="messages">
-			    {% for message in messages %}
-			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-			    {% endfor %}
-			</ul>
-			{% endif %}
 
 			<form method = "post">
 			{% csrf_token %}
@@ -123,7 +101,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Phone Number(optional):{{profileform.phone}}
 					</div>
 				</div>
-				<input type = "submit" value = "Register">  <button type="button" onclick="window.location.href = document.referrer" >Cancel</button>
+				<input type = "submit" value = "Register">  <button type="button" onclick="{% url 'home'%}" >Cancel</button>
 				<button class="btn" type="submit" name="colregister" value="colregister" >Register as Collector</button>
 		  </div>
 
