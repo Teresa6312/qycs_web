@@ -40,7 +40,7 @@ Create Package
 #-----------------------------------------------------------------------------------------
 class AddPackageView(FormView):
 	form_class = PackageForm
-	template_name = 'main/addpackage_old.html'
+	template_name = 'main/addpackage.html'
 	success_url = '/package/add'
 
 	def get_context_data(self, **kwargs):
