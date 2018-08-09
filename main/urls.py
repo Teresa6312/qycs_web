@@ -31,8 +31,10 @@ urlpatterns = [
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
     path('myaccount/change-password/', login_required(views.ChangePasswordView.as_view()), name='changepassword'),
 
-    # path('item/', views.ItemView.as_view(), name='item'),
-
+    path('myaccount/change-password/', auth_views.PasswordChangeView,
+    {'template_name':'password/password_change_form.html'}, name='password_change'),
+    path('myaccount/change-password/done/', auth_views.PasswordChangeDoneView,
+    {'template_name':'password/password_change_done.html'}, name='password_change_done'),
 
     path('myaccount/address', login_required(views.AddressView.as_view()), name='useraddress'),
     path('myaccount/address/<int:add_id>/eidt', login_required(views.EditAddressView.as_view()), name='editaddress'),
@@ -56,19 +58,19 @@ urlpatterns = [
 
 # need to locked for logged in user
     path('accounts/reset-password/', auth_views.password_reset,
-        {'template_name':'main/resetpassword.html',
-            'email_template_name': 'main/resetpassword_email.html',
+        {'template_name':'password/password_reset_form.html',
+            'email_template_name': 'email/password_reset_email.html',
         },  name='password_reset'),
 
     path('accounts/reset-password/done/', auth_views.password_reset_done,
-        {'template_name':'main/resetpassword_done.html'}, name='password_reset_done'),
+        {'template_name':'password/password_reset_done.html'}, name='password_reset_done'),
 
     re_path(r'^accounts/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        auth_views.password_reset_confirm, {'template_name':'main/resetpassword_confirm.html'},
+        auth_views.password_reset_confirm, {'template_name':'password/password_reset_confirm.html'},
         name='password_reset_confirm'),
 
     path('accounts/reset-password/complete/', auth_views.password_reset_complete,
-        {'template_name':'main/resetpassword_complete.html'}, name='password_reset_complete'),
+        {'template_name':'password/password_reset_complete.html'}, name='password_reset_complete'),
 
 ]
 
