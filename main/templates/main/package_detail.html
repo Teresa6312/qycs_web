@@ -1,17 +1,48 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
 
-{% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
-{% endblock%}
+{% block extrastyle %}
+{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+<link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+{% endblock %}
 
 
 
 {% block content %}
-{{package.cust_tracking_num}}
+<h2>{{package.cust_tracking_num}}
 {{package.carrier}}
 {% if package.order %}(Order)
 {% elif package.coshiping%}(Co-shipping Package)
 {% else %}(Direct Shipping)
 {% endif %}
+</h2>
+
+<div class="w3-card-2 w3-round w3-container w3-mobile" style="width:500px">
+    <div class="timeline">
+      <div class="container left">
+        <div class="content">
+          <h5>Package Marked</h5>
+          <p>{{package.created_date}}</p>
+        </div>
+      </div>
+      <div class="container right">
+        <div class="content">
+          <h5>Package Received</h5>
+          <p>{{package.wh_received_date}}</p>
+        </div>
+      </div>
+      <div class="container left">
+        <div class="content">
+          <h5>Package Shipped</h5>
+          <p>{{package.parent_package.shipped_date}}</p>
+        </div>
+      </div>
+      <div class="container right">
+        <div class="content">
+          <h5>Package Received</h5>
+          <p>{{package.picked_up_date}}</p>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}
