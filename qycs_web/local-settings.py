@@ -134,3 +134,4 @@ LOGIN_REDIRECT_URL = '/myaccount/'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

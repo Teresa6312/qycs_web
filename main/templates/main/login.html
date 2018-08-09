@@ -1,108 +1,98 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="author" content="Qycs Founders">
-    <link rel="icon" href="{%static 'image/logo.ico'%}">
+{% extends "main/base_site.html" %}
+{% load i18n static %}
 
-    <title>Qycs Global Shipping Inc. | Login to your account | English Official Website</title>
-
-    <link rel="shortcut icon" href="{%static 'logo.png'%}"/>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+{{ form.media }}
     <link rel="stylesheet" href="{% static 'css/main1.css'%}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+{% endblock %}
 
+{% block bodyclass %}{{ block.super }} login{% endblock %}
 
-</head>
+{% block usertools %}{% endblock %}
 
+{% block branding %}{% endblock %}
 
-<body>
+{% block nav-global %}{% endblock %}
 
-    <div class="w3-card-4 w3-container w3-mobile w3-panel w3-white" style="width:35%; height:80%; margin-left:auto;margin-right: auto">
-      <div class="w3-panel w3-center">
-      <img src="{%static 'image/logo.png'%}" width="100" height="100">
-      </div>
-      <h3>Login to Your Account</h3>
+{% block content_title %}{% endblock %}
 
+{% block breadcrumbs %}{% endblock %}
 
-      {% if form.errors %}
-      <p>Your username and password didn't match. Please try again.</p>
-      {% endif %}
+{% block footer %}{% endblock %}
 
-      {% if next %}
-      {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-      {% else %}
-      <p>Please login to see this page.</p>
-      {% endif %}
-      {% endif %}
+{% block content %}
+{% if form.errors and not form.non_field_errors %}
+<p class="errornote">
+{% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+</p>
+{% endif %}
 
-      <form method="post">
-      {% csrf_token %}
-          <div class="w3-row">
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p class="errornote">
+    {{ error }}
+</p>
+{% endfor %}
+{% endif %}
 
-            <div class="w3-row w3-section w3-center">
-              <div class="w3-col" style="width:50px"><i class="w3-xlarge fa fa-envelope"></i></div>
-                <div class="w3-threequarter">
-                  <input type="text" class= "w3-input w3-border" name="username" required id="username" placeholder="Username/Email">
-                </div>
-            </div>
-            <div class="w3-row w3-section w3-center">
-              <div class="w3-col" style="width:50px"><i class=" w3-xlarge fa fa-lock"></i></div>
-                <div class="w3-threequarter">
-                  <input type="password" class= "w3-input w3-border" name="password"  required id="password" placeholder="Password">
-                </div>
-                <div class="w3-rest">
-                  <i id="show-password" class="w3-xlarge fa fa-eye"></i>
-                </div>
-            </div>
-
-            <div class="w3-half w3-right">
-                <a href="{% url 'password_reset'%}">Forgot Password?</a>
-            </div>
-            <div class="w3-half">
-                <input type="checkbox" name="rememberme" id="rememberme"/>Remember me
-            </div>
-
-            <div class="w3-row w3-center">
-              <input type="submit" name="login" value="Login" class="button"/>
-              <button><a href="{% url 'register'%}">Sign Up</a></button>
-          </div>
-      </form>
-
-
-      <center>OR</center>
-      <div class="socmed-login">
-          <a href="#wechat" class="socmed-btn wechat-btn">
-          <i class="fa fa-wechat"></i>
-          <span>Login with Wechat</span>
-          </a>
-          <a href="#g-plus" class="socmed-btn google-btn">
-          <i class="fa fa-google"></i>
-          <span>Login with Google</span>
-          </a>
-          <a href="#taobao" class="socmed-btn taobao-btn">
-          <i>
-          <img src="{%static 'image/taobao.ico'%}" alt="" width=20 height=20>&nbsp;  &nbsp;</i>
-          <span>Login with taobao</span>
-          </a>
-      </div>
-      <br/>
-  </div>
-
- </div>
-<br/><br/>
-    <div class="footer-copyright">
-                &copy; Qycs Global Shipping Inc. | All Rights Reserved © 2018 |
-      <a href="">Privacy Policy</a> | <a href="">Terms of Service</a>
-      <span class="float-right"> <a href="">Back to top</a></span>
+<div id="content-main" class="w3-container">
+    <div class="w3-panel w3-center">
+    <img src="{%static 'image/logo.png'%}" width="100" height="100">
     </div>
 
-</body>
-</html>
+    {% if user.is_authenticated %}
+    <p class="errornote">
+        You are authenticated as {{ user.username }}, but are not authorized to
+        access this page. Would you like to login to a different account?
+    </p>
+    {% endif %}
+
+<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+  <div class="form-row">
+    {{ form.username.errors }}
+    {{ form.username.label_tag }} {{ form.username }}
+  </div>
+  <div class="form-row">
+    {{ form.password.errors }}
+    {{ form.password.label_tag }} {{ form.password }}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <div class="w3-right">
+        <a href="{% url 'password_reset'%}">Forgot Password?</a>
+    </div>
+    <div>
+        <input type="checkbox" name="rememberme" id="rememberme"/>Remember me
+    </div>
+
+  </div>
+  {% url 'admin_password_reset' as password_reset_url %}
+  {% if password_reset_url %}
+  <div class="password-reset-link">
+    <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+  </div>
+  {% endif %}
+  <div class="w3-center">
+    <input type="submit" value="{% trans 'Log in' %}" />
+    <button type="button" onclick="window.location.href = '{% url 'register'%}'">Sign Up</button>
+  </div>
+</form>
+<div class="w3-center">OR</center>
+<div class="socmed-login">
+    <a href="#wechat" class="socmed-btn wechat-btn">
+    <i class="fa fa-wechat"></i>
+    <span>Login with Wechat</span>
+    </a>
+    <a href="#g-plus" class="socmed-btn google-btn">
+    <i class="fa fa-google"></i>
+    <span>Login with Google</span>
+    </a>
+    <a href="#taobao" class="socmed-btn taobao-btn">
+    <i>
+    <img src="{%static 'image/taobao.ico'%}" alt="" width=20 height=20>&nbsp;  &nbsp;</i>
+    <span>Login with taobao</span>
+    </a>
+    <br class="clear"/>
+</div>
+</div>
+{% endblock %}

@@ -39,6 +39,8 @@
 {% endblock %}
 
 
+{% block coltype %}contentCSS{% endblock %}
+
 {% block branding %}
   <a href="{% url 'home' %}"><img src="{% static 'image/logo.png' %}" alt="logo" width="60" height="60" /></a>
 {% endblock %}
@@ -143,14 +145,15 @@
           </div>
         </div>
       </div>
-
+      <div class="footer-copyright">
+                  &copy; Qycs Global Shipping Inc. | All Rights Reserved © 2018 |
+        <a href="">Privacy Policy</a> | <a href="">Terms of Service</a>
+        <span class="float-right"> <a href="">Back to top</a></span>
+      </div>
     </div>
 
-    <div class="footer-copyright">
-                &copy; Qycs Global Shipping Inc. | All Rights Reserved © 2018 |
-      <a href="">Privacy Policy</a> | <a href="">Terms of Service</a>
-      <span class="float-right"> <a href="">Back to top</a></span>
-    </div>
+
+
     {% block script%}
     {% endblock%}
 {% endblock %}

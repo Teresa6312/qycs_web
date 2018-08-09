@@ -1,5 +1,12 @@
+html{
+  height: 100%;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  margin: 0;
+  min-height: 100%;
 }
 
 
@@ -157,6 +164,11 @@ color:white;
   float: right;
 }
 
+/*  padding-bottom equal to the footer height*/
+.contentCSS{
+  padding-bottom: 150px;
+}
+
 .centerBtn{
   text-align: center;
   border-top: solid 1px #eee;
@@ -174,7 +186,7 @@ color:white;
   margin: 10px;
 }
 
-.w3-cell-row button, input[type="submit"] {
+button, input[type="submit"] {
   background-color: #800080;
   color: #fff;
   padding: 5px 5px 5px 5px;
@@ -218,15 +230,18 @@ margin: 10px;
 }
 
 /*------------------for footer only---------------------*/
+
+/*  contentCSS padding-bottom equal to the footer height*/
 #footer{
   background-color: #330033;
   color:#1a001a;
   padding-top: 10px;
   width:100%;
   bottom:0;
-  margin-bottom: 0;
-  padding-bottom: 0;
-
+  margin: 0;
+  position: absolute;
+  padding: 0;
+  height: 150px;
 }
 
 #footer h5 {
