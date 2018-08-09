@@ -7,7 +7,9 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 	message="Invalid phone number format. Enter as 123-456-0987. Optionally enter extensions using 'x' followed by the number.")
 
 
-
+# from django.contrib.auth import get_user_model
+# UserModel = get_user_model()
+# to set email is required
 
 class Employee(models.Model):
 	user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key = True)
@@ -47,8 +49,16 @@ class Address(Address_Common_Info):
 	def __str__(self):
 		return '%s %s\n %s %s, %s %s'%(self.first_name, self.last_name, self.address, self.city, self.state, self.zipcode)
 
+	def get_absolute_url(self):
+	    from django.urls import reverse
+	    return dict(edit=reverse('editaddress', args=[str(self.id)]),
+					delete=reverse('deleteaddress', args=[str(self.id)]),
+					set_default=reverse('set_dedault_address', args=[str(self.id)])
+					)
+
 	class Meta:
-		unique_together=('follow_user_infor'
+		unique_together=('user'
+		,'follow_user_infor'
 		,'first_name'
 		,'last_name'
 		,'phone'
@@ -124,11 +134,19 @@ class CollectionPoint(Address_Common_Info):
 	license_type = models.CharField(max_length = 32, default='',verbose_name= 'License Type')
 	license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
 	id_image = models.ImageField(upload_to = 'collector_id', default = '')
+	store_name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Store Name')
 	store = models.BooleanField(default = True, verbose_name= 'Store')
 	store.boolean = True
 	status = models.BooleanField(default = False, verbose_name= 'Avaliable')
 	status.boolean = True
-	image = models.ImageField(upload_to = 'collector_image', blank ='True')
+	location_image = models.ImageField(upload_to = 'collector_image', blank ='True')
+	longitude = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
+	dimension = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
+	food = models.BooleanField(default = False)
+	regular = models.BooleanField(default = False)
+	luxury = models.BooleanField(default = False)
+
+
 
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
@@ -299,7 +317,7 @@ class Service(models.Model):
 	ready_date = models.DateField(blank=True, null=True, verbose_name= 'Package Ready on')
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= 'Packed by Employee')
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= 'Weight(kg)')
-
+	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= 'Volume Weight(kg)')
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= 'Deposit Amount')
 	deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= 'Deposit Confirmation')
 

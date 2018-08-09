@@ -3,13 +3,14 @@ from .models import (
 	UserProfile, User, Warehouse, PackageImage, FavoriteWebsite
 	)
 from .forms import (
-	RegisterForm, ProfileUpdateForm, AddressForm, ItemFormset, PackageForm, UserProfileForm,
+	RegisterForm, AddressForm, ItemFormset, PackageForm, UserProfileForm,
 	CoShippingForm, DirectShippingForm, ImageFormset, CoReceiverForm, ImageForm, WebFormSet,
-	ColResigterForm
+	ColResigterForm, ProfileForm
 	)
 from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
+
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, FormView
@@ -20,6 +21,8 @@ from django.contrib.auth.decorators import login_required
 from .code import checkAddress
 from django.urls import reverse
 # used to reverse the url name as a url path
+
+from .code import checkAddress
 
 
 class HomeView(TemplateView):
@@ -40,33 +43,42 @@ class RegisterView(TemplateView):
 
 	def post(self, request):
 		form = RegisterForm(request.POST)
+		webformset = WebFormSet(request.POST)
+		profileform = UserProfileForm(request.POST)
 
-		if form.is_valid():
+		if form.is_valid() and webformset.is_valid() and profileform.is_valid():
 			user = form.save()
-			webformset = WebFormSet(request.POST)
-			profileform = UserProfileForm(request.POST)
+			profile = UserProfile.objects.get(user = user)
+			profile.phone = profileform.cleaned_data['phone']
+			profile.birthday = profileform.cleaned_data['birthday']
+			profile.country = profileform.cleaned_data['country'].title()
+			profile.language = profileform.cleaned_data['language'].title()
+			profile.save()
 
-			# if webformset.is_valid():
-				# web = FavoriteWebsite.objects.get(web_name = webform.cleaned_data['web_name'], country = webform.cleaned_data['country'])
-				# if web.count() == 1:
-				# 	web.rate = web.rate +1
-				# 	web.save()
-				# else:
-				# 	webform.save()
+			for webform in webformset:
+				web = webform.save(commit = False)
+				web.country = profile.country
+				web.web_name = web.web_name.title()
 
-			if profileform.is_valid():
-				profile = UserProfile.objects.get(user = user)
-				profile.phone = profileform.cleaned_data['phone']
-				profile.birthday = profileform.cleaned_data['birthday']
-				profile.country = profileform.cleaned_data['country']
-				profile.language = profileform.cleaned_data['language']
-				profile.save()
+				if webform.is_valid():
+					existed_web = FavoriteWebsite.objects.filter(
+						web_name = web.web_name,
+						web_type = web.web_type,
+						country = profile.country)
+
+					if existed_web.count() == 1:
+						existed_web = existed_web.first()
+						existed_web.rate = existed_web.rate +1
+						existed_web.save()
+					else:
+						web.save()
+
 			if "colregister" in request.POST:
 				return redirect(reverse('colregister'))
 			else:
-				return redirect(request, reverse('account'))
+				return redirect(reverse('account'))
 		else:
-			return render(request, self.template_name, {'form': form})
+			return render(request, self.template_name, {'form': form, 'webformset':webformset, 'profileform':profileform})
 
 
 class ColRegisterView(TemplateView):
@@ -79,25 +91,25 @@ class ColRegisterView(TemplateView):
 		 })
 
 	def post(self, request):
-		colform = ColResigterForm(request.POST)
+		userform  = ProfileForm(request.POST)
+		colform = ColResigterForm(request.POST, request.FILES)
+		if colform.is_valid() and userform.is_valid():
+			# user = User.objects.get(id = request.user.id)
+			user = userform.save(request.user)
+			collector = colform.save(commit=False)
+			collector.collector = user
+			collector.save()
 
-		if colform.is_valid():
-			user = User.objects.get(user = request.user)
-			collector = CollectionPoint.objects.get(collector = user)
-			collector.name = colform.cleaned_data['name']
-			collector.license = colform.cleaned_data['license']
-			collector.license_type = colform.cleaned_data['license_type']
-			collector.store = colform.cleaned_data['store']
-			# save image then save instance
-			# collector.id_image
-			# collector.license_image
-			# collector.image
-			# collector.save()
-
-			return redirect(request, reverse('account'))
+# sst the default_col to the collector
+			profile = UserProfile.objects.get(user = user)
+			profile.default_col = collector
+			profile.save()
+			return redirect(reverse('account'))
 		else:
-			return render(request, self.template_name, {'colform': colform})
-
+			return render(request, self.template_name, {
+					 'colform': colform,
+					 'userform': userform,
+					 })
 
 class AccountView(TemplateView):
 	template_name = 'main/account.html'
@@ -105,24 +117,28 @@ class AccountView(TemplateView):
 	def get(self, request):
 		return render(request, self.template_name)
 
+# >>> article = Article.objects.get(pk=1)
+# >>> form = ArticleForm(instance=article)
+# >>> a = Article.objects.get(pk=1)
+# >>> f = ArticleForm(request.POST, instance=a)
+# >>> f.save()
 
-class LoginView(TemplateView):
-	template_name = 'main/login.html'
 
-	def get(self, request):
-		return render(request, self.template_name)
-
-	def post(self, request):
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(request, username=username, password=password)
-		if user is not None:
-			login(request, user)
-			print('----------------------------------------')
-			print(request.path_info)
-			return redirect(reverse('home'))
-		else:
-			return render(request, self.template_name)
+# class LoginView(TemplateView):
+# 	template_name = 'main/login.html'
+#
+# 	def get(self, request):
+# 		return render(request, self.template_name)
+#
+# 	def post(self, request):
+# 		username = request.POST['username']
+# 		password = request.POST['password']
+# 		user = authenticate(request, username=username, password=password)
+# 		if user is not None:
+# 			login(request, user)
+# 			return redirect(reverse('home'))
+# 		else:
+# 			return render(request, self.template_name)
 # -----------------------------------------------------------
 '''
 Update User Profile
@@ -130,39 +146,56 @@ Update User Profile
 # -----------------------------------------------------------
 class UpdateProfileView(TemplateView):
 	template_name = 'main/updateprofile.html'
+	col_list = CollectionPoint.objects.filter(status=True)
 
 	def get(self, request):
-		col_list = CollectionPoint.objects.filter(status=True)
-		return render(request, self.template_name, {'col_list':col_list})
+		addform = AddressForm()
+		return render(request, self.template_name, {
+						'col_list': self.col_list,
+						'addform': addform,
+						})
 
 	def post(self, request):
-		form = ProfileUpdateForm(request.POST)
-		if form.is_valid():
-			profile = UserProfile.objects.get(user = request.user)
+		userform = ProfileForm(request.POST)
+		addform = AddressForm(request.POST)
+
+		if userform.is_valid():
+			user = userform.save(request.user)
+			profile = UserProfile.objects.get(user = user)
+
+# update the user profile
 			try:
-				selected_add = Address.objects.get(pk=request.POST['choice'])
+	#  save default_address from select
+				selected_add = Address.objects.get(pk=request.POST['addchoice'])
 				if profile.default_address != selected_add:
 					profile.default_address = selected_add
-					profile.save()
-
-					form.cleaned_data['address']=''
 			except:
-				pass
+
+	#  save default_address from add new address
+				if addform.is_valid():
+					newadd = addform.save()
+					profile.default_address = newadd
+				else:
+					return render(request, self.template_name, {
+											'col_list': self.col_list,
+											'addform': addform,
+											})
 
 			try:
+	#  save default_col from select
 				selected_col = CollectionPoint.objects.get(pk=request.POST['col_choice'])
 				profile.default_col = selected_col
-				profile.save()
 			except:
 				pass
 
-			user = form.save(request.user)
+			profile.save()
 
 			return redirect(reverse('account'), user = user)
 		else:
-			messages.info(request, 'Invalid address, please try again!')
-			return render(request, self.template_name, {'form':form})
-
+			return render(request, self.template_name, {
+									'col_list': self.col_list,
+									'addform': addform
+									})
 
 
 
@@ -188,27 +221,32 @@ class AddressView(TemplateView):
 	template_name = 'main/address.html'
 
 	def get(self, request):
-		form = AddressForm()
-		return render(request, self.template_name, {'form': form})
+		addform = AddressForm()
+		addform.fields['follow_user_infor'].required = False
+		addform.fields['first_name'].required = False
+		addform.fields['last_name'].required = False
+		addform.fields['address'].required = False
+		addform.fields['city'].required = False
+		addform.fields['state'].required = False
+		addform.fields['country'].required = False
+		addform.fields['zipcode'].required = False
+		return render(request, self.template_name, {'addform': addform})
 
 
 	def post(self, request):
 		if "cancel" in request.POST:
 			return redirect(reverse('useraddress'))
 		else:
-			form = AddressForm(request.POST)
-			if form.is_valid():
-				newaddress = form.save(commit = False)
-
-				if newaddress.address != None and newaddress.address != '':
-					newaddress.user = request.user
-					newaddress.save()
+			addform = AddressForm(request.POST)
+			if addform.is_valid():
+				newaddress = addform.save(commit = False)
+				newaddress.user = request.user
+				newaddress.save()
 
 				return redirect(reverse('useraddress'))
 
 			else:
-				messages.info(request, 'Invalid address, please try again!')
-				return render(request, self.template_name, {'form': form})
+				return render(request, self.template_name, {'addform': addform})
 
 
 # Use updateView?
@@ -217,53 +255,42 @@ class EditAddressView(TemplateView):
 	template_name = 'main/address.html'
 
 	def get(self, request, add_id):
-		form = AddressForm()
 		add = Address.objects.get(pk=add_id)
-		return render(request, self.template_name, {'form': form, 'add':add})
+		addform = AddressForm(instance = add)
+		return render(request, self.template_name, {'addform': addform})
 
 
 	def post(self, request, add_id):
-		if "cancel" in request.POST:
-			return redirect(reverse('useraddress'))
+
+		add = Address.objects.get(pk=add_id)
+
+# never update an address that has been shipped with package(s)
+		if Service.objects.filter(ship_to_add=add).count()<1:
+			# just update the addresss
+			addform = AddressForm(request.POST, instance = add)
 		else:
-			form = AddressForm(request.POST)
+			# create a new addresss
+			addform = AddressForm(request.POST)
 
-			add = Address.objects.get(pk=add_id)
+		if addform.is_valid():
+			updateaddress = addform.save(commit = False)
+			updateaddress.user = request.user
 
-			if form.is_valid():
-				newaddress = form.save(commit = False)
-				if Service.objects.filter(ship_to_add=add).count()>=1:
-					newaddress.user = request.user
-					newaddress.save()
-
-					if add.follow_user_infor:
-						add.first_name = request.user.first_name
-						add.last_name = request.user.last_name
-						add.email = request.user.email
-						add.phone = request.user.userprofile.phone
-						add.follow_user_infor = False
-					add.user = None
-				else:
-					add.first_name = newaddress.first_name
-					add.last_name = newaddress.last_name
-					add.follow_user_infor = newaddress.follow_user_infor
-					add.address = newaddress.address
-					add.apt = newaddress.apt
-					add.city = newaddress.city
-					add.country = newaddress.country
-					add.state = newaddress.state
-					add.zipcode = newaddress.zipcode
-					add.email = newaddress.email
-					add.phone = newaddress.phone
-
+# when create a new address for update, neet to reset the old one's user to be null
+			if addform.instance == None:
+				add.user = None
+				if add.follow_user_infor:
+					add.first_name = request.user.first_name
+					add.last_name = request.user.last_name
+					add.email = request.user.email
+					add.phone = request.user.userprofile.phone
+					add.follow_user_infor = False
 				add.save()
 
-				return redirect(reverse('useraddress'))
-
-			else:
-				form = AddressForm(request.POST)
-				messages.info(request, 'Invalid address, please try again!')
-				return render(request, self.template_name, {'form': form})
+			updateaddress.save()
+			return redirect(reverse('useraddress'))
+		else:
+			return render(request, self.template_name, {'addform': addform})
 
 
 class DeleteAddressView(TemplateView):
@@ -320,7 +347,6 @@ class CollectionPointView(TemplateView):
 	col_list = CollectionPoint.objects.filter(status=True)
 
 	def get(self, request):
-
 		return render(request, self.template_name, {'col_list': self.col_list,})
 
 	def post(self, request):
@@ -330,8 +356,8 @@ class CollectionPointView(TemplateView):
 			return redirect(reverse('add_co_shipping',args = (selected_col.pk,)))
 
 		except (KeyError, CollectionPoint.DoesNotExist):
-			# Redisplay the question voting form.
+
+			messages.error(request, "You didn't select a Collection Point.")
 			return render(request, self.template_name, {
 				'col_list': self.col_list,
-				'error_message': "You didn't select a Collection Point.",
 			})

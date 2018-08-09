@@ -1,0 +1,100 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% endblock%}
+
+
+{% block messages %}
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
+    {% if userform.errors %}
+    <ul class="messagelist">
+        {% for message in userform.errors %}
+        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if colform.errors %}
+    <ul class="messagelist">
+        {% for message in colform.errors %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock messages %}
+
+{% block content %}
+
+
+
+<form method = "post" enctype="multipart/form-data">
+  	{% csrf_token %}
+    <h2>Register my location as a Package Collection Point</h2>
+    {% include "blocks/profile_block.html"%}
+
+
+     <div class="w3-container">
+    	 {{colform.store}}Store Location(js ckeck then display store_name_input)
+     </div>
+    	<div id ="store_name_input" class="w3-container">
+    	 Store Name:
+    		 	{{colform.store_name}}
+    	</div>
+        <div class="w3-container">
+
+             Address:
+            		 {{colform.address}}
+             Apartment:
+            		 {{colform.apt}}
+        </div>
+        <div class="w3-quarter w3-container">
+             City:
+            		 {{colform.city}}
+        </div>
+        <div class="w3-quarter w3-container">
+             State:
+            		 {{colform.state}}
+        </div>
+        <div class="w3-quarter w3-container">
+             Country:
+            		 {{colform.country}}
+        </div>
+        <div class="w3-quarter w3-container">
+             Zip code:
+            		 {{colform.zipcode}}
+        </div>
+        <div class="w3-container">
+            	License Type:
+            			{{colform.license_type}}
+            	License Number:
+            		 {{colform.license}}
+            	License Image:
+            		 {{colform.license_image}}
+            	ID Image
+            		{{colform.id_image}}
+            	Location Image:
+            		{{colform.location_image}}
+         </div>
+        <input type = "submit" value = "Register">
+        <button  type="button" onclick="window.location.href = '{% url 'account'%}'" >Cancel</button>
+        <button type="button" class="cleanBtn">Clear Form</button>
+
+    </form>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $(".cleanBtn").click(function(){
+      $(this).closest('form').find("input[type=text], textarea").val("");
+    });
+})
+
+</script>
+{% endblock%}

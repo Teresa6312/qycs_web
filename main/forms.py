@@ -3,53 +3,115 @@ from .models import (
 	User, UserProfile, Address, Service, Warehouse, CollectionPoint,
 	Item, PackageImage, CoReceiver, FavoriteWebsite
 	)
+from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
+#used to catch errors related to populating the form fields from a related Project
 
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import inlineformset_factory
-from .code import checkAddress
+from .code import checkAddress, boundEmail
 from django.forms import formset_factory
+# import datetime
+# datetime.datetime.now().year
 
+years = [i for i in range(1900,2010)]
 
+ # fields = '__all__'
+ # exclude = ['title']
+	 # class Meta:
+	 #    model = Author
+	 #    fields = ('name', 'title', 'birth_date')
+	 #    widgets = {
+	 #        'name': Textarea(attrs={'cols': 80, 'rows': 20}),
+	 #    }
+	 #     labels = {
+	 #        'name': _('Writer'),
+	 #    }
+	 #    help_texts = {
+	 #        'name': _('Some useful help text.'),
+	 #    }
+	 #    error_messages = {
+	 #        'name': {
+	 #            'max_length': _("This writer's name is too long."),
+	 #        },
+	 #    }
+	 #
+	# self.fields['sku'].widget.attrs['readonly'] = True
 #-----------------------------------------------------------------------------------------
 '''
 Create User
 '''
 #-----------------------------------------------------------------------------------------
 class RegisterForm(UserCreationForm):
-	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	username = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	username = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	password1 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={"class":"w3-input w3-border"
+									}))
+	password2 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={"class":"w3-input w3-border"
 									}))
 
-	email = forms.EmailField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	password1 = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	password2 = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-
-	class Meta:
-		model = User
+	class Meta(UserCreationForm.Meta):
 		fields = ['username', 'email', 'first_name','last_name', 'password1', 'password2']
+		# error_messages = {
+		#     NON_FIELD_ERRORS: {
+		#         'unique': "%(model_name)s's %(field_labels)s is not unique.",
+		#     }
+		# }
 
-	def save(self, commit = True):
-		user = super(RegisterForm, self).save(commit = False)
-		user.first_name = self.cleaned_data['first_name'].title() # or try .capitalize()
-		user.last_name = self.cleaned_data['last_name'].title()
-		user.email = self.cleaned_data['email'].lower()
-		user.username = self.cleaned_data['username']
-
+	def save(self, commit = True, *args, **kwargs):
+		user = super().save(commit = False)
 		if commit:
+			user.first_name = self.cleaned_data['first_name'].title()
+			user.last_name = self.cleaned_data['last_name'].title()
+			user.email = self.cleaned_data['email'].lower()
+			user.username = self.cleaned_data['username']
 			user.save()
 		return user
 
+	def clean_email(self):
+		username = self.cleaned_data.get('username')
+		email = self.cleaned_data.get('email')
+		if email and User.objects.filter(email=email).exclude(username=username).exists():
+			raise forms.ValidationError(u'Email addresses must be unique.')
+		return email
+
 
 class ColResigterForm(forms.ModelForm):
+	address = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	city = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	state = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	country = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	license = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	license_type = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	store = forms.BooleanField(required = False, widget=forms.CheckboxInput(attrs={"class":"w3-check"
+									}))
+	store_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	license_image = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class":"w3-input w3-border"
+									}))
+	id_image = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class":"w3-input w3-border"
+									}))
+	location_image = forms.ImageField(required=False, widget=forms.FileInput(attrs={"class":"w3-input w3-border"
+									}))
 	class Meta:
 		model = CollectionPoint
-		fields = ['name', 'license', 'license_type', 'store', 'license_image','id_image', 'image']
+		fields = ['address','apt','city','state','country','zipcode','license','license_type',
+					'store','store_name','store_name','license_image','id_image','location_image']
 
 class FavoriteWebsiteForm(forms.ModelForm):
 
@@ -72,10 +134,20 @@ class FavoriteWebsiteForm(forms.ModelForm):
 		model = FavoriteWebsite
 		fields = ['web_type', 'web_name']
 
-WebFormSet = formset_factory(FavoriteWebsiteForm, extra = 3)
+WebFormSet = formset_factory(FavoriteWebsiteForm, extra = 3, max_num = 3)
 
 class UserProfileForm(forms.ModelForm):
-	country = forms.CharField(required = True)
+	country = forms.CharField(required = True, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
+					empty_label=("Year", "Month", "Day"),
+					years = years,
+					attrs={"class":"w3-input w3-border w3-third",
+									}))
+	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	language = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
 
 	class Meta:
 		model = UserProfile
@@ -88,97 +160,54 @@ class UserProfileForm(forms.ModelForm):
 Update User Profile
 '''
 #-----------------------------------------------------------------------------------------
-
-class ProfileUpdateForm(forms.Form):
-	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+class ProfileForm(forms.Form):
+	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	last_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	# default_address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# default_pay_method = forms.IntegerField(required = False)
 	birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	country = forms.CharField(required = True, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	nikename = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	language = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 
 	def save(self, user, commit = True):
 		profile = UserProfile.objects.get(user = user)
-
 		if commit:
-
 # -------------------------------------------------------------------------------------------
 # '''
 # for address with follow user information
 # '''
 # ------------------------------------------------------------------------------------------
-# if any address follow user information, then create a new address that follow user
-# information and use the old user information to update the address
+		# if any address follow user information, then create a new address that follow user
+		# information and use the old user information to update the address
+			if user.first_name != self.cleaned_data['first_name'].title() and user.last_name != self.cleaned_data['last_name'].title():
+				for add in Address.objects.filter(user = user,  follow_user_infor = True):
+					checkAddress(add)
+				user.first_name = self.cleaned_data['first_name'].title() or user.first_name
+				user.last_name = self.cleaned_data['last_name'].title() or user.last_name
 
-			for add in Address.objects.filter(user = user,  follow_user_infor = True):
-				checkAddress(add.pk)
-
-# -------------------------------------------------------------------------------------------
-# '''
-# Update the User Account
-# '''
-# ------------------------------------------------------------------------------------------
-
-			user.first_name = self.cleaned_data['first_name'].title() or user.first_name
-			user.last_name = self.cleaned_data['last_name'].title() or user.last_name
-			if self.cleaned_data['email']!='' and self.cleaned_data['email']!=None:
+			if self.cleaned_data['email'] !='' and self.cleaned_data['email'] != None:
 				user.email = self.cleaned_data['email'].lower()
 # send email to bound this email
 			user.save()
 
 # -------------------------------------------------------------------------------------------
 # '''
-# Add mew default User Address
-# '''
-# ------------------------------------------------------------------------------------------
-			if self.cleaned_data['address'] != None and self.cleaned_data['address'] != '':
-				new_add = Address(
-					user = user,
-					follow_user_infor = True,
-					address = self.cleaned_data['address'],
-					apt = self.cleaned_data['apt'],
-					city = self.cleaned_data['city'],
-					state = self.cleaned_data['state'],
-					country = self.cleaned_data['country'],
-					zipcode = self.cleaned_data['zipcode'],
-					location_name = self.cleaned_data['nikename']
-					)
-
-# -------------------------------------------------------------------------------------------
-# '''
 # Update the UserProfile
 # '''
 # ------------------------------------------------------------------------------------------
-
-			profile.birthday = self.cleaned_data['birthday'] or profile.birthday or None
-
-			profile.phone = self.cleaned_data['phone'] or profile.phone or None
-
+			profile.country = self.cleaned_data['country'] or profile.birthday
+			profile.country = self.cleaned_data['language'] or profile.language
+			profile.birthday = self.cleaned_data['birthday'] or profile.birthday
+			profile.phone = self.cleaned_data['phone'] or profile.phone
 			profile.save()
 		return user
-
-
 
 
 #-----------------------------------------------------------------------------------------
@@ -187,48 +216,83 @@ Create new Address
 '''
 #-----------------------------------------------------------------------------------------
 class AddressForm(forms.ModelForm):
-	# follow_user_infor = forms.BooleanField(required=False, label = "Follow user information")
-	#
-	# first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# address = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# city = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# state = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# country = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# zipcode = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
-	# location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-	# 								}))
+	follow_user_infor = forms.BooleanField(required = False, widget=forms.CheckboxInput(attrs={"class":"w3-check"
+									}))
+	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	last_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	address = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	city = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	state = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	country = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
 	class Meta:
 		model = Address
-		fields = ('follow_user_infor',
-			'first_name',
-			'last_name',
-			'address',
-			'apt',
-			'city',
-			'state',
-			'country',
-			'zipcode',
-			'phone',
-			'email',
-			'location_name',
-			)
+		exclude = ['meno']
 
+	#
+	# def __init__(self, *args, **kwargs):
+	# 	super().__init__(*args, **kwargs)
+	# 	if self.instance:
+	# 		try:
+	# 			add = Address.objects.get(id = self.instance.id)
+	# 		except ObjectDoesNotExist as err:
+	# 			self.fields['follow_user_infor'].initial = ''
+	# 			self.fields['last_name'].initial = ''
+	# 			self.fields['address'].initial = ''
+	# 			self.fields['apt'].initial = ''
+	# 			self.fields['city'].initial = ''
+	# 			self.fields['state'].initial = ''
+	# 			self.fields['country'].initial = ''
+	# 			self.fields['zipcode'].initial = ''
+	# 			self.fields['phone'].initial = ''
+	# 			self.fields['email'].initial = ''
+	# 			self.fields['location_name'].initial = ''
+	# 			return
+	#
+	# 		self.user['user'].initial = add.user
+	# 		print('---------------initial--------------------')
+	# 		print(self.user['user'])
+	# 		self.fields['follow_user_infor'].initial = add.follow_user_infor
+	# 		self.fields['first_name'].initial = add.first_name
+	# 		self.fields['last_name'].initial = add.last_name
+	# 		self.fields['address'].initial = add.address
+	# 		self.fields['apt'].initial = add.apt
+	# 		self.fields['city'].initial = add.city
+	# 		self.fields['state'].initial = add.state
+	# 		self.fields['country'].initial = add.country
+	# 		self.fields['zipcode'].initial = add.zipcode
+	# 		self.fields['phone'].initial = add.phone
+	# 		self.fields['email'].initial = add.email
+	# 		self.fields['location_name'].initial = add.location_name
 
-
+	def save(self, commit=True, *args, **kwargs):
+		add = super(AddressForm, self).save(commit=False, *args, **kwargs)
+		add.first_name = add.first_name.title()
+		add.last_name = add.last_name.title()
+		add.email = add.email.lower()
+		add.address = add.address.upper()
+		add.apt = add.apt.upper()
+		add.city = add.city.upper()
+		add.state = add.state.upper()
+		add.country = add.country.upper()
+		if commit:
+			add.save()
+		return add
 #-----------------------------------------------------------------------------------------
 '''
 Package Common Form (abstract)
@@ -373,6 +437,12 @@ ItemFormset = inlineformset_factory(Service,
 									form=ItemForm,
 									extra=1)
 
+# ItemFormset = inlineformset_factory(Service,
+# 									Item,
+# 									form=ItemForm,
+# 									extra=1,
+# 									widgets={'name': Textarea(attrs={'cols': 80, 'rows': 20})}
+
 
 
 
@@ -395,7 +465,7 @@ ImageFormset = inlineformset_factory(Service,
 									extra=1)
 
 class ImageForm(forms.Form):
-	image = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+	image = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True, "class":"w3-input w3-border"}))
 
 
 

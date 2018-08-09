@@ -1,0 +1,59 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% endblock%}
+
+{% block account_content %}
+	<div class="w3-cell w3-container w3-mobile">
+		<div class="w3-threequarter">
+		{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			    {% endfor %}
+			</ul>
+		{% endif%}
+
+
+
+		{% if cards %}
+			<h3>Cards:</h3>
+			<ul>
+				{% for c in cards %}
+				    <li>{{ c }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		{% if alipays %}
+			<h3>Alipay:</h3>
+			<ul>
+				{% for ap in alipays %}
+				    <li>{{ ap }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		{% if wechats %}
+			<h3>WeChat:</h3>
+			<ul>
+			{% for wc in wechats %}
+			    <li>{{ wc }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+
+		{% if paypals %}
+			<h3>Paypal:</h3>
+			<ul>
+			{% for pp in paypals %}
+			    <li>{{ pp }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+	</div>
+
+{% endblock %}

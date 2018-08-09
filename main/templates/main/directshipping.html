@@ -1,0 +1,18 @@
+{% extends "main/addpackage.html" %}
+
+{% load i18n static %}
+
+{% block title%}
+Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% endblock%}
+
+{% block shippingset %}
+<div class="w3-container">
+		<h2>Direct Shipping</h2>
+		<div class="w3-container">
+        <h3>Ship to: </h3>
+						{% include "blocks/address_block_all.html" with addform=addform%}
+		</div>
+</div>
+
+{% endblock %}

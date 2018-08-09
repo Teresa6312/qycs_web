@@ -26,7 +26,7 @@ class PackagesView(TemplateView):
 
 
 class PackageCardView(TemplateView):
-	template_name = 'main/packagecar.html'
+	template_name = 'main/packagecard.html'
 
 	def get(self, request):
 		return render(request, self.template_name,
@@ -40,7 +40,7 @@ Create Package
 #-----------------------------------------------------------------------------------------
 class AddPackageView(FormView):
 	form_class = PackageForm
-	template_name = 'main/addpackage_old.html'
+	template_name = 'main/addpackage.html'
 	success_url = '/package/add'
 
 	def get_context_data(self, **kwargs):
@@ -108,11 +108,11 @@ class AddDirectShipping(FormView):
 
 		if self.request.POST:
 			data['itemset'] = ItemFormset(self.request.POST)
-			data['new_address'] = AddressForm(self.request.POST)
-			data['add_id'] = self.request.POST['choice']
+			data['addform'] = AddressForm(self.request.POST)
+			data['add_id'] = self.request.POST['addchoice']
 		else:
 			data['itemset'] = ItemFormset()
-			data['new_address'] = AddressForm()
+			data['addform'] = AddressForm()
 		return data
 
 	def form_valid(self, form):
@@ -121,8 +121,8 @@ class AddDirectShipping(FormView):
 		images = context['imageset']
 		if context['add_id'] != None and context['add_id'] !='':
 			address = Address.objects.get(pk=context['add_id'])
-		elif context['new_address'] != None and context['new_address']:
-			address = context['new_address']
+		elif context['addform'] != None and context['addform']:
+			address = context['addform']
 			if address.is_valid():
 				address.save()
 
