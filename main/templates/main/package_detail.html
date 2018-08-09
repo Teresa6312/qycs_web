@@ -8,5 +8,10 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 {% block content %}
-
+{{package.cust_tracking_num}}
+{{package.carrier}}
+{% if package.order %}(Order)
+{% elif package.coshiping%}(Co-shipping Package)
+{% else %}(Direct Shipping)
+{% endif %}
 {% endblock %}
