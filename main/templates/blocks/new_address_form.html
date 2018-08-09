@@ -8,85 +8,8 @@
         {% endif %}
     </ul>
 
-    <form method="post">
-    {% csrf_token %}
-     <h3> Add new address:</h3>
-     <div class=" w3-row">
-           <div class="w3-container">
-               <input type="checkbox" id="id_follow_user_infor" />  Follow User Information
-           </div>
-           <div class="w3-half w3-container">
-           First Name:{{addform.first_name}}
-           </div>
-           <div class="w3-half w3-container">
-           Last Name:
-               {{addform.last_name}}
-           </div>
-           <div class="w3-half w3-container">
-           Phone:
-               {{addform.phone}}</div>
-           <div class="w3-half w3-container">
-           Email:
-               {{addform.email}}</div>
-           <div class="w3-container">
-           Address:
-               {{addform.address}}
-           Apartment:
-               {{addform.apt}}
-           </div>
-           <div class="w3-quarter w3-container">
-           City:
-               {{addform.city}}
-           </div>
-           <div class="w3-quarter w3-container">
-           State:
-               {{addform.state}}
-           </div>
-           <div class="w3-quarter w3-container">
-           Country:
-               {{addform.country}}
-           </div>
-           <div class="w3-quarter w3-container">
-           Zip code:
-               {{addform.zipcode}}
-           </div>
-           <div class="w3-half w3-container">
-           Nikename:
-               {{addform.location_name}}
-           </div>
-     </div>
-    <input type="submit" value="Save" >
-    <button type = "button" class="add_cancel_btn">Cancel</button>
-    </form>
+    {% include "blocks/new_address_form_fields.html"%}
+
 </div>
 
 
-<script type="text/javascript">
-
-  function isThere(param,id){
-    if(param!=""){
-      $("#"+id).attr('value', param);
-    }
-    else{
-      $("#"+id).attr("value","");
-    }
-  }//end of isThere
-
-  $(document).ready(function(){
-    $('#id_follow_user_infor').change(function(){
-      if(this.checked){
-        isThere("{{user.first_name}}","id_first_name");
-        isThere("{{user.last_name}}","id_last_name");
-        isThere("{{user.email}}","id_email");
-        isThere("{{user.userprofile.phone}}","id_phone");
-      }//end of checked
-      else{
-        isThere("","id_first_name");
-        isThere("","id_last_name");
-        isThere("","id_email");
-        isThere("","id_phone");
-      }//end of not checked
-
-    })
-  })//end of ready method
-</script>

@@ -10,7 +10,10 @@
 
 
 <div id="address_from_block" style="display: none">
-{% include "blocks/new_address_form.html" with addform=addform%}
+  {% if "update" in request.path is False or "add" in request.path is False %}
+    {% include "blocks/new_address_form.html" with addform=addform%}
+  {% endif %}
+
 1. When save button was click use ajax to post the data to address and then return the address.id
 2. create the address card for this new address
 </div>
@@ -18,3 +21,18 @@
 <div id="address_book_block" style="display: none">
 {% include "blocks/select_address.html"%}
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#add_new_address_btn").click(function(){
+    if($('#newAddressFormModal').length!=0){
+      $('#newAddressFormModal').modal('show');
+    }//end of is form modal
+  });
+
+  $(".add_cancel_btn").click(function(){
+       $('#newAddressFormModal').modal('hide');
+  });
+});
+
+</script>
