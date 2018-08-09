@@ -234,19 +234,16 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-		if "cancel" in request.POST:
+		addform = AddressForm(request.POST)
+		if addform.is_valid():
+			newaddress = addform.save(commit = False)
+			newaddress.user = request.user
+			newaddress.save()
+
 			return redirect(reverse('useraddress'))
+
 		else:
-			addform = AddressForm(request.POST)
-			if addform.is_valid():
-				newaddress = addform.save(commit = False)
-				newaddress.user = request.user
-				newaddress.save()
-
-				return redirect(reverse('useraddress'))
-
-			else:
-				return render(request, self.template_name, {'addform': addform})
+			return render(request, self.template_name, {'addform': addform})
 
 
 # Use updateView?
