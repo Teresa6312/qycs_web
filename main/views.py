@@ -222,7 +222,6 @@ class AddressView(TemplateView):
 
 	def get(self, request):
 		addform = AddressForm()
-		addform.fields['follow_user_infor'].required = False
 		addform.fields['first_name'].required = False
 		addform.fields['last_name'].required = False
 		addform.fields['address'].required = False
@@ -234,22 +233,19 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-		if "cancel" in request.POST:
+
+		addform = AddressForm(request.POST)
+		if addform.is_valid():
+			newaddress = addform.save(commit = False)
+			newaddress.user = request.user
+			newaddress.save()
+
 			return redirect(reverse('useraddress'))
+
 		else:
-			addform = AddressForm(request.POST)
-			if addform.is_valid():
-				newaddress = addform.save(commit = False)
-				newaddress.user = request.user
-				newaddress.save()
-
-				return redirect(reverse('useraddress'))
-
-			else:
-				return render(request, self.template_name, {'addform': addform})
+			return render(request, self.template_name, {'addform': addform})
 
 
-# Use updateView?
 
 class EditAddressView(TemplateView):
 	template_name = 'main/address.html'
@@ -279,12 +275,6 @@ class EditAddressView(TemplateView):
 # when create a new address for update, neet to reset the old one's user to be null
 			if addform.instance == None:
 				add.user = None
-				if add.follow_user_infor:
-					add.first_name = request.user.first_name
-					add.last_name = request.user.last_name
-					add.email = request.user.email
-					add.phone = request.user.userprofile.phone
-					add.follow_user_infor = False
 				add.save()
 
 			updateaddress.save()
@@ -298,13 +288,6 @@ class DeleteAddressView(TemplateView):
 
 	def get(self, request, add_id):
 		add = Address.objects.get(pk=add_id)
-
-		if add.follow_user_infor:
-			add.first_name = request.user.first_name
-			add.last_name = request.user.last_name
-			add.email = request.user.email
-			add.phone = request.user.userprofile.phone
-			add.follow_user_infor = False
 		add.user = None
 		add.save()
 
