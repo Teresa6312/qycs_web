@@ -1,4 +1,14 @@
-<form method="post">
+
+
+
+<form method="post" id="newAddressForm">
+  <ul class="messagelist">
+      {% if addform.errors %}
+          {% for message in addform.errors%}
+          <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+          {% endfor %}
+      {% endif %}
+  </ul>
 {% csrf_token %}
  <h3> Add new address:</h3>
  <div class=" w3-row">
@@ -45,7 +55,7 @@
            {{addform.location_name}}
        </div>
  </div>
-<input type="submit" value="Save" >
+<input type="button" id="newAddressSubmitBtn" value="Save" >
 <button type = "button" class="add_cancel_btn">Cancel</button>
 </form>
 
@@ -59,6 +69,27 @@
       $("#"+id).attr("value","");
     }
   }//end of isThere
+
+  function submitForm(){
+    $.ajax({
+      type: "POST",
+      url: "{% url 'useraddress' %}",
+      data: $('#newAddressForm').serialize(),
+      success: function(data){
+        $('#newAddressForm').remove();
+        $('#newAddressFormModal').find('script').remove();
+        $('#newAddressFormModalBody').append($(data).find('#newAddressFormModal').find('#newAddressForm'));
+        $('#newAddressFormModal').append($(data).find('#newAddressFormModal').find('script'));
+
+        if($(data).find('#newAddressFormModal').find('.messagelist').children().length == 0){
+          $('#newAddressFormModal').modal('hide');
+        }
+      },
+      failure: function(data){
+        console.log("failure");
+      },
+    });
+  }//end of submitForm
 
   $(document).ready(function(){
     $('#id_follow_user_infor').change(function(){
@@ -76,5 +107,9 @@
       }//end of not checked
 
     })
+
+    $('#newAddressSubmitBtn').click(function(){
+      submitForm();
+    });
   })//end of ready method
 </script>
