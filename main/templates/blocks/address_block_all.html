@@ -3,8 +3,17 @@
 {% if user.address_set.all %}
     <button type="button" id="select_address_btn"> Select from address book</button>
 {% endif %}
+
 {% if user.userprofile.default_address %}
-    {% include "blocks/default_address_card.html"%}
+    {% if newaddress %}
+      {% include "blocks/default_address_card.html" with add=newaddress%}
+      {% else %}
+        {% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}
+    {% endif %}
+{% else %}
+{% if newaddress %}
+  {% include "blocks/default_address_card.html" with add=newaddress%}
+{% endif %}
 {% endif%}
 </div>
 

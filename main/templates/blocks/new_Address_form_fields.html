@@ -71,10 +71,13 @@
   }//end of isThere
 
   function submitForm(){
+    let indexObj={'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'addform':$('#newAddressForm').serialize(),
+                    'is_popup':"True"};
     $.ajax({
       type: "POST",
       url: "{% url 'useraddress' %}",
-      data: $('#newAddressForm').serialize(),
+      data: indexObj,
       success: function(data){
         $('#newAddressForm').remove();
         $('#newAddressFormModal').find('script').remove();
@@ -83,6 +86,10 @@
 
         if($(data).find('#newAddressFormModal').find('.messagelist').children().length == 0){
           $('#newAddressFormModal').modal('hide');
+          $('#default_address_card').remove();
+          $('#default_address_block').append($(data).find('#default_address_card'));
+          console.log(data);
+
         }
       },
       failure: function(data){
