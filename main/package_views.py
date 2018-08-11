@@ -9,6 +9,7 @@ from .forms import (
 from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
@@ -271,3 +272,16 @@ class PackageAddedView(TemplateView):
 
 			# return render(request, 'main/addpackage.html' , {'form': form})
 			return redirect(reverse('userpackages'))
+
+
+
+class PackageDetailView(TemplateView):
+	template_name = 'main/package_detail.html'
+
+	def get(self, request, pack_id):
+		try:
+			package = Service.objects.get(pk=pack_id)
+			return render(request, self.template_name , {'package': package})
+		except ObjectDoesNotExist:
+			messages.error(request, "Cannot Find the package")
+			return render(request,reverse('userpackages'))

@@ -4,7 +4,7 @@
 
 {% block title%}
 Update Profile | Qycs Global Shipping Inc. | English Official Website
-{% endblock%
+{% endblock %}
 
 {% block account_content %}
 <div class="w3-cell w3-container w3-mobile">
@@ -24,7 +24,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 	{% for package in package_list %}
 		<div class="w3-card-2 w3-round w3-panel">
 	        <div class="w3-quarter w3-container">
-	        	<h4>{{package.cust_tracking_num}}</h4>
+	        	<h4 onclick="window.location.href='{{package.get_absolute_url}}'">{{package.cust_tracking_num}}</h4>
 	        		{{package.cust_carrier}} ({{package.wh_received.country}})<br/>
 	        		{% if package.created_date %}
 	        			Created on: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}

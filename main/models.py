@@ -363,7 +363,9 @@ class Service(models.Model):
 		else:
 			return "%s's package created on %s \n"%(self.user, self.created_date)
 
-
+	def get_absolute_url(self):
+		from django.urls import reverse
+		return reverse('package_detail', args=[str(self.id)])
 
 class Item(models.Model):
 	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = 'Service Key')
