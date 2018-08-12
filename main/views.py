@@ -24,6 +24,8 @@ from django.urls import reverse
 
 from .code import checkAddress
 
+from django.http import QueryDict
+
 
 class HomeView(TemplateView):
 	template_name = 'main/home.html'
@@ -222,6 +224,7 @@ class AddressView(TemplateView):
 
 	def get(self, request):
 		addform = AddressForm()
+		addform.fields['follow_user_infor'].required = False
 		addform.fields['first_name'].required = False
 		addform.fields['last_name'].required = False
 		addform.fields['address'].required = False
@@ -233,19 +236,25 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
+		# addform = AddressForm(request.POST)
+		is_popup=request.POST.get('is_popup','')
 
-		addform = AddressForm(request.POST)
+		addform = AddressForm(QueryDict(request.POST.get('addform','')))
 		if addform.is_valid():
 			newaddress = addform.save(commit = False)
 			newaddress.user = request.user
 			newaddress.save()
-
-			return redirect(reverse('useraddress'))
+			print(is_popup,type(is_popup))
+			if is_popup == "True":
+				return render(request, 'main/updateprofile.html' , {'newaddress': newaddress})
+			else:
+				return redirect(reverse('useraddress'))
 
 		else:
 			return render(request, self.template_name, {'addform': addform})
 
 
+# Use updateView?
 
 class EditAddressView(TemplateView):
 	template_name = 'main/address.html'

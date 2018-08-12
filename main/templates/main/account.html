@@ -40,7 +40,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
 						<h4>Default Address</h4>
 							{% if user.userprofile.default_address %}
-										{% include "blocks/default_address_card.html"%}
+										{% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}
 							{% else %}
 									No default address!
 							{% endif %}

@@ -157,7 +157,7 @@ class UserProfileForm(forms.ModelForm):
 
 #-----------------------------------------------------------------------------------------
 '''
-Update User Profile
+Use in Update User Profile or Register as Collector
 '''
 #-----------------------------------------------------------------------------------------
 class ProfileForm(forms.Form):
@@ -179,16 +179,8 @@ class ProfileForm(forms.Form):
 	def save(self, user, commit = True):
 		profile = UserProfile.objects.get(user = user)
 		if commit:
-# -------------------------------------------------------------------------------------------
-# '''
-# for address with follow user information
-# '''
-# ------------------------------------------------------------------------------------------
-		# if any address follow user information, then create a new address that follow user
-		# information and use the old user information to update the address
+# disable tag make the field as '', need to asign the first_name and last_name when it is ''
 			if user.first_name != self.cleaned_data['first_name'].title() and user.last_name != self.cleaned_data['last_name'].title():
-				for add in Address.objects.filter(user = user,  follow_user_infor = True):
-					checkAddress(add)
 				user.first_name = self.cleaned_data['first_name'].title() or user.first_name
 				user.last_name = self.cleaned_data['last_name'].title() or user.last_name
 
@@ -216,8 +208,6 @@ Create new Address
 '''
 #-----------------------------------------------------------------------------------------
 class AddressForm(forms.ModelForm):
-	follow_user_infor = forms.BooleanField(required = False, widget=forms.CheckboxInput(attrs={"class":"w3-check"
-									}))
 	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	last_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
@@ -243,42 +233,6 @@ class AddressForm(forms.ModelForm):
 	class Meta:
 		model = Address
 		exclude = ['meno']
-
-	#
-	# def __init__(self, *args, **kwargs):
-	# 	super().__init__(*args, **kwargs)
-	# 	if self.instance:
-	# 		try:
-	# 			add = Address.objects.get(id = self.instance.id)
-	# 		except ObjectDoesNotExist as err:
-	# 			self.fields['follow_user_infor'].initial = ''
-	# 			self.fields['last_name'].initial = ''
-	# 			self.fields['address'].initial = ''
-	# 			self.fields['apt'].initial = ''
-	# 			self.fields['city'].initial = ''
-	# 			self.fields['state'].initial = ''
-	# 			self.fields['country'].initial = ''
-	# 			self.fields['zipcode'].initial = ''
-	# 			self.fields['phone'].initial = ''
-	# 			self.fields['email'].initial = ''
-	# 			self.fields['location_name'].initial = ''
-	# 			return
-	#
-	# 		self.user['user'].initial = add.user
-	# 		print('---------------initial--------------------')
-	# 		print(self.user['user'])
-	# 		self.fields['follow_user_infor'].initial = add.follow_user_infor
-	# 		self.fields['first_name'].initial = add.first_name
-	# 		self.fields['last_name'].initial = add.last_name
-	# 		self.fields['address'].initial = add.address
-	# 		self.fields['apt'].initial = add.apt
-	# 		self.fields['city'].initial = add.city
-	# 		self.fields['state'].initial = add.state
-	# 		self.fields['country'].initial = add.country
-	# 		self.fields['zipcode'].initial = add.zipcode
-	# 		self.fields['phone'].initial = add.phone
-	# 		self.fields['email'].initial = add.email
-	# 		self.fields['location_name'].initial = add.location_name
 
 	def save(self, commit=True, *args, **kwargs):
 		add = super(AddressForm, self).save(commit=False, *args, **kwargs)
