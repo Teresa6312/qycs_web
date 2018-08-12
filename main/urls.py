@@ -31,11 +31,6 @@ urlpatterns = [
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
     path('myaccount/change-password/', login_required(views.ChangePasswordView.as_view()), name='changepassword'),
 
-    path('myaccount/change-password/', auth_views.PasswordChangeView,
-    {'template_name':'password/password_change_form.html'}, name='password_change'),
-    path('myaccount/change-password/done/', auth_views.PasswordChangeDoneView,
-    {'template_name':'password/password_change_done.html'}, name='password_change_done'),
-
     path('myaccount/address', login_required(views.AddressView.as_view()), name='useraddress'),
     path('myaccount/address/<int:add_id>/eidt', login_required(views.EditAddressView.as_view()), name='editaddress'),
 

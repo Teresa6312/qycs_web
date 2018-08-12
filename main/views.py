@@ -233,7 +233,6 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-
 		addform = AddressForm(request.POST)
 		if addform.is_valid():
 			newaddress = addform.save(commit = False)
@@ -246,6 +245,7 @@ class AddressView(TemplateView):
 			return render(request, self.template_name, {'addform': addform})
 
 
+# Use updateView?
 
 class EditAddressView(TemplateView):
 	template_name = 'main/address.html'
