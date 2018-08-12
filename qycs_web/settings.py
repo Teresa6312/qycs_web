@@ -58,6 +58,7 @@ ALLOWED_HOSTS = ['herokuapp.com',]
 
 INSTALLED_APPS = [
     'main.apps.MainConfig',
+    'collector.apps.CollectorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

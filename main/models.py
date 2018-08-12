@@ -151,7 +151,9 @@ class CollectionPoint(Address_Common_Info):
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
 
-
+	def get_absolute_url(self):
+	    from django.urls import reverse
+	    return reverse('collection_point_view', args=[str(self.pk)])
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key = True)
