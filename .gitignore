@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+qycs_web/settings/local.py
+=======
 qycs_web/local.py
+>>>>>>> development
 db.sqlite3
 .py[cod]
 

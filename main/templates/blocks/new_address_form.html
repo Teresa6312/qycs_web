@@ -13,7 +13,7 @@
      <h3> Add new address:</h3>
      <div class=" w3-row">
            <div class="w3-container">
-               {{addform.follow_user_infor}}Follow User Information
+               <input type="checkbox" id="id_follow_user_infor" />  Follow User Information
            </div>
            <div class="w3-half w3-container">
            First Name:{{addform.first_name}}
@@ -59,3 +59,34 @@
     <button type = "button" class="add_cancel_btn">Cancel</button>
     </form>
 </div>
+
+
+<script type="text/javascript">
+
+  function isThere(param,id){
+    if(param!=""){
+      $("#"+id).attr('value', param);
+    }
+    else{
+      $("#"+id).attr("value","");
+    }
+  }//end of isThere
+
+  $(document).ready(function(){
+    $('#id_follow_user_infor').change(function(){
+      if(this.checked){
+        isThere("{{user.first_name}}","id_first_name");
+        isThere("{{user.last_name}}","id_last_name");
+        isThere("{{user.email}}","id_email");
+        isThere("{{user.userprofile.phone}}","id_phone");
+      }//end of checked
+      else{
+        isThere("","id_first_name");
+        isThere("","id_last_name");
+        isThere("","id_email");
+        isThere("","id_phone");
+      }//end of not checked
+
+    })
+  })//end of ready method
+</script>
