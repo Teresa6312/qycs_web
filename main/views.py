@@ -24,6 +24,8 @@ from django.urls import reverse
 
 from .code import checkAddress
 
+from django.http import QueryDict
+
 
 class HomeView(TemplateView):
 	template_name = 'main/home.html'
