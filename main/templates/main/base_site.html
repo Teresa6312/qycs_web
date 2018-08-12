@@ -56,7 +56,7 @@
             <a href="">Price List</a>
             <a href="">Global Shop</a>
             <a href="/admin" target="_blank">Admin</a>
-
+            <a href="{% url 'userprofile' %}">My Account</a>
             <div class="topnav-right">
                 {% if user.is_authenticated %}
 
@@ -95,6 +95,54 @@
       </div>
   </div>
 
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'add_direct_shipping' %}">Direct Shipping</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'collection_points' %}">Co-Shipping</a>
+        </li>
+        <li class="nav-item">
+          <a href="">Price List</a>
+        </li>
+        <li class="nav-item">
+          <a href="">Global Shop</a>
+        </li>
+        <li class="nav-item">
+            <a href="/admin" target="_blank">Admin</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{user.username}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{% url 'userprofile' %}">User Information</a>
+            <a class="dropdown-item" href="{% url 'useraddress' %}">Address List</a>
+            <a class="dropdown-item" href="{% url 'userpackage' %}">Packages History</a>
+            <a class="dropdown-item" href="{% url 'userwallet' %}">Wallet</a>
+            <a class="dropdown-item" href="/accounts/logout/">Logout</a>
+          </div>
+        </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Login/Sign Up
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+            <a class="dropdown-item" href="{% url 'register' %}">Sign Up</a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav> -->
 {% endblock %}
 
 

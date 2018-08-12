@@ -10,7 +10,7 @@ from .forms import (
 from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
-
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, FormView
@@ -159,7 +159,7 @@ class UpdateProfileView(TemplateView):
 
 	def post(self, request):
 		userform = ProfileForm(request.POST)
-		addform = AddressForm(request.POST)
+		# addform = AddressForm(request.POST)
 
 		if userform.is_valid():
 			user = userform.save(request.user)
@@ -167,21 +167,11 @@ class UpdateProfileView(TemplateView):
 
 # update the user profile
 			try:
-	#  save default_address from select
-				selected_add = Address.objects.get(pk=request.POST['addchoice'])
-				if profile.default_address != selected_add:
-					profile.default_address = selected_add
-			except:
-
-	#  save default_address from add new address
-				if addform.is_valid():
-					newadd = addform.save()
-					profile.default_address = newadd
-				else:
-					return render(request, self.template_name, {
-											'col_list': self.col_list,
-											'addform': addform,
-											})
+	#  save default_address
+				selected_add = Address.objects.get(pk=request.POST['selected_add'])
+				profile.default_address = selected_add
+			except ObjectDoesNotExist:
+				pass
 
 			try:
 	#  save default_col from select
@@ -195,8 +185,8 @@ class UpdateProfileView(TemplateView):
 			return redirect(reverse('account'), user = user)
 		else:
 			return render(request, self.template_name, {
-									'col_list': self.col_list,
-									'addform': addform
+									'col_list': self.col_list
+									# 'addform': addform
 									})
 
 

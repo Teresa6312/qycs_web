@@ -62,9 +62,8 @@
 
 
 {% block content %}
-<div class="w3-cell w3-container w3-mobile">
+<div class="w3-cell w3-container w3-mobile" style="width:70%">
     <div class="w3-card-2 w3-round w3-container">
-        <div class="col-md-4">
           <form method="post" enctype="multipart/form-data">{% csrf_token %}
                 {% block shippingset %} {% endblock%}
 
@@ -93,14 +92,14 @@
                 </div>
 
 
-                <div id = "add_item_form" class="w3-container" style="display: none">
+                <div id = "add_item_form" class="w3-container">
                     <h3>Add details of each item in the package:</h3>
 
                     {{ itemset.management_form }}
 
                     {% if itemset.forms %}
                         {% for subform in itemset.forms %}
-                            <table class="w3-twothird" >
+                            <table  style="width:90%">
                                     <tr class="{% cycle 'row1' 'row2' %} itemset_row">
 
 
@@ -142,11 +141,8 @@
                 <button>Save</button>
                 <button class="cleanBtn">Clear Form</button>
             </form>
-        </div>
     </div>
 </div>
-
-
 
 {% endblock %}
 
@@ -235,9 +231,9 @@ function AddSnapshotBlock(imageSet){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
 
-    $("input").focus(function(){
-      $(this).val('');
-    });
+    // $("input").focus(function(){
+    //   $(this).val('');
+    // });
     $("#add_new_address_btn").click(function(){
       $('#address_from_block').show();
       $('#address_from_block').hide().slideDown(500);
