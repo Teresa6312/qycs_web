@@ -18,6 +18,14 @@
                     {% elif addchoice.phone or addchoice.email%}
                         {{addchoice.phone}}{{addchoice.email}}<br/>
                     {% endif %}
+                {% else %}
+                <h5>{{user.last_name}}, {{user.first_name}}</h5>
+                {% if user.userprofile.phone and user.email%}
+                    {{user.userprofile.phone}} | {{user.email}}<br/>
+                {% elif user.userprofile.phone or user.email%}
+                    {{user.userprofile.phone}}{{user.email}}<br/>
+                {% endif %}
+
                 {% endif %}
                     {{addchoice.address}}<br/>
                     {% if addchoice.apt %}{{addchoice.apt}}<br/>{% endif %}
