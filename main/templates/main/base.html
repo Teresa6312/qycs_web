@@ -62,6 +62,9 @@
 <!-- Container -->
 <div id="container">
   {% include "blocks/new_address_form_popup.html"%}
+  {% if user.address_set %}
+    {% include "blocks/select_address_popup.html"%}
+  {% endif %}
     {% if not is_popup %}
     <!-- Header -->
     <div>

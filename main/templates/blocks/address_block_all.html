@@ -27,9 +27,9 @@
 2. create the address card for this new address
 </div>
 
-<div id="address_book_block" style="display: none">
-{% include "blocks/select_address.html"%}
-</div>
+<!-- <div id="address_book_block" style="display: none">
+
+</div> -->
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -41,6 +41,10 @@ $(document).ready(function(){
 
   $(".add_cancel_btn").click(function(){
        $('#newAddressFormModal').modal('hide');
+  });
+
+  $("#select_address_btn").click(function(){
+       $('#selectAddressModal').modal('show');
   });
 
 

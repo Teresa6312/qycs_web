@@ -1,11 +1,15 @@
 
 <div  class="w3-row w3-container">
 {% for addchoice in user.address_set.all %}
-    <table class="w3-half w3-mobile"><tr class="w3-half"><td>
+    <table class="w3-half w3-mobile" id="{{ addchoice.id }}">
+
+      <tr class="w3-half">
+        <!-- <td>
         <input type="radio" class=" w3-radio" name="addchoice" id="addchoice{{ forloop.counter }}"
              {% if addchoice == user.userprofile.default_address %} checked="checked" {% endif %}
              value="{{ addchoice.id }}">
-        </td><td>
+        </td> -->
+        <td>
 
         <label for="addchoice{{ forloop.counter }}">
 
@@ -35,7 +39,26 @@
 
         </label>
     </td></tr></table>
+    <script type="text/javascript">
+        // console.log($('.w3-half'));
+        $('#{{ addchoice.id }}').click(function(){
+          $('.w3-half').each(function(){
+            $(this).find('.w3-card-2').css('background-color','white');
+          })
+          $(this).find('.w3-card-2').css('background-color','#ffb2b2');
+          $('#default_address_card').remove();
 
+          // console.log($('#default_address_card'));
+          let element=$(this).find('.w3-card-2').clone();
+          $('#default_address_block').append(element);
+          $('#default_address_block').find('.w3-card-2').attr('id','default_address_card');
+          $('#default_address_card').css('background-color','white');
+          $('#default_address_card').append('<input type="hidden" name="selected_add" value='+$(this).attr("id")+' />');
+          $('#selectAddressModal').modal('hide');
+
+        });
+
+    </script>
 {% endfor %}
 </div>
 <button type = "button" class="select_add_cancel_btn">Cancel</button>
