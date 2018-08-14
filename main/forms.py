@@ -161,9 +161,9 @@ Use in Update User Profile or Register as Collector
 '''
 #-----------------------------------------------------------------------------------------
 class ProfileForm(forms.Form):
-	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	last_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
@@ -171,7 +171,7 @@ class ProfileForm(forms.Form):
 									}))
 	birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	country = forms.CharField(required = True, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	country = forms.CharField(required = False, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	language = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
