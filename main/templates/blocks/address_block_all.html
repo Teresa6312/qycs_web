@@ -1,5 +1,5 @@
 <div id="default_address_block">
-<button type="button" id="add_new_address_btn" onclick="createAddForm()"> Add new address</button>
+<button type="button" id="add_new_address_btn"> Add new address</button>
 {% if user.address_set.all %}
     <button type="button" id="select_address_btn"> Select from address book</button>
 {% endif %}
@@ -26,16 +26,9 @@
 
 <script type="text/javascript">
 
-
 function createAddForm() {
-
-    var addform = document.getElementById("newAddressForm");
-
-    // var token = document.createElement("INPUT");
-    // token.setAttribute("type", "hidden");
-    // token.setAttribute("name", "csrfmiddlewaretoken");
-    // token.setAttribute("value", csrftoken);
-    // addform.appendChild(token);
+    var addform = document.createElement("FORM");
+    addform.setAttribute("id", "newAddressForm_js");
 
     var formblock = document.createElement("div");
     formblock.setAttribute("class", "w3-row");
@@ -226,56 +219,60 @@ function fillin(){
 }
 
 function submitForm(){
-  var adblock = document.getElementById("newAddressForm_js");
-  console.log(adblock);
 
-  // let indexObj={'csrfmiddlewaretoken': '{{ csrf_token }}',
-  //                 'addform':$('#newAddressForm_js').serialize(),
-  //                 'is_popup':"True"};
-  $.ajax({
-    type: "POST",
-    url: "{% url 'useraddress' %}",
-    data: $('#newAddressForm_js'),
-    success: function(data){
-      console.log("Yes");
-      // // $('#newAddressForm').remove();
-      // $('#newAddressFormModal').find('script').remove();
-      // $('#newAddressFormModalBody').append($(data).find('#newAddressFormModal').find('#newAddressForm'));
-      // $('#newAddressFormModal').append($(data).find('#newAddressFormModal').find('script'));
-      //
-      // if($(data).find('#newAddressFormModal').find('.messagelist').children().length == 0){
-      //   $('#newAddressFormModal').modal('hide');
-      //   $('#default_address_card').remove();
-      //   $('#default_address_block').append($(data).find('#default_address_card'));
-      //   console.log(data);
-      //
-      // }
-    },
-    failure: function(data){
-      console.log("failure");
-    },
-  });
+  let formpass=true;
+  let inputs = document.forms["newAddressForm_js"].getElementsByTagName("input");
+  for(var i = 0, a; a = inputs[i++];){
+    if(a.required && a.value==''){
+        a.style.background = "red";
+        formpass=false;
+    }
+  }
+
+  // if(formpass){
+      let addobject={'csrfmiddlewaretoken': '{{ csrf_token }}',
+                      'addform':$('#newAddressForm_js').serialize(),
+                      'is_popup':"True"};
+
+      $.ajax({
+        type: "POST",
+        url: "{% url 'useraddress' %}",
+        data: addobject,
+        success: function(data){
+          $('#newAddressFormModalBody').append($(data).find('#newAddressFormModal').find('#newAddressForm'));
+          $('#newAddressFormModal').append($(data).find('#newAddressFormModal').find('script'));
+
+          if($(data).find('#newAddressFormModal').find('.messagelist').children().length == 0){
+            $('#newAddressFormModal').modal('hide');
+            $('#default_address_card').remove();
+            $('#newAddressForm_js').remove();
+            $('#default_address_block').append($(data).find('#default_address_card'));
+          }
+          else{
+            $('#newAddressForm_js').before($(data).find('.messagelist'));
+          }
+        },
+        failure: function(data){
+          $('#newAddressForm_js').before($(data).find('.messagelist'));
+        },
+      });
+  // }
 }//end of submitForm
 
 $(document).ready(function(){
 //
-
-
-//   $("#add_new_address_btn").click(function(){
-//
-//       // $('#newAddressFormModalBody').append('{{user.username}}')
-//       createAddForm();
-//       $('#newAddressFormModal').modal('show');
-//     }//end of is form modal
-//   });
+  $("#add_new_address_btn").click(function(){
+      createAddForm();
+      $('#newAddressFormModal').modal('show');
+  });
 //
 //   $(".add_cancel_btn").click(function(){
 //        $('#newAddressFormModal').modal('hide');
 //   });
 //
-//   $("#select_address_btn").click(function(){
-//        $('#selectAddressModal').modal('show');
-//   });
+  $("#select_address_btn").click(function(){
+       $('#selectAddressModal').modal('show');
+  });
 //
 //   $(".select_add_cancel_btn").click(function(){
 //        $('#default_address_block').show();

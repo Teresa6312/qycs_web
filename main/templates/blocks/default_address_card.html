@@ -2,33 +2,23 @@
 
 <input type="hidden" name="selected_add" value="{{add.id}}" />
 
-{% if add.location_name %}
-    <h4>{{add.location_name}}</h4>
+<h5 id="ln_fn">{{add.last_name}}, {{add.first_name}}</h5>
+<div id="ph_em">
+{% if add.phone and add.email%}
+    {{add.phone}} | {{add.email}}
+{% elif add.phone or add.email%}
+    {{add.phone}}{{add.email}}
 {% endif %}
-
-{% if not add.follow_user_infor %}
-    <h5>{{add.last_name}}, {{add.first_name}}</h5>
-    {% if add.phone and add.email%}
-        {{add.phone}} | {{add.email}}<br/>
-    {% elif add.phone or add.email%}
-        {{add.phone}}{{add.email}}<br/>
-    {% endif %}
-{% else %}
-    {{user.last_name}}, {{user.first_name}}<br/>
-    {% if user.email and user.userprofile.phone %}
-        {{user.email}} | {{user.userprofile.phone}}<br/>
-    {% elif user.email or user.userprofile.phone%}
-        {{user.email}}{{user.userprofile.phone}}<br/>
-    {% endif %}
-{% endif %}
-
-{{add.address}}<br/>
-
+</div>
+<div  id="ad">
+{{add.address}}
+</div>
+<div  id="ap">
 {% if add.apt %}
     {{add.apt}}<br/>
 {% endif %}
+</div>
 
-    {{add.city}}, {{add.state}} {{add.zipcode}}<br/>
-    {{add.country}}<br/>
+<div id="ct_st_zp">{{add.city}}, {{add.state}} {{add.zipcode}}</div>
 
 </div>
