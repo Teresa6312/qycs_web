@@ -9,8 +9,8 @@ from .forms import (
 	)
 from django.db import transaction
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render, redirect
-
+from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, FormView
@@ -23,6 +23,8 @@ from django.urls import reverse
 # used to reverse the url name as a url path
 
 from .code import checkAddress
+
+from django.http import QueryDict
 
 
 class HomeView(TemplateView):
@@ -149,44 +151,35 @@ class UpdateProfileView(TemplateView):
 	col_list = CollectionPoint.objects.filter(status=True)
 
 	def get(self, request):
-		addform = AddressForm()
 		return render(request, self.template_name, {
 						'col_list': self.col_list,
-						'addform': addform,
 						})
 
 	def post(self, request):
 		userform = ProfileForm(request.POST)
-		addform = AddressForm(request.POST)
 
 		if userform.is_valid():
 			user = userform.save(request.user)
 			profile = UserProfile.objects.get(user = user)
-
 # update the user profile
 			try:
 	#  save default_address from select
-				selected_add = Address.objects.get(pk=request.POST['addchoice'])
-				if profile.default_address != selected_add:
-					profile.default_address = selected_add
-			except:
+				selected_add = Address.objects.get(pk=request.POST['selected_add'])
+				profile.default_address = selected_add
 
-	#  save default_address from add new address
-				if addform.is_valid():
-					newadd = addform.save()
-					profile.default_address = newadd
-				else:
-					return render(request, self.template_name, {
-											'col_list': self.col_list,
-											'addform': addform,
-											})
+			except ObjectDoesNotExist:
+				print("No address find")
+				print(selected_add)
+			except MultipleObjectsReturned:
+				print("MultipleObjectsReturned")
+				print(selected_add)
 
-			try:
-	#  save default_col from select
-				selected_col = CollectionPoint.objects.get(pk=request.POST['col_choice'])
-				profile.default_col = selected_col
-			except:
-				pass
+	# 		try:
+	# #  save default_col from select
+	# 			selected_col = CollectionPoint.objects.get(pk=request.POST['col_choice'])
+	# 			profile.default_col = selected_col
+	# 		except ObjectDoesNotExist:
+	# 			messages.error(request,'Cannot find the Collection point.')
 
 			profile.save()
 
@@ -194,7 +187,7 @@ class UpdateProfileView(TemplateView):
 		else:
 			return render(request, self.template_name, {
 									'col_list': self.col_list,
-									'addform': addform
+									'userform': userform,
 									})
 
 
@@ -234,17 +227,23 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-		if "cancel" in request.POST:
-			return redirect(reverse('useraddress'))
-		else:
-			addform = AddressForm(request.POST)
-			if addform.is_valid():
-				newaddress = addform.save(commit = False)
-				newaddress.user = request.user
-				newaddress.save()
+		# addform = AddressForm(request.POST)
+		is_popup=request.POST.get('is_popup','')
 
+		addform = AddressForm(QueryDict(request.POST.get('addform','')))
+		if addform.is_valid():
+			newaddress = addform.save(commit = False)
+			newaddress.user = request.user
+			newaddress.save()
+			if is_popup == "True":
+				# messages.info(request, "You didn't select a Collection Point.")
+				return render(request, 'main/updateprofile.html', {'newaddress': newaddress})
+			else:
 				return redirect(reverse('useraddress'))
 
+		else:
+			if is_popup == "True":
+				return render(request, 'main/updateprofile.html', {'addform': addform})
 			else:
 				return render(request, self.template_name, {'addform': addform})
 
@@ -279,12 +278,6 @@ class EditAddressView(TemplateView):
 # when create a new address for update, neet to reset the old one's user to be null
 			if addform.instance == None:
 				add.user = None
-				if add.follow_user_infor:
-					add.first_name = request.user.first_name
-					add.last_name = request.user.last_name
-					add.email = request.user.email
-					add.phone = request.user.userprofile.phone
-					add.follow_user_infor = False
 				add.save()
 
 			updateaddress.save()
@@ -298,13 +291,6 @@ class DeleteAddressView(TemplateView):
 
 	def get(self, request, add_id):
 		add = Address.objects.get(pk=add_id)
-
-		if add.follow_user_infor:
-			add.first_name = request.user.first_name
-			add.last_name = request.user.last_name
-			add.email = request.user.email
-			add.phone = request.user.userprofile.phone
-			add.follow_user_infor = False
 		add.user = None
 		add.save()
 

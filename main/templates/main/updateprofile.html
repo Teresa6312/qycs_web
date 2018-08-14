@@ -5,23 +5,22 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
-{% block messages %}
-    {% if messages %}
-    <ul class="messagelist">{% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-    {% endfor %}</ul>
-    {% endif %}
-
-    {% if form.errors %}
-    <ul class="messagelist">
-        {% for message in form.errors%}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-{% endblock messages %}
-
 {% block account_content %}
+
+{% if messages %}
+<ul class="messagelist">{% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+{% endfor %}</ul>
+{% endif %}
+
+{% if userform.errors %}
+<ul class="messagelist">
+    {% for message in userform.errors%}
+    <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
     <div class="w3-cell w3-container">
         <h2> Update My Profile</h2>
         <form method = "post">
@@ -69,33 +68,16 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 {% block script%}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <script>
 
     $(document).ready(function(){
-        $("input").focus(function(){
-          $(this).val('');
-        });
-        $("#add_new_address_btn").click(function(){
-          $('#address_from_block').show();
-          $('#address_from_block').hide().slideDown(500);
-          $('#default_address_block').hide();
-        });
-        $("#select_address_btn").click(function(){
-             $('#address_book_block').show();
-             $('#address_book_block').hide().slideDown(500);
-             $('#default_address_block').hide();
-        });
-        $(".add_cancel_btn").click(function(){
-             $('#default_address_block').show();
-             $('#default_address_block').hide().slideDown(500);
-             $('#address_from_block').hide();
-        });
-        $(".select_add_cancel_btn").click(function(){
-             $('#default_address_block').show();
-             $('#default_address_block').hide().slideDown(500);
-             $('#address_book_block').hide();
-        });
+
+        // $(".select_add_cancel_btn").click(function(){
+        //      $('#default_address_block').show();
+        //      $('#default_address_block').hide().slideDown(500);
+        //      $('#address_book_block').hide();
+        // });
 
         $("#select_col_btn").click(function(){
              $("#collection_points_list").show();

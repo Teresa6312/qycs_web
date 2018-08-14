@@ -1,0 +1,108 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% endblock%}
+
+
+{% block messages %}
+    {% if messages %}
+    <ul class="messagelist">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+<div class="w3-container">
+{{collector.name}}
+<div class = "w3-card-4" style="width:500px;">
+{% if collector.review_set.all %}
+{% for review in collector.review_set.all %}
+  <div class="w3-container" >
+      {{review.creater.username}}: {{review.review}}<br/>
+
+  </div>
+{% endfor %}
+{% endif %}
+</div>
+<br/>
+<div class = "w3-card-4" style="width:500px;">
+{% if collector.question_set.all %}
+{% for question in collector.question_set.all %}
+   {% if question.creater.pk == user.pk%}
+    <div class="w3-container" >
+        {{question.creater.username}}: {{question.question}}<br/>
+        <form method="post">
+          {% csrf_token %}
+          <input type="text" name="message">
+          <input type="hidden" name="response_for", value="{{question.id}}">
+          <button type="submit" name="response" value="question_response">Save</button>
+        </form>
+    </div>
+    {% endif %}
+{% endfor %}
+{% endif %}
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="text" name="message">
+  <button type="submit" name="review" value="">Save Review</button>
+  <button type="submit" name="question" value="">Save Question</button>
+
+</form>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block script%}
+<script type="text/javascript">
+
+function AddSnapshotBlock(review){
+
+    let content = '<form method="post">'
+    '{% csrf_token %}'
+    '<input type="text" name="message">'
+    '<input type="hidden" name="response_for", value="{{review.id}}">'
+    '<button type="submit" name="response" value="response">Save</button></form>'
+
+  let content =
+    '<div class="w3-container" id = "add_snapshot_form">'+
+    "<h3>Add Order Snapshot of the Package:</h3>"+
+    imageSet+
+    "How to display the images'names after selected the images!"+
+    '</div>';
+
+    if($('#add_snapshot_form').length==0){
+      $('#add_item_form').before(content);
+      $('#add_snapshot_form').hide().slideDown(500);
+      $('#add_snapshot_btn').text("Delete Snapshot");
+    }//end if #add_snapshot_form exists
+    else{
+
+      $('#add_snapshot_form').slideUp(500, function(){
+        $('#add_snapshot_form').remove();
+      });
+
+      $('#add_snapshot_btn').text("Add Snapshot");
+    }//end of DOES NOT #add_snapshot_form exists
+
+}//end of AddSnapshotBlock
+
+  $(document).ready(function(){
+    $('.imageset_row').formset({
+        addText: 'add Image',
+        deleteText: 'remove',
+        prefix: 'packageimage_set'
+    });
+  })
+</script>
+{% endblock %}

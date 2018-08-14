@@ -12,7 +12,7 @@
                         {% if choice.image%}
                             <img src = "{{choice.image.url}}" style="width:100%">
                         {% endif %}
-                        <h4>{{choice.name}}
+                        <h4 onclick="window.location.href='{{choice.get_absolute_url}}'">{{choice.name}}
                         {% if choice.store %}
                             (Store)
                         {% else %}

@@ -31,16 +31,13 @@ urlpatterns = [
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
     path('myaccount/change-password/', login_required(views.ChangePasswordView.as_view()), name='changepassword'),
 
-    path('myaccount/change-password/', auth_views.PasswordChangeView,
-    {'template_name':'password/password_change_form.html'}, name='password_change'),
-    path('myaccount/change-password/done/', auth_views.PasswordChangeDoneView,
-    {'template_name':'password/password_change_done.html'}, name='password_change_done'),
-
     path('myaccount/address', login_required(views.AddressView.as_view()), name='useraddress'),
     path('myaccount/address/<int:add_id>/eidt', login_required(views.EditAddressView.as_view()), name='editaddress'),
 
     path('myaccount/address/<int:add_id>/delete', login_required(views.DeleteAddressView.as_view()), name='deleteaddress'),
     path('myaccount/address/<int:add_id>/set_dedault_address', login_required(views.SetDefaultAddressView.as_view()), name='set_dedault_address'),
+
+    path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 
 
     path('myaccount/wallet', login_required(views.WalletView.as_view()), name='userwallet'),

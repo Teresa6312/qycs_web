@@ -151,7 +151,9 @@ class CollectionPoint(Address_Common_Info):
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
 
-
+	def get_absolute_url(self):
+	    from django.urls import reverse
+	    return reverse('collection_point_view', args=[str(self.pk)])
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key = True)
@@ -361,7 +363,9 @@ class Service(models.Model):
 		else:
 			return "%s's package created on %s \n"%(self.user, self.created_date)
 
-
+	def get_absolute_url(self):
+		from django.urls import reverse
+		return reverse('package_detail', args=[str(self.id)])
 
 class Item(models.Model):
 	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = 'Service Key')

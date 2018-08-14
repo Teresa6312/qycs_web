@@ -1,30 +1,24 @@
 <div id="default_address_card" class="w3-card-2 w3-round w3-container w3-mobile" style="width:400px">
-    {% if user.userprofile.default_address.location_name %}
-        <h4>{{user.userprofile.default_address.location_name}}</h4>
-    {% endif %}
 
-    {% if not user.userprofile.default_address.follow_user_infor %}
-        <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}</h5>
-        {% if user.userprofile.default_address.phone and user.userprofile.default_address.email%}
-            {{user.userprofile.default_address.phone}} | {{user.userprofile.default_address.email}}<br/>
-        {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-            {{user.userprofile.default_address.phone}}{{user.userprofile.default_address.email}}<br/>
-        {% endif %}
-    {% else %}
-        {{user.last_name}}, {{user.first_name}}<br/>
-        {% if user.email and user.userprofile.phone %}
-            {{user.email}} | {{user.userprofile.phone}}<br/>
-        {% elif user.email or user.userprofile.phone%}
-            {{user.email}}{{user.userprofile.phone}}<br/>
-        {% endif %}
-    {% endif %}
+<input type="hidden" name="selected_add" value="{{add.id}}" />
 
-    {{user.userprofile.default_address.address}}<br/>
+<h5 id="ln_fn">{{add.last_name}}, {{add.first_name}}</h5>
+<div id="ph_em">
+{% if add.phone and add.email%}
+    {{add.phone}} | {{add.email}}
+{% elif add.phone or add.email%}
+    {{add.phone}}{{add.email}}
+{% endif %}
+</div>
+<div  id="ad">
+{{add.address}}
+</div>
+<div  id="ap">
+{% if add.apt %}
+    {{add.apt}}<br/>
+{% endif %}
+</div>
 
-    {% if user.userprofile.default_address.apt %}
-        {{user.userprofile.default_address.apt}}<br/>
-    {% endif %}
-    
-        {{user.userprofile.default_address.city}}, {{user.userprofile.default_address.state}} {{user.userprofile.default_address.zipcode}}<br/>
-        {{user.userprofile.default_address.country}}<br/>
+<div id="ct_st_zp">{{add.city}}, {{add.state}} {{add.zipcode}}</div>
+
 </div>
