@@ -191,9 +191,9 @@ class UpdateProfileView(TemplateView):
 			return redirect(reverse('account'), user = user)
 		else:
 			return render(request, self.template_name, {
-
 									'col_list': self.col_list,
-									'userform': userform,
+									'userform': userform
+									})
 
 
 class ChangePasswordView(TemplateView):
@@ -231,10 +231,14 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-		# addform = AddressForm(request.POST)
+
 		is_popup=request.POST.get('is_popup','')
 
-		addform = AddressForm(QueryDict(request.POST.get('addform','')))
+		if "addform" in request.POST:
+			addform = AddressForm(QueryDict(request.POST.get('addform')))
+		else:
+			addform = AddressForm(request.POST)
+
 		if addform.is_valid():
 			newaddress = addform.save(commit = False)
 			newaddress.user = request.user
