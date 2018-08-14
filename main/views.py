@@ -9,7 +9,9 @@ from .forms import (
 	)
 from django.db import transaction
 from django.contrib import messages
+
 from django.shortcuts import render, redirect
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
@@ -158,11 +160,13 @@ class UpdateProfileView(TemplateView):
 	def post(self, request):
 		userform = ProfileForm(request.POST)
 
+
 		if userform.is_valid():
 			user = userform.save(request.user)
 			profile = UserProfile.objects.get(user = user)
 # update the user profile
 			try:
+
 	#  save default_address from select
 				selected_add = Address.objects.get(pk=request.POST['selected_add'])
 				profile.default_address = selected_add
@@ -181,15 +185,15 @@ class UpdateProfileView(TemplateView):
 	# 		except ObjectDoesNotExist:
 	# 			messages.error(request,'Cannot find the Collection point.')
 
+
 			profile.save()
 
 			return redirect(reverse('account'), user = user)
 		else:
 			return render(request, self.template_name, {
+
 									'col_list': self.col_list,
 									'userform': userform,
-									})
-
 
 
 class ChangePasswordView(TemplateView):

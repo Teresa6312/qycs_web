@@ -18,44 +18,85 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 {% block content %}
-<div class="w3-container">
-{{collector.name}}
-<div class = "w3-card-4" style="width:500px;">
-{% if collector.review_set.all %}
-{% for review in collector.review_set.all %}
-  <div class="w3-container" >
-      {{review.creater.username}}: {{review.review}}<br/>
+<div class="w3-panel">
+    <div class="w3-row">
+        <div class = "w3-card-4 w3-third" style="width:400px; height:400px">
+          <img src = "{{collector.location_image.url}}" style="max-width:100%; max-height:100%;">
+        </div>
+
+    <div class = "w3-rest w3-container">
+          <h2>{{collector.name}}</h2>
+          <h4>{% if collector.store %}Store Name:{{collector.store_name}}
+            {% else %}Personal Place{% endif %}
+          </h4>
+          <h4>Food Package: {% if collector.food %}YES {% else %} NO {% endif %} </h4>
+          <h4>Regular Package: {% if collector.regular %}YES {% else %} NO {% endif %} </h4>
+          <h4>Luxury Package: {% if collector.luxury %}YES {% else %} NO {% endif %} </h4>
+        <h5>
+          {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
+        </h5>
+        <button type="button">get direction</button>
+    </div>
 
   </div>
-{% endfor %}
-{% endif %}
-</div>
-<br/>
-<div class = "w3-card-4" style="width:500px;">
-{% if collector.question_set.all %}
-{% for question in collector.question_set.all %}
-   {% if question.creater.pk == user.pk%}
-    <div class="w3-container" >
-        {{question.creater.username}}: {{question.question}}<br/>
-        <form method="post">
-          {% csrf_token %}
-          <input type="text" name="message">
-          <input type="hidden" name="response_for", value="{{question.id}}">
-          <button type="submit" name="response" value="question_response">Save</button>
-        </form>
-    </div>
+
+
+<div class="w3-panel">
+  <form method="post">
+    {% csrf_token %}
+
+    <input type="textarea" class="w3-input w3-border" name="message">
+    <button type="submit" name="review" value="">Save Review</button>
+    <button type="submit" name="question" value="">Save Question</button>
+
+
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openBlock(event, 'Reviews');">
+      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Reviews</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openBlock(event, 'Questions');">
+      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding">Questions</div>
+    </a>
+  </div>
+
+  <div id="Reviews" class="w3-container city">
+    <h5>Reviews</h5>
+
+    <input type="textarea" class="w3-input w3-border" name="message">
+    <button type="submit" name="review" value="">Save Review</button>
+
+    {% if collector.review_set.all %}
+    {% for review in collector.review_set.all %}
+      <div class="w3-container w3-card-2" >
+          {{review.creater.username}}: {{review.review}}
+          <button type="button" class="w3-right response_btn_{{review.id}}" onclick="AddResponseForm({{review.id}})">response</button>
+      </div>
+    {% endfor %}
     {% endif %}
-{% endfor %}
-{% endif %}
+  </div>
+
+  <div id="Questions" class="w3-container city" style="display:none">
+    <h5>Questions</h5>
+    <input type="textarea" class="w3-input w3-border" name="message">
+    <button type="submit" name="question" value="">Save Question</button>
+
+    {% if collector.question_set.all %}
+    {% for question in collector.question_set.all %}
+       {% if question.creater.pk == user.pk%}
+        <div class="w3-container w3-card-2" >
+            {{question.creater.username}}: {{question.question}}
+            <button type="button" class=" w3-right response_btn_{{question.id}}" onclick="AddResponseForm({{question.id}})">response</button>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+  </div>
+
 </div>
 
-<form method="post">
-  {% csrf_token %}
-  <input type="text" name="message">
-  <button type="submit" name="review" value="">Save Review</button>
-  <button type="submit" name="question" value="">Save Question</button>
 
 </form>
+</div>
 </div>
 {% endblock %}
 
@@ -66,43 +107,34 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% block script%}
 <script type="text/javascript">
 
-function AddSnapshotBlock(review){
+function AddResponseForm(review_id){
 
-    let content = '<form method="post">'
-    '{% csrf_token %}'
-    '<input type="text" name="message">'
-    '<input type="hidden" name="response_for", value="{{review.id}}">'
-    '<button type="submit" name="response" value="response">Save</button></form>'
+    let content = '<div class="w3-row" id="response_block_'+
+    review_id +
+    '"><input type="textarea" class="w3-input w3-border" name="message">'+
+    '<input type="hidden" name="response_for", value="'+
+    review_id +
+    '"><button type="submit" name="response" value="response">Save</button></div>'
 
-  let content =
-    '<div class="w3-container" id = "add_snapshot_form">'+
-    "<h3>Add Order Snapshot of the Package:</h3>"+
-    imageSet+
-    "How to display the images'names after selected the images!"+
-    '</div>';
+    if($('#response_block_'+review_id).length==0){
+        $('.response_btn_'+review_id).after(content);
+    }
+}
 
-    if($('#add_snapshot_form').length==0){
-      $('#add_item_form').before(content);
-      $('#add_snapshot_form').hide().slideDown(500);
-      $('#add_snapshot_btn').text("Delete Snapshot");
-    }//end if #add_snapshot_form exists
-    else{
 
-      $('#add_snapshot_form').slideUp(500, function(){
-        $('#add_snapshot_form').remove();
-      });
+function openBlock(evt, blockName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+  }
+  document.getElementById(blockName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-border-red";
+}
 
-      $('#add_snapshot_btn').text("Add Snapshot");
-    }//end of DOES NOT #add_snapshot_form exists
-
-}//end of AddSnapshotBlock
-
-  $(document).ready(function(){
-    $('.imageset_row').formset({
-        addText: 'add Image',
-        deleteText: 'remove',
-        prefix: 'packageimage_set'
-    });
-  })
 </script>
 {% endblock %}
