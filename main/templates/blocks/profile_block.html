@@ -26,6 +26,6 @@
     </div>
     <div class="w3-half w3-container">
             <label for="birthday">Birthday: </label>
-            <input id="birthday" class= "w3-input w3-border" type="date" name="birthday" value="{{user.userprofile.birthday}}" {% if userprofile.birthday %} disabled {% endif %}>
+            <input id="birthday" class= "w3-input w3-border" name="birthday" {% if user.userprofile.birthday %} value="{{user.userprofile.birthday| date:"M d, Y" }}" disabled type="text" {% else %}type="date"{% endif %}>
     </div>
 </div>

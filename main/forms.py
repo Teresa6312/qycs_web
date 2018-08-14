@@ -169,7 +169,10 @@ class ProfileForm(forms.Form):
 									}))
 	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
+					empty_label=("Year", "Month", "Day"),
+					years = years,
+					attrs={"class":"w3-input w3-border w3-third",
 									}))
 	country = forms.CharField(required = False, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
@@ -188,16 +191,15 @@ class ProfileForm(forms.Form):
 				user.email = self.cleaned_data['email'].lower()
 # send email to bound this email
 			user.save()
-
 # -------------------------------------------------------------------------------------------
 # '''
 # Update the UserProfile
 # '''
 # ------------------------------------------------------------------------------------------
-			profile.country = self.cleaned_data['country'] or profile.birthday
-			profile.country = self.cleaned_data['language'] or profile.language
+			profile.country = self.cleaned_data['country']
+			profile.language = self.cleaned_data['language']
 			profile.birthday = self.cleaned_data['birthday'] or profile.birthday
-			profile.phone = self.cleaned_data['phone'] or profile.phone
+			profile.phone = self.cleaned_data['phone']
 			profile.save()
 		return user
 

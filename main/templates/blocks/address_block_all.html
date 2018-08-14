@@ -34,13 +34,12 @@ function createAddForm() {
     formblock.setAttribute("class", "w3-row");
 
     var fuiblock = document.createElement("div");
-    fuiblock.setAttribute("class", "w3-container");
 
-    var fui = document.createElement("INPUT");
+    var fui = document.createElement("button");
     fui.setAttribute("type", "button");
     fui.setAttribute("onclick", "fillin()");
-    fui.setAttribute("value", "Follow User Information");
     fui.setAttribute("id", "id_follow_user_infor");
+    fui.append("Follow User Information");
     fuiblock.appendChild(fui);
     formblock.appendChild(fuiblock);
 
@@ -229,7 +228,7 @@ function submitForm(){
     }
   }
 
-  // if(formpass){
+  if(formpass){
       let addobject={'csrfmiddlewaretoken': '{{ csrf_token }}',
                       'addform':$('#newAddressForm_js').serialize(),
                       'is_popup':"True"};
@@ -250,13 +249,15 @@ function submitForm(){
           }
           else{
             $('#newAddressForm_js').before($(data).find('.messagelist'));
+            $('#.messagelist').hide().slideDown(500);
           }
         },
         failure: function(data){
           $('#newAddressForm_js').before($(data).find('.messagelist'));
+          $('#.messagelist').hide().slideDown(500);
         },
       });
-  // }
+    }
 }//end of submitForm
 
 $(document).ready(function(){

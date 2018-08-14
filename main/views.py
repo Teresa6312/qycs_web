@@ -160,7 +160,6 @@ class UpdateProfileView(TemplateView):
 	def post(self, request):
 		userform = ProfileForm(request.POST)
 
-
 		if userform.is_valid():
 			user = userform.save(request.user)
 			profile = UserProfile.objects.get(user = user)

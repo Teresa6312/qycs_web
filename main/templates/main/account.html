@@ -11,11 +11,11 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 	<div class="w3-cell aside-bar-background-color w3-mobile" style="width:300px">
 		<div class="w3-bar-block">
 
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userprofile' %}">User Information</a>
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'useraddress' %}">Address List</a>
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userpackage' %}">Packages History</a>
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userwallet' %}">Wallet</a>
-		    <a class="w3-bar-item w3-hover-purple" href="/accounts/logout/">Logout</a>
+		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="{% url 'userprofile' %}">User Information</a>
+		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="{% url 'useraddress' %}">Address List</a>
+		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="{% url 'userpackage' %}">Packages History</a>
+		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="{% url 'userwallet' %}">Wallet</a>
+		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="/accounts/logout/">Logout</a>
 		</div>
 	</div>
 
@@ -38,6 +38,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						{% endif %}<br/>
 						Phone Number: {{user.userprofile.phone}}<br/>
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
+						Country: {{user.userprofile.country }}<br/>
 						<h4>Default Address</h4>
 							{% if user.userprofile.default_address %}
 										{% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}

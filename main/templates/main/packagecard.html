@@ -13,8 +13,8 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 		<h2>Packages Card</h2>
 
-		<button><a href="{% url 'collection_points' %}"> Add Co-shipping Package</a></button>
-		<button><a href="{% url 'add_direct_shipping' %}"> Add Direct Shipping Package</a></button>
+		<button type="button" onclick="window.location.href = '{% url 'collection_points' %}'">Add Co-shipping Package</button>
+		<button type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">Add Direct Shipping Package</button>
 		<h4>view packages placed within:</h4>
 		<select>
 			{% for year in package_list.created_date.year %}
