@@ -15,7 +15,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 <!-- display default address -->
     <div class="w3-card-2 w3-round w3-container ">
         {% if user.userprofile.default_address %}
-            <h4>{{user.userprofile.default_address.location_name}}</h4>
+            {% if user.userprofile.default_address.location_name %}<h4>{{user.userprofile.default_address.location_name}}</h4>{% endif %}
             {% if not user.userprofile.default_address.follow_user_infor %}
                 <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
 
@@ -32,7 +32,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
                 (Default)<br/>
             {% endif %}
             {{user.userprofile.default_address.address}}<br/>
-            {{user.userprofile.default_address.apt}}<br/>
+            {% if user.userprofile.default_address.apt %}{{user.userprofile.default_address.apt}}<br/>{% endif %}
             {{user.userprofile.default_address.city}}<br/>
             {{user.userprofile.default_address.state}}<br/>
             {{user.userprofile.default_address.zipcode}}<br/>
@@ -48,7 +48,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% if user.address_set.all %}{% for address in user.address_set.all %}
 {% if address != user.userprofile.default_address%}
     <div class="w3-card-2 w3-round w3-container">
-        <h4>{{address.location_name}}</h4>
+        {% if address.location_name %}<h4>{{address.location_name}}</h4>{% endif %}
         {% if not address.follow_user_infor %}
             <h5>{{address.last_name}}, {{address.first_name}}</h5>
 
@@ -61,7 +61,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
         {% endif %}
             {{address.address}}<br/>
-            {{address.apt}}<br/>
+            {% if address.apt %}{{address.apt}}<br/>{% endif %}
             {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
             {{address.country}}<br/>
             <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
@@ -76,22 +76,3 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     {% include "blocks/new_address_form.html" with addform=addform%}
 </div>
 {% endblock %}
-
-{% block script%}
-
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-  $(".add_cancel_btn").click(function(){
-      window.location.href = document.referrer;
-  });
-
-})//end of ready
-
-
-</script>
-
-
-
-{% endblock%}

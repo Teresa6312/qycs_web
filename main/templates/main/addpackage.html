@@ -86,8 +86,8 @@
                     </div>
                 </div>
 
-                <div class="centerBtn">
-                  <button type="button" id="add_snapshot_btn">Add Snapshot</button>
+                <div class="centerBtn w3-panel">
+                  <button type="button" id="add_snapshot_btn">Add Snapshot</button> &emsp;Or&emsp;
                   <button id="add_item_btn" >Add Items Detail</button>
                 </div>
 
@@ -231,29 +231,7 @@ function AddSnapshotBlock(imageSet){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
 
-    // $("input").focus(function(){
-    //   $(this).val('');
-    // });
-    $("#add_new_address_btn").click(function(){
-      $('#address_from_block').show();
-      $('#address_from_block').hide().slideDown(500);
-      $('#default_address_block').hide();
-    });
-    $("#select_address_btn").click(function(){
-         $('#address_book_block').show();
-         $('#address_book_block').hide().slideDown(500);
-         $('#default_address_block').hide();
-    });
-    $(".add_cancel_btn").click(function(){
-         $('#default_address_block').show();
-         $('#default_address_block').hide().slideDown(500);
-         $('#address_from_block').hide();
-    });
-    $(".select_add_cancel_btn").click(function(){
-         $('#default_address_block').show();
-         $('#default_address_block').hide().slideDown(500);
-         $('#address_book_block').hide();
-    });
+
 
     // $("#col_change_btn").click(function(){
     //      window.location="{% url 'collection_points' %}";

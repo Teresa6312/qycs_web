@@ -95,62 +95,78 @@ Create Direct Shipping Package
 #-----------------------------------------------------------------------------------------
 
 class AddDirectShipping(FormView):
-	form_class = DirectShippingForm
 	template_name = 'main/directshipping.html'
-	success_url = '/packages/direct-shipping/add'
 
-	def get_context_data(self, **kwargs):
-		data = super(AddDirectShipping, self).get_context_data(**kwargs)
-		data['imageset'] = ImageForm()
-		data['package_list'] = Service.objects.filter(
-			user = self.request.user,
+	def get(self, request):
+		form = DirectShippingForm()
+		itemset = ItemFormset()
+		imageset = ImageForm()
+
+		package_list = Service.objects.filter(
+			user = request.user,
 			co_shipping = False,
 			paid_key = None).order_by('-id')
 
-		if self.request.POST:
-			data['itemset'] = ItemFormset(self.request.POST)
-			data['addform'] = AddressForm(self.request.POST)
-			data['add_id'] = self.request.POST['addchoice']
+		return render(request, self.template_name,
+				{'form': form,
+				'package_list': package_list,
+				'itemset': itemset,
+				'imageset': imageset,
+				})
+
+
+
+	def post(self, request):
+		form = DirectShippingForm(request.POST)
+		itemset = ItemFormset(request.POST)
+		package_list = Service.objects.filter(
+			user = request.user,
+			co_shipping = False,
+			paid_key = None).order_by('-id')
+		try:
+#  save default_address from select
+			selected_add = Address.objects.get(pk=request.POST['selected_add'])
+		except:
+			messages.info(request, 'Cannot find your address, please try again!')
+
+			return render(request, self.template_name,
+						{'form': form,
+						'package_list': package_list,
+						'itemset': itemset,
+						'imageset': imageset,
+						})
+
+		if form.is_valid() and itemset.is_valid():
+			files = self.request.FILES.getlist('image')
+			package = form.save(commit = False)
+
+			with transaction.atomic():
+
+				package.co_shipping = False
+# default warehouse is China
+				package.wh_received = Warehouse.objects.get(country='China')
+				package.ship_to_add = selected_add
+				package.user = User.objects.get(pk = request.user.id)
+
+				package.save()
+
+				itemset.instance = package
+				itemset.save()
+
+# how to make it more secury
+				for f in files:
+					newimage = PackageImage(package = package, image = f)
+					newimage.save()
+
+			return redirect(reverse('add_direct_shipping'))
 		else:
-			data['itemset'] = ItemFormset()
-			data['addform'] = AddressForm()
-		return data
-
-	def form_valid(self, form):
-		context = self.get_context_data()
-		items = context['itemset']
-		images = context['imageset']
-		if context['add_id'] != None and context['add_id'] !='':
-			address = Address.objects.get(pk=context['add_id'])
-		elif context['addform'] != None and context['addform']:
-			address = context['addform']
-			if address.is_valid():
-				address.save()
-
-		files = self.request.FILES.getlist('image')
-
-		with transaction.atomic():
-
-			self.object = form.save(commit=False)
-			self.object.user = User.objects.get(pk = self.request.user.id)
-			self.object.wh_received = Warehouse.objects.get(pk=1)
-			self.object.co_shipping = False
-			print("------------------------------------------")
-			print(address)
-			self.object.ship_to_add = address or Address.objects.get(pk=self.cleaned_data['ship_to_add'])
-			self.object.save()
-
-			if items.is_valid():
-				items.instance = self.object
-				items.save()
-
-
-# Does it save to just save the image directly?
-			for f in files:
-				newimage = PackageImage(package = self.object, image = f)
-				newimage.save()
-
-		return super(AddDirectShipping, self).form_valid(form)
+			messages.info(request, 'Invalid form!')
+			return render(request, self.template_name,
+						{'form': form,
+						'package_list': package_list,
+						'itemset': itemset,
+						'imageset': imageset,
+						})
 
 
 #-----------------------------------------------------------------------------------------

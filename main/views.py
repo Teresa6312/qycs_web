@@ -9,7 +9,9 @@ from .forms import (
 	)
 from django.db import transaction
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render, redirect
+
+from django.shortcuts import render, redirect
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
@@ -151,44 +153,47 @@ class UpdateProfileView(TemplateView):
 	col_list = CollectionPoint.objects.filter(status=True)
 
 	def get(self, request):
-		addform = AddressForm()
 		return render(request, self.template_name, {
 						'col_list': self.col_list,
-						'addform': addform,
 						})
 
 	def post(self, request):
 		userform = ProfileForm(request.POST)
-		# addform = AddressForm(request.POST)
+
 
 		if userform.is_valid():
 			user = userform.save(request.user)
 			profile = UserProfile.objects.get(user = user)
-
 # update the user profile
 			try:
-	#  save default_address
+
+	#  save default_address from select
 				selected_add = Address.objects.get(pk=request.POST['selected_add'])
 				profile.default_address = selected_add
-			except ObjectDoesNotExist:
-				pass
 
-			try:
-	#  save default_col from select
-				selected_col = CollectionPoint.objects.get(pk=request.POST['col_choice'])
-				profile.default_col = selected_col
-			except:
-				pass
+			except ObjectDoesNotExist:
+				print("No address find")
+				print(selected_add)
+			except MultipleObjectsReturned:
+				print("MultipleObjectsReturned")
+				print(selected_add)
+
+	# 		try:
+	# #  save default_col from select
+	# 			selected_col = CollectionPoint.objects.get(pk=request.POST['col_choice'])
+	# 			profile.default_col = selected_col
+	# 		except ObjectDoesNotExist:
+	# 			messages.error(request,'Cannot find the Collection point.')
+
 
 			profile.save()
 
 			return redirect(reverse('account'), user = user)
 		else:
 			return render(request, self.template_name, {
-									'col_list': self.col_list
-									# 'addform': addform
-									})
 
+									'col_list': self.col_list,
+									'userform': userform,
 
 
 class ChangePasswordView(TemplateView):
@@ -234,14 +239,17 @@ class AddressView(TemplateView):
 			newaddress = addform.save(commit = False)
 			newaddress.user = request.user
 			newaddress.save()
-			print(is_popup,type(is_popup))
 			if is_popup == "True":
-				return render(request, 'main/updateprofile.html' , {'newaddress': newaddress})
+				# messages.info(request, "You didn't select a Collection Point.")
+				return render(request, 'main/updateprofile.html', {'newaddress': newaddress})
 			else:
 				return redirect(reverse('useraddress'))
 
 		else:
-			return render(request, self.template_name, {'addform': addform})
+			if is_popup == "True":
+				return render(request, 'main/updateprofile.html', {'addform': addform})
+			else:
+				return render(request, self.template_name, {'addform': addform})
 
 
 # Use updateView?

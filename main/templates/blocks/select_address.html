@@ -1,41 +1,42 @@
 
-<div  class="w3-row w3-container">
+<div  class="w3-container">
 {% for addchoice in user.address_set.all %}
-    <table class="w3-half w3-mobile"><tr class="w3-half"><td>
-        <input type="radio" class=" w3-radio" name="addchoice" id="addchoice{{ forloop.counter }}"
-             {% if addchoice == user.userprofile.default_address %} checked="checked" {% endif %}
-             value="{{ addchoice.id }}">
-        </td><td>
-
-        <label for="addchoice{{ forloop.counter }}">
-
-            <div class="w3-card-2 w3-round w3-container w3-mobile" style="width:400px">
-                <h4>{{addchoice.location_name}}</h4>
-                {% if not addchoice.follow_user_infor %}
-                    <h5>{{addchoice.last_name}}, {{addchoice.first_name}}</h5>
-                    {% if addchoice.phone and addchoice.email%}
-                        {{addchoice.phone}} | {{addchoice.email}}<br/>
-                    {% elif addchoice.phone or addchoice.email%}
-                        {{addchoice.phone}}{{addchoice.email}}<br/>
-                    {% endif %}
-                {% else %}
-                <h5>{{user.last_name}}, {{user.first_name}}</h5>
-                {% if user.userprofile.phone and user.email%}
-                    {{user.userprofile.phone}} | {{user.email}}<br/>
-                {% elif user.userprofile.phone or user.email%}
-                    {{user.userprofile.phone}}{{user.email}}<br/>
+    <div class="w3-mobile" id="{{ addchoice.id }}">
+        <div class="w3-card-2 w3-round w3-container w3-mobile" style="width:400px">
+                <h5>{{addchoice.last_name}}, {{addchoice.first_name}}</h5>
+                {% if addchoice.phone and addchoice.email%}
+                    {{addchoice.phone}} | {{addchoice.email}}<br/>
+                {% elif addchoice.phone or addchoice.email%}
+                    {{addchoice.phone}}{{addchoice.email}}<br/>
                 {% endif %}
+                {{addchoice.address}}<br/>
+                {% if addchoice.apt %}{{addchoice.apt}}<br/>{% endif %}
+                {{addchoice.city}}, {{addchoice.state}} {{addchoice.zipcode}}<br/>
+                {{addchoice.country}}<br/>
+        </div>
+    </div>
 
-                {% endif %}
-                    {{addchoice.address}}<br/>
-                    {% if addchoice.apt %}{{addchoice.apt}}<br/>{% endif %}
-                    {{addchoice.city}}, {{addchoice.state}} {{addchoice.zipcode}}<br/>
-                    {{addchoice.country}}<br/>
-            </div>
+    <script type="text/javascript">
+        // console.log($('.w3-half'));
+        $('#{{ addchoice.id }}').click(function(){
+          $('.w3-half').each(function(){
+            $(this).find('.w3-card-2').css('background-color','white');
+          })
+          $(this).find('.w3-card-2').css('background-color','#ffb2b2');
+          $('#default_address_card').remove();
 
-        </label>
-    </td></tr></table>
+          // console.log($('#default_address_card'));
+          let element=$(this).find('.w3-card-2').clone();
+          $('#default_address_block').append(element);
+          $('#default_address_block').find('.w3-card-2').attr('id','default_address_card');
+          $('#default_address_card').css('background-color','white');
+          $('#default_address_card').append('<input type="hidden" name="selected_add" value='+$(this).attr("id")+' />');
+          $('#selectAddressModal').modal('hide');
 
+        });
+
+    </script>
 {% endfor %}
 </div>
+
 <button type = "button" class="select_add_cancel_btn">Cancel</button>
