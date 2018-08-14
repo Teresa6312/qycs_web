@@ -76,22 +76,3 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     {% include "blocks/new_address_form.html" with addform=addform%}
 </div>
 {% endblock %}
-
-{% block script%}
-
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-  $(".add_cancel_btn").click(function(){
-      window.location.href = document.referrer;
-  });
-
-})//end of ready
-
-
-</script>
-
-
-
-{% endblock%}
