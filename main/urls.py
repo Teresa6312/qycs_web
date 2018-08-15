@@ -47,7 +47,6 @@ urlpatterns = [
     # path('packages/co-shiping/add/', views.AddCoPackageView.as_view(), name='addcopackage'),
     path('packages/<int:selected_col>/add', login_required(pk_views.AddCoShipping.as_view()), name='add_co_shipping'),
     path('packages/direct-shipping/add', login_required(pk_views.AddDirectShipping.as_view()), name='add_direct_shipping'),
-    # path('packages/successfully', login_required(views.PackageAddedView.as_view()), name='package_added'),
     path('packages/', login_required(pk_views.PackagesView.as_view()), name='packages'),
     path('packages/card/', login_required(pk_views.PackageCardView.as_view()), name='packagecard'),
 

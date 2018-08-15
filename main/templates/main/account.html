@@ -27,7 +27,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 			(Collector)
 			{% endif %}</h2>
 				{% if not user.collectionpoint %}
-				<button><a href="{% url 'colregister'%}"> Register as Collector</a></button><br/>
+				<button type = "button" onclick="window.location.href = '{% url 'colregister'%}'"> Register as Collector</button><br/>
 				{% endif%}
 				<div class = "w3-container">
 						First Name: {{user.first_name}}<br/>

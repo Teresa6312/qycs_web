@@ -15,22 +15,16 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 <!-- display default address -->
     <div class="w3-card-2 w3-round w3-container ">
         {% if user.userprofile.default_address %}
-            {% if user.userprofile.default_address.location_name %}<h4>{{user.userprofile.default_address.location_name}}</h4>{% endif %}
-            {% if not user.userprofile.default_address.follow_user_infor %}
-                <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
 
-                    {% if user.userprofile.default_address.phone and user.userprofile.default_address.email %}
-                        {{user.userprofile.default_address.phone}} |
-                        {{user.userprofile.default_address.email}}<br/>
-                    {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-                        {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/>
-                    {% endif %}
+            <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
 
-
-
-            {% else %}
-                (Default)<br/>
+            {% if user.userprofile.default_address.phone and user.userprofile.default_address.email %}
+                {{user.userprofile.default_address.phone}} |
+                {{user.userprofile.default_address.email}}<br/>
+            {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
+                {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/>
             {% endif %}
+
             {{user.userprofile.default_address.address}}<br/>
             {% if user.userprofile.default_address.apt %}{{user.userprofile.default_address.apt}}<br/>{% endif %}
             {{user.userprofile.default_address.city}}<br/>
@@ -48,25 +42,22 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% if user.address_set.all %}{% for address in user.address_set.all %}
 {% if address != user.userprofile.default_address%}
     <div class="w3-card-2 w3-round w3-container">
-        {% if address.location_name %}<h4>{{address.location_name}}</h4>{% endif %}
-        {% if not address.follow_user_infor %}
-            <h5>{{address.last_name}}, {{address.first_name}}</h5>
 
-                {% if address.phone and address.email%}
-                    {{address.phone}} | {{address.email}}<br/>
-                {% elif address.phone or address.email%}
-                    {{address.phone}}{{address.email}}<br/>
-                {% endif %}
+        <h5>{{address.last_name}}, {{address.first_name}}</h5>
 
-
+        {% if address.phone and address.email%}
+            {{address.phone}} | {{address.email}}<br/>
+        {% elif address.phone or address.email%}
+            {{address.phone}}{{address.email}}<br/>
         {% endif %}
-            {{address.address}}<br/>
-            {% if address.apt %}{{address.apt}}<br/>{% endif %}
-            {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
-            {{address.country}}<br/>
-            <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
+
+        {{address.address}}<br/>
+        {% if address.apt %}{{address.apt}}<br/>{% endif %}
+        {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
+        {{address.country}}<br/>
+        <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
+        <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
+        <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
     </div>
 
 {% endif %}{% endfor %}{% endif %}

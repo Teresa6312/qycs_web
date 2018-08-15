@@ -155,10 +155,9 @@
                 <div class="w3-panel">
                     <h4>{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
                     {% if package.co_shipping %}
-                        {{package.receiver}}<br/>
-                        {{package.ship_to_col}}
+                        Ship to: {{package.ship_to_col}}
                     {% elif not package.co_shipping %}
-                        {{package.ship_to_add}}
+                        Ship to: {{package.ship_to_add}}
                     {% endif %}
                 </div>
                 {% endfor %}

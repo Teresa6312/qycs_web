@@ -203,12 +203,13 @@ button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #new
   margin: 10px;
 }
 
-button:hover,  input[type="submit"]:hover{
+button:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover{
   color:#000;
   border-style: inset;
   border-width: 2px;
   border-color: #b300b3;
   background-color: #fff;
+  border-radius: 4px;
 }
 
 #btn-red{

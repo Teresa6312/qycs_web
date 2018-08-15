@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-	User, UserProfile, Address, Service, Warehouse, CollectionPoint,
+	User, UserProfile, Address, Service, CollectionPoint,
 	Item, PackageImage, CoReceiver, FavoriteWebsite
 	)
 from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
@@ -8,8 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import inlineformset_factory
-from .code import checkAddress, boundEmail
 from django.forms import formset_factory
+
 # import datetime
 # datetime.datetime.now().year
 
@@ -230,8 +230,7 @@ class AddressForm(forms.ModelForm):
 									}))
 	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+
 	class Meta:
 		model = Address
 		exclude = ['meno']
