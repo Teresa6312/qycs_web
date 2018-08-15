@@ -196,9 +196,10 @@ class ProfileForm(forms.Form):
 # Update the UserProfile
 # '''
 # ------------------------------------------------------------------------------------------
-			profile.country = self.cleaned_data['country']
-			profile.language = self.cleaned_data['language']
-			profile.birthday = self.cleaned_data['birthday'] or profile.birthday
+			profile.country = self.cleaned_data['country'].upper()
+			profile.language = self.cleaned_data['language'].title()
+			if self.cleaned_data['birthday']:
+				profile.birthday = self.cleaned_data['birthday']
 			profile.phone = self.cleaned_data['phone']
 			profile.save()
 		return user

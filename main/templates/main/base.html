@@ -50,6 +50,11 @@
 </script>
 
   <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+  <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- for fa fa icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   {% block extrastyle %}{% endblock %}
 
 </head>
@@ -61,15 +66,6 @@
 
 <!-- Container -->
 <div id="container">
-
-
-  {% include "blocks/new_address_form_popup.html"%}
-
-  {% if user.address_set %}
-    {% include "blocks/select_address_popup.html"%}
-  {% endif %}
-
-
 
     {% if not is_popup %}
     <!-- Header -->

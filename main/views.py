@@ -8,7 +8,7 @@ from .forms import (
 	)
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -166,6 +166,8 @@ class UpdateProfileView(TemplateView):
 			except MultipleObjectsReturned:
 				print("MultipleObjectsReturned")
 				print(selected_add)
+			except:
+				pass
 
 	# 		try:
 	# #  save default_col from select

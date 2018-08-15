@@ -7,6 +7,13 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
 {% block shippingset %}
+
+{% include "blocks/new_address_form_popup.html"%}
+
+{% if user.address_set %}
+	{% include "blocks/select_address_popup.html"%}
+{% endif %}
+
 <div class="w3-container">
 		<h2>Direct Shipping</h2>
 		<div class="w3-container">
