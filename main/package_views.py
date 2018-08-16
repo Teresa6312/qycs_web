@@ -127,7 +127,7 @@ class AddDirectShipping(TemplateView):
 #  save default_address from select
 			selected_add = Address.objects.get(pk=request.POST['selected_add'])
 		except:
-			messages.info(request, 'Cannot find your address, please try again!')
+			messages.error(request, 'Cannot find your address, please try again!')
 
 			return render(request, self.template_name,
 						{'form': form,
@@ -160,7 +160,7 @@ class AddDirectShipping(TemplateView):
 
 			return redirect(reverse('add_direct_shipping'))
 		else:
-			messages.info(request, 'Invalid form!')
+			messages.error(request, 'Invalid form!')
 			return render(request, self.template_name,
 						{'form': form,
 						'package_list': package_list,
@@ -178,11 +178,11 @@ Create Co-shipping Package
 class AddCoShipping(TemplateView):
 	template_name = 'main/coshipping.html'
 
+
 	def get(self, request, selected_col):
 		form = CoShippingForm()
-		itemset = ItemFormset()
-		imageset = ImageForm()
 		receiverform = CoReceiverForm()
+		itemset = ItemFormset()
 		try:
 			col = CollectionPoint.objects.get(pk=selected_col)
 			if col.status:
@@ -195,11 +195,11 @@ class AddCoShipping(TemplateView):
 					{'form': form,
 					'receiverform':receiverform,
 					'package_list': package_list,
-					'itemset': itemset,
-					'imageset': imageset,
 					'selected_col': col,
+					'itemset':itemset,
 					})
 			else:
+				messages.error(request,'The Collection Point you selected is not avaliable right now! Please choose another ')
 				return redirect(reverse('collection_points'))
 		except:
 			return redirect(reverse('collection_points'))
@@ -208,8 +208,14 @@ class AddCoShipping(TemplateView):
 	def post(self, request, selected_col):
 		form = CoShippingForm(request.POST)
 		receiverform = CoReceiverForm(request.POST)
-		itemset = ItemFormset(request.POST)
-		imageset = ImageForm(request.POST)
+		try:
+			itemset = ItemFormset(request.POST)
+		except:
+			itemset = None
+		try:
+			imageset = ImageForm(request.POST)
+		except:
+			imageset = None
 		files = self.request.FILES.getlist('image')
 		package_list = Service.objects.filter(
 			user = request.user,
@@ -233,10 +239,10 @@ class AddCoShipping(TemplateView):
 			package.receiver = receiver
 			package.save()
 
-
-			if itemset.is_valid():
-				itemset.instance = package
-				itemset.save()
+			if itemset != None:
+				if itemset.is_valid():
+					itemset.instance = package
+					itemset.save()
 
 # how to make it more secury
 			for f in files:
@@ -245,7 +251,7 @@ class AddCoShipping(TemplateView):
 
 			return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
-			messages.info(request, 'Invalid form!')
+			messages.error(request, 'Invalid form!')
 
 			return render(request, self.template_name,
 			{'form': form,

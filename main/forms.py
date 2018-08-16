@@ -437,19 +437,25 @@ class CoReceiverForm(forms.ModelForm):
 		newreceiver.first_name = newreceiver.first_name.title()
 		newreceiver.last_name = newreceiver.last_name.title()
 		if commit:
-			receivers = CoReceiver.objects.filter(
+			if(user.last_name == newreceiver.last_name and user.first_name == newreceiver.first_name and user.userprofile.phone == newreceiver.phone):
+				return CoReceiver.objects.get(user=user)
+			else:
+				receivers = CoReceiver.objects.filter(
+				user = None,
 				first_name = newreceiver.first_name,
 				last_name = newreceiver.last_name,
 				phone = newreceiver.phone,
 				)
-			if receivers.count()>=1:
-				return receivers.first()
-			elif newreceiver.first_name==user.first_name and newreceiver.last_name==user.last_name and user.userprofile.phone==newreceiver.phone:
-				return CoReceiver.objects.get(user=user)
-			else:
-				newreceiver.user = None
-				newreceiver.save()
-				return newreceiver
+				if receivers.count()>=1:
+					return receivers.first()
+
+				else:
+					newreceiver.user = None
+					newreceiver.save()
+					return newreceiver
+		else:
+			return newreceiver
+
 	class Meta:
 		model = CoReceiver
 		fields = ('first_name', 'last_name', 'phone')
