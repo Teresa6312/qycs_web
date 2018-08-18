@@ -9,7 +9,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 {% block content %}
 <div class="w3-cell-row">
-	<div class="w3-cell aside-bar-background-color w3-mobile" style="width:300px">
+	<div class="w3-cell aside-bar-background-color w3-mobile" style="min-width:220px">
 		<div class="w3-bar-block">
 
 		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="{% url 'userprofile' %}">User Information</a>
@@ -19,9 +19,8 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="/accounts/logout/">Logout</a>
 		</div>
 	</div>
-	<div class="w3-cell w3-container w3-mobile">
+	<div class="w3-cell w3-rest w3-container w3-mobile" style="width:100%;">
 	{% block account_content%}
-
 
 			<h2>{{user.username}}
 			{% if user.collectionpoint %}
@@ -35,7 +34,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Last Name: {{user.last_name}}<br/>
 						Email address:{{user.email}}
 						{% if not user.bound_email%}
-							<a>To Bound my Email (this will send a request to the user's email)</a>
+							<button type="button">To Bound my Email</button>
 						{% endif %}<br/>
 						Phone Number: {{user.userprofile.phone}}<br/>
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
@@ -59,5 +58,5 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 	{% endblock %}
-</div></div>
+</div>
 {% endblock %}

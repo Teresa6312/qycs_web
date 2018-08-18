@@ -94,7 +94,7 @@
 
 {% block sidebar %}
 <div class="w3-container w3-cell w3-mobile w3-rest">
-    <div class="w3-card-2 w3-round w3-container aside-bar-background-color">
+    <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
         <h3>Packages</h3>
             {% if package_list %}
                 {% for package in package_list %}
