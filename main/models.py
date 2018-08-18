@@ -38,11 +38,10 @@ class Address(Address_Common_Info):
 	user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= 'User')
 	#when the user delete or unsave the address set it as null
 
-	follow_user_infor = models.BooleanField(default = False)
+
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True)
 	first_name = models.CharField(max_length=100, blank=True,default='',verbose_name= 'First Name')
 	last_name = models.CharField(max_length=100, blank=True,default='',verbose_name= 'Last Name')
-	location_name = models.CharField(blank=True, max_length=100, default='',verbose_name= 'Location Nickname')
 	phone = models.CharField(validators=[phone_regex], max_length=16, blank=True, default='',verbose_name= 'Phone Number')
 	email = models.EmailField(max_length=100, blank=True, default='',verbose_name= 'Email Address')
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True)
@@ -58,7 +57,6 @@ class Address(Address_Common_Info):
 
 	class Meta:
 		unique_together=('user'
-		,'follow_user_infor'
 		,'first_name'
 		,'last_name'
 		,'phone'

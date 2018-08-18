@@ -1,31 +1,37 @@
 <div class="w3-row" id ="Personal_infor_form">
     <div class="w3-half w3-container">
         <label for="first_name">First Name: </label>
-        <input id="first_name" type="text" class= "w3-input w3-border" name="first_name" value="{{user.first_name}}" {% if not user.collectionpoint %}  required {% else %} disabled {% endif %}>
+        <input id="first_name" type="text" class= "w3-input w3-border" name="first_name" value="{% firstof userform.first_name.value user.first_name %}" {% if not user.collectionpoint %}  required {% else %} disabled {% endif %}>
     </div>
     <div class="w3-half w3-container">
         <label for="last_name">Last Name: </label>
-        <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" value="{{user.last_name}}" {% if not user.collectionpoint %}  required {% else %} disabled {% endif %}>
+        <input id="last_name" type="text" class= "w3-input w3-border" name="last_name" value="{% firstof userform.last_name.value user.last_name %}" {% if not user.collectionpoint %}  required {% else %} disabled {% endif %}>
     </div>
     <div class="w3-half w3-container">
       <label for="country">Country:</label>
-            <input id="country" type="text" class= "w3-input w3-border"  name="country" value="{{user.userprofile.country}}">
+            <input id="country" type="text" class= "w3-input w3-border"  name="country" value="{% firstof userform.country.value user.userprofile.country %}">
     </div>
     <div class="w3-half w3-container">
       <label for="language">Language:</label>
-            <input id="language" type="text" class= "w3-input w3-border"  name="language" value="{{user.userprofile.language}}">
+            <input id="language" type="text" class= "w3-input w3-border"  name="language" value="{% firstof userform.language.value user.userprofile.language %}">
     </div>
     <div class="w3-half w3-container">
         <label for="phone">Phone: </label>
 
-        <input id="phone" type="text" class= "w3-input w3-border" name="phone" value="{{user.userprofile.phone}}" required>
+        <input id="phone" type="text" class= "w3-input w3-border" name="phone" value="{% firstof userform.phone.value user.userprofile.phone %}" required>
     </div>
     <div class="w3-half w3-container">
       <label for="email">Email Address:</label>
-            <input id="email" type="text" class= "w3-input w3-border"  name="email" value="{{user.email}}" {% if not user.email%}  required {% else %} disabled {% endif %}>
+            <input id="email" type="text" class= "w3-input w3-border"  name="email" value="{% firstof userform.email.value user.email %}" {% if not user.email%}  required {% else %} disabled {% endif %}>
     </div>
     <div class="w3-half w3-container">
             <label for="birthday">Birthday: </label>
-            <input id="birthday" class= "w3-input w3-border" name="birthday" {% if user.userprofile.birthday %} value="{{user.userprofile.birthday| date:"M d, Y" }}" disabled type="text" {% else %}type="date"{% endif %}>
+            <input id="birthday" class= "w3-input w3-border" name="birthday"
+            {% if user.userprofile.birthday %}
+              value="{{user.userprofile.birthday| date:"M d, Y" }}"
+              disabled type="text"
+            {% else %}
+              type="date"
+            {% endif %}>
     </div>
 </div>

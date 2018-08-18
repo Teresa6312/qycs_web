@@ -8,6 +8,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 {% block content %}
+<div class="w3-cell-row">
 	<div class="w3-cell aside-bar-background-color w3-mobile" style="width:300px">
 		<div class="w3-bar-block">
 
@@ -18,16 +19,16 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 		    <a class="w3-bar-item w3-hover-purple w3-text-black" href="/accounts/logout/">Logout</a>
 		</div>
 	</div>
-
-	{% block account_content%}
 	<div class="w3-cell w3-container w3-mobile">
+	{% block account_content%}
+
 
 			<h2>{{user.username}}
 			{% if user.collectionpoint %}
 			(Collector)
 			{% endif %}</h2>
 				{% if not user.collectionpoint %}
-				<button><a href="{% url 'colregister'%}"> Register as Collector</a></button><br/>
+				<button type = "button" onclick="window.location.href = '{% url 'colregister'%}'"> Register as Collector</button><br/>
 				{% endif%}
 				<div class = "w3-container">
 						First Name: {{user.first_name}}<br/>
@@ -56,6 +57,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
 			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>
 
-		</div>
+
 	{% endblock %}
+</div></div>
 {% endblock %}

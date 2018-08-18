@@ -35,42 +35,29 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 				{% if package.ship_to_add %}
-				<h4>Co-shipping to Collection Point:</h4>
+				<h4>Direct Shipping to Collection Point:</h4>
 
-			        <h5>{{package.ship_to_add.location_name}}</h5>
-			        {% if not package.ship_to_add.follow_user_infor %}
-			            {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
-			            {% if package.ship_to_add.phone and package.ship_to_add.email %}
-			            	{{package.ship_to_add.phone}} | {{package.ship_to_add.email}}<br/>
-			            {% elif package.ship_to_add.phone or package.ship_to_add.email %}
-			            	{{package.ship_to_add.phone}}{{package.ship_to_add.email}}<br/>
-			            {% endif %}
-			        {% else %}
-
-			            {{user.last_name}}, {{user.first_name}}<br/>
-			            {% if user.userprofile.phone %}
-			            	{{user.userprofile.phone}}<br/>{% endif %}
-			            {% if user.email %}
-			            	{{user.email}}<br/>{% endif %}
-			        {% endif %}
+			        <h5>{{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}</h5>
+		            {% if package.ship_to_add.phone and package.ship_to_add.email %}
+		            	{{package.ship_to_add.phone}} | {{package.ship_to_add.email}}<br/>
+		            {% elif package.ship_to_add.phone or package.ship_to_add.email %}
+		            	{{package.ship_to_add.phone}}{{package.ship_to_add.email}}<br/>
+		            {% endif %}
 
 		            {{package.ship_to_add.address}}<br/>
-		            {% if package.ship_to_add.apt %}
-		            {{package.ship_to_add.apt}}<br/>{% endif %}
+		            {% if package.ship_to_add.apt %}{{package.ship_to_add.apt}}<br/>{% endif %}
 		            {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
 		            {{package.ship_to_add.country}}<br/>
 
 
 
 				{% elif package.ship_to_col %}
-				<h4>Direct Shipping to Collection Point:</h4>
+				<h4>Co-shipping to Collection Point:</h4>
 			        <h5>{{package.ship_to_col.name}}</h5>
 			            {{package.ship_to_col.address}}<br/>
-			            {{package.ship_to_col.apt}}<br/>
+			            {% if package.ship_to_col.apt %}{{package.ship_to_col.apt}}<br/>{% endif %}
 			            {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
 			            {{package.ship_to_col.country}}<br/>
-
-
 
 				{% endif %}
 			</div>

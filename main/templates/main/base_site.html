@@ -7,16 +7,6 @@
 
 
 
-{% block extrastyle %}
-<link rel="stylesheet" href="{% static 'css/w3.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-
-<!-- for fa fa icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-{% endblock %}
-
-
-
 {% block extrahead %}
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
 
@@ -143,6 +133,9 @@
       </ul>
     </div>
   </nav> -->
+
+{% block script%}
+{% endblock%}
 {% endblock %}
 
 
@@ -198,9 +191,4 @@
         <a href="">Privacy Policy</a> | <a href="">Terms of Service</a>
       </div>
     </div>
-
-
-
-    {% block script%}
-    {% endblock%}
 {% endblock %}

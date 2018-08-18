@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-	User, UserProfile, Address, Service, Warehouse, CollectionPoint,
+	User, UserProfile, Address, Service, CollectionPoint,
 	Item, PackageImage, CoReceiver, FavoriteWebsite
 	)
 from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
@@ -8,8 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import inlineformset_factory
-from .code import checkAddress, boundEmail
 from django.forms import formset_factory
+
 # import datetime
 # datetime.datetime.now().year
 
@@ -196,9 +196,10 @@ class ProfileForm(forms.Form):
 # Update the UserProfile
 # '''
 # ------------------------------------------------------------------------------------------
-			profile.country = self.cleaned_data['country']
-			profile.language = self.cleaned_data['language']
-			profile.birthday = self.cleaned_data['birthday'] or profile.birthday
+			profile.country = self.cleaned_data['country'].upper()
+			profile.language = self.cleaned_data['language'].title()
+			if self.cleaned_data['birthday']:
+				profile.birthday = self.cleaned_data['birthday']
 			profile.phone = self.cleaned_data['phone']
 			profile.save()
 		return user
@@ -230,8 +231,7 @@ class AddressForm(forms.ModelForm):
 									}))
 	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+
 	class Meta:
 		model = Address
 		exclude = ['meno']
@@ -437,19 +437,25 @@ class CoReceiverForm(forms.ModelForm):
 		newreceiver.first_name = newreceiver.first_name.title()
 		newreceiver.last_name = newreceiver.last_name.title()
 		if commit:
-			receivers = CoReceiver.objects.filter(
+			if(user.last_name == newreceiver.last_name and user.first_name == newreceiver.first_name and user.userprofile.phone == newreceiver.phone):
+				return CoReceiver.objects.get(user=user)
+			else:
+				receivers = CoReceiver.objects.filter(
+				user = None,
 				first_name = newreceiver.first_name,
 				last_name = newreceiver.last_name,
 				phone = newreceiver.phone,
 				)
-			if receivers.count()>=1:
-				return receivers.first()
-			elif newreceiver.first_name==user.first_name and newreceiver.last_name==user.last_name and user.userprofile.phone==newreceiver.phone:
-				return CoReceiver.objects.get(user=user)
-			else:
-				newreceiver.user = None
-				newreceiver.save()
-				return newreceiver
+				if receivers.count()>=1:
+					return receivers.first()
+
+				else:
+					newreceiver.user = None
+					newreceiver.save()
+					return newreceiver
+		else:
+			return newreceiver
+
 	class Meta:
 		model = CoReceiver
 		fields = ('first_name', 'last_name', 'phone')

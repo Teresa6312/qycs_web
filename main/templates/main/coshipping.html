@@ -7,28 +7,29 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
 {% block shippingset %}
-	<div class="w3-container">
+	<div class="w3-container w3-mobile">
 		<h2>Confirm the Receiver Information :</h2>
 		<div class="w3-row">
 			<div class="w3-third w3-container">
 				First Name:
-				<input class="w3-input w3-border" type="text" name="first_name" onfocus="this.value=''" value = "{{user.first_name}}" required><br/>
+				<input class="w3-input w3-border" type="text" name="first_name" onfocus="this.value=''" value = "{% firstof receiverform.first_name.value user.first_name %}" required><br/>
 			</div>
 			<div class="w3-third w3-container">
 				Last Name:
-				<input class="w3-input w3-border" type="text" name="last_name" onfocus="this.value=''" value = "{{user.last_name}}" required ><br/>
+				<input class="w3-input w3-border" type="text" name="last_name" onfocus="this.value=''" value = "{% firstof receiverform.last_name.value user.last_name %}" required ><br/>
 			</div>
 			<div class="w3-third w3-container">
 				Phone:
-				<input class="w3-input w3-border" type="text" name="phone" onfocus="this.value=''" value = "{{user.userprofile.phone}}" required ><br/>
+				<input class="w3-input w3-border" type="text" name="phone" onfocus="this.value=''" value = "{% firstof receiverform.phone.value user.userprofile.phone %}" required ><br/>
 			</div>
 		</div>
 	</div>
 	<hr>
 
-	<div class="w3-row">
-		<div class="w3-half w3-container">
-			<h2>Selected Collection Point:</h2><button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button>
+	<div class="w3-row w3-container w3-mobile">
+		<h2>Selected Collection Point:</h2>
+		<div class="w3-half">
+			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button>
 
 	        <div class="w3-container"><h4>{{selected_col.name}}
 		        {% if selected_col.store %}
@@ -50,4 +51,9 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
         </div>
 	</div>
 	<hr>
+{% endblock %}
+
+
+{% block extrabtn %}
+<button class="cancelBtn" onclick=" window.location.href='{% url 'collection_points' %}'" type="button">Back to Collection Points</button>
 {% endblock %}

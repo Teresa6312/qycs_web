@@ -1,30 +1,20 @@
 from .models import (
 	Address, Card, OtherPayMethod, Service, CollectionPoint,
-	UserProfile, User, Warehouse, PackageImage, FavoriteWebsite
+	UserProfile, User, Warehouse, FavoriteWebsite
 	)
 from .forms import (
-	RegisterForm, AddressForm, ItemFormset, PackageForm, UserProfileForm,
-	CoShippingForm, DirectShippingForm, ImageFormset, CoReceiverForm, ImageForm, WebFormSet,
+	RegisterForm, AddressForm, UserProfileForm, WebFormSet,
 	ColResigterForm, ProfileForm
 	)
-from django.db import transaction
 from django.contrib import messages
-
 from django.shortcuts import render, redirect
-
-from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.forms import PasswordChangeForm
 
 from django.contrib.auth import update_session_auth_hash, authenticate, login
-from django.contrib.auth.decorators import login_required
-from .code import checkAddress
 from django.urls import reverse
 # used to reverse the url name as a url path
-
-from .code import checkAddress
 
 from django.http import QueryDict
 
@@ -176,6 +166,8 @@ class UpdateProfileView(TemplateView):
 			except MultipleObjectsReturned:
 				print("MultipleObjectsReturned")
 				print(selected_add)
+			except:
+				pass
 
 	# 		try:
 	# #  save default_col from select
@@ -218,7 +210,6 @@ class AddressView(TemplateView):
 
 	def get(self, request):
 		addform = AddressForm()
-		addform.fields['follow_user_infor'].required = False
 		addform.fields['first_name'].required = False
 		addform.fields['last_name'].required = False
 		addform.fields['address'].required = False

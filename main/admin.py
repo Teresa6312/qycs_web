@@ -17,7 +17,7 @@ class AddressInline(admin.StackedInline):
 	model = Address
 	extra = 1
 	can_delete = False
-	fields = ['first_name', 'last_name','email', 'location_name', 'phone', 'address', 'city', 'state','country', 'zipcode','memo', ]
+	fields = ['first_name', 'last_name','email', 'phone', 'address', 'city', 'state','country', 'zipcode','memo', ]
 	verbose_name_plural = 'address list'
 
 class UserProfileInline(admin.StackedInline):
@@ -53,13 +53,13 @@ admin.site.register(UserProfile, UserProfileAdmin)
 
 
 class AddressAdmin(admin.ModelAdmin):
-	list_display = ('id','follow_user_infor', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
-	list_filter = ['follow_user_infor', 'country', 'state','city']
+	list_display = ('id', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
+	list_filter = ['country', 'state','city']
 	search_fields = ['first_name', 'last_name', ]
 
 	fieldsets = [
-		('User', 				{'fields': ['user','follow_user_infor']}),
-		('Address',               {'fields': ['first_name', 'last_name','email', 'phone', 'address', 'city', 'state','country', 'zipcode','memo', 'location_name']}),
+		('User', 				{'fields': ['user',]}),
+		('Address',               {'fields': ['first_name', 'last_name','email', 'phone', 'address', 'city', 'state','country', 'zipcode','memo']}),
 	]
 
 admin.site.register(Address, AddressAdmin,)
