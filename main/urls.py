@@ -29,8 +29,6 @@ urlpatterns = [
 
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
-        # activate/(?P<uidb64>[0-9A-Za-z_\\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$']
-        # (?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
     path('myaccount/profile/', login_required(views.AccountView.as_view()), name='userprofile'),
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
