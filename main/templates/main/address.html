@@ -8,10 +8,11 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 {% block account_content %}
 
-<div class="w3-cell w3-container w3-mobile">
+<div class="w3-cell w3-container w3-mobile" style="overflow:auto;">
     <h2>Address Book:</h2>
       Use get_absolute_url would be better inseat of using address.id but how?<br/>
       Identify error to load this page in cmd?
+<div class="addresses_block" style="overflow:auto; max-height:500px; min-width:480px;">
 <!-- display default address -->
     <div class="w3-card-2 w3-round w3-container ">
         {% if user.userprofile.default_address %}
@@ -27,9 +28,8 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
             {{user.userprofile.default_address.address}}<br/>
             {% if user.userprofile.default_address.apt %}{{user.userprofile.default_address.apt}}<br/>{% endif %}
-            {{user.userprofile.default_address.city}}<br/>
-            {{user.userprofile.default_address.state}}<br/>
-            {{user.userprofile.default_address.zipcode}}<br/>
+            {{user.userprofile.default_address.city}}
+            {{user.userprofile.default_address.state}}, {{user.userprofile.default_address.zipcode}}<br/>
             {{user.userprofile.default_address.country}}<br/>
 
             <button type="button" class="edit_btn" onclick="window.location.href='{{user.userprofile.default_address.get_absolute_url.edit}}'">Edit</button>
@@ -63,7 +63,11 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endif %}{% endfor %}{% endif %}
 
 </div>
+</div>
 <div class="w3-cell w3-container w3-mobile">
     {% include "blocks/new_address_form.html"%}
 </div>
+{% endblock %}
+
+{% block sidebar %}
 {% endblock %}
