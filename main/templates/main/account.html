@@ -34,7 +34,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Last Name: {{user.last_name}}<br/>
 						Email address:{{user.email}}
 						{% if not user.bound_email%}
-							<a>To Bound my Email (this will send a request to the user's email)</a>
+							<button type="button">To Bound my Email</button>
 						{% endif %}<br/>
 						Phone Number: {{user.userprofile.phone}}<br/>
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
@@ -58,11 +58,5 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 	{% endblock %}
-</div>
-{% endblock %}
-
-{% block sidebar %}
-<div class="w3-container w3-cell w3-mobile w3-rest">
-khkjhdfhdhdfhfd
 </div>
 {% endblock %}

@@ -21,7 +21,11 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 <div class="w3-panel">
     <div class="w3-row">
         <div class = "w3-card-4 w3-third" style="width:400px; height:400px">
-          <img src = "{{collector.location_image.url}}" style="max-width:100%; max-height:100%;">
+          collection point image show here
+          {% if collector.location_image %}
+            <img src = "{{collector.location_image.url}}" style="max-width:100%; max-height:100%;">
+
+          {% endif %}
         </div>
 
     <div class = "w3-rest w3-container">
@@ -45,17 +49,17 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
   <form method="post">
     {% csrf_token %}
 
-    <input type="textarea" class="w3-input w3-border" name="message">
+    <!-- <input type="textarea" class="w3-input w3-border" name="message">
     <button type="submit" name="review" value="">Save Review</button>
-    <button type="submit" name="question" value="">Save Question</button>
+    <button type="submit" name="question" value="">Save Question</button> -->
 
 
 <div class="w3-row">
     <a href="javascript:void(0)" onclick="openBlock(event, 'Reviews');">
-      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Reviews</div>
+      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black">Reviews</div>
     </a>
     <a href="javascript:void(0)" onclick="openBlock(event, 'Questions');">
-      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding">Questions</div>
+      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-text-black">Questions</div>
     </a>
   </div>
 
