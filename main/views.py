@@ -24,6 +24,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
 from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
+import os
+import json
+
+
 
 
 class HomeView(TemplateView):
@@ -238,6 +242,14 @@ class ChangePasswordView(TemplateView):
 class AddressView(TemplateView):
 	template_name = 'main/address.html'
 
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	countries=open(os.path.join(BASE_DIR, 'main\\static\\jsonObjects\\countries.json'))
+	states=open(os.path.join(BASE_DIR, 'main\\static\\jsonObjects\\states.json'))
+	cities=open(os.path.join(BASE_DIR, 'main\\static\\jsonObjects\\cities.json'))
+	countriesJsonObj=json.load(countries)
+	statesJsonObj=json.load(states)
+	citiesJsonObj=json.load(cities)
+
 	def get(self, request):
 		addform = AddressForm()
 		addform.fields['first_name'].required = False
@@ -247,7 +259,11 @@ class AddressView(TemplateView):
 		addform.fields['state'].required = False
 		addform.fields['country'].required = False
 		addform.fields['zipcode'].required = False
-		return render(request, self.template_name, {'addform': addform})
+		return render(request, self.template_name, {'addform': addform,
+			'countries':AddressView.countriesJsonObj,
+			'states':AddressView.statesJsonObj,
+			'cites':AddressView.citiesJsonObj,
+		})
 
 
 	def post(self, request):
