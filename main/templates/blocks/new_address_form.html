@@ -32,19 +32,19 @@
          Apartment:
              {{addform.apt}}
          </div>
-         <div class="w3-quarter w3-container">
+         <div class="w3-half w3-container">
          City:
              {{addform.city}}
          </div>
-         <div class="w3-quarter w3-container">
+         <div class="w3-half w3-container">
          State:
              {{addform.state}}
          </div>
-         <div class="w3-quarter w3-container">
+         <div class="w3-half w3-container">
          Country:
              {{addform.country}}
          </div>
-         <div class="w3-quarter w3-container">
+         <div class="w3-half w3-container">
          Zip code:
              {{addform.zipcode}}
          </div>
@@ -61,14 +61,57 @@
       }
     }//end of isThere
 
-    function populateDataList(lst,id){
+    function populateDataList(lst,id,key,val){
       let content='<datalist id='+id+'>';
       jQuery.each(lst, function() {
-        content+='<option value="'+$(this)[0].name+'">';
+        if(key=="state_id"){
+          if($(this)[0].country_id==val){
+            content+='<option value="'+$(this)[0].name+'">';
+          }
+        }
+        else if(key=="city_id"){
+          let i;
+          for(i=0; i<val.length; i++){
+            if($(this)[0].state_id==val[i]){
+              content+='<option value="'+$(this)[0].name+'">';
+            }
+          }
+        }
+        else if(key=="country_id"){
+          if($(this)[0].id==val){
+            content+='<option value="'+$(this)[0].name+'">';
+          }
+        }
+        else{
+          content+='<option value="'+$(this)[0].name+'">';
+        }
+
       });
       content+='</datalist>';
       return content;
     }//end of populateDataList
+
+
+    function getId(list,value){
+      let result="NULL";
+      jQuery.each(list, function() {
+        if($(this)[0].name==String(value)){
+          result=$(this)[0].id;
+          return
+        }
+      });
+      return result;
+    }//end of getId
+
+    function getName(list,id){
+      let result="NULL";
+      jQuery.each(list, function() {
+        if($(this)[0].id==id){
+          result=$(this)[0].name;
+        }
+      });
+      return result;
+    }//end of getName
 
     $(document).ready(function(){
       $('#id_follow_user_infor').click(function(){
@@ -82,15 +125,92 @@
       let states={{states|safe}};
       let cities={{cites|safe}};
 
-      countriesDataList=populateDataList(countires,'countriesDataList');
-      statesDataList=populateDataList(states,'statesDataList');
-      citiesDataList=populateDataList(cities,'citiesDataList');
+      countriesDataList=populateDataList(countires,'countriesDataList','NULL',"NULL");
+      statesDataList=populateDataList(states,'statesDataList','NULL',"NULL");
+      citiesDataList=populateDataList(cities,'citiesDataList','NULL',"NULL");
+
       $('body').append(countriesDataList);
       $('body').append(statesDataList);
       $('body').append(citiesDataList);
+
       $('#id_country').attr('list','countriesDataList');
       $('#id_state').attr('list','statesDataList');
       $('#id_city').attr('list','citiesDataList');
+
+      // country listener
+      $('#id_country').change(function() {
+        // get country id
+        var countryId=getId(countires,$(this).val());
+
+        // get state ids
+        let stateIds=[]
+        jQuery.each(states, function() {
+          if($(this)[0].country_id==countryId){
+            stateIds.push($(this)[0].id);
+          }
+        });
+
+        $('body').find('#statesDataList').remove();
+        $('body').find('#citiesDataList').remove();
+        statesDataList=populateDataList(states,'statesDataList','state_id',countryId);
+        citiesDataList=populateDataList(cities,'citiesDataList','city_id',stateIds);
+        // console.log(citiesDataList);
+        $('body').append(statesDataList);
+        $('body').append(citiesDataList);
+
+      });
+
+      // state listener
+      $('#id_state').change(function() {
+        // State id
+        var stateId=getId(states,$(this).val());
+
+        $('body').find('#countriesDataList').remove();
+        $('body').find('#citiesDataList').remove();
+
+
+        citiesDataList=populateDataList(cities,'citiesDataList','city_id',[stateId]);
+
+
+        // get countryID -> stateList and get country name
+        let countryId="";
+        jQuery.each(states, function() {
+          if($(this)[0].id==stateId){
+            countryId=$(this)[0].country_id;
+          }
+        });
+
+        $('#id_country').val(getName(countires,countryId));
+        $('body').append(citiesDataList);
+      });
+
+      // city listener
+      $('#id_city').change(function() {
+        $('body').find('#countriesDataList').remove();
+        $('body').find('#statesDataList').remove();
+        var cityId=getId(cities,$(this).val());
+
+        // state getStateId -> cityList and get state name
+        let stateId="";
+        jQuery.each(cities, function() {
+          if($(this)[0].id==cityId){
+            stateId=$(this)[0].state_id;
+            return;
+          }
+        });
+
+        $('#id_state').val(getName(states,stateId));
+
+        // get countryID -> stateList and get country name
+        let countryID="";
+        jQuery.each(states, function() {
+          if($(this)[0].id==stateId){
+            countryID=$(this)[0].country_id;
+            return;
+          }
+        });
+        $('#id_country').val(getName(countires,countryID));
+      });
 
 
 
