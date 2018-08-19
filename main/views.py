@@ -17,6 +17,13 @@ from django.urls import reverse
 # used to reverse the url name as a url path
 
 from django.http import QueryDict
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from .tokens import account_activation_token
+from django.utils.encoding import force_bytes, force_text
+from django.http import HttpResponse
 
 
 class HomeView(TemplateView):
@@ -67,6 +74,16 @@ class RegisterView(TemplateView):
 					else:
 						web.save()
 
+			mail_subject = 'Activate your blog account.'
+			message = render_to_string('main/acc_active_email.html', {
+			'user': user,
+			'domain': get_current_site(request).domain,
+			'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+			'token':account_activation_token.make_token(user),
+            })
+			email = EmailMessage(mail_subject, message, to=[user.email])
+			email.send()
+
 			if "colregister" in request.POST:
 				return redirect(reverse('colregister'))
 			else:
@@ -74,6 +91,19 @@ class RegisterView(TemplateView):
 		else:
 			return render(request, self.template_name, {'form': form, 'webformset':webformset, 'profileform':profileform})
 
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('account')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 class ColRegisterView(TemplateView):
 	template_name = 'main/colregister.html'

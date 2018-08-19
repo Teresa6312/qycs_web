@@ -67,8 +67,12 @@
 
       {% if webformset.errors %}
       <ul class="messagelist">
-          {% for message in webformset.errors %}
-          <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+          {% for subForm in webformset %}
+          {% if subForm.errors %}
+            {% for message in subForm.errors %}
+            <li class="error asd" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+            {% endfor %}
+          {% endif %}
           {% endfor %}
       </ul>
       {% endif %}
@@ -93,11 +97,11 @@
             Country:{{profileform.country}}
           </div>
 
-          <div class="tab">
+          <div class="tab WebFormSet">
             <p>In order to provide the best service to you and other customers, please enter 3 of your favorite shopping websites below!</p>
             {{ webformset.management_form }}
             {% for subform in webformset%}
-            <div class='w3-third'>
+            <div class='w3-third select'>
               Website Type:
               {{subform.web_type}}
             </div>
@@ -203,7 +207,7 @@ function nextPrev(n) {
 
 function validateForm() {
   // This function deals with validation of the form fields
-  var x, y, i, valid = true;
+  var x, y, i,j, valid = true;
   x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
   // A loop that checks every input field in the current tab:
@@ -221,8 +225,23 @@ function validateForm() {
   //     }
   //   }
   // }
+
+if($('.WebFormSet').css('display')=="block"){
+  let select=$('.select').each(function(){
+    console.log($($(this)).find(":selected").text());
+      if($($(this)).find(":selected").text()=="---"){
+        valid=false;
+        $(this).find('select').css('background-color','#ffdddd');
+      }
+  });
+}
+
+
+
+
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
+
     if (y[i].value == "") {
       // add an "invalid" class to the field:
       y[i].className += " invalid";
