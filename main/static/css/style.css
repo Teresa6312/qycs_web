@@ -169,6 +169,11 @@ color:white;
   padding-bottom: 150px;
 }
 
+
+#default_col_card{
+  width:600px;
+  background-color: #fff;
+}
 .centerBtn{
   text-align: center;
   border-top: solid 1px #eee;

@@ -19,6 +19,7 @@ urlpatterns = [
 
 
     path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
+    path('shipping/', views.ShippingView.as_view(), name='shipping'),
 
     # path('image/', views.AddImageView.as_view(), name='image'),
 

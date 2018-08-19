@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from django.core.validators import RegexValidator
+from django.urls import reverse
 
 phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', \
 	message="Invalid phone number format. Enter as 123-456-0987. Optionally enter extensions using 'x' followed by the number.")
@@ -49,7 +50,7 @@ class Address(Address_Common_Info):
 		return '%s %s\n %s %s, %s %s'%(self.first_name, self.last_name, self.address, self.city, self.state, self.zipcode)
 
 	def get_absolute_url(self):
-	    from django.urls import reverse
+
 	    return dict(edit=reverse('editaddress', args=[str(self.id)]),
 					delete=reverse('deleteaddress', args=[str(self.id)]),
 					set_default=reverse('set_dedault_address', args=[str(self.id)])
@@ -150,8 +151,9 @@ class CollectionPoint(Address_Common_Info):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
 
 	def get_absolute_url(self):
-	    from django.urls import reverse
-	    return reverse('collection_point_view', args=[str(self.pk)])
+		return dict(collection_point_view=reverse('collection_point_view', args=[str(self.pk)]),
+					add_co_shipping=reverse('add_co_shipping', args=[str(self.pk)])
+					)
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key = True)
@@ -362,7 +364,6 @@ class Service(models.Model):
 			return "%s's package created on %s \n"%(self.user, self.created_date)
 
 	def get_absolute_url(self):
-		from django.urls import reverse
 		return reverse('package_detail', args=[str(self.id)])
 
 class Item(models.Model):

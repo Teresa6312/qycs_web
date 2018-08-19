@@ -116,7 +116,7 @@ class ColResigterForm(forms.ModelForm):
 class FavoriteWebsiteForm(forms.ModelForm):
 
 	TYPE_CHOICE = (
-		('---', '---'),
+
 		('Clothing', 'Clothing'),
 		('Bag', 'Bag'),
 		('Jewelry', 'Jewelry'),

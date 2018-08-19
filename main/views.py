@@ -332,16 +332,24 @@ class CollectionPointView(TemplateView):
 
 	def get(self, request):
 		return render(request, self.template_name, {'col_list': self.col_list,})
+	# 
+	# def post(self, request):
+	# 	try:
+	# 		selected_col = CollectionPoint.objects.get(pk=request.POST['choice'])
+	#
+	# 		return redirect(reverse('add_co_shipping',args = (selected_col.pk,)))
+	#
+	# 	except (KeyError, CollectionPoint.DoesNotExist):
+	#
+	# 		messages.error(request, "You didn't select a Collection Point.")
+	# 		return render(request, self.template_name, {
+	# 			'col_list': self.col_list,
+	# 		})
 
-	def post(self, request):
-		try:
-			selected_col = CollectionPoint.objects.get(pk=request.POST['choice'])
+class ShippingView(TemplateView):
+	template_name = 'main/select_way_to_ship.html'
 
-			return redirect(reverse('add_co_shipping',args = (selected_col.pk,)))
+	col_list = CollectionPoint.objects.filter(status=True)
 
-		except (KeyError, CollectionPoint.DoesNotExist):
-
-			messages.error(request, "You didn't select a Collection Point.")
-			return render(request, self.template_name, {
-				'col_list': self.col_list,
-			})
+	def get(self, request):
+		return render(request, self.template_name, {'col_list': self.col_list,})

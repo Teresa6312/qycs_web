@@ -13,7 +13,7 @@ function submitForm(csrf, submit_url){
   let inputs = document.forms["newAddressForm_js"].getElementsByTagName("input");
   for(var i = 0, a; a = inputs[i++];){
     if(a.required && a.value==''){
-        a.style.background = "red";
+        a.style.background = "#ffb2b2";
         formpass=false;
     }
   }
