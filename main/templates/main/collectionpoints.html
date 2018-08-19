@@ -22,26 +22,26 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock messages %}
 
 {% block content %}
-<div class="w3-cell w3-mobile">
-    <div class="w3-threequarter w3-container">
+<div class="w3-cell-row w3-mobile">
+    <div class="w3-container">
         <h1> Our Collection Points: </h1>
+        <div id="default_col_block">
+          <h4>Your Selected Collection Point:</h4>
+            {% if user.userprofile.default_col%}
+                {% include "blocks/default_col_card.html"%}
+            {% endif %}
+            <button id="add_package_btn" type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.add_co_shipping}}'"> Add package</button>
+        </div>
+        <div class="w3-cell w3-container">
+            {% include "blocks/map_block.html"%}
+        </div>
 
-        create a drop dowm memu for cities states and countries which will impact the map
-
-        <form method="post">
-        {% csrf_token %}
+        <div class="w3-cell w3-container content-background-color" style="overflow:auto; max-height:400px;">
+          <h5>Select a Collection Point:</h5>
 
             {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
 
-            <input type="submit" value="Add Package" />
-        </form>
-    </div>
-</div>
-
-
-<div class="w3-cell w3-container w3-mobile">
-    <div class="w3-quarter w3-red">
-
+        </div>
     </div>
 </div>
 {% endblock %}

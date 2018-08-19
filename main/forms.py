@@ -48,7 +48,7 @@ class RegisterForm(UserCreationForm):
 									}))
 	username = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	email = forms.EmailField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	password1 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={"class":"w3-input w3-border"
 									}))
@@ -116,7 +116,7 @@ class ColResigterForm(forms.ModelForm):
 class FavoriteWebsiteForm(forms.ModelForm):
 
 	TYPE_CHOICE = (
-		('---', '---'),
+
 		('Clothing', 'Clothing'),
 		('Bag', 'Bag'),
 		('Jewelry', 'Jewelry'),

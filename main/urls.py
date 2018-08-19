@@ -1,6 +1,7 @@
 from . import views
 from . import package_views as pk_views
 from django.urls import path, re_path
+from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 # , permission_required
@@ -19,6 +20,7 @@ urlpatterns = [
 
 
     path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
+    path('shipping/', views.ShippingView.as_view(), name='shipping'),
 
     # path('image/', views.AddImageView.as_view(), name='image'),
 
@@ -26,6 +28,8 @@ urlpatterns = [
 # login_required
     path('accounts/logout/', login_required(auth_views.LogoutView.as_view(template_name='main/logout.html')), name = 'logout'),
 
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'),
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
     path('myaccount/profile/', login_required(views.AccountView.as_view()), name='userprofile'),
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),

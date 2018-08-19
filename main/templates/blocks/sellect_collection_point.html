@@ -1,33 +1,49 @@
 {% if col_list %}
     <table>
         {% for choice in col_list %}
-            <tr><td>
-                <input type="radio" name="choice" class=" w3-radio" id="choice{{ forloop.counter }}" value="{{ choice.pk }}"
-                    {% if choice == user.userprofile.default_col %} checked="checked" {% endif %} />
-                </td>
+            <div class="w3-card-2 w3-round w3-container choice" style="width:600px" id="{{ choice.get_absolute_url.add_co_shipping }}">
 
-                <td><div class="w3-card-2 w3-round w3-container" style="width:400px">
-                    <label for="choice{{ forloop.counter }}">
-
-                        {% if choice.image%}
-                            <img src = "{{choice.image.url}}" style="width:100%">
-                        {% endif %}
-                        <h4 onclick="window.location.href='{{choice.get_absolute_url}}'">{{choice.name}}
-                        {% if choice.store %}
-                            (Store)
-                        {% else %}
-                            (Personal Place)
-                        {% endif %}</h4>
-                        {{choice.address}}<br/>
-                        {{choice.apt}}<br/>
-                        {{choice.city}}, {{choice.state}} {{choice.zipcode}}<br/>
-                        {{choice.country}}<br/>
-
-                    </label>
-                </div></td>
-            </tr>
+                    {% if choice.image%}
+                        <img src = "{{choice.image.url}}" style="width:100%">
+                    {% endif %}
+                    <h4>{{choice.name}}
+                    {% if choice.store %}
+                        (Store)
+                    {% else %}
+                        (Personal Place)
+                    {% endif %}</h4>
+                    <button type="button" onclick="window.location.href='{{choice.get_absolute_url.collection_point_view}}'">visit collection point</button><br/>
+                    {{choice.address}}<br/>
+                    {{choice.apt}}<br/>
+                    {{choice.city}}, {{choice.state}} {{choice.zipcode}}<br/>
+                    {{choice.country}}<br/>
+            </div>
         {% endfor %}
     </table>
 {% else %}
     <h5>No collection point is avaliable at this time!</h5>
 {% endif %}
+
+
+<script type="text/javascript">
+    $('.choice').click(function(){
+      $('.choice').each(function(){
+        $(this).css('background-color','#fff');
+      })
+      $(this).css('background-color','#ffb2b2');
+
+
+      if($('#default_col_card').length>=1){
+        $('#default_col_card').remove();
+      }
+      let element=$(this).clone();
+      $('#add_package_btn').before(element);
+      $('#default_col_block').find('.w3-card-2').attr('id','default_col_card');
+      $('#default_col_card').removeClass( "choice");
+      $('#default_col_card').addClass( "w3-half");
+      $('#default_col_card').css('background-color','#fff');
+      $("#default_col_card").removeAttr("style");
+      $('#add_package_btn').attr('onclick',("window.location.href='"+$(this).attr("id")+"'"));
+    });
+
+</script>

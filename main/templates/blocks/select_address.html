@@ -1,7 +1,7 @@
 
-<div  class="w3-container">
+<div  class="w3-container" style="overflow:auto; max-height:400px;">
 {% for addchoice in user.address_set.all %}
-    <div class="w3-card-2 w3-round w3-container w3-mobile addchoice" style="width:400px" id="{{ addchoice.id }}">
+    <div class="w3-card-2 w3-round w3-mobile addchoice w3-half w3-container" id="{{ addchoice.id }}">
             <h5>{{addchoice.last_name}}, {{addchoice.first_name}}</h5>
             {% if addchoice.phone and addchoice.email%}
                 {{addchoice.phone}} | {{addchoice.email}}<br/>
@@ -17,7 +17,7 @@
 {% endfor %}
 </div>
 
-<button type = "button" class="select_add_cancel_btn">Cancel</button>
+<button id="close" aria-label="Close" type="button" data-dismiss="modal">Cancel</button>
 
 <script type="text/javascript">
     $('.addchoice').click(function(){
@@ -26,14 +26,20 @@
       })
       $(this).css('background-color','#ffb2b2');
 
-      $('#default_address_card').remove();
+
+      if($('#default_address_card').length>=1){
+        $('#default_address_card').remove();
+      }
 
       let element=$(this).clone();
       $('#default_address_block').append(element);
       $('#default_address_block').find('.w3-card-2').attr('id','default_address_card');
       $('#default_address_card').css('background-color','white');
+      $('#default_address_card').removeClass( "addchoice");
       $('#default_address_card').append('<input type="hidden" name="selected_add" value='+$(this).attr("id")+' />');
       $('#selectAddressModal').modal('hide');
     });
-
+    $("#select_add_cancel_btn").click(function(){
+         $('#selectAddressModal').modal('hide');
+    });
 </script>

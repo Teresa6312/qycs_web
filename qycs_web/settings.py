@@ -59,6 +59,7 @@ ALLOWED_HOSTS = ['herokuapp.com',]
 INSTALLED_APPS = [
     'main.apps.MainConfig',
     'collector.apps.CollectorConfig',
+    'django_google_maps',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
