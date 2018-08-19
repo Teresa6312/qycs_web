@@ -29,8 +29,6 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
           <h4>Your Selected Collection Point:</h4>
             {% if user.userprofile.default_col%}
                 {% include "blocks/default_col_card.html"%}
-            {% else %}
-                No default Collection Point!
             {% endif %}
             <button id="add_package_btn" type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.add_co_shipping}}'"> Add package</button>
         </div>

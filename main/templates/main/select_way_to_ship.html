@@ -5,11 +5,34 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
+{% block messages %}
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
+    {% if form.errors %}
+    <ul class="messagelist">
+        {% for message in form.errors %}
+        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
+{% endblock messages %}
 
 {% block content %}
 
+    <div class="w3-container">
+        <h1> Choose a way you want to ship a package: </h1>
+        <div class="w3-row">
+            <button type="button" id="default_add_block" class="w3-third" onclick="window.location.href='{% url 'add_direct_shipping'%}'">
+            Directly ship to my address
+            </button >
+            <button type="button" id="default_col_block" class="w3-third" onclick="window.location.href='{% url 'collection_points'%}'">
+            Ship to a collection point
+            </button >
+        </div>
+    </div>
 
-{% include "main/collectionpoints.html"%}
-
-{% endblock%}
+{% endblock %}

@@ -37,12 +37,13 @@
         $('#default_col_card').remove();
       }
       let element=$(this).clone();
-      $('#default_col_block').append(element);
+      $('#add_package_btn').before(element);
       $('#default_col_block').find('.w3-card-2').attr('id','default_col_card');
-      $('#default_col_card').style.backgroundColor='red';
+      $('#default_col_card').removeClass( "choice");
+      $('#default_col_card').addClass( "w3-half");
+      $('#default_col_card').css('background-color','#fff');
+      $("#default_col_card").removeAttr("style");
       $('#add_package_btn').attr('onclick',("window.location.href='"+$(this).attr("id")+"'"));
-      // $('form').append('<input type="hidden" name="selected_add" value='+$(this).attr("id")+' />');
-      // $('#add_package_btn').replace('<button id="add_package_btn" type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.add_co_shipping}}'"> Add package</button>')
     });
 
 </script>
