@@ -31,6 +31,7 @@ class CollectionPointView(TemplateView):
 			message = MessageForm(request.POST)
 			if message.is_valid():
 				if "review" in request.POST:
+
 					review = Review(creater = request.user, receiver = collector, review=message.cleaned_data['message'])
 					review.save()
 					messages.info(request,"Review is successfully posted!")
@@ -39,5 +40,7 @@ class CollectionPointView(TemplateView):
 					question = Question(creater = request.user, receiver = collector, question=message.cleaned_data['message'])
 					question.save()
 					messages.info(request,"Question is successfully created!")
+				else:
+					print(request.POST)
 
 		return redirect(reverse('collection_point_view',args = (col_pk,)))

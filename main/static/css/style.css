@@ -203,6 +203,9 @@ color:white;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
+
+
+
 button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
   background-color: #800080;
   color: #fff;

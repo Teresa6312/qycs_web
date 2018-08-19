@@ -9,40 +9,67 @@
 
 
 {% block content %}
-<h2>{{package.cust_tracking_num}}
-{{package.carrier}}
-{% if package.order %}(Order)
-{% elif package.coshiping%}(Co-shipping Package)
-{% else %}(Direct Shipping)
-{% endif %}
-</h2>
+<div class="w3-row">
+    <div class="w3-half w3-card-2 w3-round w3-container w3-mobile ">
+        <div class="timeline" style="width:500px">
+          <div class="container left">
+            <div class="content">
+              <h5>Package Marked</h5>
+              <p>{{package.created_date}}</p>
+            </div>
+          </div>
+          <div class="container right">
+            <div class="content">
+              <h5>Package Received</h5>
+              <p>{{package.wh_received_date}}</p>
+            </div>
+          </div>
+          <div class="container left">
+            <div class="content">
+              <h5>Package Shipped</h5>
+              <p>{{package.parent_package.shipped_date}}</p>
+            </div>
+          </div>
+          <div class="container right">
+            <div class="content">
+              <h5>Package Received</h5>
+              <p>{{package.picked_up_date}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
 
-<div class="w3-card-2 w3-round w3-container w3-mobile" style="width:500px">
-    <div class="timeline">
-      <div class="container left">
-        <div class="content">
-          <h5>Package Marked</h5>
-          <p>{{package.created_date}}</p>
-        </div>
-      </div>
-      <div class="container right">
-        <div class="content">
-          <h5>Package Received</h5>
-          <p>{{package.wh_received_date}}</p>
-        </div>
-      </div>
-      <div class="container left">
-        <div class="content">
-          <h5>Package Shipped</h5>
-          <p>{{package.parent_package.shipped_date}}</p>
-        </div>
-      </div>
-      <div class="container right">
-        <div class="content">
-          <h5>Package Received</h5>
-          <p>{{package.picked_up_date}}</p>
-        </div>
+
+    <div class="w3-rest">
+
+      <h2>{{package.cust_tracking_num}}
+       - {{package.cust_carrier}}
+      {% if package.order %}(Order)
+      {% elif package.coshiping%}(Co-shipping Package)
+      {% else %}(Direct Shipping)
+      {% endif %}
+      </h2>
+      <h4>Ship to:</h4>
+      {% if package.ship_to_add %}
+      {% include "blocks/address_card_no_button.html" with add=package.ship_to_add%}
+      {% elif package.ship_to_col %}
+      {% include "blocks/col_card_no_button.html" with col=package.ship_to_col%}
+      {% endif %}
+      <div class="w3-row">
+          <h4>Package type: {{package.package_type}}(kg)</h4>
+          <h4>Weight: {{package.Weight}}(kg)</h4>
+          <h4>Shipping fee: {{package.shipping_fee}}</h4>
+          {% if package.storage_fee %}<h4>Storage fee: {{package.storage_fee}}</h4>{% endif %}
+
+          <h4>Low Volume Weight Requested: {{package.low_volume_request}}</h4>
+          {% if not package.co_shipping %}<h4>No Rush Requested: {{package.no_rush_request}}</h4>{% endif %}
+
       </div>
     </div>
+
+{% if package.item_set.all %}
+  {% for item in package.item_set.all %}
+  {% endfor %}
+{% endif %}
 </div>
 {% endblock %}
