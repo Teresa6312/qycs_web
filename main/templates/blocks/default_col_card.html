@@ -14,6 +14,7 @@
                   (Personal Place)
               {% endif %}
          </h4>
+         <button type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.collection_point_view}}'">visit collection point</button><br/>
           {{user.userprofile.default_col.address}}<br/>
 
           {% if user.userprofile.default_col.apt %}
