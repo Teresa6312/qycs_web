@@ -26,12 +26,22 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     <div class="w3-container">
         <h1> Choose a way you want to ship a package: </h1>
         <div class="w3-row">
-            <button type="button" id="default_add_block" class="w3-third" onclick="window.location.href='{% url 'add_direct_shipping'%}'">
-            Directly ship to my address
-            </button >
-            <button type="button" id="default_col_block" class="w3-third" onclick="window.location.href='{% url 'collection_points'%}'">
-            Ship to a collection point
-            </button >
+            <div class="w3-half w3-container">
+                <button type="button" id="default_add_block" style="width:100%;" onclick="window.location.href='{% url 'add_direct_shipping'%}'">
+                    Directly ship to my address
+                </button >
+                <div class="w3-card-2" style="width:100%;height:200px;">
+                  shipping details
+                </div>
+            </div>
+            <div class="w3-half w3-container">
+                <button type="button" id="default_col_block" style="width:100%;" onclick="window.location.href='{% url 'collection_points'%}'">
+                Ship to a collection point
+                </button >
+                <div class="w3-card-2" style="width:100%; height:200px;">
+                  shipping details
+                </div>
+            </div>
         </div>
     </div>
 

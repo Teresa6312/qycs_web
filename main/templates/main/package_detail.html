@@ -66,10 +66,27 @@
 
       </div>
     </div>
+</div>
 
-{% if package.item_set.all %}
-  {% for item in package.item_set.all %}
+{% if package.packageimage_set.all %}
+<h5>Package Snapshot:</h5>
+  {% for image in package.packageimage_set.all %}
+  <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+    <img src = "{{image.image.url}}">
+  </div>
   {% endfor %}
 {% endif %}
+
+{% if package.item_set.all %}
+<h5>Package Item details:</h5>
+  {% for item in package.item_set.all %}
+  <div class="w3-row  w3-card-2 w3-container">
+    Item name: {{item.item_name}}<br/>
+    Item detail:{{item.item_detail}}<br/>
+    Item quantity:{{item.item_quantity}}<br/>
+  </div>
+  {% endfor %}
+{% endif %}
+
 </div>
 {% endblock %}
