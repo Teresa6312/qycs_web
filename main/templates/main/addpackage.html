@@ -96,11 +96,11 @@
 {% block sidebar %}
 <div class="w3-container w3-cell w3-mobile w3-rest">
     <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
-        <h3>Packages</h3>
+        <h3 >Packages</h3>
             {% if package_list %}
                 {% for package in package_list %}
                 <div class="w3-panel">
-                    <h4>{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
+                    <h4 onclick="window.location.href='{{package.get_absolute_url}}'">{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
                     {% if package.co_shipping %}
                         Co-shipping to:
                         {% if package.receiver.user %}

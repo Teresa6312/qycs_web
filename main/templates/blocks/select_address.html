@@ -1,7 +1,8 @@
 
-<div  class="w3-container" style="overflow:auto; max-height:400px;">
+<div  class="w3-row" style="overflow:auto; max-height:400px;">
 {% for addchoice in user.address_set.all %}
-    <div class="w3-card-2 w3-round w3-mobile addchoice w3-half w3-container" id="{{ addchoice.id }}">
+    <div class="w3-half w3-container">
+        <div class="w3-card-2 w3-round w3-mobile w3-container addchoice" id="{{ addchoice.id }}">
             <h5>{{addchoice.last_name}}, {{addchoice.first_name}}</h5>
             {% if addchoice.phone and addchoice.email%}
                 {{addchoice.phone}} | {{addchoice.email}}<br/>
@@ -12,7 +13,7 @@
             {% if addchoice.apt %}{{addchoice.apt}}<br/>{% endif %}
             {{addchoice.city}}, {{addchoice.state}} {{addchoice.zipcode}}<br/>
             {{addchoice.country}}<br/>
-
+        </div>
     </div>
 {% endfor %}
 </div>
@@ -36,6 +37,7 @@
       $('#default_address_block').find('.w3-card-2').attr('id','default_address_card');
       $('#default_address_card').css('background-color','white');
       $('#default_address_card').removeClass( "addchoice");
+      $('#default_address_card').css('width','50%');
       $('#default_address_card').append('<input type="hidden" name="selected_add" value='+$(this).attr("id")+' />');
       $('#selectAddressModal').modal('hide');
     });

@@ -260,6 +260,7 @@ LOGGING = {
     }
 }
 
+GOOGLE_MAPS_API_KEY = 'AIzaSyCPEo55D3rXjXfPs5b8kX1_-bzjDaVBjFM'
 
 import django_heroku
 django_heroku.settings(locals())
