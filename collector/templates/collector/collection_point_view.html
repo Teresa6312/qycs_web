@@ -58,15 +58,22 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     </a>
   </div>
 
-<textarea class="w3-input w3-border w3-panel" name="message"></textarea>
+<textarea class="w3-input w3-border w3-panel" name="message" id="id_message"></textarea>
   <div id="Reviews" class="message_block">
     <button type="submit" name="review" value="">Save Review</button>
 
     {% if collector.review_set.all %}
     {% for review in collector.review_set.all %}
-      <div class="w3-container w3-card-2" >
+      <div class="w3-container w3-card-2" id="review_block_{{review.id}}">
           {{review.creater.username}}: {{review.review}}
           <button type="button" class="w3-right response_btn_{{review.id}}" onclick="AddResponseForm('{{review.id}}','review')">response</button>
+          {% if review.reviewresponse_set.all %}
+              {% for response in review.reviewresponse_set.all %}
+              <div class="w3-row w3-container">
+                {{response.creater.username}}: {{response.meaasage}}
+              </div>
+              {% endfor %}
+          {% endif %}
       </div>
     {% endfor %}
     {% endif %}
@@ -78,9 +85,16 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     {% if collector.question_set.all %}
     {% for question in collector.question_set.all %}
        {% if question.creater.pk == user.pk%}
-        <div class="w3-container w3-card-2" >
+        <div class="w3-container w3-card-2" id="question_block_{{question.id}}">
             {{question.creater.username}}: {{question.question}}
             <button type="button" class=" w3-right response_btn_{{question.id}}" onclick="AddResponseForm('{{question.id}}','question')">response</button>
+            {% if question.questionresponse_set.all %}
+                {% for response in question.questionresponse_set.all %}
+                <div class="w3-row w3-container">
+                  {{response.creater.username}}: {{response.meaasage}}
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
         {% endif %}
     {% endfor %}
@@ -105,16 +119,19 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 function AddResponseForm(id, type){
 
     let content = '<div class="w3-row response_block" id="response_block_'+
-    id +
-    '"><textarea class="w3-input w3-border" name="message" />'+
-    '<input type="hidden" name="response_for", value="'+
-    id +
-    '"><button type="submit" name="'+
+    id+
+    '">'+
+    '<textarea class="w3-input w3-border" name="'+
     type+
-    '" value="response">Save</button></div>'
-
+    '" id="response_txt"/>'+
+    '<button type="button" onclick="submitForm('+
+    id+
+    ')">Save</button></div>'
+    if($('.response_block').length>0){
+        $('.response_block').remove();
+    }
     if($('#response_block_'+id).length==0){
-        $('.response_btn_'+id).after(content);
+        $('#'+type+'_block_'+id).append(content);
     }
 }
 
@@ -139,23 +156,30 @@ $(document).ready(function(){
         $('.response_block').remove();
       }
     });
+    $("#id_message").click(function(){
+      if($('.response_block').length>0){
+          $('.response_block').remove();
+      }
+    });
 })
 
 
-function submitForm(){
-    let addobject={'csrfmiddlewaretoken': '{{csrf_token}}',
-                    'data':$('#newAddressForm_js').serialize()
+function submitForm(id){
+    let response={'csrfmiddlewaretoken': '{{csrf_token}}',
+                    'type':$('#response_txt').attr('name'),
+                    'response_for': id,
+                    'response':$('#response_txt').val(),
                   };
-
     $.ajax({
       type: "POST",
-      url: '',
-      data: addobject,
-      success: function(data){
-
+      url: '/collectionpoint/{{collector.pk}}/view',
+      data: response,
+      success: function(){
+        alert("Success in response");
+        location.reload();
       },
-      failure: function(data){
-
+      failure: function(){
+        alert("Failure in response");
       },
     });
   }

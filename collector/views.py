@@ -1,4 +1,4 @@
-from .models import Review, Question
+from .models import Review, Question, ReviewResponse, QuestionResponse
 from main.models import CollectionPoint
 from .forms import MessageForm, ResponseForm
 from django.contrib import messages
@@ -24,9 +24,26 @@ class CollectionPointView(TemplateView):
 	@method_decorator(login_required)
 	def post(self, request, col_pk):
 		collector = CollectionPoint.objects.get(pk=col_pk)
-		if "response" in request.POST:
+		if "type" in request.POST:
 			response = ResponseForm(request.POST)
+			if response.is_valid():
+				if request.POST.get('type')=='review':
 
+					new = ReviewResponse(creater=request.user,
+					responseto=Review.objects.get(pk=response.cleaned_data['response_for']),
+					meaasage=response.cleaned_data['response']
+					)
+					new.save()
+				elif request.POST.get('type')=='question':
+
+					new = QuestionResponse(creater=request.user,
+					responseto=Question.objects.get(pk=response.cleaned_data['response_for']),
+					meaasage=response.cleaned_data['response']
+					)
+					new.save()
+			else:
+				
+				return render(request, self.template_name, {'collector': collector})
 		else:
 			message = MessageForm(request.POST)
 			if message.is_valid():
@@ -41,6 +58,10 @@ class CollectionPointView(TemplateView):
 					question.save()
 					messages.info(request,"Question is successfully created!")
 				else:
-					print(request.POST)
+					messages.error(request,"Input Failure")
+					return render(request, self.template_name, {'collector': collector})
+			else:
+				messages.error(request,"Input Failure")
+				return render(request, self.template_name, {'collector': collector})
 
 		return redirect(reverse('collection_point_view',args = (col_pk,)))
