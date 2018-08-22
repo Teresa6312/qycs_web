@@ -22,7 +22,14 @@
 {% block coltype %}contentCSS{% endblock %}
 
 {% block branding %}
-  <a href="{% url 'home' %}"><img src="{% static 'image/logo.png' %}" alt="logo" width="60" height="60" /></a>
+      <div class = "w3-row w3-container">
+        <div style="float: right;margin-right:0px;">
+          Language: English<br/>
+          <input type="text" placeholder="Search..." name="search">
+          <button type="submit"><i class="fa fa-search"></i></button>
+        </div>
+        <!-- <a href="{% url 'home' %}"><img src="{% static 'image/logo.png' %}" alt="logo" width="60" height="60" /></a> -->
+      </div>
 {% endblock %}
 
 
@@ -35,7 +42,7 @@
             <a href="{% url 'collection_points' %}">Co-Shipping</a>
             <a href="">Price List</a>
             <a href="">Global Shop</a>
-            <a href="/admin" target="_blank">Admin</a>
+            <!-- <a href="/admin" target="_blank">Admin</a> -->
             <div class="topnav-right">
                 {% if user.is_authenticated %}
 
