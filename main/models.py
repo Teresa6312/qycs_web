@@ -70,12 +70,6 @@ class Address(Address_Common_Info):
 		,'zipcode'
 		)
 
-# from django.db import models
-# from django_google_maps import fields as map_fields
-#
-# class Rental(models.Model):
-# 	address = map_fields.AddressField(max_length=200)
-# 	geolocation = map_fields.GeoLocationField(max_length=100)
 
 
 class Card(models.Model):
@@ -413,3 +407,10 @@ class FavoriteWebsite(models.Model):
 	web_name = models.CharField(max_length = 64, blank=True, default='', verbose_name = 'Websit Name')
 	web_url = models.URLField (max_length = 128, blank=True, default='', verbose_name = 'Websit url')
 	rate = models.PositiveIntegerField(default=1, verbose_name = 'Rate')
+
+
+
+from django_google_maps import fields as map_fields
+class Rental(models.Model):
+	address = map_fields.AddressField(max_length=200)
+	geolocation = map_fields.GeoLocationField(max_length=100)
