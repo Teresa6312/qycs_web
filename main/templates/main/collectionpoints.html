@@ -23,7 +23,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 {% block content %}
 <div class="w3-cell-row w3-mobile">
-    <div class="w3-container">
+    <div class="w3-panel">
         <h1> Our Collection Points: </h1>
         <div id="default_col_block">
           <h4>Your Selected Collection Point:</h4>
@@ -33,7 +33,8 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
             <button id="add_package_btn" type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.add_co_shipping}}'"> Add package</button>
         </div>
         <div class="w3-cell w3-container">
-            {% include "blocks/map_block.html"%}
+          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+          <div id="map" style="width:750px; height:500px;"></div>
         </div>
 
         <div class="w3-cell w3-container content-background-color" style="overflow:auto; max-height:400px;">
@@ -42,6 +43,15 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
             {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
 
         </div>
+
     </div>
 </div>
+{% endblock %}
+
+{% block script%}
+<script src="{% static 'js/map.js' %}"></script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
+</script>
+
 {% endblock %}
