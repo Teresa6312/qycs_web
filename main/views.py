@@ -48,7 +48,15 @@ class RegisterView(TemplateView):
 		profileform = UserProfileForm(request.POST)
 
 		if form.is_valid() and webformset.is_valid() and profileform.is_valid():
-			user = form.save()
+			form.save()
+			username = request.POST['username']
+			password = request.POST['password1']
+			user = authenticate(
+				username = username,
+				password = password
+			)
+			login(request, user)
+
 			profile = UserProfile.objects.get(user = user)
 			profile.phone = profileform.cleaned_data['phone']
 			profile.birthday = profileform.cleaned_data['birthday']
@@ -76,10 +84,10 @@ class RegisterView(TemplateView):
 
 			mail_subject = 'Activate your blog account.'
 			message = render_to_string('main/acc_active_email.html', {
-			'user': user,
-			'domain': get_current_site(request).domain,
-			'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-			'token':account_activation_token.make_token(user),
+				'user': user,
+				'domain': get_current_site(request).domain,
+				'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+				'token':account_activation_token.make_token(user),
             })
 			email = EmailMessage(mail_subject, message, to=[user.email])
 			email.send()
@@ -251,7 +259,6 @@ class AddressView(TemplateView):
 
 
 	def post(self, request):
-
 		is_popup=request.POST.get('is_popup','')
 
 		if "addform" in request.POST:
@@ -264,7 +271,10 @@ class AddressView(TemplateView):
 			newaddress.user = request.user
 			newaddress.save()
 			if is_popup == "True":
-				# messages.info(request, "You didn't select a Collection Point.")
+				if Address.objects.count()==1:
+					profile = UserProfile.objects.get(user=request.user)
+					profile.default_address = newaddress
+					profile.save()
 				return render(request, 'main/updateprofile.html', {'newaddress': newaddress})
 			else:
 				return redirect(reverse('useraddress'))
@@ -362,7 +372,7 @@ class CollectionPointView(TemplateView):
 
 	def get(self, request):
 		return render(request, self.template_name, {'col_list': self.col_list,})
-	# 
+	#
 	# def post(self, request):
 	# 	try:
 	# 		selected_col = CollectionPoint.objects.get(pk=request.POST['choice'])

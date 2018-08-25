@@ -22,7 +22,7 @@ function submitForm(csrf, submit_url){
       let addobject={'csrfmiddlewaretoken': csrf,
                       'addform':$('#newAddressForm_js').serialize(),
                       'is_popup':"True"};
-
+      
       $.ajax({
         type: "POST",
         url: submit_url,
@@ -112,7 +112,6 @@ function createAddForm(user,csrf, submit_url) {
     em.setAttribute("type", "text");
     em.setAttribute("name", "email");
     em.setAttribute("class", "w3-input w3-border");
-    em.required = true;
     emblock.appendChild(em);
     formblock.appendChild(emblock);
 
