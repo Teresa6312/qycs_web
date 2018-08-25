@@ -18,6 +18,7 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
     # path('accounts/login/', views.LoginView.as_view, name = 'login'),
 
+    path('myaccount/location/', views.locationView, name='location'),
 
     path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
     path('shipping/', views.ShippingView.as_view(), name='shipping'),

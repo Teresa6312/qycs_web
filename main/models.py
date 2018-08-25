@@ -8,6 +8,14 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 	message="Invalid phone number format. Enter as 123-456-0987. Optionally enter extensions using 'x' followed by the number.")
 
 
+class Location(models.Model):
+	id=models.PositiveIntegerField(primary_key=True)
+	city=models.CharField(max_length=100, blank = True, default = '')
+	state=models.CharField(max_length=100, blank = True, default = '')
+	country=models.CharField(max_length=100, blank = True, default = '')
+	country_sortname=models.CharField(max_length=100, blank = True, default = '')
+
+
 # from django.contrib.auth import get_user_model
 # UserModel = get_user_model()
 # to set email is required

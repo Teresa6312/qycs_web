@@ -1,6 +1,6 @@
 from .models import (
 	Address, Card, OtherPayMethod, Service, CollectionPoint,
-	UserProfile, User, Warehouse, FavoriteWebsite
+	UserProfile, User, Warehouse, FavoriteWebsite, Location
 	)
 from .forms import (
 	RegisterForm, AddressForm, UserProfileForm, WebFormSet,
@@ -26,6 +26,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
 import os
 import json
+from django.core import serializers
 
 
 
@@ -239,16 +240,14 @@ class ChangePasswordView(TemplateView):
 			return render(request, self.template_name, {'form': form})
 
 
+def locationView(request):
+	locations=Location.objects.all()
+	print(locations)
+	data = serializers.serialize('json', locations)
+	return HttpResponse(data, content_type='application/json')
+
 class AddressView(TemplateView):
 	template_name = 'main/address.html'
-
-	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	countries=open(os.path.join(BASE_DIR, 'main\\static\\jsonObjects\\countries.json'))
-	states=open(os.path.join(BASE_DIR, 'main\\static\\jsonObjects\\states.json'))
-	cities=open(os.path.join(BASE_DIR, 'main\\static\\jsonObjects\\cities.json'))
-	countriesJsonObj=json.load(countries)
-	statesJsonObj=json.load(states)
-	citiesJsonObj=json.load(cities)
 
 	def get(self, request):
 		addform = AddressForm()
@@ -260,9 +259,6 @@ class AddressView(TemplateView):
 		addform.fields['country'].required = False
 		addform.fields['zipcode'].required = False
 		return render(request, self.template_name, {'addform': addform,
-			'countries':AddressView.countriesJsonObj,
-			'states':AddressView.statesJsonObj,
-			'cites':AddressView.citiesJsonObj,
 		})
 
 
@@ -378,7 +374,7 @@ class CollectionPointView(TemplateView):
 
 	def get(self, request):
 		return render(request, self.template_name, {'col_list': self.col_list,})
-	# 
+	#
 	# def post(self, request):
 	# 	try:
 	# 		selected_col = CollectionPoint.objects.get(pk=request.POST['choice'])
