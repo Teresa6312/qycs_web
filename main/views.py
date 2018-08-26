@@ -241,10 +241,21 @@ class ChangePasswordView(TemplateView):
 
 
 def locationView(request):
-	locations=Location.objects.all()
-	print(locations)
-	data = serializers.serialize('json', locations)
-	return HttpResponse(data, content_type='application/json')
+	if request.POST:
+		field=request.POST.get('field','')
+		value=request.POST.get('value','')
+		if field=="id_country":
+			locations=[i['country'] for i in Location.objects.filter(country__startswith=value).values('country').distinct()]
+			context = json.dumps({'data': locations})
+			return HttpResponse(context, content_type='application/json')
+		elif field=="id_state":
+			locations=[i['state'] for i in Location.objects.filter(state__startswith=value).values('state').distinct()]
+			context = json.dumps({'data': locations})
+			return HttpResponse(context, content_type='application/json')
+		elif field=="id_city":
+			locations=[i['city'] for i in Location.objects.filter(city__startswith=value).values('city').distinct()]
+			context = json.dumps({'data': locations})
+			return HttpResponse(context, content_type='application/json')
 
 class AddressView(TemplateView):
 	template_name = 'main/address.html'

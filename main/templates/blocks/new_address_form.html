@@ -53,6 +53,11 @@
   <button type = "button" class="add_cancel_btn" onclick="window.location.href='{% url 'useraddress' %}'">Cancel</button>
   </form>
 
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   <script type="text/javascript">
 
     function isThere(param,id){
@@ -61,16 +66,38 @@
       }
     }//end of isThere
 
-    function getLocations() {
-      console.log("{% url 'location' %}")
-      $.ajax({
 
-        url:"{% url 'location' %}",
-        success:function(data) {
-          console.log(data);
-        }
-      });
+    function populateData(list,id,comp){
+      if($('#'+id).length!=0){
+        $('#'+id).remove()
+      }
+      let content='<datalist id="'+id+'">';
+      let c;
+      for(c=0; c<list.data.length; c++){
+        content+='<option value="'+list.data[c]+'">';
+      }
+      content+='</datalist>';
+      $('body').append(content);
+      $('#'+comp).attr('list',id);
     }
+
+    function getLocations(field,value,id) {
+      let dt={'csrfmiddlewaretoken': "{{ csrf_token }}",
+      'field':field,'value':value};
+      $.ajax({
+        type: "POST",
+        url: "{% url 'location' %}",
+        data: dt,
+        success: function(data){
+          populateData(data,id,field)
+        },
+        failure: function(data){
+
+        },
+      });
+    }//end of getLocations
+
+
 
 
 
@@ -82,12 +109,39 @@
           isThere("{{user.userprofile.phone}}","id_phone");
       })
 
-      getLocations();
+      var xhr;
+      $("#id_country").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_country",$(this).val(),'countryListID')
 
+        }
+      });
 
+      $("#id_state").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_state",$(this).val(),'stateListID')
+
+        }
+      });
+
+      $("#id_city").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_city",$(this).val(),'cityListID')
+
+        }
+      });
 
     })//end of ready method
   </script>
+
+  <style>
+  .ui-autocomplete {
+      max-height: 200px;
+      overflow-y: auto;   /* prevent horizontal scrollbar */
+      overflow-x: hidden; /* add padding to account for vertical scrollbar */
+      z-index:1000 !important;
+  }
+  </style>
 
 </div>
 
