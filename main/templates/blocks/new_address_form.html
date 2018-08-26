@@ -71,6 +71,10 @@
       if($('#'+id).length!=0){
         $('#'+id).remove()
       }
+      if(list.length==1){
+        $('#'+comp).val(list[0])
+        return
+      }
       let content='<datalist id="'+id+'">';
       let c;
       for(c=0; c<list.length; c++){
