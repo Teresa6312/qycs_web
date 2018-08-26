@@ -246,15 +246,30 @@ def locationView(request):
 		value=request.POST.get('value','')
 		if field=="id_country":
 			locations=[i['country'] for i in Location.objects.filter(country__startswith=value).values('country').distinct()]
-			context = json.dumps({'data': locations})
+			locationsA=[i['state'] for i in Location.objects.filter(country__startswith=value).values('state').distinct()]
+			locationsB=[i['city'] for i in Location.objects.filter(country__startswith=value).values('city').distinct()]
+			context = json.dumps({
+			'data': locations,
+			'state': locationsA,
+			'city': locationsB})
 			return HttpResponse(context, content_type='application/json')
 		elif field=="id_state":
 			locations=[i['state'] for i in Location.objects.filter(state__startswith=value).values('state').distinct()]
-			context = json.dumps({'data': locations})
+			locationsA=[i['country'] for i in Location.objects.filter(state__startswith=value).values('country').distinct()]
+			locationsB=[i['city'] for i in Location.objects.filter(state__startswith=value).values('city').distinct()]
+			context = json.dumps({
+			'data': locations,
+			'country': locationsA,
+			'city': locationsB})
 			return HttpResponse(context, content_type='application/json')
 		elif field=="id_city":
 			locations=[i['city'] for i in Location.objects.filter(city__startswith=value).values('city').distinct()]
-			context = json.dumps({'data': locations})
+			locationsA=[i['country'] for i in Location.objects.filter(city__startswith=value).values('country').distinct()]
+			locationsB=[i['state'] for i in Location.objects.filter(city__startswith=value).values('state').distinct()]
+			context = json.dumps({
+			'data': locations,
+			'country': locationsA,
+			'state': locationsB})
 			return HttpResponse(context, content_type='application/json')
 
 class AddressView(TemplateView):

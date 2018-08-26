@@ -73,8 +73,8 @@
       }
       let content='<datalist id="'+id+'">';
       let c;
-      for(c=0; c<list.data.length; c++){
-        content+='<option value="'+list.data[c]+'">';
+      for(c=0; c<list.length; c++){
+        content+='<option value="'+list[c]+'">';
       }
       content+='</datalist>';
       $('body').append(content);
@@ -89,7 +89,22 @@
         url: "{% url 'location' %}",
         data: dt,
         success: function(data){
-          populateData(data,id,field)
+          if(field=="id_country"){
+            populateData(data.data,id,field)
+            populateData(data.state,'stateListID','id_state')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_state"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_city"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.state,'stateListID','id_state')
+          }
+
         },
         failure: function(data){
 
