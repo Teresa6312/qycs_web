@@ -7,6 +7,9 @@ db.sqlite3
 main/migrations/*.py
 collector/migrations/*.py
 
+# images
+media/
+
 .DS_Store
 bin/
 include/

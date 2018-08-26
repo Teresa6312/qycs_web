@@ -81,7 +81,7 @@ admin.site.register(CoReceiver, CoReceiverAdmin)
 
 
 class CollectionPointAdmin(admin.ModelAdmin):
-	list_display = ('collector', 'name', 'address', 'city', 'state','country', 'zipcode', 'status')
+	list_display = ('collector', 'name', 'store_name', 'address', 'city', 'state','country', 'zipcode', 'status')
 	list_filter = ['country', 'state','city', 'status', 'store']
 	search_fields = ['name']
 	readonly_fields = [ "collector_image"]
