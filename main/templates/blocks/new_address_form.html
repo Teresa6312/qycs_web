@@ -53,6 +53,11 @@
   <button type = "button" class="add_cancel_btn" onclick="window.location.href='{% url 'useraddress' %}'">Cancel</button>
   </form>
 
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   <script type="text/javascript">
 
     function isThere(param,id){
@@ -61,57 +66,59 @@
       }
     }//end of isThere
 
-    function populateDataList(lst,id,key,val){
-      let content='<datalist id='+id+'>';
-      jQuery.each(lst, function() {
-        if(key=="state_id"){
-          if($(this)[0].country_id==val){
-            content+='<option value="'+$(this)[0].name+'">';
-          }
-        }
-        else if(key=="city_id"){
-          let i;
-          for(i=0; i<val.length; i++){
-            if($(this)[0].state_id==val[i]){
-              content+='<option value="'+$(this)[0].name+'">';
-            }
-          }
-        }
-        else if(key=="country_id"){
-          if($(this)[0].id==val){
-            content+='<option value="'+$(this)[0].name+'">';
-          }
-        }
-        else{
-          content+='<option value="'+$(this)[0].name+'">';
-        }
 
-      });
+    function populateData(list,id,comp){
+      if($('#'+id).length!=0){
+        $('#'+id).remove()
+      }
+      if(list.length==1){
+        $('#'+comp).val(list[0])
+        return
+      }
+      let content='<datalist id="'+id+'">';
+      let c;
+      for(c=0; c<list.length; c++){
+        content+='<option value="'+list[c]+'">';
+      }
       content+='</datalist>';
-      return content;
-    }//end of populateDataList
+      $('body').append(content);
+      $('#'+comp).attr('list',id);
+    }
 
+    function getLocations(field,value,id) {
+      let dt={'csrfmiddlewaretoken': "{{ csrf_token }}",
+      'field':field,'value':value};
+      $.ajax({
+        type: "POST",
+        url: "{% url 'location' %}",
+        data: dt,
+        success: function(data){
+          if(field=="id_country"){
+            populateData(data.data,id,field)
+            populateData(data.state,'stateListID','id_state')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_state"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_city"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.state,'stateListID','id_state')
+          }
 
-    function getId(list,value){
-      let result="NULL";
-      jQuery.each(list, function() {
-        if($(this)[0].name==String(value)){
-          result=$(this)[0].id;
-          return
-        }
+        },
+        failure: function(data){
+
+        },
       });
-      return result;
-    }//end of getId
+    }//end of getLocations
 
-    function getName(list,id){
-      let result="NULL";
-      jQuery.each(list, function() {
-        if($(this)[0].id==id){
-          result=$(this)[0].name;
-        }
-      });
-      return result;
-    }//end of getName
+
+
+
 
     $(document).ready(function(){
       $('#id_follow_user_infor').click(function(){
@@ -121,101 +128,39 @@
           isThere("{{user.userprofile.phone}}","id_phone");
       })
 
-      let countires={{ countries|safe }};
-      let states={{states|safe}};
-      let cities={{cites|safe}};
+      var xhr;
+      $("#id_country").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_country",$(this).val(),'countryListID')
 
-      countriesDataList=populateDataList(countires,'countriesDataList','NULL',"NULL");
-      statesDataList=populateDataList(states,'statesDataList','NULL',"NULL");
-      citiesDataList=populateDataList(cities,'citiesDataList','NULL',"NULL");
-
-      $('body').append(countriesDataList);
-      $('body').append(statesDataList);
-      $('body').append(citiesDataList);
-
-      $('#id_country').attr('list','countriesDataList');
-      $('#id_state').attr('list','statesDataList');
-      $('#id_city').attr('list','citiesDataList');
-
-      // country listener
-      $('#id_country').change(function() {
-        // get country id
-        var countryId=getId(countires,$(this).val());
-
-        // get state ids
-        let stateIds=[]
-        jQuery.each(states, function() {
-          if($(this)[0].country_id==countryId){
-            stateIds.push($(this)[0].id);
-          }
-        });
-
-        $('body').find('#statesDataList').remove();
-        $('body').find('#citiesDataList').remove();
-        statesDataList=populateDataList(states,'statesDataList','state_id',countryId);
-        citiesDataList=populateDataList(cities,'citiesDataList','city_id',stateIds);
-        // console.log(citiesDataList);
-        $('body').append(statesDataList);
-        $('body').append(citiesDataList);
-
+        }
       });
 
-      // state listener
-      $('#id_state').change(function() {
-        // State id
-        var stateId=getId(states,$(this).val());
+      $("#id_state").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_state",$(this).val(),'stateListID')
 
-        $('body').find('#countriesDataList').remove();
-        $('body').find('#citiesDataList').remove();
-
-
-        citiesDataList=populateDataList(cities,'citiesDataList','city_id',[stateId]);
-
-
-        // get countryID -> stateList and get country name
-        let countryId="";
-        jQuery.each(states, function() {
-          if($(this)[0].id==stateId){
-            countryId=$(this)[0].country_id;
-          }
-        });
-
-        $('#id_country').val(getName(countires,countryId));
-        $('body').append(citiesDataList);
+        }
       });
 
-      // city listener
-      $('#id_city').change(function() {
-        $('body').find('#countriesDataList').remove();
-        $('body').find('#statesDataList').remove();
-        var cityId=getId(cities,$(this).val());
+      $("#id_city").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_city",$(this).val(),'cityListID')
 
-        // state getStateId -> cityList and get state name
-        let stateId="";
-        jQuery.each(cities, function() {
-          if($(this)[0].id==cityId){
-            stateId=$(this)[0].state_id;
-            return;
-          }
-        });
-
-        $('#id_state').val(getName(states,stateId));
-
-        // get countryID -> stateList and get country name
-        let countryID="";
-        jQuery.each(states, function() {
-          if($(this)[0].id==stateId){
-            countryID=$(this)[0].country_id;
-            return;
-          }
-        });
-        $('#id_country').val(getName(countires,countryID));
+        }
       });
-
-
 
     })//end of ready method
   </script>
+
+  <style>
+  .ui-autocomplete {
+      max-height: 200px;
+      overflow-y: auto;   /* prevent horizontal scrollbar */
+      overflow-x: hidden; /* add padding to account for vertical scrollbar */
+      z-index:1000 !important;
+  }
+  </style>
 
 </div>
 
