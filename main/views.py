@@ -79,7 +79,7 @@ class RegisterView(TemplateView):
 					else:
 						web.save()
 
-			mail_subject = 'Activate your blog account.'
+			mail_subject = 'Activate your Qycs Website account.'
 			message = render_to_string('main/acc_active_email.html', {
 			'user': user,
 			'domain': get_current_site(request).domain,

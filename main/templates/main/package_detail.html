@@ -14,25 +14,30 @@
         <div class="timeline" style="width:500px">
           <div class="container left">
             <div class="content">
-              <h5>Package Marked</h5>
+              <h6>Package added by me</h6>
               <p>{{package.created_date}}</p>
             </div>
           </div>
           <div class="container right">
             <div class="content">
-              <h5>Package Received</h5>
+              <h6>Package arrived in Warehouse</h6>
               <p>{{package.wh_received_date}}</p>
             </div>
           </div>
           <div class="container left">
             <div class="content">
-              <h5>Package Shipped</h5>
+              <h6>Package shipped from Warehouse</h6>
               <p>{{package.parent_package.shipped_date}}</p>
             </div>
           </div>
           <div class="container right">
             <div class="content">
-              <h5>Package Received</h5>
+              <h6>Package Received by
+                {% if package.ship_to_col %}
+                  Collector
+                {% else %}
+                  {{package.ship_to_add.first_name}} {{package.ship_to_add.last_name}}
+                {% endif %}</h6>
               <p>{{package.picked_up_date}}</p>
             </div>
           </div>
@@ -56,13 +61,16 @@
       {% include "blocks/col_card_no_button.html" with col=package.ship_to_col%}
       {% endif %}
       <div class="w3-row">
-          <h4>Package type: {{package.package_type}}(kg)</h4>
-          <h4>Weight: {{package.Weight}}(kg)</h4>
-          <h4>Shipping fee: {{package.shipping_fee}}</h4>
-          {% if package.storage_fee %}<h4>Storage fee: {{package.storage_fee}}</h4>{% endif %}
+          <h6>Package type: {{package.package_type}}</h6>
+          <h6>Outgoing shipping carrier:{{package.parent_package.carrier}}</h6>
+          <h6>Weight: {{package.Weight}}(kg)</h6>
+          <h6>Original Amount: {% if package.shipping_fee %}{{package.shipping_fee}}{% else %}N/A{% endif %}</h6>
+          {% if package.storage_fee %}<h6>Storage fee: {{package.storage_fee}}</h6>{% endif %}
+          <h6>ADD !! Paid Amount: {% if package.shipping_fee %}{{package.shipping_fee}}{% else %}N/A{% endif %}</h6>
+          {% if package.storage_fee %}<h6>Storage fee: {{package.storage_fee}}</h6>{% endif %}
 
-          <h4>Low Volume Weight Requested: {{package.low_volume_request}}</h4>
-          {% if not package.co_shipping %}<h4>No Rush Requested: {{package.no_rush_request}}</h4>{% endif %}
+          <h6>Low Volume Weight Requested: {{package.low_volume_request}}</h6>
+          {% if not package.co_shipping %}<h6>No Rush Requested: {{package.no_rush_request}}</h6>{% endif %}
 
       </div>
     </div>
