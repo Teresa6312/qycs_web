@@ -148,7 +148,7 @@ class CollectionPoint(Address_Common_Info):
 	license_type = models.CharField(max_length = 32, default='',verbose_name= 'License Type')
 	license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
 	id_image = models.ImageField(upload_to = 'collector_id', default = '')
-	store_name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Store Name')
+	store_name = models.CharField(max_length = 16, default='', verbose_name= 'Store Name')
 	store = models.BooleanField(default = True, verbose_name= 'Store')
 	store.boolean = True
 	status = models.BooleanField(default = False, verbose_name= 'Avaliable')
