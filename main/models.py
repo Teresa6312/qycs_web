@@ -129,7 +129,7 @@ class CollectionPoint(Address_Common_Info):
 		verbose_name= 'Collector'
 	)
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True)
-	name = models.CharField(max_length = 16, unique = True, blank=True, null=True, verbose_name= 'Collection Point Name')
+	name = models.CharField(max_length = 16, unique = True, null=True, verbose_name= 'Collection Point Name')
 	license = models.CharField(max_length = 32, default='',verbose_name= 'License Number')
 	license_type = models.CharField(max_length = 32, default='',verbose_name= 'License Type')
 	license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
