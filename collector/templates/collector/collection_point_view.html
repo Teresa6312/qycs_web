@@ -1,5 +1,6 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
+{% load cloudinary %}
 
 {% block title%}
 Update Profile | Qycs Global Shipping Inc. | English Official Website
@@ -23,8 +24,8 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
         <div class = "w3-card-4 w3-third" style="width:400px; height:400px">
           collection point image show here
           {% if collector.location_image %}
-            <img src = "{{collector.location_image.url}}" style="max-width:100%; max-height:100%;">
-
+            <!-- <img src = "{{collector.location_image.url}}" style="max-width:100%; max-height:100%;"> -->
+            {% cloudinary collector.location_image format="jpg" width=120 height=80 crop="fill" %}
           {% endif %}
         </div>
 

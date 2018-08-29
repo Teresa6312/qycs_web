@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from django.core.validators import RegexValidator
 from django.urls import reverse
+from cloudinary.models import CloudinaryField
 
 phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', \
 	message="Invalid phone number format. Enter as 123-456-0987. Optionally enter extensions using 'x' followed by the number.")
@@ -146,20 +147,25 @@ class CollectionPoint(Address_Common_Info):
 	name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Collection Point Name')
 	license = models.CharField(max_length = 32, default='',verbose_name= 'License Number')
 	license_type = models.CharField(max_length = 32, default='',verbose_name= 'License Type')
+
 	license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
 	id_image = models.ImageField(upload_to = 'collector_id', default = '')
 	store_name = models.CharField(max_length = 16, default='', verbose_name= 'Store Name')
+
 	store = models.BooleanField(default = True, verbose_name= 'Store')
 	store.boolean = True
 	status = models.BooleanField(default = False, verbose_name= 'Avaliable')
 	status.boolean = True
-	location_image = models.ImageField(upload_to = 'collector_image', blank ='True')
+	# location_image = models.ImageField(upload_to = 'collector_image', blank ='True')
 	longitude = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
 	dimension = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
 	food = models.BooleanField(default = False)
 	regular = models.BooleanField(default = False)
 	luxury = models.BooleanField(default = False)
 
+	location_image = CloudinaryField('location_image')
+	license_image = CloudinaryField('license_image')
+	id_image = CloudinaryField('id_image')
 
 
 	def __str__(self):
@@ -404,7 +410,6 @@ class Item(models.Model):
 class PackageImage(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = 'Service Key')
 	image = models.ImageField(upload_to = 'package_snapshot')
-
 
 class FavoriteWebsite(models.Model):
 	TYPE_CHOICE = (
