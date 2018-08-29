@@ -9,6 +9,14 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 	message="Invalid phone number format. Enter as 123-456-0987. Optionally enter extensions using 'x' followed by the number.")
 
 
+class Location(models.Model):
+	id=models.PositiveIntegerField(primary_key=True)
+	city=models.CharField(max_length=100, blank = True, default = '')
+	state=models.CharField(max_length=100, blank = True, default = '')
+	country=models.CharField(max_length=100, blank = True, default = '')
+	country_sortname=models.CharField(max_length=100, blank = True, default = '')
+
+
 # from django.contrib.auth import get_user_model
 # UserModel = get_user_model()
 # to set email is required
@@ -139,9 +147,11 @@ class CollectionPoint(Address_Common_Info):
 	name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Collection Point Name')
 	license = models.CharField(max_length = 32, default='',verbose_name= 'License Number')
 	license_type = models.CharField(max_length = 32, default='',verbose_name= 'License Type')
-	# license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
-	# id_image = models.ImageField(upload_to = 'collector_id', default = '')
-	store_name = models.CharField(max_length = 16, unique = True, default='', verbose_name= 'Store Name')
+
+	license_image = models.ImageField(upload_to = 'collector_license', blank = 'True')
+	id_image = models.ImageField(upload_to = 'collector_id', default = '')
+	store_name = models.CharField(max_length = 16, default='', verbose_name= 'Store Name')
+
 	store = models.BooleanField(default = True, verbose_name= 'Store')
 	store.boolean = True
 	status = models.BooleanField(default = False, verbose_name= 'Avaliable')
