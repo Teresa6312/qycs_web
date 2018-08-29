@@ -39,21 +39,25 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Phone Number: {{user.userprofile.phone}}<br/>
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
 						Country: {{user.userprofile.country }}<br/>
+
 						Preferred language: {{user.userprofile.language }}<br/>
 						<h4>Default Address</h4>
+
 							{% if user.userprofile.default_address %}
 										{% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}
 							{% else %}
 									No default address!
 							{% endif %}
-<div class="w3-row">
+
+            <div class="w3-row">
 							<h4>Default Collection Point</h4>
+
 								{% if user.userprofile.default_col%}
 										{% include "blocks/default_col_card.html"%}
 								{% else %}
 										No default Collection Point!
                 {% endif %}
-							</div>
+					</div>
 			</div>
 			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
 			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>

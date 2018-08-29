@@ -36,7 +36,7 @@
 $(document).ready(function(){
 //
   $("#add_new_address_btn").click(function(){
-      var user={
+      var user_obj={
                 'first_name': '{{user.first_name}}',
                 'last_name': '{{user.last_name}}',
                 'email': '{{user.email}}',
@@ -44,7 +44,7 @@ $(document).ready(function(){
               }
       var submit_url="{% url 'useraddress' %}"
       var csrf="{{ csrf_token }}"
-      createAddForm(user, csrf, submit_url);
+      createAddForm(user_obj, csrf, submit_url);
       $('#newAddressFormModal').modal('show');
   });
 

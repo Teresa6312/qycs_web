@@ -137,7 +137,7 @@ AUTHENTICATION_BACKENDS = (
     # 'social_core.backends.github.GithubOAuth2',  # for Github authentication
     # 'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
     # 'social_core.backends.twitter.TwitterOAuth',
-    # 'main.backends.EmailBackend',
+    'main.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
