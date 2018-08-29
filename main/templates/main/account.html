@@ -34,12 +34,14 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						Last Name: {{user.last_name}}<br/>
 						Email address:{{user.email}}
 						{% if not user.bound_email%}
-							<button type="button">To Bound my Email</button>
+							<button type="button">Confirm my Email</button>
 						{% endif %}<br/>
 						Phone Number: {{user.userprofile.phone}}<br/>
 						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
 						Country: {{user.userprofile.country }}<br/>
-						<h4 class="w3-row">Default Address</h4>
+
+						Preferred language: {{user.userprofile.language }}<br/>
+						<h4>Default Address</h4>
 
 							{% if user.userprofile.default_address %}
 										{% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}
@@ -47,12 +49,15 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 									No default address!
 							{% endif %}
 
-							<h4 class="w3-row">Default Collection Point</h4>
+            <div class="w3-row">
+							<h4>Default Collection Point</h4>
+
 								{% if user.userprofile.default_col%}
 										{% include "blocks/default_col_card.html"%}
 								{% else %}
 										No default Collection Point!
                 {% endif %}
+					</div>
 			</div>
 			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
 			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>

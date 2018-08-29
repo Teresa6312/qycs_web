@@ -79,11 +79,8 @@
 </form>
 <div class="w3-center">OR</center>
 <div class="socmed-login">
-    <!-- <a href="#wechat" class="socmed-btn wechat-btn">
-    <i class="fa fa-wechat"></i>
-    <span>Login with Wechat</span>
-    </a> -->
-    <a href="#g-plus" class="socmed-btn google-btn">
+
+    <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
     <i class="fa fa-google"></i>
     <span>Login with Google</span>
     </a>

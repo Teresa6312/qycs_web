@@ -1,6 +1,6 @@
 from .models import (
 	Address, Card, OtherPayMethod, Service, CollectionPoint,
-	UserProfile, User, Warehouse, FavoriteWebsite
+	UserProfile, User, Warehouse, FavoriteWebsite, Location
 	)
 from .forms import (
 	RegisterForm, AddressForm, UserProfileForm, WebFormSet,
@@ -24,6 +24,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
 from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
+import os
+import json
+from django.core import serializers
+
+
 
 
 class HomeView(TemplateView):
@@ -82,7 +87,7 @@ class RegisterView(TemplateView):
 					else:
 						web.save()
 
-			mail_subject = 'Activate your blog account.'
+			mail_subject = 'Activate your Qycs Website account.'
 			message = render_to_string('main/acc_active_email.html', {
 				'user': user,
 				'domain': get_current_site(request).domain,
@@ -243,6 +248,38 @@ class ChangePasswordView(TemplateView):
 			return render(request, self.template_name, {'form': form})
 
 
+def locationView(request):
+	if request.POST:
+		field=request.POST.get('field','')
+		value=request.POST.get('value','')
+		if field=="id_country":
+			locations=[i['country'] for i in Location.objects.filter(country__startswith=value).values('country').distinct()]
+			locationsA=[i['state'] for i in Location.objects.filter(country__startswith=value).values('state').distinct()]
+			locationsB=[i['city'] for i in Location.objects.filter(country__startswith=value).values('city').distinct()]
+			context = json.dumps({
+			'data': locations,
+			'state': locationsA,
+			'city': locationsB})
+			return HttpResponse(context, content_type='application/json')
+		elif field=="id_state":
+			locations=[i['state'] for i in Location.objects.filter(state__startswith=value).values('state').distinct()]
+			locationsA=[i['country'] for i in Location.objects.filter(state__startswith=value).values('country').distinct()]
+			locationsB=[i['city'] for i in Location.objects.filter(state__startswith=value).values('city').distinct()]
+			context = json.dumps({
+			'data': locations,
+			'country': locationsA,
+			'city': locationsB})
+			return HttpResponse(context, content_type='application/json')
+		elif field=="id_city":
+			locations=[i['city'] for i in Location.objects.filter(city__startswith=value).values('city').distinct()]
+			locationsA=[i['country'] for i in Location.objects.filter(city__startswith=value).values('country').distinct()]
+			locationsB=[i['state'] for i in Location.objects.filter(city__startswith=value).values('state').distinct()]
+			context = json.dumps({
+			'data': locations,
+			'country': locationsA,
+			'state': locationsB})
+			return HttpResponse(context, content_type='application/json')
+
 class AddressView(TemplateView):
 	template_name = 'main/address.html'
 
@@ -255,7 +292,8 @@ class AddressView(TemplateView):
 		addform.fields['state'].required = False
 		addform.fields['country'].required = False
 		addform.fields['zipcode'].required = False
-		return render(request, self.template_name, {'addform': addform})
+		return render(request, self.template_name, {'addform': addform,
+		})
 
 
 	def post(self, request):
