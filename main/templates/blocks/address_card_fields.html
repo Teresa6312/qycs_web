@@ -1,0 +1,10 @@
+{% load i18n static %}
+
+<h5>{{add.last_name}}, {{add.first_name}}{{default}}</h5>
+{% if add.phone%}
+    {{add.phone}}<br/>
+{% endif %}
+{{add.country}} | {{add.state}} | {{add.city}}<br/>
+{{add.address}}<br/>
+{% if add.apt %}{{add.apt}}<br/>{% endif %}
+{{add.zipcode}}<br/>

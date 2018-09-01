@@ -5,65 +5,84 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+{% endblock %}
 
 {% block account_content %}
 
-<div class="w3-cell w3-container w3-mobile" style="overflow:auto;">
-    <h2>Address Book:</h2>
-<div class="addresses_block" style="overflow:auto; max-height:500px; min-width:480px;">
-<!-- display default address -->
-    <div class="w3-card-2 w3-round w3-container ">
-        {% if user.userprofile.default_address %}
+<div class="w3-container w3-cell w3-mobile w3-card-2" style="overflow:auto;">
+    <h2>{% trans 'Address Book' %}</h2>
+    <div class="addresses_block grey-background" style="overflow:auto; max-height:500px; min-width:480px;">
+    <!-- display default address -->
+          {% if user.default_address %}
+            <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width: 300px;">
+                {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
+                <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">Edit</button>
+                <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">Delete</button>
+            </div>
+          {% endif %}
 
-            <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
+    <!-- display other addresses -->
+    {% if user.address_set.all %}{% for address in user.address_set.all %}
+    {% if address != user.userprofile.default_address%}
+        <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width: 300px;">
+            {% include "blocks/address_card_fields.html" with add=address %}
+            <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
+            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
+            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
+        </div>
+    {% endif %}{% endfor %}{% endif %}
 
-            {% if user.userprofile.default_address.phone and user.userprofile.default_address.email %}
-                {{user.userprofile.default_address.phone}} |
-                {{user.userprofile.default_address.email}}<br/>
-            {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-                {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/>
-            {% endif %}
-
-            {{user.userprofile.default_address.address}}<br/>
-            {% if user.userprofile.default_address.apt %}{{user.userprofile.default_address.apt}}<br/>{% endif %}
-            {{user.userprofile.default_address.city}}
-            {{user.userprofile.default_address.state}}, {{user.userprofile.default_address.zipcode}}<br/>
-            {{user.userprofile.default_address.country}}<br/>
-
-            <button type="button" class="edit_btn" onclick="window.location.href='{{user.userprofile.default_address.get_absolute_url.edit}}'">Edit</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{user.userprofile.default_address.get_absolute_url.delete}}'">Delete</button>
-        {% endif %}
-  </div>
-
-
-<!-- display other addresses -->
-{% if user.address_set.all %}{% for address in user.address_set.all %}
-{% if address != user.userprofile.default_address%}
-    <div class="w3-card-2 w3-round w3-container">
-
-        <h5>{{address.last_name}}, {{address.first_name}}</h5>
-
-        {% if address.phone and address.email%}
-            {{address.phone}} | {{address.email}}<br/>
-        {% elif address.phone or address.email%}
-            {{address.phone}}{{address.email}}<br/>
-        {% endif %}
-
-        {{address.address}}<br/>
-        {% if address.apt %}{{address.apt}}<br/>{% endif %}
-        {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
-        {{address.country}}<br/>
-        <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
-        <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
-        <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
     </div>
-
-{% endif %}{% endfor %}{% endif %}
-
 </div>
-</div>
-<div class="w3-cell w3-container w3-mobile">
-    {% include "blocks/new_address_form.html"%}
+<div class="w3-container w3-cell w3-mobile w3-card-2">
+  <form method = "post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <fieldset class="module aligned w3-mobile">
+    <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Address' %}</h2>
+      <div class="form-row">
+        {{ addform.first_name.errors }}
+        {{ addform.first_name.label_tag }} {{ addform.first_name }}
+      </div>
+      <div class="form-row">
+        {{ addform.last_name.errors }}
+        {{ addform.last_name.label_tag }} {{ addform.last_name }}
+      </div>
+      <div class="form-row">
+        {{ addform.phone.errors }}
+        {{ addform.phone.label_tag }} {{ addform.phone }}
+      </div>
+      <div class="form-row">
+        {{ addform.country.errors }}
+        {{ addform.country.label_tag }} {{ addform.country }}
+      </div>
+      <div class="form-row">
+        {{ addform.state.errors }}
+        {{ addform.state.label_tag }} {{ addform.state }}
+      </div>
+      <div class="form-row">
+        {{ addform.city.errors }}
+        {{ addform.city.label_tag }} {{ addform.city }}
+      </div>
+      <div class="form-row">
+        {{ addform.address.errors }}
+        {{ addform.address.label_tag }} {{ addform.address }}
+      </div>
+      <div class="form-row">
+        {{ addform.apt.errors }}
+        {{ addform.apt.label_tag }} {{ addform.apt }}
+      </div>
+      <div class="form-row">
+        {{ addform.zipcode.errors }}
+        {{ addform.zipcode.label_tag }} {{ addform.zipcode }}
+      </div>
+      <div class="submit-row w3-container">
+          <button type="button" class="cleanBtn">{% trans 'Cancel' %}</button>
+          <input type = "submit" value = "{% trans 'Save' %}"/>
+      </div>
+  </fieldset>
+</form>
 </div>
 {% endblock %}
 

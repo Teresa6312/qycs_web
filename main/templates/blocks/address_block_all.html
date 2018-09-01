@@ -1,56 +1,40 @@
-{% include "blocks/new_address_form_popup.html"%}
+{% load i18n static %}
 
+{% include "blocks/modal.html" with element='new-address' title=_('Add an Address') block='new_address_block'%}
 {% if user.address_set %}
-	{% include "blocks/select_address_popup.html"%}
+		{% include "blocks/modal.html" with element='select-address' title=_('Select an Address') block='select_address_block'%}
 {% endif %}
-
 
 <div id="default_address_block">
-<button type="button" id="add_new_address_btn"> Add new address</button>
-{% if user.address_set.all %}
-    <button type="button" id="select_address_btn"> Select from address book</button>
-{% endif %}
+		<div class="w3-row">
+			<button type="button" id="add_new_address_btn">{% trans 'Add new address' %}</button>
+			{% if user.address_set.all %}
+			    <button type="button" id="select_address_btn">{% trans 'Select from address book' %}</button>
+			{% endif %}
+		</div>
 
-{% if user.userprofile.default_address %}
-
-    {% if newaddress %}
-      {% include "blocks/default_address_card.html" with add=newaddress%}
-      {% else %}
-        {% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}
-    {% endif %}
-
-{% else %}
-
-  {% if newaddress %}
-    {% include "blocks/default_address_card.html" with add=newaddress%}
-  {% endif %}
-
-{% endif%}
+		{% if newaddress %}
+				{% include "blocks/default_address_card.html" with add=newaddress%}
+		{% elif user.default_address %}
+				{% include "blocks/default_address_card.html" with add=user.default_address%}
+		{% endif%}
+		<div class="w3-row"><button type="button" id="remove_default_add_btn" style="display:none;">{% trans 'Remove Default Address' %}</button></div>
 </div>
 
-{% load static %}
-<script src="{% static 'js/modals.js' %}"></script>
 
-<script type="text/javascript">
-
-$(document).ready(function(){
-//
-  $("#add_new_address_btn").click(function(){
-      var user_obj={
-                'first_name': '{{user.first_name}}',
-                'last_name': '{{user.last_name}}',
-                'email': '{{user.email}}',
-                'phone': '{{user.userprofile.phone}}',
-              }
-      var submit_url="{% url 'useraddress' %}"
-      var csrf="{{ csrf_token }}"
-      createAddForm(user_obj, csrf, submit_url);
-      $('#newAddressFormModal').modal('show');
-  });
-
-  $("#select_address_btn").click(function(){
-       $('#selectAddressModal').modal('show');
-  });
-});//end of ready function
-
+<script src="{% static 'main/js/update_profile.js' %}"></script>
+<script>
+		$(document).ready(function(){
+		  $("#add_new_address_btn").click(function(){
+		      var user_obj={
+		                'first_name': '{{user.first_name}}',
+		                'last_name': '{{user.last_name}}',
+		                'email': '{{user.email}}',
+		                'phone': '{{user.phone}}',
+		              }
+		      var submit_url="{% url 'useraddress' %}"
+		      var csrf="{{ csrf_token }}"
+		      createAddForm(user_obj, csrf, submit_url);
+		  });
+		});//end of ready function
 </script>

@@ -1,0 +1,30 @@
+{% load i18n static %}
+
+{% if col_list %}
+    <div  class="w3-row" style="overflow:auto; max-height:800px;">
+        {% for colchoice in col_list %}
+            <div class="w3-half w3-container">
+                <div class="w3-card-2 w3-round w3-container w3-mobile colchoice {% if user.default_col == colchoice %}w3-pale-green{% endif%}" style="max-width: 300px;" id="{{ colchoice.pk }}">
+                  {% if colchoice.collector_icon%}
+                      <img src = "{{colchoice.collector_icon.url}}" style="width:90%; margin:auto;">
+                  {% endif %}
+                  <h4>{{colchoice.name}}
+                  {% if colchoice.store %}
+                      ({% trans 'Store' %})
+                  {% else %}
+                      ({% trans 'Personal Place' %})
+                  {% endif %}</h4>
+                  <a class="w3-text-blue" href="{{colchoice.get_absolute_url.collection_point_view}}" target="_blank">{% trans 'visit collection point' %}</a><br/>
+                  {{colchoice.country}} | {{colchoice.state}} | {{colchoice.city}}<br/>
+                  {{colchoice.address}}<br/>
+                  {% if colchoice.apt %}{{colchoice.apt}}<br/>{% endif %}
+                  {% if colchoice.store_name %}{{colchoice.store_name}}<br/>{% endif %}
+                  {{colchoice.zipcode}}<br/>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="w3-row"><button type = "button" class="cancel-modal w3-right">{% trans 'Cancel'%}</button></div>
+    </div>
+{% else %}
+    <h5>{% trans 'No collection point is avaliable at this time!' %}</h5>
+{% endif %}

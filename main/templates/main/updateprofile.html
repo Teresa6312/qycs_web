@@ -5,85 +5,98 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+{% endblock %}
 
 {% block account_content %}
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
 
+    {% if userform.errors %}
+    <ul class="messagelist">
+        {% for message in userform.errors%}
+        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
-{% if messages %}
-<ul class="messagelist">{% for message in messages %}
-  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-{% endfor %}</ul>
-{% endif %}
+    <div class="w3-mobile">
 
-{% if userform.errors %}
-<ul class="messagelist">
-    {% for message in userform.errors%}
-    <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-    <div class="w3-cell w3-container">
-        <h2> Update My Profile</h2>
         <form method = "post">
         {% csrf_token %}
-            {% include "blocks/profile_block.html"%}
-            <div class = "w3-container">
-                <h4>Default Address:</h4>
-                {% include "blocks/address_block_all.html" with addform=addform%}
-            </div>
 
-            <div class = "w3-container">
-                <h4>Default Collection Point:</h4>
-                {% if user.userprofile.default_col %}
-                    {% if not user.collectionpoint %}
-                        <button type="button" id="change_col_btn"> Change</button><br/>
-                    {% endif %}
-                    <div id="default_col_card" class="w3-card-2 w3-round w3-mobile w3-container" style="width:500px">
-                        <h4>{{user.userprofile.default_col.name}}
-                            {% if user.userprofile.default_col.store %}
-                                (Store)
-                            {% else %}
-                                (Personal Place)
-                            {% endif %}
-                        </h4>
-                            {{user.userprofile.default_col.address}}<br/>
-                            {{user.userprofile.default_col.apt}}<br/>
-                            {{user.userprofile.default_col.city}}, {{user.userprofile.default_col.state}} {{user.userprofile.default_col.zipcode}}<br/>
-                            {{user.userprofile.default_col.country}}<br/>
-                    </div>
+            <fieldset class="module aligned w3-mobile">
+                  <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Update My Profile' %}</h2>
+                  <div class="form-row">
+                    {{ form.username.errors }}
 
-              {% else %}
-                  <button type="button" id="select_col_btn"> Select a Collection Point</button>
-              {% endif %}
+                    {{ form.username.label_tag }} {{ form.username }}
+                    <input type="hidden" name="next" value="{{ next }}" />
+                  </div>
+                  <div class="form-row">
+                    {{ form.first_name.errors }}
+                    {{ form.first_name.label_tag }} {{ form.first_name }}
+                  </div>
+                  <div class="form-row">
+                    {{ form.last_name.errors }}
+                    {{ form.last_name.label_tag }} {{ form.last_name }}
+                  </div>
+                  <div class="form-row">
+                    {{ form.birthday.errors }}
+                    {{ form.birthday.label_tag }}
+                    {{ form.birthday }}
+                  </div>
+                  <div class="form-row">
+                    {{ form.email.errors }}
+                    {{ form.email.label_tag }} {{ form.email }}
+                  </div>
+                  <div class="form-row">
+                    {{ form.phone.errors }}
+                    {{ form.phone.label_tag }} {{ form.phone }}
+                  </div>
+                  <div class="form-row">
+                    {{ form.country.errors }}
+                    {{ form.country.label_tag }} {{ form.country }}
+                  </div>
+                  <div class="form-row">
+                    {{ form.language.errors }}
+                    {{ form.language.label_tag }} {{ form.language }}
+                  </div>
+            </fieldset>
+            <fieldset class="module w3-mobile">
+              <h2 class="w3-sand w3-text-indigo w3-large">{% trans "Default Address" %}</h2>
+              {% include "blocks/address_block_all.html"%}
+            </fieldset>
+            <fieldset class="module w3-mobile">
+              {% include "blocks/modal.html" with element='select-col' title=_('Select a Collection Point') block='select_collection_point_block'%}
+              <div id="default_col_block">
+                <h2 class="w3-sand w3-text-indigo w3-large">{% trans "Default Collection Point" %}</h2>
 
-              <div id="collection_points_list" class="w3-cell-row" style="display: none">
-                  {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
+                {% if user.collectionpoint and user.default_col %}
+                    {% include "blocks/default_col_card.html" with col=user.default_col%}
+                {% elif user.default_col %}
+                    <div class="w3-row"><button type="button" id="select_col_btn"></button></div>
+                    {% include "blocks/default_col_card.html" with col=user.default_col%}
+                    <div class="w3-row"><button type="button" id="remove_default_col_btn" style="display:none;">{% trans 'Remove Default Collection Point' %}</button></div>
+                {% else %}
+                    <div class="w3-row"><button type="button" id="select_col_btn"></button></div>
+                    <div class="w3-row"><button type="button" id="remove_default_col_btn" style="display:none;">{% trans 'Remove Default Collection Point' %}</button></div>
+                {% endif %}
               </div>
-        </div>
+            </fieldset>
 
-        <input type="submit" value="Update">
-        <button type="button" onclick="window.location.href = document.referrer">Cancel</button>
+            <div class="submit-row">
+                <button type="button" onclick="window.location.href = document.referrer">{% trans "Cancel" %}</button>
+                <input type="submit" value="Update">
+            </div>
     </form>
 </div>
 {% endblock %}
 
 
 {% block script%}
-
-<script>
-
-    $(document).ready(function(){
-
-
-        $("#select_col_btn").click(function(){
-             $("#collection_points_list").show();
-             $('#collection_points_list').hide().slideDown(500);
-
-        });
-
-    })
-
-
-</script>
 {% endblock %}

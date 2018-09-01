@@ -1,24 +1,21 @@
-<div class="w3-card-2 w3-round w3-quarter w3-container" id="default_col_card">
-    <div>
-          <h4>
-              {{user.userprofile.default_col.name}}
-              {% if user.userprofile.default_col.store %}
-                  (Store)
-              {% else %}
-                  (Personal Place)
-              {% endif %}
-         </h4>
-         <button type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.collection_point_view}}'">visit collection point</button><br/>
-          {{user.userprofile.default_col.address}}<br/>
+{% load i18n static %}
 
-          {% if user.userprofile.default_col.apt %}
-              {{user.userprofile.default_col.apt}}
-          {% endif %}
-
-          {{user.userprofile.default_col.city}}, {{user.userprofile.default_col.state}} {{user.userprofile.default_col.zipcode}}<br/>
-          {{user.userprofile.default_col.country}}<br/>
-
-
-    </div>
+<div id="default_col_card" class="w3-card-2 w3-round w3-container w3-mobile w3-half" style="max-width: 300px;">
+  <input type="hidden" id="id_default_col" name="default_col" value="{{add.id}}" />
+        {% if col.collector_icon%}
+            <img src = "{{col.collector_icon.url}}" style="width:90%; margin:auto;">
+        {% endif %}
+        <h4>{{col.name}}
+        {% if col.store %}
+            ({% trans 'Store' %})
+        {% else %}
+            ({% trans 'Personal Place' %})
+        {% endif %}</h4>
+        <a class="w3-text-blue" href="{{col.get_absolute_url.collection_point_view}}">{% trans 'visit collection point' %}</a><br//>
+        {{col.country}} | {{col.state}} | {{col.city}}<br/>
+        {{col.address}}<br/>
+        {% if add.apt %}{{col.apt}}<br/>{% endif %}
+        {% if col.store_name %}{{col.store_name}}<br/>{% endif %}
+        {{col.zipcode}}<br/>
 
 </div>

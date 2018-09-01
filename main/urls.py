@@ -13,6 +13,8 @@ urlpatterns = [
 # open for everyone
     path('', views.HomeView.as_view(), name='home'),
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+            views.activate, name='activate'),
     path('accounts/colregister/', views.ColRegisterView.as_view(), name = 'colregister'),
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
@@ -28,11 +30,7 @@ urlpatterns = [
 
 # login_required
     path('accounts/logout/', login_required(auth_views.LogoutView.as_view(template_name='main/logout.html')), name = 'logout'),
-
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        views.activate, name='activate'),
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
-    path('myaccount/profile/', login_required(views.AccountView.as_view()), name='userprofile'),
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
     path('myaccount/change-password/', login_required(views.ChangePasswordView.as_view()), name='changepassword'),
 
@@ -45,15 +43,13 @@ urlpatterns = [
     path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 
 
-    path('myaccount/wallet', login_required(views.WalletView.as_view()), name='userwallet'),
     path('myaccount/packages', login_required(pk_views.PackagesView.as_view()), name='userpackage'),
 
-    path('packages/add/', login_required(pk_views.AddPackageView.as_view()), name='add_package'),
-    # path('packages/co-shiping/add/', views.AddCoPackageView.as_view(), name='addcopackage'),
+    # path('packages/add/', login_required(pk_views.AddPackageView.as_view()), name='add_package'),
     path('packages/<int:selected_col>/add', login_required(pk_views.AddCoShipping.as_view()), name='add_co_shipping'),
     path('packages/direct-shipping/add', login_required(pk_views.AddDirectShipping.as_view()), name='add_direct_shipping'),
     path('packages/', login_required(pk_views.PackagesView.as_view()), name='packages'),
-    path('packages/card/', login_required(pk_views.PackageCardView.as_view()), name='packagecard'),
+    path('packages/card/', login_required(pk_views.PackageCartView.as_view()), name='packagecart'),
 
 
 

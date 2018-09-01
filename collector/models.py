@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
-from main.models import CollectionPoint
+from main.models import CollectionPoint, User
 
 class Review(models.Model):
     review = models.CharField(max_length=500,default="")

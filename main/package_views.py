@@ -1,10 +1,9 @@
 from .models import (
 	Address, Service, CollectionPoint,
-	User, Warehouse, PackageImage
+	User, Warehouse, PackageSnapshot
 	)
 from .forms import (
-	ItemFormset, PackageForm,CoShippingForm, DirectShippingForm,
-	ImageFormset, CoReceiverForm, ImageForm
+	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm, CoReceiverForm, SnapshotForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -16,74 +15,74 @@ from django.views.generic.edit import FormView
 
 from django.urls import reverse
 # used to reverse the url name as a url path
-
+from django.utils.translation import gettext as _
 
 class PackagesView(TemplateView):
-	template_name = 'main/packagelist.html'
+	template_name = 'main/package_history.html'
 
 	def get(self, request):
 		return render(request, self.template_name,
 			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
 
 
-class PackageCardView(TemplateView):
+class PackageCartView(TemplateView):
 	template_name = 'main/packagecard.html'
 
 	def get(self, request):
 		return render(request, self.template_name,
-			{'package_list': Service.objects.filter(user = request.user, paid_key = None)})
+			{'package_list': Service.objects.filter(user = request.user, paid_key = None).order_by('-created_date')})
 
-
-#-----------------------------------------------------------------------------------------
-'''
-Create Package
-'''
-#-----------------------------------------------------------------------------------------
-class AddPackageView(FormView):
-	form_class = PackageForm
-	template_name = 'main/addpackage.html'
-	success_url = '/package/add'
-
-	def get_context_data(self, **kwargs):
-		data = super().get_context_data(**kwargs)
-		data['imageset'] = ImageForm()
-		data['package_list'] = Service.objects.filter(
-			user = self.request.user,
-			co_shipping = None,
-			paid_key = None).order_by('-id')
-
-		if self.request.POST:
-			data['itemset'] = ItemFormset(self.request.POST)
-		else:
-			data['itemset'] = ItemFormset()
-		return data
-
-	def form_valid(self, form):
-		context = self.get_context_data()
-		items = context['itemset']
-		images = context['imageset']
-		files = self.request.FILES.getlist('image')
-		with transaction.atomic():
-
-			self.object = form.save(commit=False)
-			self.object.user = User.objects.get(pk = self.request.user.id)
-			self.object.wh_received = Warehouse.objects.get(pk=1)
-			self.object.co_shipping = None
-			self.object.save()
-
-
-			if items.is_valid():
-				items.instance = self.object
-				items.save()
-# if images.is_valid():
-
-			for f in files:
-				newimage = PackageImage(package = self.object, image = f)
-				newimage.save()
-
-		return super().form_valid(form)
-
-
+#
+# #-----------------------------------------------------------------------------------------
+# '''
+# Create Package
+# '''
+# #-----------------------------------------------------------------------------------------
+# class AddPackageView(FormView):
+# 	form_class = PackageCreationForm
+# 	template_name = 'main/addpackage.html'
+# 	success_url = '/package/add'
+#
+# 	def get_context_data(self, **kwargs):
+# 		data = super().get_context_data(**kwargs)
+# 		data['imageset'] = SnapshotForm()
+# 		data['package_list'] = Service.objects.filter(
+# 			user = self.request.user,
+# 			co_shipping = None,
+# 			paid_key = None).order_by('-id')
+#
+# 		if self.request.POST:
+# 			data['itemset'] = ItemFormset(self.request.POST)
+# 		else:
+# 			data['itemset'] = ItemFormset()
+# 		return data
+#
+# 	def form_valid(self, form):
+# 		context = self.get_context_data()
+# 		items = context['itemset']
+# 		images = context['imageset']
+# 		files = self.request.FILES.getlist('image')
+# 		with transaction.atomic():
+#
+# 			self.object = form.save(commit=False)
+# 			self.object.user = User.objects.get(pk = self.request.user.id)
+# 			self.object.wh_received = Warehouse.objects.get(pk=1)
+# 			self.object.co_shipping = None
+# 			self.object.save()
+#
+#
+# 			if items.is_valid():
+# 				items.instance = self.object
+# 				items.save()
+# # if images.is_valid():
+#
+# 			for f in files:
+# 				newimage = PackageImage(package = self.object, image = f)
+# 				newimage.save()
+#
+# 		return super().form_valid(form)
+#
+#
 
 
 
@@ -98,10 +97,8 @@ class AddDirectShipping(TemplateView):
 	template_name = 'main/directshipping.html'
 
 	def get(self, request):
-		form = DirectShippingForm()
+		form = DirectShippingCreationForm()
 		itemset = ItemFormset()
-		imageset = ImageForm()
-
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
@@ -111,42 +108,37 @@ class AddDirectShipping(TemplateView):
 				{'form': form,
 				'package_list': package_list,
 				'itemset': itemset,
-				'imageset': imageset,
 				})
 
 
-
 	def post(self, request):
-		form = DirectShippingForm(request.POST)
+		form = DirectShippingCreationForm(request.POST)
 		itemset = ItemFormset(request.POST)
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
 			paid_key = None).order_by('-id')
+
 		try:
 #  save default_address from select
 			selected_add = Address.objects.get(pk=request.POST['selected_add'])
 		except:
-			messages.error(request, 'Cannot find your address, please try again!')
-
+			messages.error(request, _('There is some error in your address, please select again!'))
 			return render(request, self.template_name,
 						{'form': form,
 						'package_list': package_list,
 						'itemset': itemset,
-						'imageset': imageset,
 						})
 
 		if form.is_valid() and itemset.is_valid():
 			files = self.request.FILES.getlist('image')
 			package = form.save(commit = False)
 
-
-
 			package.co_shipping = False
 # default warehouse is China
 			package.wh_received = Warehouse.objects.get(country='China')
 			package.ship_to_add = selected_add
-			package.user = User.objects.get(pk = request.user.id)
+			package.user = request.user
 
 			package.save()
 
@@ -160,12 +152,12 @@ class AddDirectShipping(TemplateView):
 
 			return redirect(reverse('add_direct_shipping'))
 		else:
-			messages.error(request, 'Invalid form!')
+
+			messages.error(request, _('Invalid form!'))
 			return render(request, self.template_name,
 						{'form': form,
 						'package_list': package_list,
 						'itemset': itemset,
-						'imageset': imageset,
 						})
 
 
@@ -180,7 +172,7 @@ class AddCoShipping(TemplateView):
 
 
 	def get(self, request, selected_col):
-		form = CoShippingForm()
+		form = CoShippingCreationForm()
 		receiverform = CoReceiverForm()
 		itemset = ItemFormset()
 		try:
@@ -199,14 +191,14 @@ class AddCoShipping(TemplateView):
 					'itemset':itemset,
 					})
 			else:
-				messages.error(request,'The Collection Point you selected is not avaliable right now! Please choose another ')
+				messages.error(request,_('The Collection Point you selected is not avaliable right now! Please choose another one.'))
 				return redirect(reverse('collection_points'))
 		except:
 			return redirect(reverse('collection_points'))
 
 
 	def post(self, request, selected_col):
-		form = CoShippingForm(request.POST)
+		form = CoShippingCreationForm(request.POST)
 		receiverform = CoReceiverForm(request.POST)
 		try:
 			itemset = ItemFormset(request.POST)
@@ -232,10 +224,10 @@ class AddCoShipping(TemplateView):
 # default warehouse is China
 			package.wh_received = Warehouse.objects.get(pk=1)
 			package.ship_to_col = col
-			package.user = User.objects.get(pk = request.user.id)
+			package.user = request.user
 
 
-			receiver = receiverform.save(request.user)
+			receiver = receiverform.save()
 			package.receiver = receiver
 			package.save()
 
@@ -271,5 +263,5 @@ class PackageDetailView(TemplateView):
 			package = Service.objects.get(pk=pack_id)
 			return render(request, self.template_name , {'package': package})
 		except ObjectDoesNotExist:
-			messages.error(request, "Cannot Find the package")
+			messages.error(request, _("Cannot Find the package"))
 			return render(request,reverse('userpackages'))

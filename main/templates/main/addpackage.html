@@ -7,6 +7,9 @@
     Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+{% endblock %}
 
 {% block content %}
 <div class="w3-cell w3-container w3-mobile" style="width:70%">
@@ -18,60 +21,42 @@
   </ul>
   {% endif %}
 
-  {% if receiverform.errors %}
-  <ul class="messagelist">
-      {% for message in receiverform.errors %}
-      <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if form.errors %}
-  <ul class="messagelist">
-      {% for message in form.errors%}
-      <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if itemset.errors %}
-  <ul class="messagelist">
-      {% for message in itemset.errors %}
-      <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if imageset.errors %}
-  <ul class="messagelist">
-      {% for message in imageset.errors %}
-      <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
-
     <div class="w3-card-2 w3-round w3-container w3-mobile">
           <form method="post" enctype="multipart/form-data">{% csrf_token %}
                 {% block shippingset %} {% endblock%}
 
-                <div class="w3-container w3-mobile">
-                    <h2>Add Package:</h2>
-                        <h4>From China:</h4>
-                        <div class="w3-row">
-                            <div class="w3-half w3-container">
-                                Mailing Carriers: {{ form.cust_carrier }}
-                            </div>
-                            <div class="w3-half w3-container">
-                                Tracking Number: {{form.cust_tracking_num}}
-                            </div>
-                        </div>
-                        <div class="w3-container">
-                        Package Note:<br/>{{ form.memo }}
+                <fieldset class="module aligned w3-mobile">
+                      <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Add Package' %}</h2>
+                      <div class="form-row">
+                        {{ form.wh_received.errors }}
+                        {{ form.wh_received.label_tag }} {{ form.wh_received }}
+                      </div>
+                      <div class="form-row">
+                        {{ form.cust_carrier.errors }}
+                        {{ form.cust_carrier.label_tag }} {{ form.cust_carrier }}
+                      </div>
+                      <div class="form-row">
+                        {{ form.cust_tracking_num.errors }}
+                        {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num }}
+                      </div>
 
-                    {{form.low_volume_request}} Minimize your package&#39;s volume<br/>
-                    {{form.no_rush_request}} No Rush Shipping (Double Points)
-                    </div>
-                </div>
+                      <div class="form-row">
+                        {{ form.memo.errors }}
+                        {{ form.memo.label_tag }} {{ form.memo }}
+                      </div>
+
+                      <div class="form-row">
+                        {{ form.low_volume_request.errors }}
+                        {{ form.low_volume_request.label_tag }} {{ form.low_volume_request }}
+                      </div>
+                      {% if form.no_rush_request %}
+                      <div class="form-row">
+                        {{ form.no_rush_request.errors }}
+                        {{ form.no_rush_request.label_tag }} {{ form.no_rush_request }}
+                      </div>
+                      {% endif %}
+                </fieldset>
+
 
                 <div id="add_item_btn_row" class="w3-center w3-panel w3-mobile">
                   <button type="button" class="w3-third" id="add_snapshot_btn" onclick="AddSnapshotBlock()">Add Snapshot</button>
@@ -80,7 +65,7 @@
                 </div>
 {{ itemset.management_form }}
 
-                <div id="sub_btn_block" class="w3-mobile">
+                <div id="sub_btn_block" class="submit-row">
                     {% block extrabtn %}
                     {% endblock %}
                     <input type="submit" name="next" value="Save and add new package" />
@@ -125,7 +110,7 @@
 
 
 {% block script%}
-<script src="{% static 'js/jquery.formset.js' %}"></script>
-<script src="{% static 'js/packageset.js' %}"></script>
+<script src="{% static 'main/js/jquery.formset.js' %}"></script>
+<script src="{% static 'main/js/packageset.js' %}"></script>
 
 {% endblock%}

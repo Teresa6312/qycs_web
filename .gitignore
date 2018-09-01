@@ -3,9 +3,6 @@ qycs_web/local.py
 db.sqlite3
 .py[cod]
 
-# migrations
-main/migrations/*.py
-collector/migrations/*.py
 
 # images
 media/

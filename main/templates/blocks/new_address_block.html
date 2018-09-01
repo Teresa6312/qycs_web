@@ -1,0 +1,50 @@
+{% load i18n static %}
+
+{{ addformset.management_form }}
+
+{% if addformset.forms %}
+  {% for addform in addformset.forms %}
+        <div class="form-row">
+          {{ addform.first_name.errors }}
+          {{ addform.first_name.label_tag }} {{ addform.first_name }}
+          <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+        <div class="form-row">
+          {{ addform.last_name.errors }}
+          {{ addform.last_name.label_tag }} {{ addform.last_name }}
+        </div>
+
+        <div class="form-row">
+          {{ addform.phone.errors }}
+          {{ addform.phone.label_tag }} {{ addform.phone }}
+        </div>
+        <div class="form-row">
+          {{ addform.country.errors }}
+          {{ addform.country.label_tag }} {{ addform.country }}
+        </div>
+        <div class="form-row">
+          {{ addform.state.errors }}
+          {{ addform.state.label_tag }} {{ addform.state }}
+        </div>
+        <div class="form-row">
+          {{ addform.city.errors }}
+          {{ addform.city.label_tag }} {{ addform.city }}
+        </div>
+        <div class="form-row">
+          {{ addform.address.errors }}
+          {{ addform.address.label_tag }} {{ addform.address }}
+        </div>
+        <div class="form-row">
+          {{ addform.apt.errors }}
+          {{ addform.apt.label_tag }} {{ addform.apt }}
+        </div>
+        <div class="form-row">
+          {{ addform.zipcode.errors }}
+          {{ addform.zipcode.label_tag }} {{ addform.zipcode }}
+        </div>
+  {% endfor %}
+  <div class="submit-row">
+    <button type = "button" id="newAddressSubmitBtn">Save</button>
+    <button type = "button" class="cancel-modal">Cancel</button>
+  </div>
+{% endif %}

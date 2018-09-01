@@ -7,8 +7,25 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
 {% block shippingset %}
-	<div class="w3-container w3-mobile">
-		<h2>Confirm the Receiver Information :</h2>
+<h2>{% trans 'Co-shipping' %}</h2>
+<fieldset class="module aligned w3-mobile">
+	<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Confirm the Receiver Information' %}</h2>
+	<div class="form-row">
+		{{ receiverform.first_name.errors }}
+		{{ receiverform.first_name.label_tag }} {{ receiverform.first_name }}
+	</div>
+	<div class="form-row">
+		{{ receiverform.last_name.errors }}
+		{{ receiverform.last_name.label_tag }} {{ receiverform.last_name }}
+	</div>
+	<div class="form-row">
+		{{ receiverform.phone.errors }}
+		{{ receiverform.phone.label_tag }} {{ receiverform.phone }}
+	</div>
+</fieldset>
+
+	<!-- <div class="w3-container w3-mobile">
+		<h2> :</h2>
 		<div class="w3-row">
 			<div class="w3-third w3-container">
 				First Name:
@@ -24,10 +41,9 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 			</div>
 		</div>
 	</div>
-	<hr>
-
-	<div class="w3-row w3-container w3-mobile">
-		<h2>Selected Collection Point:</h2>
+	<hr> -->
+	<fieldset class="module aligned w3-mobile">
+		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Selected Collection Point' %}</h2>
 		<div class="w3-half">
 			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button>
 
@@ -43,14 +59,14 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 		        {{selected_col.country}}<br/>
 	    	</div>
 
-	    </div>
-        <div class="w3-third w3-right">
-            {% if selected_col.image%}
-                <img src = "{{selected_col.image.url}}" style="width:100%">
-            {% endif %}
-        </div>
-	</div>
-	<hr>
+	  </div>
+    <div class="w3-third w3-right">
+        {% if selected_col.image%}
+            <img src = "{{selected_col.image.url}}" style="width:100%">
+        {% endif %}
+    </div>
+	</fieldset>
+
 {% endblock %}
 
 

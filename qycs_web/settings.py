@@ -11,9 +11,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', '')
 
-# to storage the images
-CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '')
-
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # -------------------------------- security settings ---------------------------------------

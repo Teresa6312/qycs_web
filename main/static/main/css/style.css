@@ -1,15 +1,24 @@
-html{
-  height: 100%;
-}
-
 body {
   font-family: Arial, Helvetica, sans-serif;
   position: relative;
   margin: 0;
-  min-height: 100%;
 }
 
-
+.log0-red{
+  background-color: #E73229;
+}
+.logo-text-red{
+  color: #E73229;
+}
+.logo-blue{
+  background-color: #121A50;
+}
+.logo-text-blue{
+  color: #121A50;
+}
+.grey-background{
+  background-color: #F5F5F5;
+}
 /*----------------- header and bar ---------------------------*/
 .navlogo{
   background-color: #800080;
@@ -40,7 +49,7 @@ body {
 
 .topnav {
   overflow: hidden;
-  background-color: #660066;
+  background-color: #121A50;
 }
 
 /* Right-aligned section inside the top navigation */
@@ -108,16 +117,17 @@ body {
     text-align: left;
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
+.topnav a:hover, .topnav button:hover{
   background-color:#b300b3;
   color: white;
+  border-radius: 0px;
 }
 a.active{
 background-color: #ffcc00;
 color:white;
 }
 
-.dropdown-content a:hover {
+.dropdown-content a:hover, .w3-bar-block a:hover {
     /*background-color: #ffccff;*/
     background-color:#FFCC00;
     color: black;
@@ -164,11 +174,6 @@ color:white;
   float: right;
 }
 
-/*  padding-bottom equal to the footer height*/
-.contentCSS{
-  padding-bottom: 150px;
-}
-
 
 .centerBtn{
   text-align: center;
@@ -179,7 +184,6 @@ color:white;
 
 .aside-bar-background-color{
   background-color:rgb(249,248,252);
-  height: 100%;
 }
 #add_item_form table{
   width: 90%;
@@ -219,8 +223,8 @@ color:white;
 }
 
 button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
-  background-color: #800080;
-  color: #fff;
+  background-color: #ffcc00;
+  color: #4d004d;
   padding: 5px 15px 5px 15px;
   border-width: 2px;
   border-color: #fff;
@@ -230,6 +234,12 @@ button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #new
   margin: 10px;
 }
 
+.contentCSS input[readonly], .contentCSS textarea[readonly] {
+  background-color:#F5F5F5;
+}
+.contentCSS input.contentCSS textarea {
+  min-width: 50%;
+}
 
 itemblock li:before, itemset_row li:before {
   content: "+";
@@ -240,7 +250,7 @@ button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCS
   color:#000;
   border-style: inset;
   border-width: 2px;
-  border-color: #b300b3;
+  border-color: #ffcc00;
   background-color: #fff;
   border-radius: 4px;
   padding: 5px 15px 5px 15px;
@@ -295,17 +305,14 @@ margin: 10px;
 
 /*------------------for footer only---------------------*/
 
-/*  contentCSS padding-bottom equal to the footer height*/
 #footer{
-  background-color: #330033;
+  background-color: #121A50;
   color:#1a001a;
   padding-top: 10px;
   width:100%;
   bottom:0;
   margin: 0;
-  position: absolute;
   padding: 0;
-  height: 150px;
 }
 
 #footer h5 {
