@@ -8,15 +8,15 @@
 <div id="default_address_block">
 		<div class="w3-row">
 			<button type="button" id="add_new_address_btn">{% trans 'Add new address' %}</button>
-			{% if user.address_set.all %}
+			{% if user.address_set %}
 			    <button type="button" id="select_address_btn">{% trans 'Select from address book' %}</button>
 			{% endif %}
 		</div>
 
 		{% if newaddress %}
-				{% include "blocks/default_address_card.html" with add=newaddress%}
+				{% include "blocks/default_address_card.html" with add=newaddress %}
 		{% elif user.default_address %}
-				{% include "blocks/default_address_card.html" with add=user.default_address%}
+				{% include "blocks/default_address_card.html" with add=user.default_address %}
 		{% endif%}
 		<div class="w3-row"><button type="button" id="remove_default_add_btn" style="display:none;">{% trans 'Remove Default Address' %}</button></div>
 </div>
@@ -29,12 +29,9 @@
 		      var user_obj={
 		                'first_name': '{{user.first_name}}',
 		                'last_name': '{{user.last_name}}',
-		                'email': '{{user.email}}',
 		                'phone': '{{user.phone}}',
 		              }
-		      var submit_url="{% url 'useraddress' %}"
-		      var csrf="{{ csrf_token }}"
-		      createAddForm(user_obj, csrf, submit_url);
+		      createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}");
 		  });
 		});//end of ready function
 </script>

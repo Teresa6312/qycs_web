@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="w3-cell w3-container w3-mobile" style="width:70%">
+<div class="w3-cell w3-container w3-mobile" style="width:81%">
   {% if messages %}
   <ul class="messagelist">
       {% for message in messages %}
@@ -60,7 +60,7 @@
 
                 <div id="add_item_btn_row" class="w3-center w3-panel w3-mobile">
                   <button type="button" class="w3-third" id="add_snapshot_btn" onclick="AddSnapshotBlock()">Add Snapshot</button>
-                    <div  class="w3-center w3-quarter">Or</div>
+                    <div  class="w3-quarter">Or</div>
                   <button type="button" class="w3-third" id="add_item_btn" onclick="createItemsetBlock()">Add Items&#39; Detail</button>
                 </div>
 {{ itemset.management_form }}
@@ -79,7 +79,7 @@
 {% endblock %}
 
 {% block sidebar %}
-<div class="w3-container w3-cell w3-mobile w3-rest">
+<div class="w3-container w3-cell w3-mobile w3-rest" style="min-width:400px;">
     <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
         <h3 >Packages</h3>
             {% if package_list %}

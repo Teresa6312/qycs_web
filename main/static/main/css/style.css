@@ -19,6 +19,9 @@ body {
 .grey-background{
   background-color: #F5F5F5;
 }
+.yellow-text{
+  color: #ffcc00;
+}
 /*----------------- header and bar ---------------------------*/
 .navlogo{
   background-color: #800080;
@@ -49,7 +52,7 @@ body {
 
 .topnav {
   overflow: hidden;
-  background-color: #121A50;
+  background-color: #660066;
 }
 
 /* Right-aligned section inside the top navigation */
@@ -306,8 +309,7 @@ margin: 10px;
 /*------------------for footer only---------------------*/
 
 #footer{
-  background-color: #121A50;
-  color:#1a001a;
+  background-color: #330033;
   padding-top: 10px;
   width:100%;
   bottom:0;
@@ -317,7 +319,6 @@ margin: 10px;
 
 #footer h5 {
     font-size: 18px;
-    color: white;
     font-weight: bold;
     margin-top: 30px;
 }
