@@ -1,17 +1,14 @@
-from django.contrib.auth.models import User
+from main.models import User
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 class EmailBackend(object):
     def authenticate(self, username = None, password =None, **kwargs):
         try:
             user = User.objects.get(email=username)
-        except MultipleObjectsReturned:
-            return None
         except:
-            print('----------------')
             return None
 
-        if gettattr(user, 'is_active') and user.check_password(password):
+        if user.is_active and user.check_password(password):
             return user
         return None
 

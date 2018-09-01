@@ -73,13 +73,8 @@ body {
 }
 
 .topnav a:hover {
-  background-color: #ddd;
+  background-color: #E73229;
   color: black;
-}
-
-.active {
-  background-color: #ffcc00;
-  color: white;
 }
 
 .topnav .icon {
@@ -121,7 +116,7 @@ body {
 }
 
 .topnav a:hover, .topnav button:hover{
-  background-color:#b300b3;
+  background-color:#E73229;
   color: white;
   border-radius: 0px;
 }
