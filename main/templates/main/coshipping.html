@@ -7,64 +7,32 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
 {% block shippingset %}
-<h2>{% trans 'Co-shipping' %}</h2>
-<fieldset class="module aligned w3-mobile">
-	<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Confirm the Receiver Information' %}</h2>
-	<div class="form-row">
-		{{ receiverform.first_name.errors }}
-		{{ receiverform.first_name.label_tag }} {{ receiverform.first_name }}
-	</div>
-	<div class="form-row">
-		{{ receiverform.last_name.errors }}
-		{{ receiverform.last_name.label_tag }} {{ receiverform.last_name }}
-	</div>
-	<div class="form-row">
-		{{ receiverform.phone.errors }}
-		{{ receiverform.phone.label_tag }} {{ receiverform.phone }}
-	</div>
-</fieldset>
-
-	<!-- <div class="w3-container w3-mobile">
-		<h2> :</h2>
-		<div class="w3-row">
-			<div class="w3-third w3-container">
-				First Name:
-				<input class="w3-input w3-border" type="text" name="first_name" onfocus="this.value=''" value = "{% firstof receiverform.first_name.value user.first_name %}" required><br/>
-			</div>
-			<div class="w3-third w3-container">
-				Last Name:
-				<input class="w3-input w3-border" type="text" name="last_name" onfocus="this.value=''" value = "{% firstof receiverform.last_name.value user.last_name %}" required ><br/>
-			</div>
-			<div class="w3-third w3-container">
-				Phone:
-				<input class="w3-input w3-border" type="text" name="phone" onfocus="this.value=''" value = "{% firstof receiverform.phone.value user.userprofile.phone %}" required ><br/>
-			</div>
+	<h2>{% trans 'Co-shipping' %}</h2>
+	<fieldset class="module aligned w3-mobile">
+		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Confirm the Receiver Information' %}</h2>
+		<button type="button" id="follow_user_infor">{% trans 'Follow User Information' %}</button>
+		<button type="button" id="use_last_infor">{% trans 'Use the last Receiver Information' %}</button>
+		<div class="form-row">
+			{{ receiverform.first_name.errors }}
+			{{ receiverform.first_name.label_tag }} {{ receiverform.first_name }}
 		</div>
-	</div>
-	<hr> -->
+		<div class="form-row">
+			{{ receiverform.last_name.errors }}
+			{{ receiverform.last_name.label_tag }} {{ receiverform.last_name }}
+		</div>
+		<div class="form-row">
+			{{ receiverform.phone.errors }}
+			{{ receiverform.phone.label_tag }} {{ receiverform.phone }}
+		</div>
+	</fieldset>
 	<fieldset class="module aligned w3-mobile">
 		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Selected Collection Point' %}</h2>
-		<div class="w3-half">
-			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button>
+		<div class="w3-container">
+			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button><br/>
 
-	        <div class="w3-container"><h4>{{selected_col.name}}
-		        {% if selected_col.store %}
-		            (Store)
-		        {% else %}
-		            (Personal Place)
-		        {% endif %}</h4>
-		        {{selected_col.address}}<br/>
-		        {% if selected_col.apt %}{{selected_col.apt}}<br/>{% endif %}
-		        {{selected_col.city}}, {{selected_col.state}} {{selected_col.zipcode}}<br/>
-		        {{selected_col.country}}<br/>
-	    	</div>
+			{% include "blocks/col_card_fields.html" with col=selected_col %}
 
 	  </div>
-    <div class="w3-third w3-right">
-        {% if selected_col.image%}
-            <img src = "{{selected_col.image.url}}" style="width:100%">
-        {% endif %}
-    </div>
 	</fieldset>
 
 {% endblock %}

@@ -63,8 +63,7 @@
                     <div  class="w3-quarter">Or</div>
                   <button type="button" class="w3-third" id="add_item_btn" onclick="createItemsetBlock()">Add Items&#39; Detail</button>
                 </div>
-{{ itemset.management_form }}
-
+                    {{ itemset.management_form }}
                 <div id="sub_btn_block" class="submit-row">
                     {% block extrabtn %}
                     {% endblock %}
@@ -81,28 +80,25 @@
 {% block sidebar %}
 <div class="w3-container w3-cell w3-mobile w3-rest" style="min-width:400px;">
     <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
-        <h3 >Packages</h3>
+        <h3>{% trans 'Packages' %}</h3>
             {% if package_list %}
                 {% for package in package_list %}
                 <div class="w3-panel">
                     <h4 onclick="window.location.href='{{package.get_absolute_url}}'">{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
                     {% if package.co_shipping %}
-                        Co-shipping to:
-                        {% if package.receiver.user %}
-                            {{user.last_name}},{{user.first_name}}({{user.userprofile.phone}})
-                        {% else %}
-                            {{package.receiver.last_name}},{{package.receiver.first_name}}({{package.receiver.phone}})
-                        {% endif %}
-                        <br/>
+                        {% trans 'Co-shipping to' %}: {{package.ship_to_col.name}}<br/>
+                        {{package.receiver.last_name}},{{package.receiver.first_name}}({{package.receiver.phone}})<br/>
                     {% elif not package.co_shipping %}
                         Direct Shipping to: {{package.ship_to_add}}<br/>
                     {% endif %}
-                    {% if package.packageimage_set.all %}Inserted {{ package.packageimage_set.count}} package snapshot files<br/>{% endif %}
-                    {% if package.item_set.all %}Entered {{ package.item_set.count}} Items' detail<br/>{% endif %}
+                    {% if package.packagesnapshot_set.all %}{% trans 'Inserted' %} {{ package.packagesnapshot_set.count}} {% trans 'package snapshots' %}<br/>{% endif %}
+                    {% if package.item_set.all %}{% trans 'Entered' %} {{ package.item_set.count}} {% trans 'Items' detail' %}<br/>{% endif %}
                 </div>
                 {% endfor %}
             {% else %}
-                <p>No package.</p>
+                <p>{% if package.co_shipping %}{% trans 'No co-shipping packages in cart.' %}
+                  {% else %}{% trans 'No direct shipping packages in cart.' %}{% endif %}
+                </p>
             {% endif %}
     </div>
 </div>

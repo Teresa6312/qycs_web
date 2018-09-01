@@ -19,13 +19,13 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
         <h1>{% trans 'Our Collection Points' %}</h1>
         <div id="default_col_block" class="w3-row">
           <h4>{% trans 'Your Selected Collection Point' %}</h4>
-            {% if user.userprofile.default_col%}
-                {% include "blocks/default_col_card.html"%}
+            {% if user.default_col %}
+                {% include "blocks/default_col_card.html" with col=user.default_col %}
             {% endif %}
-            <button id="add_package_btn" type="button" onclick="window.location.href='{{user.userprofile.default_col.get_absolute_url.add_co_shipping}}'">{% trans 'Add package' %}</button>
+            <button id="add_package_btn" type="button" onclick="window.location.href='{{user.default_col.get_absolute_url.add_co_shipping}}'">{% trans 'Add package' %}</button>
         </div>
         <div class="w3-cell w3-container">
-          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+          <input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}">
           <div id="map" style="width:750px; height:500px;"></div>
         </div>
 
@@ -41,7 +41,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock %}
 
 {% block script%}
-<script src="{% static 'js/map.js' %}"></script>
+<script src="{% static 'main/js/map.js' %}"></script>
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
 </script>
