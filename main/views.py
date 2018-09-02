@@ -6,7 +6,7 @@ from .forms import (
 	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
 	ColCreationForm
 	)
-# from django.contrib import messages
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
@@ -27,7 +27,7 @@ import os
 import json
 # from django.core import serializers
 from django.utils.translation import gettext as _
-
+from django.db import IntegrityError
 
 
 class HomeView(TemplateView):
@@ -265,14 +265,19 @@ class AddressView(TemplateView):
 			addform = AddressForm(request.POST)
 
 		if addform.is_valid():
-			newaddress = addform.save(commit = False)
-			newaddress.user = request.user
-			newaddress.save()
+			try:
+				newaddress = addform.save(commit = False)
+				newaddress.user = request.user
+				newaddress.save()
+			except IntegrityError:
+				messages.error(request,_('The address already exists!'))
 			if is_popup == "True":
 				if Address.objects.count()==1:
 					user = User.objects.get(user=request.user)
 					user.default_address = newaddress
 					user.save()
+
+
 				return render(request, 'main/updateprofile.html', {'newaddress': newaddress})
 			else:
 				return redirect(reverse('useraddress'))
