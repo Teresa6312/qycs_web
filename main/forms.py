@@ -291,4 +291,4 @@ class EmailForm(forms.Form):
 	email = forms.EmailField(required = True)
 	cc = forms.BooleanField(required = False)
 	subject = forms.CharField(required = True)
-	message = forms.CharField(required = True)
+	content = forms.CharField(required = True)

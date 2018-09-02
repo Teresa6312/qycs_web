@@ -6,7 +6,8 @@ from .forms import (
 	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
 	ColCreationForm, EmailForm, ColChangeForm
 	)
-# from django.contrib import messages
+from .code import send_confirmation_email
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
@@ -16,7 +17,7 @@ from django.urls import reverse
 # used to reverse the url name as a url path
 
 from django.http import QueryDict
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -27,8 +28,6 @@ import os
 import json
 # from django.core import serializers
 from django.utils.translation import gettext as _
-
-
 
 class HomeView(TemplateView):
 	template_name = 'main/home.html'
@@ -68,16 +67,12 @@ class RegisterView(TemplateView):
 						existed_web.save()
 					else:
 						web.save()
+			try:
+				send_confirmation_email(request, user)
+				messages.info(request, _('Confirmation link was sent successfully. Please check your email!'))
+			except:
+				messages.error(request, _('Confirmation link was fail to send!'))
 
-			mail_subject = _('Activate your Qycs Website account.')
-			message = render_to_string('email/acc_active_email.html', {
-				'user': user,
-				'domain': get_current_site(request).domain,
-				'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-				'token':account_activation_token.make_token(user),
-			})
-			email = EmailMessage(mail_subject, message, to=[user.email])
-			email.send()
 
 			username = request.POST['username']
 			password = request.POST['password1']
@@ -94,7 +89,7 @@ class RegisterView(TemplateView):
 		else:
 			return render(request, self.template_name, {'form': form, 'webformset':webformset})
 
-def activate(request, uidb64, token):
+def activate(request, uidb64, token, backend='django.contrib.auth.backends.ModelBackend'):
 	try:
 		uid = force_text(urlsafe_base64_decode(uidb64))
 		user = User.objects.get(pk=uid)
@@ -102,33 +97,46 @@ def activate(request, uidb64, token):
 		user = None
 	if user is not None and account_activation_token.check_token(user, token):
 		user.is_active = True
+		user.email_confirmed = True
 		user.save()
-		login(request, user)
+		login(request, user, backend)
 		return redirect('account')
 	else:
 		return HttpResponse('Activation link is invalid!')
 
+def sendConfirmationEmail(request):
+	if request.user.email:
+		try:
+			send_confirmation_email(request, request.user)
+			messages.info(request, _('Confirmation link was sent successfully. Please check your email!'))
+		except:
+			messages.error(request, _('Confirmation link was fail to send!'))
+	else:
+		messages.error(request, _('Failure! Please check your email.'))
+	return redirect('account')
+
+
 
 class SendEmailView(TemplateView):
-	template_name = 'main/contact_us_email_template.html'
 
 	def post(self, request):
 		email = EmailForm(request.POST)
 		next = request.POST.get('next','')
 		if email.is_valid():
-			subject = _('Contact us - ') + email.subject
-			message = _('From ') + user_email + '\n' + email.message
+			user_email = email.cleaned_data['email'].lower()
+			subject = _('Contact us - ') + email.cleaned_data['subject']
+			content = _('From ') + user_email + '\n' + email.cleaned_data['content']
 			to_email = ['myqycs.001@gmail.com',]
-			if email.cc:
-				to_email += user_email
+			if email.cleaned_data['cc']:
+				to_email.append(user_email)
 
 			send_mail(
-				subject,
-				message,
-				to_email,
-				fail_silently=False,
-			)
-			email.send()
+				    subject,
+				    content,
+				    user_email,
+				    to_email,
+				    fail_silently=False,
+				)
 		if next and next!='':
 			return redirect(next)
 		else:

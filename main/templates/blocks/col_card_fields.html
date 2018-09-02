@@ -1,7 +1,7 @@
 {% load i18n static %}
 
 {% if col.collector_icon%}
-    <img alt="collection point icon" src = "{{col.collector_icon.url}}" style="max-width:280px; margin:auto;">
+    <img alt="collection point icon" src = "{{col.collector_icon.url}}" style="width:100%; max-width:280px; margin:auto;">
 {% endif %}
 <h4>{{col.name}}
 {% if col.store %}
@@ -9,7 +9,7 @@
 {% else %}
     ({% trans 'Personal Place' %})
 {% endif %}</h4>
-<a class="w3-text-blue" href="{{col.get_absolute_url.collection_point_view}}">{% trans 'visit collection point' %}</a><br//>
+<a class="w3-text-blue" href="{{col.get_absolute_url.collection_point_view}}">{% trans 'visit collection point' %}</a><br/>
 {{col.country}} | {{col.state}} | {{col.city}}<br/>
 {{col.address}}<br/>
 {% if add.apt %}{{col.apt}}<br/>{% endif %}

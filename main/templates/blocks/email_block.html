@@ -17,6 +17,6 @@
     </div>
     <div class="w3-right">
       <button type = "button" class="cancel-modal">Cancel</button>
-      <button type="button" id="send_email_btn">Submit</button>
+      <button type="button" id="send_email_btn" onclick="send_email('send_email_btn','{{csrf_token}}')">Submit</button>
     </div>
   </form>
