@@ -111,7 +111,7 @@ class ColCreationForm(forms.ModelForm):
 class ColChangeForm(forms.ModelForm):
 	class Meta:
 		model = CollectionPoint
-		fields = ('collector_icon', 'wechat', 'wechat_qrcode',
+		fields = ('collector_icon', 'wechat', 'wechat_qrcode','description',
 					'mon_start', 'mon_end', 'tue_start', 'tue_end',
 					'wed_start','wed_end','thu_start','thu_end',
 					'fri_start','fri_end','sat_start','sat_end',
@@ -285,3 +285,10 @@ class CoReceiverForm(forms.ModelForm):
 	class Meta:
 		model = CoReceiver
 		fields = ('first_name', 'last_name', 'phone')
+
+
+class EmailForm(forms.Form):
+	email = forms.EmailField(required = True)
+	cc = forms.BooleanField(required = False)
+	subject = forms.CharField(required = True)
+	content = forms.CharField(required = True)

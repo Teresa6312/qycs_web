@@ -24,6 +24,8 @@ urlpatterns = [
 
     path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
     path('shipping/', views.ShippingView.as_view(), name='shipping'),
+    path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
+
 
     # path('image/', views.AddImageView.as_view(), name='image'),
 
@@ -31,6 +33,7 @@ urlpatterns = [
 # login_required
     path('accounts/logout/', login_required(auth_views.LogoutView.as_view(template_name='main/logout.html')), name = 'logout'),
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
+    path('myaccount/send-Confirmation-email/', login_required(views.sendConfirmationEmail), name="send_confirmation_email"),
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
     path('myaccount/change-password/', login_required(views.ChangePasswordView.as_view()), name='changepassword'),
 
@@ -39,6 +42,9 @@ urlpatterns = [
 
     path('myaccount/address/<int:add_id>/delete', login_required(views.DeleteAddressView.as_view()), name='deleteaddress'),
     path('myaccount/address/<int:add_id>/set_dedault_address', login_required(views.SetDefaultAddressView.as_view()), name='set_dedault_address'),
+
+
+    path('myaccount/collection-point/update', login_required(views.CollectorUpdateView.as_view()), name='collector_update'),
 
     path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 

@@ -10,10 +10,6 @@ $(document).ready(function(){
     $(".close-modal").click(function(){
       $(this).parents('.w3-modal').hide();
     });
-    $("#send_email_btn").click(function(){
-        send_email('id-email-modal');
-
-    });
     $(".cancel-modal").click(function(){
       $(this).parents('.w3-modal').hide();
     });
@@ -38,13 +34,12 @@ $(document).ready(function(){
         $(this).css('background-color','#fff');
       }
     });
-    $('container').find('input').each(function(){
-      console.log($(this));
-      if($(this).readonly){
-        console.log($(this));
-        $(this).addClass('w3-light-gray');
-      }
-    });
+    // $('container').find('input').each(function(){
+    //   if($(this).readonly){
+    //     $(this).addClass('w3-light-gray');
+    //       console.log($(this).id);
+    //   }
+    // });
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
@@ -70,49 +65,49 @@ function validateForm(block) {
   return valid;
 }
 
-function send_email(id){
-  let formpass=true;
-  let inputs = document.forms[id].getElementsByTagName("input");
-  // need to add textarea
-
-  for(var i = 0, a; a = inputs[i++];){
-    if(a.required && a.value==''){
-        a.style.background = "#ffb2b2";
-        formpass=false;
-    }
-  }
-
-  if(formpass){
-    // modify this part
-      let addobject={'csrfmiddlewaretoken': '{{csrf_token}}',
-                      'addform':$('#'+id).serialize(),
-                      'is_popup':"True"};
-
-      $.ajax({
-        type: "POST",
-        url: submit_url,
-        data: addobject,
-        success: function(data){
-          $('#newAddressFormModalBody').append($(data).find('#newAddressFormModal').find('#newAddressForm'));
-          $('#newAddressFormModal').append($(data).find('#newAddressFormModal').find('script'));
-
-          if($(data).find('#newAddressFormModal').find('.messagelist').children().length == 0){
-            $('#newAddressFormModal').modal('hide');
-            $('#default_address_card').remove();
-            $('#newAddressForm_js').remove();
-            $('#default_address_block').append($(data).find('#default_address_card'));
+function send_email(id,csrf){
+    var formpass = false
+    var form = $('#'+id).parents('form');
+    var email = form.find('#id-email');
+    var subj = form.find('#id-subject');
+    var cc = form.find('#id-cc');
+    var cont = form.find('#id-content')
+    var email_data = {'csrfmiddlewaretoken': csrf,
+                'email': email.val(),
+                'subject': subj.val(),
+                'content': cont.val(),
+                'cc': cc.prop('checked')
+                }
+    if( validateEmail(email.val())){
+      if(subj.val()!=''){
+          if(cont.val().trim()!==''){
+              formpass=true
+          }else{
+            alert('Please enter the content');
           }
-          else{
-            $('#id_follow_user_infor_block').before($(data).find('.messagelist'));
-            $('#.messagelist').hide().slideDown(500);
-          }
-        },
-        failure: function(data){
-          $('#id_follow_user_infor_block').before($(data).find('.messagelist'));
-          $('#.messagelist').hide().slideDown(500);
-        },
-      });
+      }else{
+        alert('Please enter the subject');
+      }
+    }else{
+      alert('Please enter a valid Email');
     }
+   if(formpass){
+     $.ajax({
+       type: "POST",
+       url: '/contact-us/',
+       data: email_data,
+       success: function(data){
+         alert('The email was sent successfully!');
+         form.find("input[type=text], textarea").val("");
+         form.parents('.w3-modal').hide();
+
+       },
+       failure: function(data){
+         alert('Failure, please try again.');
+     },
+   });
+   }
+
 }//end of submitForm
 
 

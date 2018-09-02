@@ -36,12 +36,14 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						<div class = "w3-container">
 								{% trans 'First Name' %}: {{user.first_name}}<br/>
 								{% trans 'Last Name' %}: {{user.last_name}}<br/>
-								{% trans 'Email address' %}: {{user.email}}<br/>
+								{% trans 'Email address' %}: {{user.email}}
 
-								{% if not user.email_confirmed%}
-									<a class="w3-text-blue" href="#">
+								{% if not user.email_confirmed %}
+									<br/><a class="w3-text-blue" href="{% url 'send_confirmation_email' %}">
 										{% trans "You havn't confirmed your email yet. Please click here to send a Confirmation link to your email." %}
 									</a></br/>
+								{% else %}
+								<span>({% trans 'email confirmed' %})</span><br/>
 								{% endif %}
 
 								{% trans 'Phone Number' %}: {{user.phone}}<br/>

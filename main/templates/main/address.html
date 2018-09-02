@@ -170,9 +170,18 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     });
 
     $("#id_city").keyup(function() {
-      if (!xhr || xhr.readyState === 4) {
-        getLocations("id_city",$(this).val(),'cityListID')
-
+      if($("#id_state").val()==''){
+        if($("#id_city").val().length>=3){
+          if (!xhr || xhr.readyState === 4) {
+            getLocations("id_city",$(this).val(),'cityListID')
+          }
+        }
+      }else{
+        if($("#cityListID").options.length<0 && $("#id_city").val().length>=3 ){
+          if (!xhr || xhr.readyState === 4) {
+            getLocations("id_city",$(this).val(),'cityListID')
+          }
+        }
       }
     });
 

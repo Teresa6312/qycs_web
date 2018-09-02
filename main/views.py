@@ -4,8 +4,11 @@ from .models import (
 	)
 from .forms import (
 	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
-	ColCreationForm
+	ColCreationForm, EmailForm, ColChangeForm
 	)
+
+from .code import send_confirmation_email
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -16,7 +19,7 @@ from django.urls import reverse
 # used to reverse the url name as a url path
 
 from django.http import QueryDict
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -27,6 +30,7 @@ import os
 import json
 # from django.core import serializers
 from django.utils.translation import gettext as _
+
 from django.db import IntegrityError
 
 
@@ -68,16 +72,12 @@ class RegisterView(TemplateView):
 						existed_web.save()
 					else:
 						web.save()
+			try:
+				send_confirmation_email(request, user)
+				messages.info(request, _('Confirmation link was sent successfully. Please check your email!'))
+			except:
+				messages.error(request, _('Confirmation link was fail to send!'))
 
-			mail_subject = _('Activate your Qycs Website account.')
-			message = render_to_string('email/acc_active_email.html', {
-				'user': user,
-				'domain': get_current_site(request).domain,
-				'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-				'token':account_activation_token.make_token(user),
-            })
-			email = EmailMessage(mail_subject, message, to=[user.email])
-			email.send()
 
 			username = request.POST['username']
 			password = request.POST['password1']
@@ -94,20 +94,58 @@ class RegisterView(TemplateView):
 		else:
 			return render(request, self.template_name, {'form': form, 'webformset':webformset})
 
-def activate(request, uidb64, token):
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-        login(request, user)
-        return redirect('account')
-    else:
-        return HttpResponse('Activation link is invalid!')
+def activate(request, uidb64, token, backend='django.contrib.auth.backends.ModelBackend'):
+	try:
+		uid = force_text(urlsafe_base64_decode(uidb64))
+		user = User.objects.get(pk=uid)
+	except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+		user = None
+	if user is not None and account_activation_token.check_token(user, token):
+		user.is_active = True
+		user.email_confirmed = True
+		user.save()
+		login(request, user, backend)
+		return redirect('account')
+	else:
+		return HttpResponse('Activation link is invalid!')
 
+def sendConfirmationEmail(request):
+	if request.user.email:
+		try:
+			send_confirmation_email(request, request.user)
+			messages.info(request, _('Confirmation link was sent successfully. Please check your email!'))
+		except:
+			messages.error(request, _('Confirmation link was fail to send!'))
+	else:
+		messages.error(request, _('Failure! Please check your email.'))
+	return redirect('account')
+
+
+
+class SendEmailView(TemplateView):
+
+	def post(self, request):
+		email = EmailForm(request.POST)
+		next = request.POST.get('next','')
+		if email.is_valid():
+			user_email = email.cleaned_data['email'].lower()
+			subject = _('Contact us - ') + email.cleaned_data['subject']
+			content = _('From ') + user_email + '\n' + email.cleaned_data['content']
+			to_email = ['myqycs.001@gmail.com',]
+			if email.cleaned_data['cc']:
+				to_email.append(user_email)
+
+			send_mail(
+				    subject,
+				    content,
+				    user_email,
+				    to_email,
+				    fail_silently=False,
+				)
+		if next and next!='':
+			return redirect(next)
+		else:
+			return redirect(reverse('home'))
 
 
 class ColRegisterView(TemplateView):
@@ -120,7 +158,7 @@ class ColRegisterView(TemplateView):
 		colform = ColCreationForm()
 		return render(request, self.template_name, {'colform': colform,
 													'userform': userform
-		 											})
+													})
 
 	def post(self, request):
 		userform  = NewUserChangeForm(request.POST, instance=request.user)
@@ -144,13 +182,13 @@ class CollectorUpdateView(TemplateView):
 	template_name = 'main/collector_update.html'
 
 	def get(self, request):
-		try:
-			col = CollectionPoint.objects.get(collector = request.user)
-			form = ColChangeForm(instance=col)
+		if request.user.collectionpoint:
+			# col = CollectionPoint.objects.
+			form = ColChangeForm(instance = request.user.collectionpoint)
 			return render(request, self.template_name, {'form': form})
-		except:
-# to the prev page create next for each views
-			pass
+		else:
+			return redirect(reverse('colregister'))
+
 	def post(self, request):
 		try:
 			col = CollectionPoint.objects.get(collector = request.user)
@@ -163,7 +201,7 @@ class CollectorUpdateView(TemplateView):
 			pass
 		else:
 			return render(request, self.template_name, {'form': form,
-					 									})
+														})
 
 class AccountView(TemplateView):
 	template_name = 'main/account.html'
