@@ -26,7 +26,7 @@ class PackagesView(TemplateView):
 
 
 class PackageCartView(TemplateView):
-	template_name = 'main/packagecard.html'
+	template_name = 'main/package_cart.html'
 
 	def get(self, request):
 		return render(request, self.template_name,

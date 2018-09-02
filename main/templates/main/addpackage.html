@@ -92,7 +92,7 @@
                         Direct Shipping to: {{package.ship_to_add}}<br/>
                     {% endif %}
                     {% if package.packagesnapshot_set.all %}{% trans 'Inserted' %} {{ package.packagesnapshot_set.count}} {% trans 'package snapshots' %}<br/>{% endif %}
-                    {% if package.item_set.all %}{% trans 'Entered' %} {{ package.item_set.count}} {% trans 'Items' detail' %}<br/>{% endif %}
+                    {% if package.item_set.all %}{% trans 'Entered' %} {{ package.item_set.count}} {% trans "Items' detail" %}<br/>{% endif %}
                 </div>
                 {% endfor %}
             {% else %}

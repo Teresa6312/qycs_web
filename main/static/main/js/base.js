@@ -11,8 +11,7 @@ $(document).ready(function(){
       $(this).parents('.w3-modal').hide();
     });
     $("#send_email_btn").click(function(){
-        send_email('id-email-modal');
-
+        send_email(this, 'id-email-modal');
     });
     $(".cancel-modal").click(function(){
       $(this).parents('.w3-modal').hide();
@@ -38,13 +37,12 @@ $(document).ready(function(){
         $(this).css('background-color','#fff');
       }
     });
-    $('container').find('input').each(function(){
-      console.log($(this));
-      if($(this).readonly){
-        console.log($(this));
-        $(this).addClass('w3-light-gray');
-      }
-    });
+    // $('container').find('input').each(function(){
+    //   if($(this).readonly){
+    //     $(this).addClass('w3-light-gray');
+    //       console.log($(this).id);
+    //   }
+    // });
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
@@ -72,7 +70,7 @@ function validateForm(block) {
 
 function send_email(id){
   let formpass=true;
-  let inputs = document.forms[id].getElementsByTagName("input");
+  let inputs = $(this).closest('form').find("input[type=text], textarea");
   // need to add textarea
 
   for(var i = 0, a; a = inputs[i++];){

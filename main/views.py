@@ -4,7 +4,7 @@ from .models import (
 	)
 from .forms import (
 	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
-	ColCreationForm
+	ColCreationForm, EmailForm, ColChangeForm
 	)
 # from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -75,7 +75,7 @@ class RegisterView(TemplateView):
 				'domain': get_current_site(request).domain,
 				'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
 				'token':account_activation_token.make_token(user),
-            })
+			})
 			email = EmailMessage(mail_subject, message, to=[user.email])
 			email.send()
 
@@ -95,19 +95,44 @@ class RegisterView(TemplateView):
 			return render(request, self.template_name, {'form': form, 'webformset':webformset})
 
 def activate(request, uidb64, token):
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-        login(request, user)
-        return redirect('account')
-    else:
-        return HttpResponse('Activation link is invalid!')
+	try:
+		uid = force_text(urlsafe_base64_decode(uidb64))
+		user = User.objects.get(pk=uid)
+	except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+		user = None
+	if user is not None and account_activation_token.check_token(user, token):
+		user.is_active = True
+		user.save()
+		login(request, user)
+		return redirect('account')
+	else:
+		return HttpResponse('Activation link is invalid!')
 
+
+class SendEmailView(TemplateView):
+	template_name = 'main/contact_us_email_template.html'
+
+	def post(self, request):
+		email = EmailForm(request.POST)
+		next = request.POST.get('next','')
+		if email.is_valid():
+			subject = _('Contact us - ') + email.subject
+			message = _('From ') + user_email + '\n' + email.message
+			to_email = ['myqycs.001@gmail.com',]
+			if email.cc:
+				to_email += user_email
+
+			send_mail(
+				subject,
+				message,
+				to_email,
+				fail_silently=False,
+			)
+			email.send()
+		if next and next!='':
+			return redirect(next)
+		else:
+			return redirect(reverse('home'))
 
 
 class ColRegisterView(TemplateView):
@@ -120,7 +145,7 @@ class ColRegisterView(TemplateView):
 		colform = ColCreationForm()
 		return render(request, self.template_name, {'colform': colform,
 													'userform': userform
-		 											})
+													})
 
 	def post(self, request):
 		userform  = NewUserChangeForm(request.POST, instance=request.user)
@@ -144,13 +169,13 @@ class CollectorUpdateView(TemplateView):
 	template_name = 'main/collector_update.html'
 
 	def get(self, request):
-		try:
-			col = CollectionPoint.objects.get(collector = request.user)
-			form = ColChangeForm(instance=col)
+		if request.user.collectionpoint:
+			# col = CollectionPoint.objects.
+			form = ColChangeForm(instance = request.user.collectionpoint)
 			return render(request, self.template_name, {'form': form})
-		except:
-# to the prev page create next for each views
-			pass
+		else:
+			return redirect(reverse('colregister'))
+
 	def post(self, request):
 		try:
 			col = CollectionPoint.objects.get(collector = request.user)
@@ -163,7 +188,7 @@ class CollectorUpdateView(TemplateView):
 			pass
 		else:
 			return render(request, self.template_name, {'form': form,
-					 									})
+														})
 
 class AccountView(TemplateView):
 	template_name = 'main/account.html'

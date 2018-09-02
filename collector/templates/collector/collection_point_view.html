@@ -5,105 +5,142 @@
 Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock%}
 
-
-{% block messages %}
-    {% if messages %}
-    <ul class="messagelist">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 {% endblock %}
 
-
 {% block content %}
-<div class="w3-panel">
-    <div class="w3-row">
-        <div class = "w3-card-4 w3-third" style="width:400px; height:400px">
-          {% if colchoice.collector_icon%}
-              <img alt="collection point icon" src = "{{collector.collector_icon.url}}" style="width:90%">
+<div class="w3-panel w3-mobile">
+    <div class="w3-panel w3-mobile">
+        <div class = "w3-card-4 w3-third w3-mobile" style="max-width:400px;">
+          {% if collector.collector_icon%}
+              <img alt="collection point icon" src = "{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
           {% endif %}
         </div>
 
-    <div class = "w3-rest w3-container">
-          <h2>{{collector.name}}</h2>
-          <h4>{% if collector.store %}Store Name:{{collector.store_name}}
-            {% else %}Personal Place{% endif %}
-          </h4>
-          <h4>Food Package: {% if collector.food %}YES {% else %} NO {% endif %} </h4>
-          <h4>Regular Package: {% if collector.regular %}YES {% else %} NO {% endif %} </h4>
-          <h4>Luxury Package: {% if collector.luxury %}YES {% else %} NO {% endif %} </h4>
-        <h5>
-          {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
-        </h5>
-        <button type="button">get direction</button>
-    </div>
-
-  </div>
-
-
-<div class="w3-panel">
-  <form method="post">
-    {% csrf_token %}
-
-<div class="w3-row">
-    <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Reviews');">
-      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black"><h5>Reviews</h5></div>
-    </a>
-    <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Questions');">
-      <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-text-black"><h5>Questions</h5></div>
-    </a>
-  </div>
-
-<textarea class="w3-input w3-border w3-panel" name="message" id="id_message"></textarea>
-  <div id="Reviews" class="message_block">
-    <button type="submit" name="review" value="">Save Review</button>
-
-    {% if collector.review_set.all %}
-    {% for review in collector.review_set.all %}
-      <div class="w3-container w3-card-2" id="review_block_{{review.id}}">
-          {{review.creater.username}}: {{review.review}}
-          <button type="button" class="w3-right response_btn_{{review.id}}" onclick="AddResponseForm('{{review.id}}','review')">response</button>
-          {% if review.reviewresponse_set.all %}
-              {% for response in review.reviewresponse_set.all %}
-              <div class="w3-row w3-container">
-                {{response.creater.username}}: {{response.meaasage}}
-              </div>
-              {% endfor %}
-          {% endif %}
+        <div class = "w3-third w3-container w3-mobile">
+            <h2>{{collector.name}}</h2>
+            <h4>{% if collector.store %}{% trans 'Store Name' %}: {{collector.store_name}}
+              {% else %}{% trans 'Personal Place' %}{% endif %}
+            </h4>
+            <h4>{% trans 'Food Package' %}: {% if collector.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
+            <h4>{% trans 'Regular Package' %}: {% if collector.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
+            <h4>{% trans 'Luxury Package' %}: {% if collector.luxury %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
+          <h5>
+            {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
+          </h5>
+          {% if user.collectionpoint %}<button type="button" onclick="window.location.href = '{% url 'collector_update'%}'">{% trans 'Update Profile' %}</button>
+          {% else %}<button type="button">{% trans 'get direction' %}</button>{% endif %}
       </div>
-    {% endfor %}
-    {% endif %}
-  </div>
-
-  <div id="Questions" class="message_block" style="display:none">
-    <button type="submit" name="question" value="">Save Question</button>
-
-    {% if collector.question_set.all %}
-    {% for question in collector.question_set.all %}
-       {% if question.creater.pk == user.pk%}
-        <div class="w3-container w3-card-2" id="question_block_{{question.id}}">
-            {{question.creater.username}}: {{question.question}}
-            <button type="button" class=" w3-right response_btn_{{question.id}}" onclick="AddResponseForm('{{question.id}}','question')">response</button>
-            {% if question.questionresponse_set.all %}
-                {% for response in question.questionresponse_set.all %}
-                <div class="w3-row w3-container">
-                  {{response.creater.username}}: {{response.meaasage}}
-                </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+      <div class = "w3-card-2 w3-rest w3-container aside-bar-background-color w3-mobile" style="width:350px;">
+        <h5>{% trans 'Schedule' %}</h5>
+        {% if collector.absent_start %}
+          {{collector.absent_start}}
+          {{collector.absent_end}}<br/>
         {% endif %}
-    {% endfor %}
-    {% endif %}
+          <div class = "w3-row w3-panel">
+            <div class="w3-third">{% trans 'Monday' %}: </div><div class="w3-twothird">{{collector.mon_start}} - {{collector.mon_end}}</div>
+            <div class="w3-third">{% trans 'Tuesday' %}: </div><div class="w3-twothird">{{collector.tue_start}} - {{collector.tue_end}}</div>
+            <div class="w3-third">{% trans 'Wednesday' %}: </div><div class="w3-twothird">{{collector.wed_start}} - {{collector.wed_end}}</div>
+            <div class="w3-third">{% trans 'Thursday' %}: </div><div class="w3-twothird">{{collector.thu_start}} - {{collector.thu_end}}</div>
+            <div class="w3-third">{% trans 'Friday' %}: </div><div class="w3-twothird">{{collector.fri_start}} - {{collector.fri_end}}</div>
+            <div class="w3-third">{% trans 'Saturday' %}: </div><div class="w3-twothird">{{collector.sat_start}} - {{collector.sat_end}}</div>
+            <div class="w3-third">{% trans 'Sunday' %}: </div><div class="w3-twothird">{{collector.sun_start}} - {{collector.sun_end}}</div>
+          </div>
+      </div>
   </div>
+    <hr>
+    <div class="w3-panel w3-cell-row">
+      <div class="w3-col" style="width:100px;">
+      {% trans 'Instruction' %}
+      </div>
+      <div class="w3-rest">{{collector.description}}</div>
+    </div>
+    <div class="w3-panel">
+      <form method="post">
+        {% csrf_token %}
 
-</div>
+          <div class="w3-row">
+              <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Reviews');">
+                <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black"><h5>{% trans 'Reviews' %}</h5></div>
+              </a>
+              <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Questions');">
+                <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-text-black"><h5>{% trans 'Questions' %}</h5></div>
+              </a>
+          </div>
 
+          <textarea class="w3-input w3-border w3-panel" name="message" id="id_message"></textarea>
+          <div id="Reviews" class="message_block">
+              <div class="submit-row"><button type="submit" name="review">{% trans 'Save Review' %}</button></div>
 
-</form>
-</div>
+            {% if collector.review_set.all %}
+            {% for review in collector.review_set.all %}
+              <div class="w3-card-2 w3-panel" id="review_block_{{review.id}}">
+                  <div class="w3-row w3-mobile">
+                        <div class="w3-col w3-center" style="width:70px;">
+                          <img alt="user icon" src="{% static 'main/image/user_icon.png' %}" width="60" height="60"><br/>
+                          {{review.creater.username}}
+                        </div>
+                        <div class="w3-rest w3-panel">
+                            <div class="w3-row">{{review.review}}</div>
+                            {% if review.reviewresponse_set.all %}
+                                {% for response in review.reviewresponse_set.all %}
+                                <div class="w3-row w3-container">
+                                    <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
+                                    <div class="w3-padding-small">{{response.meaasage}}</div>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="w3-right w3-row">
+                              <button type="button" class="w3-right response_btn_{{review.id}}" onclick="AddResponseForm('{{review.id}}','review')">
+                                {% trans 'response' %}
+                              </button>
+                            </div>
+                      </div>
+                  </div>
+              </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+
+      <div id="Questions" class="message_block" style="display:none">
+        <div class="submit-row"><button type="submit" name="question">{% trans 'Save Question' %}</button></div>
+
+        {% if collector.question_set.all %}
+        {% for question in collector.question_set.all %}
+
+           {% if question.creater.pk == user.pk%}
+                <div class="w3-card-2 w3-panel" id="question_block_{{question.id}}">
+                  <div class="w3-row w3-mobile">
+                      <div class="w3-col w3-center" style="width:70px;">
+                        <img alt="user icon" src="{% static 'main/image/user_icon.png' %}" width="60" height="60"><br/>
+                        {{question.creater.username}}
+                      </div>
+                      <div class="w3-rest w3-panel">
+                          <div class="w3-row">{{question.question}}</div>
+                          {% if question.questionresponse_set.all %}
+                              {% for response in question.questionresponse_set.all %}
+                              <div class="w3-row w3-container">
+                                  <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
+                                  <div class="w3-padding-small">{{response.meaasage}}</div>
+                              </div>
+                              {% endfor %}
+                          {% endif %}
+                          <div class="w3-right w3-row">
+                            <button type="button" class=" w3-right response_btn_{{question.id}}" onclick="AddResponseForm('{{question.id}}','question')">
+                              {% trans 'response' %}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              {% endif %}
+        {% endfor %}
+        {% endif %}
+        </div>
+
+      </form>
+    </div>
 </div>
 {% endblock %}
 
@@ -112,7 +149,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
 
 {% block script%}
-<script type="text/javascript">
+<script>
 
 function AddResponseForm(id, type){
 
@@ -122,7 +159,7 @@ function AddResponseForm(id, type){
     '<textarea class="w3-input w3-border" name="'+
     type+
     '" id="response_txt"/>'+
-    '<button type="button" onclick="submitForm('+
+    '<button type="button" class="w3-right" onclick="submitForm('+
     id+
     ')">Save</button></div>'
     if($('.response_block').length>0){
@@ -130,6 +167,9 @@ function AddResponseForm(id, type){
     }
     if($('#response_block_'+id).length==0){
         $('#'+type+'_block_'+id).append(content);
+        $('#response_block_'+id).hide().slideDown(500);
+        $('.response_btn_'+id).hide();
+
     }
 }
 
@@ -173,11 +213,11 @@ function submitForm(id){
       url: '/collectionpoint/{{collector.pk}}/view',
       data: response,
       success: function(){
-        alert("Success in response");
         location.reload();
       },
       failure: function(){
-        alert("Failure in response");
+        location.reload();
+        console.log('failure to insert the response');
       },
     });
   }

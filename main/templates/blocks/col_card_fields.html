@@ -1,7 +1,7 @@
 {% load i18n static %}
 
 {% if col.collector_icon%}
-    <img src = "{{col.collector_icon.url}}" style="width:90%; margin:auto;">
+    <img alt="collection point icon" src = "{{col.collector_icon.url}}" style="max-width:280px; margin:auto;">
 {% endif %}
 <h4>{{col.name}}
 {% if col.store %}
