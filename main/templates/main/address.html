@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% trans 'User Address Book' %}
 {% endblock%}
 
 {% block extrastyle %}
@@ -10,13 +10,13 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock %}
 
 {% block account_content %}
-
-<div class="w3-container w3-cell w3-mobile w3-card-2" style="overflow:auto;">
+{% if user.address_set.all %}
+<div id="address_book_block" class="w3-container w3-cell w3-mobile w3-card-2" style="overflow:auto;">
     <h2>{% trans 'Address Book' %}</h2>
-    <div class="addresses_block grey-background" style="overflow:auto; max-height:500px; min-width:480px;">
+    <div class="addresses_block grey-background w3-mobile" style="overflow:auto; max-height:600px;">
     <!-- display default address -->
           {% if user.default_address %}
-            <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width: 300px;">
+            <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width:300px;">
                 {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
                 <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">Edit</button>
                 <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">Delete</button>
@@ -24,7 +24,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
           {% endif %}
 
     <!-- display other addresses -->
-    {% if user.address_set.all %}{% for address in user.address_set.all %}
+    {% for address in user.address_set.all %}
     {% if address != user.default_address%}
         <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width: 300px;">
             {% include "blocks/address_card_fields.html" with add=address %}
@@ -32,15 +32,26 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
             <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
             <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
         </div>
-    {% endif %}{% endfor %}{% endif %}
+    {% endif %}{% endfor %}
 
     </div>
 </div>
+{% endif %}
 <div class="w3-container w3-cell w3-mobile w3-card-2">
   <form method = "post" enctype="multipart/form-data">
   {% csrf_token %}
+  {% if addform.errors %}
+      <p class="errornote">
+          {% if addform.errors.items|length == 1 %}
+              {% trans "Please correct the error below." %}
+          {% else %}
+              {% trans "Please correct the errors below." %}
+          {% endif %}
+      </p>
+  {% endif %}
   <fieldset class="module aligned w3-mobile">
     <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Address' %}</h2>
+    <button type="button" id="id_follow_user_infor">Follow User Information</button>
       <div class="form-row">
         {{ addform.first_name.errors }}
         {{ addform.first_name.label_tag }} {{ addform.first_name }}
@@ -97,11 +108,13 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     if($('#'+id).length!=0){
       $('#'+id).remove()
     }
-    if(list.length==1){
+    if(list.length>50){
+      return
+    }else if (list.length==1) {
       $('#'+comp).val(list[0])
       return
     }
-    let content='<datalist id="'+id+'">';
+    let content='<datalist clas="ui-autocomplete" id="'+id+'">';
     let c;
     for(c=0; c<list.length; c++){
       content+='<option value="'+list[c]+'">';
@@ -119,22 +132,21 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
       url: "{% url 'location' %}",
       data: dt,
       success: function(data){
-        if(field=="id_country"){
-          populateData(data.data,id,field)
-          populateData(data.state,'stateListID','id_state')
-          populateData(data.city,'cityListID','id_city')
-        }
-        else if(field=="id_state"){
-          populateData(data.data,id,field)
-          populateData(data.country,'countryListID','id_country')
-          populateData(data.city,'cityListID','id_city')
-        }
-        else if(field=="id_city"){
-          populateData(data.data,id,field)
-          populateData(data.country,'countryListID','id_country')
-          populateData(data.state,'stateListID','id_state')
-        }
-
+          if(field=="id_country"){
+            populateData(data.data,id,field)
+            populateData(data.state,'stateListID','id_state')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_state"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_city"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.state,'stateListID','id_state')
+          }
       },
       failure: function(data){
 
@@ -156,33 +168,21 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 
     var xhr;
     $("#id_country").keyup(function() {
-      if (!xhr || xhr.readyState === 4) {
-        getLocations("id_country",$(this).val(),'countryListID')
-
-      }
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_country",$(this).val(),'countryListID')
+        }
     });
 
     $("#id_state").keyup(function() {
-      if (!xhr || xhr.readyState === 4) {
-        getLocations("id_state",$(this).val(),'stateListID')
-
-      }
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_state",$(this).val(),'stateListID')
+        }
     });
 
     $("#id_city").keyup(function() {
-      if($("#id_state").val()==''){
-        if($("#id_city").val().length>=3){
-          if (!xhr || xhr.readyState === 4) {
-            getLocations("id_city",$(this).val(),'cityListID')
-          }
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_city",$(this).val(),'cityListID');
         }
-      }else{
-        if($("#cityListID").options.length<0 && $("#id_city").val().length>=3 ){
-          if (!xhr || xhr.readyState === 4) {
-            getLocations("id_city",$(this).val(),'cityListID')
-          }
-        }
-      }
     });
 
   })//end of ready method

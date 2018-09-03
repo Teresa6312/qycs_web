@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="{% static 'main/css/multistepform.css'%}"/>
 {% endblock %}
 
+
+{% block title%}
+{% trans 'Sign Up' %}
+{% endblock%}
+
 {% block bodyclass %}{{ block.super }} login{% endblock %}
 
 {% block usertools %}{% endblock %}

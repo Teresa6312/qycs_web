@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
     path('shipping/', views.ShippingView.as_view(), name='shipping'),
+    path('information/<str:title>/', views.TextView.as_view(), name='text'),
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
 
 
@@ -31,6 +32,7 @@ urlpatterns = [
 
 
 # login_required
+
     path('accounts/logout/', login_required(auth_views.LogoutView.as_view(template_name='main/logout.html')), name = 'logout'),
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
     path('myaccount/send-Confirmation-email/', login_required(views.sendConfirmationEmail), name="send_confirmation_email"),
@@ -48,6 +50,7 @@ urlpatterns = [
 
     path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 
+    path('myaccount/wallet', login_required(views.WalletView.as_view()), name='userwallet'),
 
     path('myaccount/packages', login_required(pk_views.PackagesView.as_view()), name='userpackage'),
 

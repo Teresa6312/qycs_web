@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{% static 'main/css/social_login.css'%}"/>
 {% endblock %}
 
+{% block title%}
+{% trans 'Log in' %}
+{% endblock%}
+
 {% block bodyclass %}{{ block.super }} login{% endblock %}
 
 {% block usertools %}{% endblock %}

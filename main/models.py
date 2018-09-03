@@ -154,10 +154,11 @@ class CollectionPoint(Address_Common_Info):
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
 	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat Name'))
-	wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, default='', verbose_name= _('Wechat QRcode'))
+	wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
 	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information Source'))
+	agreement = models.BooleanField(default=False, verbose_name= _('Agreement'))
 
 
 # package category
@@ -485,8 +486,11 @@ class FavoriteWebsite(models.Model):
 
 class Resource(models.Model):
 	title = models.CharField(max_length=100, default='', unique=True, verbose_name= _('Title'))
-	english = models.FileField(upload_to = 'resource/english',  verbose_name= _('English Version'))
-	chinese = models.FileField(upload_to = 'resource/chinese',  verbose_name= _('Chinese Version'))
+	header = models.CharField(max_length=100, default='', unique=True, verbose_name= _('Header'))
+	english_content = models.TextField(blank=True, default='',  verbose_name= _('English Version Content'))
+	chinese_content = models.TextField(blank=True, default='', verbose_name= _('Chinese Version Content'))
+	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
+	chinese_file = models.FileField(upload_to = 'resource/chinese', blank=True, verbose_name= _('Chinese Version File'))
 
 
 class Location(models.Model):

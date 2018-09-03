@@ -1,11 +1,13 @@
 from django import forms
 from .models import (
-	User, Address, Service, CollectionPoint,
-	Item, PackageSnapshot, CoReceiver, FavoriteWebsite
+	User, Address, Service, CollectionPoint, Warehouse,
+	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
+	CARRIER_CHOICE,
 	)
 # from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
 
+from django.utils.translation import gettext as _
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms.models import inlineformset_factory
 from django.forms import formset_factory
@@ -101,12 +103,13 @@ class AddressForm(forms.ModelForm):
 		return add
 
 class ColCreationForm(forms.ModelForm):
+	agreement = forms.BooleanField(required = True, label = _("Agree"))
 	class Meta:
 		model = CollectionPoint
 		fields = ('store','store_name','license_type', 'license_image','id_image',
 					'address','apt','city','state','country','zipcode',
 					'collector_icon', 'name', 'wechat', 'wechat_qrcode',
-					'referrer', 'apply_reason', 'info_source',)
+					'referrer', 'apply_reason', 'info_source','agreement')
 
 class ColChangeForm(forms.ModelForm):
 	class Meta:
@@ -123,8 +126,9 @@ Create new Package
 '''
 #-----------------------------------------------------------------------------------------
 class PackageCreationForm(forms.ModelForm):
-	cust_carrier = forms.CharField(required = True)
-	cust_tracking_num = forms.CharField(required = True)
+	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True))
+	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE)
+	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True)
 
 	class Meta:
 		model = Service
@@ -143,8 +147,9 @@ Create new Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class CoShippingCreationForm(forms.ModelForm):
-	cust_carrier = forms.CharField(required = True)
-	cust_tracking_num = forms.CharField(required = True)
+	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True))
+	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE)
+	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True)
 
 	class Meta:
 		model = Service
@@ -166,8 +171,9 @@ Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class DirectShippingCreationForm(forms.ModelForm):
-	cust_carrier = forms.CharField(required = True)
-	cust_tracking_num = forms.CharField(required = True)
+	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True))
+	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE)
+	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True)
 
 	class Meta:
 		model = Service
@@ -236,23 +242,6 @@ ItemFormset = inlineformset_factory(Service,
 
 
 
-
-# #-----------------------------------------------------------------------------------------
-# '''
-# Image form and formset in Package
-# '''
-# #-----------------------------------------------------------------------------------------
-# class PackageSnapshotForm(forms.ModelForm):
-# 	package = forms.ModelChoiceField(queryset=Service.objects.all())
-# 	image = forms.ImageField(required=False, widget=forms.FileInput(attrs={"class":"w3-input w3-border"}))
-# 	class Meta:
-# 		model = PackageSnapshot
-# 		fields = ('image','package')
-#
-# ImageFormset = inlineformset_factory(Service,
-# 									PackageSnapshot,
-# 									form=PackageSnapshotForm,
-# 									extra=1)
 
 class SnapshotForm(forms.Form):
 	Snapshot = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True,}))

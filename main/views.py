@@ -1,5 +1,5 @@
 from .models import (
-	Address, Service, CollectionPoint,
+	Address, Service, CollectionPoint, Resource,
 	User, Warehouse, FavoriteWebsite, Location
 	)
 from .forms import (
@@ -30,6 +30,7 @@ import os
 import json
 # from django.core import serializers
 from django.utils.translation import gettext as _
+from django.db import IntegrityError
 
 from django.db import IntegrityError
 
@@ -155,8 +156,17 @@ class ColRegisterView(TemplateView):
 		userform = NewUserChangeForm(instance=request.user)
 		userform.fields['password'].required = False
 		userform.fields['phone'].required = True
+		userform.fields['first_name'].required = True
+		userform.fields['last_name'].required = True
 		colform = ColCreationForm()
-		return render(request, self.template_name, {'colform': colform,
+		text = Resource.objects.get(title='colregister')
+		if text:
+			return render(request, self.template_name, {'colform': colform,
+													'userform': userform,
+													"term": text.english_content,
+													})
+		else:
+			return render(request, self.template_name, {'colform': colform,
 													'userform': userform
 													})
 
@@ -291,11 +301,11 @@ class AddressView(TemplateView):
 
 	def get(self, request):
 		addform = AddressForm()
-		return render(request, self.template_name, {'addform': addform,
-		})
+		return render(request, self.template_name, {'addform': addform,})
 
 	def post(self, request):
-		is_popup=request.POST.get('is_popup','')
+		add_field_name=request.POST.get('add_field_name','')
+		print(add_field_name)
 
 		if "addform" in request.POST:
 			addform = AddressForm(QueryDict(request.POST.get('addform')))
@@ -309,25 +319,17 @@ class AddressView(TemplateView):
 				newaddress.save()
 			except IntegrityError:
 				messages.error(request,_('The address already exists!'))
-			if is_popup == "True":
-				if Address.objects.count()==1:
-					user = User.objects.get(user=request.user)
-					user.default_address = newaddress
-					user.save()
+				return render(request, self.template_name, {'addform': addform})
 
-
+			if add_field_name == 'ship_to_add':
+				return render(request, 'main/directshipping.html', {'newaddress': newaddress})
+			if add_field_name == 'default_address':
 				return render(request, 'main/updateprofile.html', {'newaddress': newaddress})
 			else:
 				return redirect(reverse('useraddress'))
-
 		else:
-			if is_popup == "True":
-				return render(request, 'main/updateprofile.html', {'addform': addform})
-			else:
-				return render(request, self.template_name, {'addform': addform})
+			return render(request, self.template_name, {'addform': addform})
 
-
-# Use updateView?
 
 class EditAddressView(TemplateView):
 	template_name = 'main/address.html'
@@ -405,3 +407,17 @@ class ShippingView(TemplateView):
 
 	def get(self, request):
 		return render(request, self.template_name, {'col_list': self.col_list,})
+
+class WalletView(TemplateView):
+	template_name = 'main/wallet.html'
+
+	def get(self, request):
+		return render(request, self.template_name)
+
+class TextView(TemplateView):
+	template_name = 'main/text.html'
+
+	def get(self, request, title):
+		text = Resource.objects.get(title=title)
+		if text:
+			return render(request, self.template_name, {'text': text})
