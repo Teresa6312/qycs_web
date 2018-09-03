@@ -156,8 +156,17 @@ class ColRegisterView(TemplateView):
 		userform = NewUserChangeForm(instance=request.user)
 		userform.fields['password'].required = False
 		userform.fields['phone'].required = True
+		userform.fields['first_name'].required = True
+		userform.fields['last_name'].required = True
 		colform = ColCreationForm()
-		return render(request, self.template_name, {'colform': colform,
+		text = Resource.objects.get(title='colregister')
+		if text:
+			return render(request, self.template_name, {'colform': colform,
+													'userform': userform,
+													"term": text.english_content,
+													})
+		else:
+			return render(request, self.template_name, {'colform': colform,
 													'userform': userform
 													})
 

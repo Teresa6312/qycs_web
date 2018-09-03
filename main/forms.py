@@ -103,12 +103,13 @@ class AddressForm(forms.ModelForm):
 		return add
 
 class ColCreationForm(forms.ModelForm):
+	agreement = forms.BooleanField(required = True, label = _("Agree"))
 	class Meta:
 		model = CollectionPoint
 		fields = ('store','store_name','license_type', 'license_image','id_image',
 					'address','apt','city','state','country','zipcode',
 					'collector_icon', 'name', 'wechat', 'wechat_qrcode',
-					'referrer', 'apply_reason', 'info_source',)
+					'referrer', 'apply_reason', 'info_source','agreement')
 
 class ColChangeForm(forms.ModelForm):
 	class Meta:

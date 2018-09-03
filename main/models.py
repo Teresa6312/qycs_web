@@ -158,6 +158,7 @@ class CollectionPoint(Address_Common_Info):
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
 	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information Source'))
+	agreement = models.BooleanField(default=False, verbose_name= _('Agreement'))
 
 
 # package category

@@ -133,6 +133,11 @@
           {{ colform.info_source.label_tag }} {{ colform.info_source }}
         </div>
     </fieldset>
+    <fieldset class="module aligned w3-mobile">
+        <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Collection Point Registration Terms' %}</h2>
+        <div class="w3-card-2" style="height:100px; overflow:auto;">{{term|linebreaks}}</div>
+        {{colform.agreement}}{{colform.agreement.label_tag}}
+    </fieldset>
     <div class="submit-row w3-container">
       <button type="button" class="cleanBtn">{% trans 'Clear Form' %}</button>
         <button  type="button" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
