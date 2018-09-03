@@ -6,7 +6,9 @@ from .forms import (
 	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
 	ColCreationForm, EmailForm, ColChangeForm
 	)
+
 from .code import send_confirmation_email
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -29,6 +31,9 @@ import json
 # from django.core import serializers
 from django.utils.translation import gettext as _
 from django.db import IntegrityError
+
+from django.db import IntegrityError
+
 
 class HomeView(TemplateView):
 	template_name = 'main/home.html'
