@@ -119,25 +119,23 @@ class AddDirectShipping(TemplateView):
 			co_shipping = False,
 			paid_key = None).order_by('-id')
 
-		try:
-#  save default_address from select
-			selected_add = Address.objects.get(pk=request.POST['selected_add'])
-		except:
-			messages.error(request, _('There is some error in your address, please select again!'))
-			return render(request, self.template_name,
-						{'form': form,
-						'package_list': package_list,
-						'itemset': itemset,
-						})
+# 		try:
+# #  save default_address from select
+# 			selected_add = Address.objects.get(pk=request.POST['selected_add'])
+# 		except:
+# 			messages.error(request, _('There is some error in your address, please select again!'))
+			# return render(request, self.template_name,
+			# 			{'form': form,
+			# 			'package_list': package_list,
+			# 			'itemset': itemset,
+			# 			})
 
 		if form.is_valid() and itemset.is_valid():
 			files = self.request.FILES.getlist('image')
 			package = form.save(commit = False)
 
 			package.co_shipping = False
-# default warehouse is China
-			package.wh_received = Warehouse.objects.get(country='China')
-			package.ship_to_add = selected_add
+
 			package.user = request.user
 
 			package.save()
@@ -147,7 +145,7 @@ class AddDirectShipping(TemplateView):
 
 # how to make it more secury
 			for f in files:
-				newimage = PackageImage(package = package, image = f)
+				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
 			return redirect(reverse('add_direct_shipping'))
@@ -238,7 +236,7 @@ class AddCoShipping(TemplateView):
 
 # how to make it more secury
 			for f in files:
-				newimage = PackageImage(package = package, image = f)
+				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
 			return redirect(reverse('add_co_shipping',args = (selected_col,)))

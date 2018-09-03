@@ -2,11 +2,13 @@
 {% load i18n static %}
 
 {% block extrastyle %}
-{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 <link rel="stylesheet" href="{% static 'css/timeline.css' %}">
 {% endblock %}
 
-
+{% block title%}
+{% trans 'Package Detail' %}
+{% endblock%}
 
 {% block content %}
 <div class="w3-row">

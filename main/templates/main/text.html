@@ -1,0 +1,13 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{{text.header}}
+{% endblock%}
+
+{% block content %}
+<div class="w3-panel" style="max-width:800px; margin:auto;" >
+  <h2>{{text.header}}</h2>
+  <p>{{text.english_content|linebreaks}}</p>
+</div>
+{% endblock %}

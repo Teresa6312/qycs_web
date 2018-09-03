@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% trans 'User Collection Point Profile Update' %}
 {% endblock%}
 
 {% block extrastyle %}
@@ -23,18 +23,21 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
           <input type="file" name="collector_icon" id="id_collector_icon">
 
         </div>
-        {% if not form.wechat == '' %}
+        {% if form.wechat == '' %}
         <div class="form-row">
           {{ form.wechat.errors }}
           {{ form.wechat.label_tag }} {{ form.wechat }}
         </div>
         {% endif %}
-        {% if not form.wechat_qrcode == '' %}
         <div class="form-row">
+        {% if form.wechat_qrcode == '' %}
           {{ form.wechat_qrcode.errors }}
           {{ form.wechat_qrcode.label_tag }} {{ form.wechat_qrcode }}
-        </div>
+        {% else %}
+          {{ form.wechat_qrcode.label_tag }}
+          <img class="w3-right" alt="collector WeChat qrcode" src = "{{user.collectionpoint.wechat_qrcode.url}}" style="max-width:200px;"/>
         {% endif %}
+        </div>
         <div class="form-row">
           {{ form.description.errors }}
           {{ form.description.label_tag }} {{ form.description }}

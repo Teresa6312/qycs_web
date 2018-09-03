@@ -2,11 +2,6 @@
 {% load i18n static %}
 
 
-
-{% block title %}{{ title }} | {{ site_title|default:_('Qycs Global Shipping') }}{% endblock %}
-
-
-
 {% block blockbots %}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -30,8 +25,8 @@
       <a href="{% url 'home' %}">{% trans "Home" %}</a>
       <a href="{% url 'add_direct_shipping' %}">{% trans "Direct Shipping" %}</a>
       <a href="{% url 'collection_points' %}">{% trans "Co-Shipping" %}</a>
-      <a href="">{% trans "Price List" %}</a>
-      <a href="">{% trans "Global Shop" %}</a>
+      <a href="{% url 'text' 'price_list' %}">{% trans "Price List" %}</a>
+      <a href="{% url 'text' 'global_shopping' %}">{% trans "Global Shop" %}</a>
       {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url.collection_point_view}}">{% trans "My Collection Point" %}</a>{% endif %}
       <a href="/guanjia" target="_blank">{% trans "Admin" %}</a>
       <div class="topnav-right">
@@ -74,8 +69,8 @@
 {% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
 <script src="{% static 'main/js/base.js' %}"></script>
 
-{% block script%}
-{% endblock%}
+  {% block script%}
+  {% endblock%}
 {% endblock %}
 
 
@@ -89,23 +84,23 @@
     <div class="w3-col w3-container m4 l2">
       <h5 class="yellow-text" >{% trans "My Qycs" %}</h5>
 
-      <a class="w3-text-white w3-medium" href="">{% trans "About Us" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="">{% trans "Join us" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'about_us'%}">{% trans "About Us" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'join_us'%}">{% trans "Join us" %}</a><br/>
 
     </div>
     <div class="w3-col w3-container m4 l2">
       <h5 class="yellow-text" >{% trans "Consumer Guide" %}</h5>
-      <a class="w3-text-white w3-medium" href="">{% trans "Shipping Guide" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="">{% trans "Shopping Guide" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="">{% trans "Our Payments" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
 
     </div>
     <div class="w3-col w3-container m4 l2">
       <h5 class="yellow-text">{% trans "Service Guide" %}</h5>
 
-      <a class="w3-text-white w3-medium" href="">{% trans "Qycs Insurance" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="">{% trans "Collection Points" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="">{% trans "Users and Collectors" %}</a>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'text' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
 
     </div>
 
@@ -120,9 +115,7 @@
       <button type="button" class="btn btn-default">{% trans "Contact us" %}</button><br/>
 
     </div>
-    <!-- <div class="w3-col w3-container m4 l2">
-      <h5 class="w3-center"><a href="#"><img width="100" height="100" src="{% static 'image/qrcode.jpg'%}"></a></h5>
-    </div> -->
+
 
   </div>
 </div>

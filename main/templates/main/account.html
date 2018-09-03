@@ -2,10 +2,11 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% trans 'User Profile' %}
 {% endblock%}
 
-
+{% block messages %}
+{% endblock messages %}
 
 {% block content %}
 <div class="w3-cell-row">
@@ -17,13 +18,20 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 						{% trans "My Collection Point" %}
 					</a>
 				{% endif %}
-		    <a class="w3-bar-item w3-text-black" href="{% url 'useraddress' %}">{% trans 'Address List' %}</a>
+		    <a class="w3-bar-item w3-text-black" href="{% url 'useraddress' %}">{% trans 'Address Book' %}</a>
 		    <a class="w3-bar-item w3-text-black" href="{% url 'userpackage' %}">{% trans 'Packages History' %}</a>
-		    <a class="w3-bar-item w3-text-black" href="#">{% trans 'Wallet' %}</a>
-		    <a class="w3-bar-item w3-text-black" href="/accounts/logout/">{% trans 'Logout' %}</a>
+		    <a class="w3-bar-item w3-text-black" href="{% url 'userwallet' %}">{% trans 'Wallet' %}</a>
+		    <a class="w3-bar-item w3-text-black" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
 		</div>
 	</div>
 	<div class="w3-cell w3-rest w3-container w3-mobile">
+
+		{% if messages %}
+		<ul class="messagelist">{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+		{% endfor %}</ul>
+		{% endif %}
+
 			{% block account_content%}
 
 					<h2>{{user.username}}

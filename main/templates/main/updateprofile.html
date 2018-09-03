@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% trans 'Update Profile' %}
 {% endblock%}
 
 {% block extrastyle %}
@@ -10,25 +10,15 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
 {% endblock %}
 
 {% block account_content %}
-    {% if messages %}
-    <ul class="messagelist">{% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-    {% endfor %}</ul>
-    {% endif %}
-
-    {% if userform.errors %}
-    <ul class="messagelist">
-        {% for message in userform.errors%}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
     <div class="w3-mobile">
 
         <form method = "post">
         {% csrf_token %}
-
+        {% if form.errors %}
+            <p class="errornote">
+            {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+            </p>
+        {% endif %}
             <fieldset class="module aligned w3-mobile">
                   <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Update My Profile' %}</h2>
                   <div class="form-row">
@@ -69,7 +59,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
             </fieldset>
             <fieldset class="module w3-mobile">
               <h2 class="w3-sand w3-text-indigo w3-large">{% trans "Default Address" %}</h2>
-              {% include "blocks/address_block_all.html"%}
+              {% include "blocks/address_block_all.html" with add_field_name='default_address' %}
             </fieldset>
             <fieldset class="module w3-mobile">
               {% include "blocks/modal.html" with element='select-col' title=_('Select a Collection Point') block='select_collection_point_block'%}

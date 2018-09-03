@@ -5,7 +5,7 @@ from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
 	Warehouse, PackageSnapshot, ParentPackage, Item, Payment,
-	Coupon, FavoriteWebsite
+	Coupon, FavoriteWebsite, Resource
 )
 from django.utils.html import mark_safe
 
@@ -252,3 +252,9 @@ class FavoriteWebsiteAdmin(admin.ModelAdmin):
 	search_fields = ['web_name']
 
 admin.site.register(FavoriteWebsite, FavoriteWebsiteAdmin)
+
+class ResourceAdmin(admin.ModelAdmin):
+	list_display = ('id', 'title','header',)
+	search_fields = ['title', 'header',]
+
+admin.site.register(Resource, ResourceAdmin)
