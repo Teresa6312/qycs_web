@@ -11,43 +11,7 @@
 {% endblock%}
 
 {% block content %}
-<div class="w3-row">
-    <div class="w3-half w3-card-2 w3-round w3-container w3-mobile ">
-        <div class="timeline" style="width:500px">
-          <div class="container left">
-            <div class="content">
-              <h6>Package added by me</h6>
-              <p>{{package.created_date}}</p>
-            </div>
-          </div>
-          <div class="container right">
-            <div class="content">
-              <h6>Package arrived in Warehouse</h6>
-              <p>{{package.wh_received_date}}</p>
-            </div>
-          </div>
-          <div class="container left">
-            <div class="content">
-              <h6>Package shipped from Warehouse</h6>
-              <p>{{package.parent_package.shipped_date}}</p>
-            </div>
-          </div>
-          <div class="container right">
-            <div class="content">
-              <h6>Package Received by
-                {% if package.ship_to_col %}
-                  Collector
-                {% else %}
-                  {{package.ship_to_add.first_name}} {{package.ship_to_add.last_name}}
-                {% endif %}</h6>
-              <p>{{package.picked_up_date}}</p>
-            </div>
-          </div>
-        </div>
-    </div>
-
-
-    <div class="w3-rest">
+<div class="w3-panel w3-mobile" style="width:500px; margin:auto;">
 
       <h2>{{package.cust_tracking_num}}
        - {{package.cust_carrier}}
@@ -56,47 +20,83 @@
       {% else %}(Direct Shipping)
       {% endif %}
       </h2>
-      <h4>Ship to:</h4>
-      {% if package.ship_to_add %}
-      {% include "blocks/address_card_no_button.html" with add=package.ship_to_add%}
-      {% elif package.ship_to_col %}
-      {% include "blocks/col_card_no_button.html" with col=package.ship_to_col%}
-      {% endif %}
+      <h6>Ship to:</h6>
+      <div class="w3-container">
+          {% if package.ship_to_add %}
+          {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
+          {% elif package.ship_to_col %}
+          {% include "blocks/col_card_fields.html" with col=package.ship_to_col no_icon='yes' %}
+          {% endif %}
+      </div>
       <div class="w3-row">
           <h6>Package type: {{package.package_type}}</h6>
           <h6>Outgoing shipping carrier:{{package.parent_package.carrier}}</h6>
           <h6>Weight: {{package.Weight}}(kg)</h6>
           <h6>Original Amount: {% if package.shipping_fee %}{{package.shipping_fee}}{% else %}N/A{% endif %}</h6>
           {% if package.storage_fee %}<h6>Storage fee: {{package.storage_fee}}</h6>{% endif %}
-          <h6>ADD !! Paid Amount: {% if package.shipping_fee %}{{package.shipping_fee}}{% else %}N/A{% endif %}</h6>
+          <h6>Paid Amount: {% if package.paid_amount %}{{package.paid_amount}}{% else %}N/A{% endif %}</h6>
           {% if package.storage_fee %}<h6>Storage fee: {{package.storage_fee}}</h6>{% endif %}
 
-          <h6>Low Volume Weight Requested: {{package.low_volume_request}}</h6>
-          {% if not package.co_shipping %}<h6>No Rush Requested: {{package.no_rush_request}}</h6>{% endif %}
+          <h6>Low Volume Weight Requested:
+
+          {% if package.low_volume_request %}
+          <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+           {% else %}
+          <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+          {% endif %}</h6>
+          {% if not package.co_shipping %}<h6>No Rush Requested: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
 
       </div>
-    </div>
+
+
+      {% if package.created_date %}
+          <h6>Package added by me on:</h6>
+          <p>&emsp;{{package.created_date}}</p>
+      {% endif %}
+      {% if package.wh_received_date %}
+          <h6>Package arrived in Warehouse on:</h6>
+          <p>>&emsp;{{package.wh_received_date}}</p>
+      {% endif %}
+      {% if package.parent_package.shipped_date %}
+          <h6>Package shipped from Warehouse on:</h6>
+          <p>>&emsp;{{package.parent_package.shipped_date}}</p>
+      {% endif %}
+
+      {% if package.received_date and package.ship_to_col %}
+          <h6>Package arrived at Collection Point on:</h6>
+          <p>>&emsp;{{package.received_date}}</p>
+          {% if package.picked_up_date %}
+              <h6>Package picked up by receiver on:</h6>
+              <p>>&emsp;{{package.picked_up_date}}</p>
+          {% endif %}
+      {% endif %}
+
+
+
+      {% if package.packageimage_set.all %}
+      <h5>Package Snapshot:</h5>
+        {% for image in package.packageimage_set.all %}
+        <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+          <img src = "{{image.image.url}}">
+        </div>
+        {% endfor %}
+      {% else %}
+      <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>Didn't insert any snapshot.<br/><br/>
+      {% endif %}
+
+      {% if package.item_set.all %}
+      <h5>Package Item details:</h5>
+        {% for item in package.item_set.all %}
+        <div class="w3-row  w3-card-2 w3-container">
+          Item name: {{item.item_name}}<br/>
+          Item detail:{{item.item_detail}}<br/>
+          Item quantity:{{item.item_quantity}}<br/>
+        </div>
+        {% endfor %}
+        {% else %}
+        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>Didn't enter any item details.<br/><br/>
+      {% endif %}
+
 </div>
 
-{% if package.packageimage_set.all %}
-<h5>Package Snapshot:</h5>
-  {% for image in package.packageimage_set.all %}
-  <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
-    <img src = "{{image.image.url}}">
-  </div>
-  {% endfor %}
-{% endif %}
-
-{% if package.item_set.all %}
-<h5>Package Item details:</h5>
-  {% for item in package.item_set.all %}
-  <div class="w3-row  w3-card-2 w3-container">
-    Item name: {{item.item_name}}<br/>
-    Item detail:{{item.item_detail}}<br/>
-    Item quantity:{{item.item_quantity}}<br/>
-  </div>
-  {% endfor %}
-{% endif %}
-
-</div>
 {% endblock %}

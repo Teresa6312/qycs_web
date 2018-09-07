@@ -11,13 +11,14 @@
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 {% endblock %}
 
+
 {% block messages %}
 {% endblock messages %}
 
 {% block content %}
 <div class="w3-cell w3-container w3-mobile" style="max-width:500px; width:81%;">
 
-    <div class="w3-card-2 w3-round w3-container w3-mobile">
+    <div class="w3-container w3-round w3-border w3-mobile">
 
 
       {% if messages %}
@@ -53,26 +54,30 @@
                         {{ form.memo.errors }}
                         {{ form.memo.label_tag }} {{ form.memo }}
                       </div>
-
                       <div class="form-row">
-                        {{ form.low_volume_request.errors }}
-                        {{ form.low_volume_request.label_tag }} {{ form.low_volume_request }}
+                          <div class="checkbox-row">
+                            {{ form.low_volume_request.errors }}
+                            {{ form.low_volume_request.label_tag }}{{ form.low_volume_request }}
+                          </div>
                       </div>
                       {% if form.no_rush_request %}
-                      <div class="form-row">
-                        {{ form.no_rush_request.errors }}
-                        {{ form.no_rush_request.label_tag }} {{ form.no_rush_request }}
-                      </div>
+                        <div class="form-row">
+                          <div class="checkbox-row">
+                            {{ form.no_rush_request.errors }}
+                            {{ form.no_rush_request.label_tag }}{{ form.no_rush_request }}
+                          </div>
+                        </div>
                       {% endif %}
                 </fieldset>
-
+                {{ itemset.management_form }}
+                <!-- {% include "blocks/fieldset.html" with fieldset=itemset title='Item Deatil' %} -->
 
                 <div id="add_item_btn_row" class="w3-center w3-panel w3-mobile">
                   <button type="button" class="w3-third" id="add_snapshot_btn" onclick="AddSnapshotBlock()">{% trans 'Add Snapshot' %}</button>
                     <div  class="w3-quarter">Or</div>
                   <button type="button" class="w3-third" id="add_item_btn" onclick="createItemsetBlock()">{% trans "Add Items' Detail" %}</button>
                 </div>
-                    {{ itemset.management_form }}
+
                 <div id="sub_btn_block" class="submit-row">
                     {% block extrabtn %}
                     {% endblock %}
@@ -116,7 +121,20 @@
 
 
 {% block script%}
-<script src="{% static 'main/js/jquery.formset.js' %}"></script>
-<script src="{% static 'main/js/packageset.js' %}"></script>
-
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script src="{% static 'js/packageset.js' %}"></script>
+<script>
+$(document).ready(function(){
+  $("#follow_user_infor").click(function(){
+       $('#id_first_name').val('{{user.first_name}}');
+			 $('#id_last_name').val('{{user.last_name}}');
+			 $('#id_phone').val('{{user.phone}}');
+  });
+	$("#use_last_infor").click(function(){
+			 $('#id_first_name').val('{{user.service_set.first.receiver.first_name}}');
+			 $('#id_last_name').val('{{user.service_set.first.receiver.last_name}}');
+			 $('#id_phone').val('{{user.service_set.first.receiver.phone}}');
+	});
+});
+</script>
 {% endblock%}

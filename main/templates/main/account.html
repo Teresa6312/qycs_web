@@ -13,11 +13,6 @@
 	<div class="w3-cell aside-bar-background-color w3-mobile " style="width:20%;">
 		<div class="w3-bar-block">
 		    <a class="w3-bar-item w3-text-black" href="{% url 'account' %}">{% trans 'User Profile' %}</a>
-				{% if user.collectionpoint %}
-					<a class="w3-bar-item w3-text-black" href="{{user.collectionpoint.get_absolute_url.collection_point_view}}">
-						{% trans "My Collection Point" %}
-					</a>
-				{% endif %}
 		    <a class="w3-bar-item w3-text-black" href="{% url 'useraddress' %}">{% trans 'Address Book' %}</a>
 		    <a class="w3-bar-item w3-text-black" href="{% url 'userpackage' %}">{% trans 'Packages History' %}</a>
 		    <a class="w3-bar-item w3-text-black" href="{% url 'userwallet' %}">{% trans 'Wallet' %}</a>
@@ -69,7 +64,6 @@
 
 		            <div class="w3-row">
 									<h4>{% trans 'Default Collection Point' %}</h4>
-
 										{% if user.default_col%}
 												{% include "blocks/default_col_card.html" with col=user.default_col%}
 										{% else %}

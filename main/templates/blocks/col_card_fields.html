@@ -1,15 +1,26 @@
 {% load i18n static %}
 
-{% if col.collector_icon%}
+
+
+{% if col.collector_icon and not no_icon %}
     <img alt="collection point icon" src = "{{col.collector_icon.url}}" style="width:100%; max-width:280px; margin:auto;">
 {% endif %}
-<h4>{{col.name}}
-{% if col.store %}
-    ({% trans 'Store' %})
-{% else %}
-    ({% trans 'Personal Place' %})
-{% endif %}</h4>
-<a class="w3-text-blue" href="{{col.get_absolute_url.collection_point_view}}">{% trans 'visit collection point' %}</a><br/>
+<h5>{{col.name}}
+  {% if not col.status %}
+    <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/>
+  {% else %}
+    <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/>
+  {% endif %}
+  {% if col.store %}
+      ({% trans 'Store' %})
+  {% else %}
+      ({% trans 'Personal Place' %})
+  {% endif %}
+</h5>
+<a class="w3-text-blue" href="{{col.get_absolute_url}}">{% trans 'visit collection point' %}</a><br/>
+{% trans 'Food' %}: {% if col.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %} |
+{% trans 'Regular' %}: {% if col.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %} |
+{% trans 'Luxury' %}: {% if col.luxury %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %}<br/>
 {{col.country}} | {{col.state}} | {{col.city}}<br/>
 {{col.address}}<br/>
 {% if add.apt %}{{col.apt}}<br/>{% endif %}

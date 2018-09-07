@@ -3,18 +3,17 @@
 
 
 {% block blockbots %}
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="Qycs Founders">
+<meta name="description" content="Qycs provides Co-shipping, Direct Shipping, Global Shop service.">
+<meta name="keywords" content="Co-shipping, Direct Shipping, Global Shop">
+<meta name="author" content="Qycs Technique team">
 {% endblock %}
 
 
 {% block coltype %}contentCSS{% endblock %}
 
 {% block branding %}
-  <a href="{% url 'home' %}"><img src="{% static 'main/image/brand.png' %}" alt="logo" height="60" class="w3-panel"/></a>
+  <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" height="60" class="w3-panel"/></a>
 {% endblock %}
 
 
@@ -25,10 +24,9 @@
       <a href="{% url 'home' %}">{% trans "Home" %}</a>
       <a href="{% url 'add_direct_shipping' %}">{% trans "Direct Shipping" %}</a>
       <a href="{% url 'collection_points' %}">{% trans "Co-Shipping" %}</a>
-      <a href="{% url 'text' 'price_list' %}">{% trans "Price List" %}</a>
-      <a href="{% url 'text' 'global_shopping' %}">{% trans "Global Shop" %}</a>
-      {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url.collection_point_view}}">{% trans "My Collection Point" %}</a>{% endif %}
-      <a href="/guanjia" target="_blank">{% trans "Admin" %}</a>
+      <a href="{% url 'information' 'price_list' %}">{% trans "Price List" %}</a>
+      <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
+      {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
       <div class="topnav-right">
           {% if user.is_authenticated %}
 
@@ -41,7 +39,7 @@
                 <a href="{% url 'account' %}">{% trans "User Profile" %}</a>
                 <a href="{% url 'useraddress' %}">{% trans "Address book" %}</a>
                 <a href="{% url 'userpackage' %}">{% trans "Packages History" %}</a>
-                <a href="">{% trans "Wallet" %}</a>
+                <a href="{% url 'userwallet' %}">{% trans "Wallet" %}</a>
                 <a href="{% url 'logout' %}">{% trans "Logout" %}</a>
               </div>
             </div>
@@ -67,7 +65,7 @@
 
 {% include "blocks/modal.html" with element='wechat' title='Contact Us' block='wechat_qrcode_block'%}
 {% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
-<script src="{% static 'main/js/base.js' %}"></script>
+<script src="{% static 'js/base.js' %}"></script>
 
   {% block script%}
   {% endblock%}
@@ -79,36 +77,36 @@
 <div id="footer">
   <div class="w3-row">
     <div class="w3-col w3-container m4 l2">
-      <h5 class="w3-center"><a href="{% url 'home' %}"><img width="120" height="120" src="{% static 'main/image/slogan.png'%}" alt="qycs slogan icon"></a></h5>
+      <h5 class="w3-center"><a href="{% url 'home' %}"><img width="120" height="120" src="{% static 'image/slogan.png'%}" alt="qycs slogan icon"></a></h5>
     </div>
     <div class="w3-col w3-container m4 l2">
       <h5 class="yellow-text" >{% trans "My Qycs" %}</h5>
 
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'about_us'%}">{% trans "About Us" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'join_us'%}">{% trans "Join us" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
 
     </div>
     <div class="w3-col w3-container m4 l2">
       <h5 class="yellow-text" >{% trans "Consumer Guide" %}</h5>
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
 
     </div>
     <div class="w3-col w3-container m4 l2">
       <h5 class="yellow-text">{% trans "Service Guide" %}</h5>
 
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'text' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
+      <a class="w3-text-white w3-medium" href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
 
     </div>
 
     <div class="w3-col w3-container m4 l2">
       <div class="social-networks">
-        <img class="wechat" alt="WeChat icon" src="{% static 'main/image/wechat.ico' %}" width="40" height="40">
+        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" width="40" height="40">
 
-        <img class="email" alt="Emial icon" src="{% static 'main/image/email.png' %}" width="40" height="40">
+        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" width="40" height="40">
 
       </div>
 
@@ -118,9 +116,10 @@
 
 
   </div>
+
 </div>
-<div class="footer-copyright">
+<div id="rights" class="footer-copyright">
   &copy; {% trans "Qycs Global Shipping Inc." %} | {% trans "All Rights Reserved" %} © 2018 |
-  <a href="">{% trans "Privacy Policy" %}</a> | <a href="">{% trans "Terms of Service" %}</a>
+  <a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a>
 </div>
 {% endblock %}

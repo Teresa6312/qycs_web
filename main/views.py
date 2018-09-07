@@ -18,6 +18,7 @@ from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.urls import reverse
 # used to reverse the url name as a url path
 
+from django.conf import settings
 from django.http import QueryDict
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
@@ -137,11 +138,11 @@ class SendEmailView(TemplateView):
 				to_email.append(user_email)
 
 			send_mail(
-				    subject,
-				    content,
-				    user_email,
-				    to_email,
-				    fail_silently=False,
+					subject,
+					content,
+					settings.EMAIL_HOST_USER,
+					to_email,
+					fail_silently=False,
 				)
 		if next and next!='':
 			return redirect(next)
@@ -159,15 +160,15 @@ class ColRegisterView(TemplateView):
 		userform.fields['first_name'].required = True
 		userform.fields['last_name'].required = True
 		colform = ColCreationForm()
-		text = Resource.objects.get(title='colregister')
-		if text:
-			return render(request, self.template_name, {'colform': colform,
+		try:
+			text = Resource.objects.get(title='colregister')
+			term = text.english_content
+		except:
+			term = _('Term is not avaliable Right now.')
+
+		return render(request, self.template_name, {'colform': colform,
 													'userform': userform,
-													"term": text.english_content,
-													})
-		else:
-			return render(request, self.template_name, {'colform': colform,
-													'userform': userform
+													"term": term,
 													})
 
 	def post(self, request):
@@ -181,6 +182,7 @@ class ColRegisterView(TemplateView):
 			collector.save()
 			user.default_col = collector
 			user.save()
+			messages.info(request, _('Thank you for applied collection point. We will process your application in a week.'))
 			return redirect(reverse('account'))
 		else:
 			return render(request, self.template_name, {
@@ -193,7 +195,6 @@ class CollectorUpdateView(TemplateView):
 
 	def get(self, request):
 		if request.user.collectionpoint:
-			# col = CollectionPoint.objects.
 			form = ColChangeForm(instance = request.user.collectionpoint)
 			return render(request, self.template_name, {'form': form})
 		else:
@@ -305,7 +306,6 @@ class AddressView(TemplateView):
 
 	def post(self, request):
 		add_field_name=request.POST.get('add_field_name','')
-		print(add_field_name)
 
 		if "addform" in request.POST:
 			addform = AddressForm(QueryDict(request.POST.get('addform')))
@@ -399,6 +399,21 @@ class CollectionPointView(TemplateView):
 	def get(self, request):
 		return render(request, self.template_name, {'col_list': self.col_list,})
 
+	def post(self, request):
+		try:
+			col = CollectionPoint.objects.filter(pk=request.POST.get('selected_col'))
+			if col.status:
+				messages.error(request, _("The Collection Point you select is not avaliable. Please select another one." ))
+				return render(request, self.template_name, {'col_list': self.col_list,})
+			else:
+				if col.status_all():
+					messages.infor(request, _("The Collection Point is not avaliable from " + col.absent_start + ' to ' + col.absent_end + '.'))
+				return redirect(reverse('add_co_shipping',args = (col.pk,)))
+		except:
+			messages.error(request, _("Your didn't select a Collection Point yet."))
+			return render(request, self.template_name, {'col_list': self.col_list,})
+
+
 
 class ShippingView(TemplateView):
 	template_name = 'main/select_way_to_ship.html'
@@ -414,10 +429,21 @@ class WalletView(TemplateView):
 	def get(self, request):
 		return render(request, self.template_name)
 
-class TextView(TemplateView):
-	template_name = 'main/text.html'
+class ShoppingView(TemplateView):
+	template_name = 'main/global_shop.html'
+
+	def get(self, request):
+		return render(request, self.template_name)
+
+class InformationView(TemplateView):
+	template_name = 'main/information.html'
 
 	def get(self, request, title):
-		text = Resource.objects.get(title=title)
-		if text:
-			return render(request, self.template_name, {'text': text})
+		try:
+			information = Resource.objects.get(title=title)
+			if information.english_content!='':
+				return render(request, self.template_name, {'information': information})
+			else:
+				return render(request, self.template_name, {'empty': _('Upcoming information')})
+		except:
+			return render(request, self.template_name, {'empty': _('Upcoming information')})

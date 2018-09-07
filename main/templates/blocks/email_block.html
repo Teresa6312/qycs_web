@@ -2,7 +2,7 @@
   <form enctype="multipart/form-data" method="post" id="contact_us_form" novalidate>
     <div class="w3-container">
         <label for="id-email">{% trans 'My Email Address'%}</label>
-        <input id="id-email" type="text" class= "w3-input" name="email" required/>
+        <input id="id-email" type="text" class= "w3-input" name="email" value="{{user.email}}" required/>
         <p class="w3-cell-row">
             <label class="w3-cell-middle switch">
               <input id="id-cc" name="cc" type="checkbox" checked>

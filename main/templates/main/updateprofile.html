@@ -64,7 +64,7 @@
             <fieldset class="module w3-mobile">
               {% include "blocks/modal.html" with element='select-col' title=_('Select a Collection Point') block='select_collection_point_block'%}
               <div id="default_col_block">
-                <h2 class="w3-sand w3-text-indigo w3-large">{% trans "Default Collection Point" %}</h2>
+                <h2 class="w3-sand w3-text-indigo w3-large">{% trans "Default Collection Point" %}</h2><br/>
 
                 {% if user.collectionpoint and user.default_col %}
                     {% include "blocks/default_col_card.html" with col=user.default_col%}

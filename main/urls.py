@@ -18,13 +18,11 @@ urlpatterns = [
     path('accounts/colregister/', views.ColRegisterView.as_view(), name = 'colregister'),
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
-    # path('accounts/login/', views.LoginView.as_view, name = 'login'),
 
     path('myaccount/location/', views.locationView, name='location'),
 
-    path('collection-points/', views.CollectionPointView.as_view(), name='collection_points'),
     path('shipping/', views.ShippingView.as_view(), name='shipping'),
-    path('information/<str:title>/', views.TextView.as_view(), name='text'),
+
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
 
 

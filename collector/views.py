@@ -42,7 +42,7 @@ class CollectionPointView(TemplateView):
 					)
 					new.save()
 			else:
-				
+
 				return render(request, self.template_name, {'collector': collector})
 		else:
 			message = MessageForm(request.POST)

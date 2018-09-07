@@ -32,60 +32,6 @@ class PackageCartView(TemplateView):
 		return render(request, self.template_name,
 			{'package_list': Service.objects.filter(user = request.user, paid_key = None).order_by('-created_date')})
 
-#
-# #-----------------------------------------------------------------------------------------
-# '''
-# Create Package
-# '''
-# #-----------------------------------------------------------------------------------------
-# class AddPackageView(FormView):
-# 	form_class = PackageCreationForm
-# 	template_name = 'main/addpackage.html'
-# 	success_url = '/package/add'
-#
-# 	def get_context_data(self, **kwargs):
-# 		data = super().get_context_data(**kwargs)
-# 		data['imageset'] = SnapshotForm()
-# 		data['package_list'] = Service.objects.filter(
-# 			user = self.request.user,
-# 			co_shipping = None,
-# 			paid_key = None).order_by('-id')
-#
-# 		if self.request.POST:
-# 			data['itemset'] = ItemFormset(self.request.POST)
-# 		else:
-# 			data['itemset'] = ItemFormset()
-# 		return data
-#
-# 	def form_valid(self, form):
-# 		context = self.get_context_data()
-# 		items = context['itemset']
-# 		images = context['imageset']
-# 		files = self.request.FILES.getlist('image')
-# 		with transaction.atomic():
-#
-# 			self.object = form.save(commit=False)
-# 			self.object.user = User.objects.get(pk = self.request.user.id)
-# 			self.object.wh_received = Warehouse.objects.get(pk=1)
-# 			self.object.co_shipping = None
-# 			self.object.save()
-#
-#
-# 			if items.is_valid():
-# 				items.instance = self.object
-# 				items.save()
-# # if images.is_valid():
-#
-# 			for f in files:
-# 				newimage = PackageImage(package = self.object, image = f)
-# 				newimage.save()
-#
-# 		return super().form_valid(form)
-#
-#
-
-
-
 
 #-----------------------------------------------------------------------------------------
 '''
@@ -113,22 +59,12 @@ class AddDirectShipping(TemplateView):
 
 	def post(self, request):
 		form = DirectShippingCreationForm(request.POST)
+		form.fields['ship_to_add'].required = True
 		itemset = ItemFormset(request.POST)
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
 			paid_key = None).order_by('-id')
-
-# 		try:
-# #  save default_address from select
-# 			selected_add = Address.objects.get(pk=request.POST['selected_add'])
-# 		except:
-# 			messages.error(request, _('There is some error in your address, please select again!'))
-			# return render(request, self.template_name,
-			# 			{'form': form,
-			# 			'package_list': package_list,
-			# 			'itemset': itemset,
-			# 			})
 
 		if form.is_valid() and itemset.is_valid():
 			files = self.request.FILES.getlist('image')
@@ -151,7 +87,6 @@ class AddDirectShipping(TemplateView):
 			return redirect(reverse('add_direct_shipping'))
 		else:
 
-			messages.error(request, _('Invalid form!'))
 			return render(request, self.template_name,
 						{'form': form,
 						'package_list': package_list,
@@ -194,63 +129,45 @@ class AddCoShipping(TemplateView):
 		except:
 			return redirect(reverse('collection_points'))
 
-
 	def post(self, request, selected_col):
+		col = CollectionPoint.objects.get(pk=selected_col)
 		form = CoShippingCreationForm(request.POST)
+		form.fields['ship_to_col'].required = True
+		itemset = ItemFormset(request.POST)
 		receiverform = CoReceiverForm(request.POST)
-		try:
-			itemset = ItemFormset(request.POST)
-		except:
-			itemset = None
-		try:
-			imageset = ImageForm(request.POST)
-		except:
-			imageset = None
-		files = self.request.FILES.getlist('image')
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = True,
 			paid_key = None).order_by('-id')
 
-		col = CollectionPoint.objects.get(pk=selected_col)
-
-
-		if form.is_valid() and receiverform.is_valid():
-
+		if form.is_valid() and itemset.is_valid() and receiverform.is_valid():
+			files = self.request.FILES.getlist('image')
 			package = form.save(commit = False)
+
 			package.co_shipping = True
-# default warehouse is China
-			package.wh_received = Warehouse.objects.get(pk=1)
 			package.ship_to_col = col
+			package.receiver = receiverform.check()
 			package.user = request.user
 
-
-			receiver = receiverform.save()
-			package.receiver = receiver
 			package.save()
 
-			if itemset != None:
-				if itemset.is_valid():
-					itemset.instance = package
-					itemset.save()
+			itemset.instance = package
+			itemset.save()
 
-# how to make it more secury
+	# how to make it more secury
 			for f in files:
 				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
 			return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
-			messages.error(request, 'Invalid form!')
-
-			return render(request, self.template_name,
-			{'form': form,
-			'receiverform':receiverform,
-			'package_list': package_list,
-			'itemset': itemset,
-			'imageset': imageset,
-			'selected_col': col,
-			})
+			return render(request, self.template_name, {
+													'form': form,
+													'receiverform':receiverform,
+													'package_list': package_list,
+													'itemset': itemset,
+													'selected_col': col,
+													})
 
 
 class PackageDetailView(TemplateView):

@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{{collector.name}}
 {% endblock%}
 
 {% block extrastyle %}
@@ -14,14 +14,25 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
     <div class="w3-panel w3-mobile">
         <div class = "w3-card-4 w3-third w3-mobile" style="max-width:400px;">
           {% if collector.collector_icon%}
-              <img alt="collection point icon" src = "{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
+              <img alt="collection point icon" src="{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
+          {% else %}
+              <img alt="user icon" src="{% static 'image/user_icon.png' %}" style="width:100%; margin:auto;">
           {% endif %}
         </div>
 
         <div class = "w3-third w3-container w3-mobile">
-            <h2>{{collector.name}}</h2>
-            <h4>{% if collector.store %}{% trans 'Store Name' %}: {{collector.store_name}}
-              {% else %}{% trans 'Personal Place' %}{% endif %}
+            <h2>{{collector.name}} ({% if collector.store %}{% trans 'Store Name' %}: {{collector.store_name}}
+              {% else %}{% trans 'Personal Place' %}{% endif %})</h2>
+            <h3>
+              {% if not collector.status %}
+                <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                {% trans 'Not Avaliable!' %}
+              {% else %}
+                <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                {% trans 'Good Service!' %}
+              {% endif %}
+            </h3>
+            <h4>
             </h4>
             <h4>{% trans 'Food Package' %}: {% if collector.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
             <h4>{% trans 'Regular Package' %}: {% if collector.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
@@ -29,8 +40,9 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
           <h5>
             {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
           </h5>
-          {% if user.collectionpoint %}<button type="button" onclick="window.location.href = '{% url 'collector_update'%}'">{% trans 'Update Profile' %}</button>
+          {% if user.collectionpoint %}<button type="button" onclick="window.location.href='{% url 'collector_update'%}'">{% trans 'Update Profile' %}</button>
           {% else %}<button type="button">{% trans 'get direction' %}</button>{% endif %}
+          <button type="button" onclick="window.location.href='{{collector.get_absolute_url.add_co_shipping}}'">{% trans 'ship package' %}</button>
       </div>
       <div class = "w3-card-2 w3-rest w3-container aside-bar-background-color w3-mobile" style="width:350px;">
         <h5>{% trans 'Schedule' %}</h5>
@@ -60,7 +72,7 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
       <form method="post">
         {% csrf_token %}
 
-          <div class="w3-row">
+          <div style="display:block;">
               <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Reviews');">
                 <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black"><h5>{% trans 'Reviews' %}</h5></div>
               </a>
@@ -78,16 +90,16 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
               <div class="w3-card-2 w3-panel" id="review_block_{{review.id}}">
                   <div class="w3-row w3-mobile">
                         <div class="w3-col w3-center" style="width:70px;">
-                          <img alt="user icon" src="{% static 'main/image/user_icon.png' %}" width="60" height="60"><br/>
+                          <img alt="user icon" src="{% static 'image/user_icon.png' %}" width="60" height="60"><br/>
                           {{review.creater.username}}
                         </div>
                         <div class="w3-rest w3-panel">
-                            <div class="w3-row">{{review.review}}</div>
+                            <div class="w3-row">{{review.review|linebreaks}}</div>
                             {% if review.reviewresponse_set.all %}
                                 {% for response in review.reviewresponse_set.all %}
                                 <div class="w3-row w3-container">
                                     <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
-                                    <div class="w3-padding-small">{{response.meaasage}}</div>
+                                    <div class="w3-padding-small">{{response.meaasage|linebreaks}}</div>
                                 </div>
                                 {% endfor %}
                             {% endif %}
@@ -113,16 +125,16 @@ Update Profile | Qycs Global Shipping Inc. | English Official Website
                 <div class="w3-card-2 w3-panel" id="question_block_{{question.id}}">
                   <div class="w3-row w3-mobile">
                       <div class="w3-col w3-center" style="width:70px;">
-                        <img alt="user icon" src="{% static 'main/image/user_icon.png' %}" width="60" height="60"><br/>
+                        <img alt="user icon" src="{% static 'image/user_icon.png' %}" width="60" height="60"><br/>
                         {{question.creater.username}}
                       </div>
                       <div class="w3-rest w3-panel">
-                          <div class="w3-row">{{question.question}}</div>
+                          <div class="w3-row">{{question.question|linebreaks}}</div>
                           {% if question.questionresponse_set.all %}
                               {% for response in question.questionresponse_set.all %}
                               <div class="w3-row w3-container">
                                   <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
-                                  <div class="w3-padding-small">{{response.meaasage}}</div>
+                                  <div class="w3-padding-small">{{response.meaasage|linebreaks}}</div>
                               </div>
                               {% endfor %}
                           {% endif %}

@@ -25,11 +25,11 @@
 			{{ receiverform.phone.label_tag }} {{ receiverform.phone }}
 		</div>
 	</fieldset>
-	<fieldset class="module aligned w3-mobile">
+	<fieldset class="module w3-mobile">
 		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Selected Collection Point' %}</h2>
 		<div class="w3-container">
 			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button><br/>
-
+			{{ form.ship_to_col.errors }}
 			{% include "blocks/col_card_fields.html" with col=selected_col %}
 
 	  </div>

@@ -51,6 +51,7 @@ INFORMATION_SOURCES = (
 
 class User(AbstractUser):
 	email = models.EmailField(blank=False, default='', unique=True, verbose_name = _("Email"))
+	# create_from_web =  models.BooleanField(default = False, verbose_name= _('Created from Qycs Web'))
 	email_confirmed = models.BooleanField(default =False, verbose_name= _('Email Confirmed'))
 	email_confirmed.boolean = True
 
@@ -73,7 +74,7 @@ class User(AbstractUser):
 
 	class Meta(AbstractUser.Meta):
 		verbose_name_plural = _("Users")
-		# unique_together=('email',)
+		# unique_together=('email', 'create_from_web', )
 		ordering = ['-id']
 		# indexes = [
 		#     models.Index(fields=['last_name', 'first_name']),
@@ -199,9 +200,8 @@ class CollectionPoint(Address_Common_Info):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
 
 	def get_absolute_url(self):
-		return dict(collection_point_view=reverse('collection_point_view', args=[str(self.pk)]),
-					add_co_shipping=reverse('add_co_shipping', args=[str(self.pk)])
-					)
+		return reverse('collection_point_view', args=[str(self.pk)])
+
 
 	def status_all(self):
 		if self.absent_start and self.absent_end:
@@ -492,6 +492,8 @@ class Resource(models.Model):
 	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
 	chinese_file = models.FileField(upload_to = 'resource/chinese', blank=True, verbose_name= _('Chinese Version File'))
 
+	def get_absolute_url(self):
+		return reverse('information', args=[str(self.title)])
 
 class Location(models.Model):
 	id = models.PositiveIntegerField(primary_key=True)

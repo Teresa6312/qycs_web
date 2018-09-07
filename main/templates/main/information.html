@@ -1,0 +1,18 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{{empty}}{{information.header}}
+{% endblock%}
+
+{% block content %}
+<div class="w3-panel" style="max-width:800px; margin:auto;" >
+{% if information %}
+  <h2>{{information.header}}</h2>
+  <p>{{information.english_content|linebreaks}}</p>
+{% else %}
+  <h2>{{empty}}</h2>
+    <h3>{% trans 'Thank your for visiting our websit. The information will be post soon!' %}</h3>
+{% endif %}
+</div>
+{% endblock %}

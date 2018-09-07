@@ -2,7 +2,7 @@ from django import forms
 from .models import (
 	User, Address, Service, CollectionPoint, Warehouse,
 	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
-	CARRIER_CHOICE,
+	CARRIER_CHOICE, phone_regex
 	)
 # from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
@@ -15,12 +15,13 @@ from django.forms import formset_factory
 import datetime
 
 year = datetime.datetime.now().year
-years = [i for i in range(year-100,year)]
+birthday_years = [i for i in range(year-100,year)]
+schedule_years = [year, year+1]
 
 class NewUserCreationForm(UserCreationForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
 					empty_label=("Year", "Month", "Day"),
-					years = years))
+					years = birthday_years))
 	class Meta(UserCreationForm.Meta):
 		model = User
 		fields = ('username', 'email', 'first_name', 'last_name',
@@ -39,7 +40,7 @@ class NewUserCreationForm(UserCreationForm):
 class NewUserChangeForm(UserChangeForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
 				empty_label=("Year", "Month", "Day"),
-				years = years))
+				years = birthday_years))
 
 	class Meta:
 		model = User
@@ -55,7 +56,8 @@ class NewUserChangeForm(UserChangeForm):
 				if user.collectionpoint:
 					self.fields['first_name'].widget.attrs['readonly'] = True
 					self.fields['last_name'].widget.attrs['readonly'] = True
-				if user.email_confirmed:
+					self.fields['email'].widget.attrs['readonly'] = True
+				elif user.email_confirmed:
 					self.fields['email'].widget.attrs['readonly'] = True
 			except:
 				pass
@@ -112,6 +114,27 @@ class ColCreationForm(forms.ModelForm):
 					'referrer', 'apply_reason', 'info_source','agreement')
 
 class ColChangeForm(forms.ModelForm):
+	absent_start = forms.DateField(required = False, widget=forms.SelectDateWidget(
+					empty_label=("Year", "Month", "Day"),
+					years = schedule_years))
+	absent_end = forms.DateField(required = False, widget=forms.SelectDateWidget(
+					empty_label=("Year", "Month", "Day"),
+					years = schedule_years))
+	# forms.ChoiceField(label = _("Carrier")
+	# mon_start = forms.TimeField(required = False)
+	# mon_end = forms.TimeField(required = False)
+	# tue_start = forms.TimeField(required = False)
+	# tue_end = forms.TimeField(required = False)
+	# wed_start = forms.TimeField(required = False)
+	# wed_end = forms.TimeField(required = False)
+	# thu_start = forms.TimeField(required = False)
+	# thu_end = forms.TimeField(required = False)
+	# fri_start = forms.TimeField(required = False)
+	# fri_end = forms.TimeField(required = False)
+	# sat_start = forms.TimeField(required = False)
+	# sat_end = forms.TimeField(required = False)
+	# sun_end = forms.TimeField(required = False)
+
 	class Meta:
 		model = CollectionPoint
 		fields = ('collector_icon', 'wechat', 'wechat_qrcode','description',
@@ -158,8 +181,6 @@ class CoShippingCreationForm(forms.ModelForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
-			'ship_to_col',
-			'receiver',
 			'memo',
 			)
 
@@ -196,27 +217,24 @@ class ItemForm(forms.ModelForm):
 	item_name = forms.CharField(label = 'Item Name',
 								widget=forms.TextInput(attrs={
 									'placeholder': 'Please enter your items name as detailed as possible',
-									"class":"w3-input w3-border"
 									}))
 
 	item_detail = forms.CharField( label = 'Item Detail', required=False,
 								widget=forms.TextInput(attrs={'placeholder': 'color/size.etc',
-								"class":"w3-input w3-border"
 								}))
 
 	item_quantity = forms.IntegerField(label = 'quantity',
-								widget=forms.NumberInput(attrs={"class":"w3-input w3-border"}))
+								widget=forms.NumberInput)
 
 	item_url  = forms.URLField(label = 'Item URL', required=False,
 								widget=forms.TextInput(attrs={'placeholder': "https://...",
-																"class":"w3-input w3-border"
-																}))
+								}))
 
 	low_volume_request = forms.BooleanField(required=False, label = "Minimize this item's volume")
 
 	memo = forms.CharField( label = 'Note', required=False,
 							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this item',
-												"class":"w3-input w3-border"}))
+							}))
 
 	class Meta:
 		model = Item
@@ -253,27 +271,29 @@ class SnapshotForm(forms.Form):
 CoReceiver form in Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class CoReceiverForm(forms.ModelForm):
+class CoReceiverForm(forms.Form):
+	first_name = forms.CharField(required = True, label=_('First Name'))
+	last_name = forms.CharField(required = True, label=_('Last Name'))
+	phone = forms.CharField(required = True, label=_('phone'), validators=[phone_regex])
 
-	def save(self, user, commit = True):
-		newreceiver = super(CoReceiverForm, self).save(commit = False)
-		newreceiver.first_name = newreceiver.first_name.title()
-		newreceiver.last_name = newreceiver.last_name.title()
-		if commit:
-			receivers = CoReceiver.objects.filter(
-				first_name = newreceiver.first_name,
-				last_name = newreceiver.last_name,
-				phone = newreceiver.phone,
-			)
-			if receivers.count()>=1:
-				return receivers.first()
-			else:
-				newreceiver.save()
-			return newreceiver
+	def check(self):
+		self.first_name = self.cleaned_data['first_name'].title()
+		self.last_name = self.cleaned_data['last_name'].title()
+		receivers = CoReceiver.objects.filter(
+			first_name = self.first_name,
+			last_name = self.last_name,
+			phone = self.cleaned_data['phone']
+		)
+		if receivers.count()>=1:
+			return receivers.first()
+		else:
+			 new = CoReceiver(first_name = self.first_name,
+								 last_name = self.last_name,
+								 phone = self.cleaned_data['phone'])
+			 new.save()
+			 return new
 
-	class Meta:
-		model = CoReceiver
-		fields = ('first_name', 'last_name', 'phone')
+
 
 
 class EmailForm(forms.Form):

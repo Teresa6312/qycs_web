@@ -38,7 +38,7 @@
 </div>
 {% endif %}
 <div class="w3-container w3-cell w3-mobile w3-card-2">
-  <form method = "post" enctype="multipart/form-data">
+  <form method = "post" enctype="multipart/form-data" id="main_address_form">
   {% csrf_token %}
   {% if addform.errors %}
       <p class="errornote">

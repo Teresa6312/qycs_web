@@ -17,7 +17,7 @@
     <fieldset class="module aligned w3-mobile">
         <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'My Collection Point Profile' %}</h2>
         <div class="form-row">
-        {% if not form.collector_icon == '' %}<div class="w3-row w3-right">{% trans 'Currently' %}: <br/><img alt="collection point icon" src = "{{user.collectionpoint.collector_icon.url}}" style="max-width:200px;"/></div>{% endif %}
+        {% if user.collectionpoint.collector_icon %}<div class="w3-row w3-right">{% trans 'Currently' %}: <br/><img alt="collection point icon" src = "{{user.collectionpoint.collector_icon.url}}" style="max-width:200px;"/></div>{% endif %}
           {{ form.collector_icon.errors }}
           {{ form.collector_icon.label_tag }}
           <input type="file" name="collector_icon" id="id_collector_icon">
@@ -30,7 +30,7 @@
         </div>
         {% endif %}
         <div class="form-row">
-        {% if form.wechat_qrcode == '' %}
+        {% if not user.collectionpoint.wechat_qrcode %}
           {{ form.wechat_qrcode.errors }}
           {{ form.wechat_qrcode.label_tag }} {{ form.wechat_qrcode }}
         {% else %}

@@ -3,9 +3,7 @@ qycs_web/local.py
 db.sqlite3
 .py[cod]
 
-
-# images
-media/
+media/collector_id/
 
 .DS_Store
 bin/
