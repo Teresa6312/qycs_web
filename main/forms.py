@@ -59,6 +59,8 @@ class NewUserChangeForm(UserChangeForm):
 					self.fields['email'].widget.attrs['readonly'] = True
 				elif user.email_confirmed:
 					self.fields['email'].widget.attrs['readonly'] = True
+				if user.birthday:
+					self.fields['birthday'].widget.attrs['readonly'] = True
 			except:
 				pass
 
@@ -181,6 +183,8 @@ class CoShippingCreationForm(forms.ModelForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
+			'receiver',
+			'ship_to_col',
 			'memo',
 			)
 

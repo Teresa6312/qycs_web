@@ -47,8 +47,10 @@
       <div class = "w3-card-2 w3-rest w3-container aside-bar-background-color w3-mobile" style="width:350px;">
         <h5>{% trans 'Schedule' %}</h5>
         {% if collector.absent_start %}
-          {{collector.absent_start}}
-          {{collector.absent_end}}<br/>
+          {% blocktrans %}
+          Not avaliable from {{collector.absent_start|date:"M d, Y"}} to  {{collector.absent_end|date:"M d, Y"}}
+          {% endblocktrans %}
+        <br/>
         {% endif %}
           <div class = "w3-row w3-panel">
             <div class="w3-third">{% trans 'Monday' %}: </div><div class="w3-twothird">{{collector.mon_start}} - {{collector.mon_end}}</div>

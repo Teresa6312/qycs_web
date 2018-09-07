@@ -4,7 +4,6 @@
 // locate you.
 
     var map, infoWindow;
-    let locations = [];
 
     let positions = [];
 

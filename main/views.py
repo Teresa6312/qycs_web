@@ -34,6 +34,7 @@ from django.utils.translation import gettext as _
 from django.db import IntegrityError
 
 from django.db import IntegrityError
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 class HomeView(TemplateView):
@@ -394,24 +395,25 @@ class SetDefaultAddressView(TemplateView):
 
 class CollectionPointView(TemplateView):
 	template_name = 'main/collectionpoints.html'
-	col_list = CollectionPoint.objects.filter(status=True)
+	col_list = (CollectionPoint.objects.filter(status=True).
+					values('pk', 'name', 'store', 'absent_start', 'absent_end', 'food', 'regular', 'skincare', 'address', 'apt', 'city', 'state', 'country', 'zipcode' ))
+	col_json = json.dumps(list(col_list), cls=DjangoJSONEncoder)
 
 	def get(self, request):
-		return render(request, self.template_name, {'col_list': self.col_list,})
+		return render(request, self.template_name, {'col_list': self.col_json,})
 
 	def post(self, request):
+		print(request.POST.get('selected_col'))
 		try:
-			col = CollectionPoint.objects.filter(pk=request.POST.get('selected_col'))
-			if col.status:
+			col = CollectionPoint.objects.get(pk=request.POST.get('selected_col'))
+			if not col.status:
 				messages.error(request, _("The Collection Point you select is not avaliable. Please select another one." ))
-				return render(request, self.template_name, {'col_list': self.col_list,})
+				return render(request, self.template_name, {'col_list': self.col_json,})
 			else:
-				if col.status_all():
-					messages.infor(request, _("The Collection Point is not avaliable from " + col.absent_start + ' to ' + col.absent_end + '.'))
 				return redirect(reverse('add_co_shipping',args = (col.pk,)))
 		except:
 			messages.error(request, _("Your didn't select a Collection Point yet."))
-			return render(request, self.template_name, {'col_list': self.col_list,})
+			return render(request, self.template_name, {'col_list': self.col_json,})
 
 
 

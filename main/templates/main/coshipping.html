@@ -30,6 +30,7 @@
 		<div class="w3-container">
 			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button><br/>
 			{{ form.ship_to_col.errors }}
+			<input type="hidden" id="id_ship_to_col" name="ship_to_col" value="{{selected_col.pk}}">
 			{% include "blocks/col_card_fields.html" with col=selected_col %}
 
 	  </div>

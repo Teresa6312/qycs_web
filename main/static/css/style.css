@@ -76,11 +76,11 @@ body {
 .topnav button{
   background-color: #330033;
 }
-.topnav a:hover {
-  background-color: #E73229;
-  color: black;
+.topnav a:hover, .topnav button:hover{
+  background-color:#E73229;
+  color: white;
+  border-radius: 0px;
 }
-
 .topnav .icon {
   display: none;
 }
@@ -119,11 +119,7 @@ body {
     text-align: left;
 }
 
-.topnav a:hover, .topnav button:hover{
-  background-color:#E73229;
-  color: white;
-  border-radius: 0px;
-}
+
 a.active{
 background-color: #ffcc00;
 color:white;

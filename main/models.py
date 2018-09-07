@@ -51,7 +51,6 @@ INFORMATION_SOURCES = (
 
 class User(AbstractUser):
 	email = models.EmailField(blank=False, default='', unique=True, verbose_name = _("Email"))
-	# create_from_web =  models.BooleanField(default = False, verbose_name= _('Created from Qycs Web'))
 	email_confirmed = models.BooleanField(default =False, verbose_name= _('Email Confirmed'))
 	email_confirmed.boolean = True
 
@@ -74,12 +73,8 @@ class User(AbstractUser):
 
 	class Meta(AbstractUser.Meta):
 		verbose_name_plural = _("Users")
-		# unique_together=('email', 'create_from_web', )
 		ordering = ['-id']
-		# indexes = [
-		#     models.Index(fields=['last_name', 'first_name']),
-		#     models.Index(fields=['first_name'], name='first_name_idx'),
-		# ]
+
 
 
 class Employee(models.Model):

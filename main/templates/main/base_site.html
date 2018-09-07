@@ -27,6 +27,8 @@
       <a href="{% url 'information' 'price_list' %}">{% trans "Price List" %}</a>
       <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
       {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
+      <a href="javascript:void(0);" class="icon" onclick="myMenu()">
+        <i class="fa fa-bars"></i></a>
       <div class="topnav-right">
           {% if user.is_authenticated %}
 
@@ -60,6 +62,7 @@
 
         <a href="{% url 'packagecart' %}">{% trans "Upcoming Packages" %}</a>
     </div>
+
   </div>
 </div>
 

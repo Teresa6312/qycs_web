@@ -132,7 +132,6 @@ class AddCoShipping(TemplateView):
 	def post(self, request, selected_col):
 		col = CollectionPoint.objects.get(pk=selected_col)
 		form = CoShippingCreationForm(request.POST)
-		form.fields['ship_to_col'].required = True
 		itemset = ItemFormset(request.POST)
 		receiverform = CoReceiverForm(request.POST)
 		package_list = Service.objects.filter(
