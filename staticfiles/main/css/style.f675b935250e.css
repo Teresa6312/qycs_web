@@ -73,9 +73,6 @@ body {
   font-size: 17px;
 }
 
-.topnav button{
-  background-color: #330033;
-}
 .topnav a:hover {
   background-color: #E73229;
   color: black;
@@ -183,8 +180,11 @@ color:white;
 .aside-bar-background-color{
   background-color:rgb(249,248,252);
 }
-
-.content-background-color, {
+#add_item_form table{
+  width: 90%;
+  margin: auto;
+}
+.content-background-color, .itemblock{
   background-color:rgb(249,248,252);
   padding: 10px;
 }
@@ -204,7 +204,8 @@ color:white;
 
 
 .add-row{
-  background-color: #330033;
+  background-color: #800080;
+  width: 100%;
   display: block;
   color: #fff;
   padding: 5px 15px 5px 15px;
@@ -216,12 +217,7 @@ color:white;
   margin: 10px;
 }
 
-.contentCSS input[type="text"], .contentCSS input[type="email"], .contentCSS input[type="phone"],  select{
-  min-width: 200px;
-}
-
-
-.w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
+button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
   background-color: #ffcc00;
   color: #4d004d;
   padding: 5px 15px 5px 15px;

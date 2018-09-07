@@ -4,6 +4,16 @@
 // locate you.
 
     var map, infoWindow;
+    let locations = [
+        {"address":'2032 W 10th St, Brooklyn, NY 11223', "id":0},
+        {"address":'60 Bay 41st St, Brooklyn, NY 11214', "id":1},
+        {"address":'LA', "id":2},
+        {"address":'PA', "id":3},
+        {"address":'DE', "id":4},
+        {"address":'NJ', "id":5},
+        {"address":'OR', "id":6},
+        {"address":'CA', "id":7}
+    ];
 
     let positions = [];
 
@@ -17,7 +27,7 @@
 
         var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
-        // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); note: it will shift position of side list
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
 // Bias the SearchBox results towards current map's viewport.
         map.addListener('bounds_changed', function() {
@@ -29,7 +39,7 @@
                     result_points.push(locations.find(obj => obj.id === positions[i].id));
                 }
             }
-            // console.log(result_points);
+            console.log(result_points);
         });
 
 
