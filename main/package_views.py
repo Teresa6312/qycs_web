@@ -17,6 +17,9 @@ from django.urls import reverse
 # used to reverse the url name as a url path
 from django.utils.translation import gettext as _
 
+from django.shortcuts import render
+from paypal.standard.forms import PayPalPaymentsForm
+
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
@@ -29,8 +32,24 @@ class PackageCartView(TemplateView):
 	template_name = 'main/package_cart.html'
 
 	def get(self, request):
+
+		paypal_dict = {
+	        "business": "myqycs@gmail.com",
+	        "amount": "10000000.00",
+	        "item_name": "name of the item",
+	        "invoice": "unique-invoice-id",
+	        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+	        "return": request.build_absolute_uri(reverse('userpackage')),
+	        "cancel_return": request.build_absolute_uri(reverse('packagecart')),
+	        "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
+	    }
+
+		form = PayPalPaymentsForm(initial=paypal_dict)
+
 		return render(request, self.template_name,
-			{'package_list': Service.objects.filter(user = request.user, paid_key = None).order_by('-created_date')})
+			{'package_list': Service.objects.filter(user = request.user, paid_key = None).order_by('-created_date'),
+			'form':form,
+			})
 
 
 #-----------------------------------------------------------------------------------------

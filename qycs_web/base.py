@@ -31,7 +31,7 @@ EMAIL_PORT = 587
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
+PAYPAL_TEST = True
 
 ALLOWED_HOSTS = ['*',]
 
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
     # social media login
     'social_django',
+    'paypal.standard.ipn',
 ]
 
 # for sitemap

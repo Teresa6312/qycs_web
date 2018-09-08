@@ -26,6 +26,7 @@ urlpatterns = [
     path('collection-points/', main_views.CollectionPointView.as_view(), name='collection_points'),
 
     path('auth/', include('social_django.urls', namespace='social')),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 
