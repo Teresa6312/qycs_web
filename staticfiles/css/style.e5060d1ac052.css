@@ -73,11 +73,14 @@ body {
   font-size: 17px;
 }
 
-.topnav a:hover {
-  background-color: #E73229;
-  color: black;
+.topnav button{
+  background-color: #330033;
 }
-
+.topnav a:hover, .topnav button:hover{
+  background-color:#E73229;
+  color: white;
+  border-radius: 0px;
+}
 .topnav .icon {
   display: none;
 }
@@ -116,18 +119,13 @@ body {
     text-align: left;
 }
 
-.topnav a:hover, .topnav button:hover{
-  background-color:#E73229;
-  color: white;
-  border-radius: 0px;
-}
+
 a.active{
 background-color: #ffcc00;
 color:white;
 }
 
 .dropdown-content a:hover, .w3-bar-block a:hover {
-    /*background-color: #ffccff;*/
     background-color:#FFCC00;
     color: black;
 }
@@ -138,7 +136,7 @@ color:white;
 
 
 @media screen and (max-width: 600px) {
-  .topnav a:not(:first-child), .dropdown .dropbtn {
+  .topnav a:not(:first-child), .dropdown .dropbtn, #account_aside_bar{
     display: none;
   }
   .topnav a.icon {
@@ -180,11 +178,8 @@ color:white;
 .aside-bar-background-color{
   background-color:rgb(249,248,252);
 }
-#add_item_form table{
-  width: 90%;
-  margin: auto;
-}
-.content-background-color, .itemblock{
+
+.content-background-color, {
   background-color:rgb(249,248,252);
   padding: 10px;
 }
@@ -204,8 +199,7 @@ color:white;
 
 
 .add-row{
-  background-color: #800080;
-  width: 100%;
+  background-color: #330033;
   display: block;
   color: #fff;
   padding: 5px 15px 5px 15px;
@@ -217,7 +211,12 @@ color:white;
   margin: 10px;
 }
 
-button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
+.contentCSS input[type="text"], .contentCSS input[type="email"], .contentCSS input[type="phone"]{
+  min-width: 200px;
+}
+
+
+.w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
   background-color: #ffcc00;
   color: #4d004d;
   padding: 5px 15px 5px 15px;

@@ -1,8 +1,22 @@
 $(document).ready(function(){
+    $(".icon").click(function(){
+      var mynnav = document.getElementById("myTopnav");
+      if (mynnav.className === "topnav") {
+          mynnav.className += " responsive";
+      } else {
+          mynnav.className = "topnav";
+      }
+    });
+    $('.icon').change(function(){
+      if($(this).prop('display')=="none"){
+        $("#account_nav").removeClass("w3-right");
+      }else{
+        $("#account_nav").addClass("w3-right");
+      }
+    });
     $(".wechat").click(function(){
         $('#id-wechat-modal').show();
     });
-
     $(".email").click(function(){
         $('#id-email-modal').show();
     });
@@ -143,13 +157,4 @@ function createmodal(id){
 
     var container = document.getElementById('container');
     container.appendChild(modal);
-}
-
-function myMenu() {
-    var x = document.getElementById("myTopnav");
-    if (x.className === "topnav") {
-        x.className += " responsive";
-    } else {
-        x.className = "topnav";
-    }
 }

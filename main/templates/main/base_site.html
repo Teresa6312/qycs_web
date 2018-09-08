@@ -29,7 +29,7 @@
       {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
       <a href="javascript:void(0);" class="icon">
         <i class="fa fa-bars"></i></a>
-      <div id="account" class="w3-right">
+      <div id="account_nav" class="w3-right">
           {% if user.is_authenticated %}
 
             <!--Dropdown Click Button-->
