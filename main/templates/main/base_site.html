@@ -20,16 +20,16 @@
 
 {% block nav-global %}
 <div class="w3-bar">
-    <div class="topnav " id="myTopnav">
+    <div class="topnav" id="myTopnav">
       <a href="{% url 'home' %}">{% trans "Home" %}</a>
       <a href="{% url 'add_direct_shipping' %}">{% trans "Direct Shipping" %}</a>
       <a href="{% url 'collection_points' %}">{% trans "Co-Shipping" %}</a>
       <a href="{% url 'information' 'price_list' %}">{% trans "Price List" %}</a>
       <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
       {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
-      <a href="javascript:void(0);" class="icon" onclick="myMenu()">
+      <a href="javascript:void(0);" class="icon">
         <i class="fa fa-bars"></i></a>
-      <div class="topnav-right">
+      <div id="account" class="w3-right">
           {% if user.is_authenticated %}
 
             <!--Dropdown Click Button-->
