@@ -16,7 +16,7 @@ import datetime
 phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', \
 	message=_("Invalid phone number format. Enter as 123-456-0987."))
 
-zip_regex = RegexValidator(regex=r'^(\d{6})*$', message=_("Plese Enter a valid zip code."))
+zip_regex = RegexValidator(regex=r'^[0-9]{2,6}(?:-[0-9]{4})?$|^$', message=_("Plese Enter a valid zip code."))
 
 CARRIER_CHOICE = (
 	('ZT', _('Zhong Tong')),
@@ -103,7 +103,7 @@ class Address_Common_Info(models.Model):
 	city = models.CharField(max_length=100, default='',verbose_name= _('City'))
 	state = models.CharField(max_length=100, default='',verbose_name= _('State/Province'))
 	country = models.CharField(max_length=100, default='',verbose_name=_( 'Country'))
-	zipcode = models.CharField(max_length=5, validators=[zip_regex], default='', verbose_name= _('Zip Code'))
+	zipcode = models.CharField(max_length=12, validators=[zip_regex], default='', verbose_name= _('Zip Code'))
 	memo = models.TextField(blank = True, default='', verbose_name= _('Memo'))
 
 	class Meta:
