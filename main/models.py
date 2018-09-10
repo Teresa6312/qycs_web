@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from decimal import *
 # for ordering
 from django.db.models import F
 
@@ -58,7 +58,7 @@ class User(AbstractUser):
 	default_address = models.ForeignKey('Address', on_delete=models.CASCADE, blank=True, null=True,  related_name='default_address', verbose_name= _('Default Shipping Address'))
 	default_col = models.ForeignKey('CollectionPoint', on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Default Collection Point'))
 
-	reward = models.PositiveIntegerField(default = 0)
+	reward = models.PositiveIntegerField(default = 0, verbose_name= _('Reward Points'))
 	birthday = models.DateField(blank=True, null=True,verbose_name= _('Birthday'))
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name=_('Profile Updated Date'))
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
@@ -271,24 +271,31 @@ class Coupon(models.Model):
 		verbose_name_plural = _("Coupon")
 		ordering = [F('start_date').asc(nulls_last=True)]
 
-class Payment(models.Model):
-	pay_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Paid Date'))
-	transaction_id = models.CharField(max_length = 50, blank = False, default='', unique = True, verbose_name= _('Payment Confirmation'))
+# class Payment(models.Model):
+# 	pay_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Paid Date'))
+# 	transaction_id = models.CharField(max_length = 50, blank = False, default='', unique = True, verbose_name= _('Payment Confirmation'))
+# 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
+# 	reward_point = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
+# 	deposit = models.BooleanField(default=False,verbose_name= _('Deposit'))
+# 	deposit.boolean = True
+#
+# 	amount = models.DecimalField(max_digits=10, decimal_places=2,verbose_name= _('Paid Amount'))
+# 	currency= models.CharField(max_length = 100, choices=CURRENCY_CHOICE, default='',verbose_name= _('Currency'))
+# 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
+#
+# 	def __str__(self):
+# 		return '%f %s'%(self.amount, self.currency)
+#
+# 	class Meta:
+# 		verbose_name_plural = _("Payment")
+# 		ordering = ['pay_date']
+
+class OrderSet(models.Model):
+	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
-	reward_point = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
-	deposit = models.BooleanField(default=False,verbose_name= _('Deposit'))
-	deposit.boolean = True
-
-	amount = models.DecimalField(max_digits=10, decimal_places=2,verbose_name= _('Paid Amount'))
-	currency= models.CharField(max_length = 100, choices=CURRENCY_CHOICE, default='',verbose_name= _('Currency'))
-	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
-
-	def __str__(self):
-		return '%f %s'%(self.amount, self.currency)
-
-	class Meta:
-		verbose_name_plural = _("Payment")
-		ordering = ['pay_date']
+	reward_point_used = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
+	total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name= _('Total Amount'))
+	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 
 
 class ParentPackage(models.Model):
@@ -313,12 +320,23 @@ class ParentPackage(models.Model):
 	def __str__(self):
 		return self.tracking_num
 
+	def ship_to(self):
+		if self.service_set.first().ship_to_add:
+			return self.service_set.first().ship_to_add
+		elif self.service_set.first().ship_to_col:
+			return self.service_set.first().ship_to_col
+		elif self.service_set.first().ship_to_wh:
+			return self.service_set.first().ship_to_wh
+		else:
+			return None
+
 	class Meta:
 		verbose_name_plural = _("Parent Package")
 		ordering = ['created_date']
 
 class Service(models.Model):
 	user = models.ForeignKey(User, on_delete=models.DO_NOTHING , related_name='client_user',verbose_name= _('User'))
+	order_set = models.ForeignKey(OrderSet, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Order Set'))
 
 	order = models.BooleanField(default=False,verbose_name= _('Order'))
 	order.boolean = True
@@ -351,13 +369,16 @@ class Service(models.Model):
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= _('Deposit Amount'))
-	deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= _('Deposit Confirmation'))
+	# deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= _('Deposit Confirmation'))
 
 	storage_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Storage Fee'))
 	shipping_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Shipping Fee'))
+# for order only
+	order_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Order Amount'))
+	# total_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Total Amount')) # need to add service fee
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
-	paid_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING,  blank=True, null=True, related_name='paid_payment_key', verbose_name= _('Payment Confirmation'))
+	# paid_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING,  blank=True, null=True, related_name='paid_payment_key', verbose_name= _('Payment Confirmation'))
 
 # NULL FOR SHIPPING TO COLLECTION POINT
 	ship_to_add = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_personal_location', verbose_name= _("Shipping Address"))
@@ -381,16 +402,26 @@ class Service(models.Model):
 
 	# status = models.CharField(max_length = 20, blank=True, default='', verbose_name= _('Packasge Status'))
 	issue = models.TextField(blank=True, default='', verbose_name= _('Package Issue'))
-	refund_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='refund_payment_key', verbose_name = _('Refund Confirmation'))
+	# refund_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='refund_payment_key', verbose_name = _('Refund Confirmation'))
 	refund_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Refund Amount'))
 
+	def get_total(self):
+		total = 0.0
+		if self.storage_fee:
+			total = total +  float (self.storage_fee)
+		if self.shipping_fee:
+			total = total + float (self.shipping_fee)
+		if self.order_amount:
+			total = total + float (self.order_amount)
+		return total
+
 	def ship_to(self):
-		if self.sevice_set.first().ship_to_add:
-			return self.sevice_set.first().ship_to_add
-		elif self.sevice_set.first().ship_to_col:
-			return obj.sevice_set.first().ship_to_col
-		elif self.sevice_set.first().ship_to_wh:
-			return self.sevice_set.first().ship_to_wh
+		if self.co_shipping:
+			return self.ship_to_col
+		elif self.ship_to_add:
+			return self.ship_to_add
+		elif self.ship_to_wh:
+			return self.ship_to_wh
 		else:
 			return None
 
@@ -438,7 +469,7 @@ class Item(models.Model):
 	item_name = models.CharField(max_length = 200, blank=False, default='', verbose_name = _('Item Name'))
 	item_detail = models.CharField(max_length = 100, blank=True, default='', verbose_name = _('Item Details'))
 	item_quantity = models.PositiveIntegerField(blank=False, default=1, verbose_name = _('quantity'))
-	item_value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default= 0.0, verbose_name = _('Item Value'))
+	item_value = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2, verbose_name = _('Item Value'))
 	currency = models.CharField(max_length = 100, choices=CURRENCY_CHOICE, blank=True, default='', verbose_name = _('Currency'))
 	item_url  = models.CharField(max_length = 1000, blank=True, default='', verbose_name = _('Item URL'))
 	memo = models.TextField(blank=True, default='', verbose_name = _('Memo'))

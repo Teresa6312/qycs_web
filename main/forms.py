@@ -2,7 +2,7 @@ from django import forms
 from .models import (
 	User, Address, Service, CollectionPoint, Warehouse,
 	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
-	CARRIER_CHOICE, phone_regex
+	CARRIER_CHOICE, phone_regex, OrderSet
 	)
 # from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
@@ -305,3 +305,15 @@ class EmailForm(forms.Form):
 	cc = forms.BooleanField(required = False)
 	subject = forms.CharField(required = True)
 	content = forms.CharField(required = True)
+
+class CartForm(forms.Form):
+	package_set = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
+
+	def __init__(self, user, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['package_set'].queryset = Service.objects.filter(user = user, paid_amount = None).order_by('-created_date')
+
+class OrderSetForm(forms.ModelForm):
+	class Meta:
+		model = OrderSet
+		fields = '__all__'

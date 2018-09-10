@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
-	Warehouse, PackageSnapshot, ParentPackage, Item, Payment,
+	Warehouse, PackageSnapshot, ParentPackage, Item,
 	Coupon, FavoriteWebsite, Resource
 )
 from django.utils.html import mark_safe
@@ -49,15 +49,16 @@ class NewUserAdmin(UserAdmin):
 admin.site.register(User, NewUserAdmin)
 
 
-class PaymentAdmin(admin.ModelAdmin):
-	list_display = ['transaction_id', 'pay_date', 'coupon','deposit','amount', 'currency',]
-
-admin.site.register(Payment, PaymentAdmin)
+# class PaymentAdmin(admin.ModelAdmin):
+# 	list_display = ['transaction_id', 'pay_date', 'coupon','deposit','amount', 'currency',]
+#
+# admin.site.register(Payment, PaymentAdmin)
 
 
 
 class AddressAdmin(admin.ModelAdmin):
 	list_display = ('id', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
+	list_editable = ('first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
 	list_filter = ['country', 'state','city']
 	search_fields = ['first_name', 'last_name', ]
 
@@ -235,7 +236,7 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Status', 							{'fields': ['status_all_display']}),
 		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight', 'ready_date']}),
 		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'currency']}),
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'total_amount', 'currency']}),
 		('Shipment', 						{'fields': ['ship_to_add', 'ship_to_col', 'ship_to_wh', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
 		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']})

@@ -50,8 +50,8 @@ SECURE_HSTS_PRELOAD             = True
 
 
 ALLOWED_HOSTS = ['myqycs.com',]
-
-
+DEBUG = False
+PAYPAL_TEST = False
 
 
 

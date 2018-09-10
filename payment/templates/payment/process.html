@@ -1,38 +1,19 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
+{% load mathfilters %}
 
 {% block title%}
-{% trans 'Upcoming Packages' %}
+{% trans 'Home' %}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
-
 {% block content %}
-<form method = "post">
-{% csrf_token %}
-<div class="w3-cell w3-container w3-mobile" style="width:80%;">
-    <div class="w3-card-2 w3-round w3-container">
-
-
-		<h2>Packages Cart</h2>
-
-		<button type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
-		<button type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
-
+<div style="width:60%; margin:auto;">
+    <h4 class="w3-center aside-bar-background-color">{% trans 'Packages' %}</h4>
     <table class="w3-mobile">
-        <thead>
-            <tr><th class="w3-col w3-text-blue" style="width:100px;">
-              <input type="checkbox" id="select_all">&nbsp;{% trans 'Select All' %}
-            </th><th style="width:100%;">{% trans 'Package' %}</th></tr>
-        </thead>
         <tbody>
-      {% if package_list %}
-          {% for package in package_list %}
-              <tr class="w3-cell-row"><td  class="w3-cell" style="width:100px;">
-                <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
-              </td><td class="w3-cell w3-rest">
+      {% if orderSet.service_set.all %}
+          {% for package in orderSet.service_set.all %}
+              <tr class="w3-cell-row"><td class="w3-cell w3-rest">
                 <div class="w3-card-2 w3-round w3-panel package">
                       <div class="w3-third w3-container">
                         <h5 class="cust_tracking_num">{{package.cust_tracking_num}}</h5>
@@ -82,7 +63,7 @@
                         {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
 
                   {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
-                  <button type="button" class="w3-right" onclick="window.location.href='{{package.get_absolute_url}}'">detail</button>
+                  <button type="button" class="w3-right" onclick="window.open('{{package.get_absolute_url}}')">detail</button>
                   </div>
                   </div>
               </td></tr>
@@ -90,25 +71,30 @@
       {% endif %}
       <tbody>
     </table>
-	</div>
+
+
+      <div class="w3-panel w3-right">
+        {% if orderSet.coupon %}
+          <h5 id="discount_block">{{orderSet.coupon.code}}(5% OFF):<span class="w3-right" id="discount_amount">
+            - {{orderSet.currency}}{{orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
+          </span></h5>
+        {% endif %}
+        {% if orderSet.reward_point_used > 0 %}
+          <h5 id="reward_used_block">{{orderSet.reward_point_used}} points:<span class="w3-right" id="reward_discount_amount">
+            - {{orderSet.currency}}{{orderSet.reward_point_used|div:100|floatformat:"2"}}
+          </span></h5>
+        {% endif %}
+        <hr class="w3-border-black"/>
+        <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">
+          {{orderSet.currency}}
+          {% if orderSet.coupon %}
+            {{100|sub:orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
+          {% else %}
+            {{orderSet.total_amount|mul:100|sub:orderSet.reward_point_used|div:100|floatformat:"2"}}
+          {% endif %}
+        </span></div>
+      {{form.render}}
+      </div>
 </div>
 <script src="{% static 'js/package_cart.js' %}"></script>
-{% endblock %}
-
-{% block sidebar %}
-<div class="w3-container w3-cell w3-mobile" style="width:300px">
-    <div class="w3-card-2 w3-round w3-container aside-bar-background-color">
-        <h3>{% trans 'Place Packages' %}:</h3>
-        <div id="selected_list">
-        </div>
-        <hr class="w3-border-grey"/>
-          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
-          <div class="w3-center">OR</div>
-          <div class="w3-row" id="reward_block">{% trans 'Reward Points' %}:<input type="hidden" name="reward_point_used" id="id_reward_point_used"><span class="w3-text-blue w3-right" onclick="apply_reward({{user.reward}})">{% trans 'Apply' %}</span></div>
-        <hr class="w3-border-black"/>
-        <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
-        <input type="submit" value="{% trans 'Submit' %}" class="w3-right">
-    </div>
-</div>
-</form>
 {% endblock %}

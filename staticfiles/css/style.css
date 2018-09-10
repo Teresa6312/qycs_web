@@ -85,6 +85,9 @@ body {
   display: none;
 }
 
+#account_nav{
+  float: right;
+}
 .dropdown {
     float: left;
     overflow: hidden;
@@ -136,12 +139,19 @@ color:white;
 
 
 @media screen and (max-width: 600px) {
-  .topnav a:not(:first-child), .dropdown .dropbtn, #account_aside_bar{
+  .topnav a:not(:first-child), .dropdown .dropbtn {
     display: none;
   }
   .topnav a.icon {
     float: right;
     display: block;
+  }
+  #account_nav{
+    float: left;
+    display: block;
+  }
+  #account_aside_bar{
+    display: none;
   }
 }
 
@@ -165,6 +175,7 @@ color:white;
     text-align: left;
   }
 }
+
 
 /*------------------------ content ------rgb(248,251,254)---------------------*/
 
@@ -295,6 +306,35 @@ margin: 10px;
     border-color: rgb(249,248,252);
     border-style: solid;
     border-width: 2px;
+}
+
+table {
+    width: 100%;
+    display:block;
+}
+thead {
+    display: block;
+    width: 100%;
+    background-color: rgb(249,248,252);
+    border: none;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+}
+thead th{
+  text-align: center;
+  border: none;
+  background-color: rgb(249,248,252);
+}
+tbody {
+    max-height: 500px;
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+}
+tbody td {
+  vertical-align: middle;
+  border: none;
+  position: relative;
 }
 
 /*------------------for footer only---------------------*/

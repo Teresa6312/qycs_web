@@ -27,9 +27,7 @@
       <a href="{% url 'information' 'price_list' %}">{% trans "Price List" %}</a>
       <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
       {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
-      <a href="javascript:void(0);" class="icon">
-        <i class="fa fa-bars"></i></a>
-      <div id="account_nav" class="w3-right">
+      <div id="account_nav">
           {% if user.is_authenticated %}
 
             <!--Dropdown Click Button-->
@@ -62,14 +60,24 @@
 
         <a href="{% url 'packagecart' %}">{% trans "Upcoming Packages" %}</a>
     </div>
-
+    <a href="javascript:void(0);" class="icon" onclick="openMenu()">
+      <i class="fa fa-bars"></i></a>
   </div>
 </div>
 
 {% include "blocks/modal.html" with element='wechat' title='Contact Us' block='wechat_qrcode_block'%}
 {% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
 <script src="{% static 'js/base.js' %}"></script>
-
+<script>
+function openMenu() {
+  var mynnav = document.getElementById("myTopnav");
+  if (mynnav.className === "topnav") {
+      mynnav.className += " responsive";
+  } else {
+      mynnav.className = "topnav";
+  }
+}
+</script>
   {% block script%}
   {% endblock%}
 {% endblock %}

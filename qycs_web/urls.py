@@ -17,6 +17,7 @@ sitemaps = {
 
 urlpatterns = [
     path('', include('main.urls')),
+    path('payment/', include(('payment.urls', 'reviews'), namespace='payment')),
     path('guanjia/', admin.site.urls),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
@@ -26,13 +27,15 @@ urlpatterns = [
     path('collection-points/', main_views.CollectionPointView.as_view(), name='collection_points'),
 
     path('auth/', include('social_django.urls', namespace='social')),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    path('paypal/', include('paypal.standard.ipn.urls')),
+]
 
 
 
 
 
-# if settings.DEBUG:
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 #     # This allows the error pages to be debugged during development, just visit
 #     # these url in browser to see how these error pages look like.
 #     urlpatterns += [

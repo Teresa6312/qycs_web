@@ -1,9 +1,10 @@
 from .models import (
-	Address, Service, CollectionPoint,
-	User, Warehouse, PackageSnapshot
+	Address, Service, CollectionPoint, Coupon,
+	User, Warehouse, PackageSnapshot, OrderSet
 	)
 from .forms import (
-	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm, CoReceiverForm, SnapshotForm
+	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm,
+	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -12,11 +13,15 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from django.http import HttpResponse
 
 from django.urls import reverse
 # used to reverse the url name as a url path
 from django.utils.translation import gettext as _
 
+from django.shortcuts import render
+# from django.core.serializers.json import DjangoJSONEncoder
+#
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
@@ -29,9 +34,47 @@ class PackageCartView(TemplateView):
 	template_name = 'main/package_cart.html'
 
 	def get(self, request):
+		order = OrderSetForm()
+		package_list = Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date')
 		return render(request, self.template_name,
-			{'package_list': Service.objects.filter(user = request.user, paid_key = None).order_by('-created_date')})
+			{'package_list': package_list,
+			'order':order})
 
+	def post(self, request):
+		cart = CartForm(request.user, request.POST)
+		if cart.is_valid():
+			try:
+				coupon = Coupon.objects.get(code = request.POST.get('coupon'))
+			except:
+				coupon = None
+			try:
+				reward = int(request.POST.get('reward_point_used'))
+			except:
+				reward = 0
+
+			orderSet = OrderSet(coupon = coupon, total_amount = 0.0)
+			orderSet.save()
+
+			amount = 0;
+			for pack in cart.cleaned_data['package_set']:
+				package = Service.objects.get(id = pack.id )
+				package.order_set = orderSet
+				package.save()
+				amount = package.get_total() + amount
+			if reward > 0 and coupon:
+				if amount*coupon.discount < reward:
+					orderSet.coupon = None
+					orderSet.reward_point_used = reward
+			elif reward > 0:
+					orderSet.coupon = None
+					orderSet.reward_point_used = reward
+			orderSet.total_amount = amount
+			orderSet.currency = orderSet.service_set.first().currency
+			orderSet.save()
+			request.session['order_set_id'] = orderSet.id
+			return redirect(reverse('payment:process'))
+		else:
+			return redirect(reverse('packagecart'))
 
 #-----------------------------------------------------------------------------------------
 '''
@@ -48,7 +91,7 @@ class AddDirectShipping(TemplateView):
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
-			paid_key = None).order_by('-id')
+			paid_amount = None).order_by('-id')
 
 		return render(request, self.template_name,
 				{'form': form,
@@ -64,7 +107,7 @@ class AddDirectShipping(TemplateView):
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
-			paid_key = None).order_by('-id')
+			paid_amount = None).order_by('-id')
 
 		if form.is_valid() and itemset.is_valid():
 			files = self.request.FILES.getlist('image')
@@ -84,7 +127,10 @@ class AddDirectShipping(TemplateView):
 				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
-			return redirect(reverse('add_direct_shipping'))
+			if "finish" in request.POST:
+				return redirect(reverse('packagecart',args = (selected_col,)))
+			else:
+				return redirect(reverse('add_direct_shipping'))
 		else:
 
 			return render(request, self.template_name,
@@ -114,7 +160,7 @@ class AddCoShipping(TemplateView):
 				package_list = Service.objects.filter(
 					user = request.user,
 					co_shipping = True,
-					paid_key = None).order_by('-id')
+					paid_amount = None).order_by('-id')
 
 				return render(request, self.template_name,
 					{'form': form,
@@ -137,7 +183,7 @@ class AddCoShipping(TemplateView):
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = True,
-			paid_key = None).order_by('-id')
+			paid_amount = None).order_by('-id')
 
 		if form.is_valid() and itemset.is_valid() and receiverform.is_valid():
 			files = self.request.FILES.getlist('image')
@@ -158,7 +204,10 @@ class AddCoShipping(TemplateView):
 				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
-			return redirect(reverse('add_co_shipping',args = (selected_col,)))
+			if "finish" in request.POST:
+				return redirect(reverse('packagecart',args = (selected_col,)))
+			else:
+				return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
 			return render(request, self.template_name, {
 													'form': form,
@@ -179,3 +228,13 @@ class PackageDetailView(TemplateView):
 		except ObjectDoesNotExist:
 			messages.error(request, _("Cannot Find the package"))
 			return render(request,reverse('userpackages'))
+
+
+def couponView(request):
+	if request.POST:
+		code=request.POST.get('coupon','')
+		try:
+			coupon = Coupon.objects.get(code = code)
+			return HttpResponse(coupon.discount)
+		except:
+			return HttpResponse()
