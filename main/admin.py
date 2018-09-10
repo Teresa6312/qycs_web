@@ -223,10 +223,20 @@ class ServiceAdmin(admin.ModelAdmin):
 	list_display = ('user', 'storage', 'order', 'co_shipping','cust_tracking_num', 'wh_received', 'created_date')
 	search_fields = ['cust_tracking_num']
 	list_filter = ['storage', 'order','co_shipping', 'wh_received']
-	readonly_fields = [ "status_all_display"]
+	readonly_fields = [ "status_all_display", "total_amount", ]
 
 	def status_all_display(self, obj):
 		return obj.status_all()
+
+	def total_amount(self, obj):
+		total = 0.0
+		if obj.storage_fee:
+			total = total +  float (obj.storage_fee)
+		if obj.shipping_fee:
+			total = total + float (obj.shipping_fee)
+		if obj.order_amount:
+			total = total + float (obj.order_amount)
+		return total
 
 	fieldsets = [
 		('Order or Customer package', 		{'fields': ['order', 'emp_created']}),
@@ -236,7 +246,7 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Status', 							{'fields': ['status_all_display']}),
 		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight', 'ready_date']}),
 		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'total_amount', 'currency']}),
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount', 'currency']}),
 		('Shipment', 						{'fields': ['ship_to_add', 'ship_to_col', 'ship_to_wh', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
 		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']})
