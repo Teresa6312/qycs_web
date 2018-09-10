@@ -16,7 +16,7 @@ import datetime
 phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', \
 	message=_("Invalid phone number format. Enter as 123-456-0987."))
 
-zip_regex = RegexValidator(regex=r'^(\d{5})*$', message=_("Plese Enter a valid zip code."))
+zip_regex = RegexValidator(regex=r'^(\d{6})*$', message=_("Plese Enter a valid zip code."))
 
 CARRIER_CHOICE = (
 	('ZT', _('Zhong Tong')),
