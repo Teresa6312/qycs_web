@@ -20,10 +20,6 @@ import logging
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_e8s9-lbfhv-')
 
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', '')
@@ -51,10 +47,17 @@ SECURE_HSTS_PRELOAD             = True
 
 ALLOWED_HOSTS = ['myqycs.com',]
 DEBUG = False
+
+# paypal
+PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
 PAYPAL_TEST = False
 
 
-
+EMAIL_HOST  = os.environ.get('SPARKPOST_SMTP_HOST', '')
+EMAIL_PORT = os.environ.get('SPARKPOST_SMTP_PORT', '')
+EMAIL_HOST_USER = os.environ.get('SPARKPOST_SMTP_USERNAME', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SPARKPOST_SMTP_PASSWORD', '')
+EMAIL_USE_TLS = True
 
 
 
