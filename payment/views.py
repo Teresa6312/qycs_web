@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from paypal.standard.forms import PayPalPaymentsForm
 from main.models import OrderSet
-
+from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def payment_done(request):
@@ -19,21 +19,30 @@ def payment_process(request):
     orderSet = get_object_or_404(OrderSet, id = order_set_id)
     host = request.get_host()
     # What you want the button to do.
-    paypal_dict = {
-        "business" : settings.PAYPAL_RECEIVER_EMAIL,
-        "amount": orderSet.total_amount,
-        "currency_code": orderSet.currency,
-        "item_name": "packages",
-        "invoice": orderSet.id,
-        "notify_url": 'http://{}{}'.format(host, reverse('your-return-view')),
-        "return": 'http://{}{}'.format(host, reverse('payment:done')),
-        "cancel_return": 'http://{}{}'.format(host, reverse('payment:canceled')),
-        # "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-        # "return": request.build_absolute_uri(reverse('your-return-view')),
-        # "cancel_return": request.build_absolute_uri(reverse('your-cancel-view')),
-        # "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
-    }
-
+    if orderSet.coupon:
+        paypal_dict = {
+            "business" : settings.PAYPAL_RECEIVER_EMAIL,
+            "amount": orderSet.total_amount,
+            "currency_code": orderSet.currency,
+            "item_name": "{} packages".format(orderSet.service_set.all().count()),
+            "discount_rate": orderSet.coupon.discount,
+            "invoice": orderSet.id,
+            "notify_url": 'http://{}{}'.format(host, reverse('payment:process')),
+            "return": 'http://{}{}'.format(host, reverse('payment:done')),
+            "cancel_return": 'http://{}{}'.format(host, reverse('payment:canceled')),
+        }
+    else:
+        paypal_dict = {
+            "business" : settings.PAYPAL_RECEIVER_EMAIL,
+            "amount": orderSet.total_amount,
+            "currency_code": orderSet.currency,
+            "item_name": "{} packages".format(orderSet.service_set.all().count()),
+            "discount_amount": float(orderSet.reward_point_used)/100,
+            "invoice": orderSet.id,
+            "notify_url": 'http://{}{}'.format(host, reverse('payment:process')),
+            "return": 'http://{}{}'.format(host, reverse('payment:done')),
+            "cancel_return": 'http://{}{}'.format(host, reverse('payment:canceled')),
+        }
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
     return render(request, 'payment/process.html', {'orderSet': orderSet,

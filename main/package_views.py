@@ -1,6 +1,6 @@
 from .models import (
-	Address, Service, CollectionPoint,
-	User, Warehouse, PackageSnapshot
+	Address, Service, CollectionPoint, Coupon,
+	User, Warehouse, PackageSnapshot, OrderSet
 	)
 from .forms import (
 	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm,
@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from django.http import HttpResponse
 
 from django.urls import reverse
 # used to reverse the url name as a url path
@@ -40,14 +41,36 @@ class PackageCartView(TemplateView):
 			'order':order})
 
 	def post(self, request):
-		order = OrderSetForm(request.POST)
 		cart = CartForm(request.user, request.POST)
-		if cart.is_valid() and order.is_valid():
-			orderSet = order.save()
+		if cart.is_valid():
+			try:
+				coupon = Coupon.objects.get(code = request.POST.get('coupon'))
+			except:
+				coupon = None
+			try:
+				reward = int(request.POST.get('reward_point_used'))
+			except:
+				reward = 0
+
+			orderSet = OrderSet(coupon = coupon, total_amount = 0.0)
+			orderSet.save()
+
+			amount = 0;
 			for pack in cart.cleaned_data['package_set']:
 				package = Service.objects.get(id = pack.id )
 				package.order_set = orderSet
 				package.save()
+				amount = package.get_total() + amount
+			if reward > 0 and coupon:
+				if amount*coupon.discount < reward:
+					orderSet.coupon = None
+					orderSet.reward_point_used = reward
+			elif reward > 0:
+					orderSet.coupon = None
+					orderSet.reward_point_used = reward
+			orderSet.total_amount = amount
+			orderSet.currency = orderSet.service_set.first().currency
+			orderSet.save()
 			request.session['order_set_id'] = orderSet.id
 			return redirect(reverse('payment:process'))
 		else:
@@ -205,3 +228,13 @@ class PackageDetailView(TemplateView):
 		except ObjectDoesNotExist:
 			messages.error(request, _("Cannot Find the package"))
 			return render(request,reverse('userpackages'))
+
+
+def couponView(request):
+	if request.POST:
+		code=request.POST.get('coupon','')
+		try:
+			coupon = Coupon.objects.get(code = code)
+			return HttpResponse(coupon.discount)
+		except:
+			return HttpResponse()

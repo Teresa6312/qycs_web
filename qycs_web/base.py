@@ -71,6 +71,9 @@ INSTALLED_APPS = [
 
     # paypal
     'paypal.standard.ipn',
+    
+    # for template calculation
+    'mathfilters',
 ]
 
 # for sitemap

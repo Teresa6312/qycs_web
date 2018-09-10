@@ -5,6 +5,10 @@
 {% trans 'Upcoming Packages' %}
 {% endblock%}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+{% endblock %}
+
 {% block content %}
 <form method = "post">
 {% csrf_token %}
@@ -14,14 +18,14 @@
 
 		<h2>Packages Cart</h2>
 
-		<button type="button" onclick="window.location.href = '{% url 'collection_points' %}'">Add Co-shipping Package</button>
-		<button type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">Add Direct Shipping Package</button>
+		<button type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
+		<button type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
 
     <table class="w3-mobile">
         <thead>
             <tr><th class="w3-col w3-text-blue" style="width:100px;">
-              <input type="checkbox" id="select_all">&nbsp;Select All
-            </th><th style="width:100%;">Package</th></tr>
+              <input type="checkbox" id="select_all">&nbsp;{% trans 'Select All' %}
+            </th><th style="width:100%;">{% trans 'Package' %}</th></tr>
         </thead>
         <tbody>
       {% if package_list %}
@@ -31,18 +35,18 @@
               </td><td class="w3-cell w3-rest">
                 <div class="w3-card-2 w3-round w3-panel package">
                       <div class="w3-third w3-container">
-                        <h5>{{package.cust_tracking_num}}</h5>
+                        <h5 class="cust_tracking_num">{{package.cust_tracking_num}}</h5>
 
                           {{package.cust_carrier}} ({{package.wh_received.country}})<br/>
                           {% if package.created_date %}
-                            Created on: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
+                          {% trans 'Created on' %}: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
                           {% if package.weight %}
                             {{package.weight}}(KG)<br/>{% endif %}
                     </div>
                   <div class="w3-third w3-container">
 
                     {% if package.ship_to_add %}
-                    <h5>Direct Shipping to:</h5>
+                    <h5>{% trans 'Direct Shipping to' %}:</h5>
 
                           {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
                             {{package.ship_to_add.address}}<br/>
@@ -53,7 +57,7 @@
 
 
                     {% elif package.ship_to_col %}
-                    <h5>Co-shipping to:</h5>
+                    <h5>{% trans 'Co-shipping to' %}:</h5>
                           {{package.ship_to_col.name}}<br/>
                               {{package.ship_to_col.address}}<br/>
                               {% if package.ship_to_col.apt %}{{package.ship_to_col.apt}}<br/>{% endif %}
@@ -65,13 +69,19 @@
                   </div>
 
                   <div class="w3-third w3-container">
-                    <h5>Price:</h5>
+                        <h5>Price:</h5>
+                        {% if package.order_amount %}
+                          {% trans 'Order Amount' %}: {{package.currency}} <span id="order_amount_{{ forloop.counter0 }}" class="order_amount">{{package.order_amount}}</span><br/>
+                        {% endif %}
+                        {% if package.storage_fee %}
+                          {% trans 'Storage fee' %}: {{package.currency}} <span id="storage_fee_{{ forloop.counter0 }}" class="storage_fee">{{package.storage_fee}}</span><br/>
+                        {% endif %}
+                        {% if package.shipping_fee %}
+                          {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ forloop.counter0 }}" class="shipping_fee">{{package.shipping_fee}}</span><br/>
+                        {% endif %}
+                        {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
 
-                    {% if package.storage_fee %}
-                      Storage fee: {{package.currency}}<span id="storage_fee_{{ forloop.counter0 }}" class="storage_fee">{{package.storage_fee}}</span><br/>{% endif %}
-                    {% if package.shipping_fee %}
-                      Shipping fee: {{package.currency}}<span id="shipping_fee_{{ forloop.counter0 }}" class="shipping_fee">{{package.shipping_fee}}</span><br/>{% endif %}
-                  {% if package.issue %}<div class="errornote">There are some issue with your packages. Please check package detail.</div>{% endif %}
+                  {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
                   <button type="button" class="w3-right" onclick="window.location.href='{{package.get_absolute_url}}'">detail</button>
                   </div>
                   </div>
@@ -82,54 +92,22 @@
     </table>
 	</div>
 </div>
-<script>
-    $('tbody').find(".package").each(function(){
-      if($(this).find('.storage_fee').length == 0 && $(this).find('.shipping_fee').length == 0){
-        $(this).parents('tr').find('input[type=checkbox]').prop('disabled',true);
-        $(this).parents('tr').find('input[type=checkbox]').prop('title','disabled');
-      }
-    });
-    $(document).ready(function(){
-          $('#select_all').change(function(){
-            if($(this).prop('checked')){
-              $('tbody').find("input[type=checkbox]").each(function(){
-                if(!$(this).prop('disabled')){
-                  $(this).prop('checked', true);
-                }
-              });
-            }else{
-              $('tbody').find("input[type=checkbox]").each(function(){
-                $(this).prop('checked', false);
-              });
-            }
-          });
-          $('input[type=checkbox]').change(function(){
-            var amount = 0.0;
-            $('tbody').find("input[type=checkbox]").each(function(){
-                if($(this).prop('checked')){
-                    var storage_fee = 0.0;
-                    var shipping_fee = 0.0;
-                    if($(this).parents('tr').find('.storage_fee').length>0){
-                      storage_fee = parseFloat($(this).parents('tr').find('.storage_fee').text());
-                    }
-                    if($(this).parents('tr').find('.shipping_fee').length>0){
-                    shipping_fee = parseFloat($(this).parents('tr').find('.shipping_fee').text());
-                    }
-                  amount = amount + storage_fee + shipping_fee;
-                }
-            });
-            $('#id_total_amount').val(amount.toFixed(2));
-          });
-    });
-</script>
+<script src="{% static 'js/package_cart.js' %}"></script>
 {% endblock %}
 
 {% block sidebar %}
 <div class="w3-container w3-cell w3-mobile" style="width:300px">
     <div class="w3-card-2 w3-round w3-container aside-bar-background-color">
-        <h3>Amount:</h3>
-        {{order.as_p}}
-        <input type="submit" value="Pay Now">
+        <h3>{% trans 'Place Packages' %}:</h3>
+        <div id="selected_list">
+        </div>
+        <hr class="w3-border-grey"/>
+          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
+          <div class="w3-center">OR</div>
+          <div class="w3-row" id="reward_block">{% trans 'Reward Points' %}:<input type="hidden" name="reward_point_used" id="id_reward_point_used"><span class="w3-text-blue w3-right" onclick="apply_reward({{user.reward}})">{% trans 'Apply' %}</span></div>
+        <hr class="w3-border-black"/>
+        <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
+        <input type="submit" value="{% trans 'Submit' %}" class="w3-right">
     </div>
 </div>
 </form>

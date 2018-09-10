@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from decimal import *
 # for ordering
 from django.db.models import F
 
@@ -58,7 +58,7 @@ class User(AbstractUser):
 	default_address = models.ForeignKey('Address', on_delete=models.CASCADE, blank=True, null=True,  related_name='default_address', verbose_name= _('Default Shipping Address'))
 	default_col = models.ForeignKey('CollectionPoint', on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Default Collection Point'))
 
-	reward = models.PositiveIntegerField(default = 0)
+	reward = models.PositiveIntegerField(default = 0, verbose_name= _('Reward Points'))
 	birthday = models.DateField(blank=True, null=True,verbose_name= _('Birthday'))
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name=_('Profile Updated Date'))
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
@@ -294,8 +294,8 @@ class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
 	reward_point_used = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
-	total_amount = models.DecimalField(max_digits=10, decimal_places=2,verbose_name= _('Total Amount'))
-	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
+	total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name= _('Total Amount'))
+	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 
 
 class ParentPackage(models.Model):
@@ -373,6 +373,9 @@ class Service(models.Model):
 
 	storage_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Storage Fee'))
 	shipping_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Shipping Fee'))
+# for order only
+	order_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Order Amount'))
+	# total_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Total Amount')) # need to add service fee
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
 	# paid_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING,  blank=True, null=True, related_name='paid_payment_key', verbose_name= _('Payment Confirmation'))
@@ -402,12 +405,25 @@ class Service(models.Model):
 	# refund_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='refund_payment_key', verbose_name = _('Refund Confirmation'))
 	refund_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Refund Amount'))
 
-	def ship_to(self):
-		if not self.co_shipping:
-			return self.ship_to_add
-		else:
-			return self.ship_to_col
+	def get_total(self):
+		total = 0.0
+		if self.storage_fee:
+			total = total +  float (self.storage_fee)
+		if self.shipping_fee:
+			total = total + float (self.shipping_fee)
+		if self.order_amount:
+			total = total + float (self.order_amount)
+		return total
 
+	def ship_to(self):
+		if self.co_shipping:
+			return self.ship_to_col
+		elif self.ship_to_add:
+			return self.ship_to_add
+		elif self.ship_to_wh:
+			return self.ship_to_wh
+		else:
+			return None
 
 	def __str__(self):
 		if self.ship_to():

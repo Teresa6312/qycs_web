@@ -236,7 +236,7 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Status', 							{'fields': ['status_all_display']}),
 		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight', 'ready_date']}),
 		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'currency']}),
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'total_amount', 'currency']}),
 		('Shipment', 						{'fields': ['ship_to_add', 'ship_to_col', 'ship_to_wh', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
 		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']})
