@@ -31,17 +31,26 @@ EMAIL_PORT = 587
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-PAYPAL_TEST = True
+
 
 ALLOWED_HOSTS = ['*',]
 
 
+# paypal
+PAYPAL_RECEIVER_EMAIL = "myqycs@gmail.com"
+PAYPAL_TEST = True
+
+# PAYPAL_PRIVATE_CERT = os.path.join(BASE_DIR, 'paypal_private')
+# PAYPAL_PUBLIC_CERT = os.path.join(BASE_DIR, 'paypal_public')
+# PAYPAL_CERT = os.path.join(BASE_DIR, 'paypal_cert_pem')
+# PAYPAL_CERT_ID = '5TV3LWHF8J6JQ'
 
 # Application definition
 
 INSTALLED_APPS = [
     'main.apps.MainConfig',
     'collector.apps.CollectorConfig',
+    'payment.apps.PaymentConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,6 +68,8 @@ INSTALLED_APPS = [
 
     # social media login
     'social_django',
+
+    # paypal
     'paypal.standard.ipn',
 ]
 

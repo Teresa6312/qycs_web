@@ -1,0 +1,12 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Home' %}
+{% endblock%}
+
+{% block content %}
+<div class="w3-panel">
+{{form.render}}
+</div>
+{% endblock %}

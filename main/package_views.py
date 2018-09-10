@@ -3,7 +3,8 @@ from .models import (
 	User, Warehouse, PackageSnapshot
 	)
 from .forms import (
-	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm, CoReceiverForm, SnapshotForm
+	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm,
+	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -18,8 +19,8 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from django.shortcuts import render
-from paypal.standard.forms import PayPalPaymentsForm
-
+# from django.core.serializers.json import DjangoJSONEncoder
+#
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
@@ -32,25 +33,25 @@ class PackageCartView(TemplateView):
 	template_name = 'main/package_cart.html'
 
 	def get(self, request):
-
-		paypal_dict = {
-	        "business": "myqycs@gmail.com",
-	        "amount": "10000000.00",
-	        "item_name": "name of the item",
-	        "invoice": "unique-invoice-id",
-	        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-	        "return": request.build_absolute_uri(reverse('userpackage')),
-	        "cancel_return": request.build_absolute_uri(reverse('packagecart')),
-	        "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
-	    }
-
-		form = PayPalPaymentsForm(initial=paypal_dict)
-
+		order = OrderSetForm()
+		package_list = Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date')
 		return render(request, self.template_name,
-			{'package_list': Service.objects.filter(user = request.user, paid_key = None).order_by('-created_date'),
-			'form':form,
-			})
+			{'package_list': package_list,
+			'order':order})
 
+	def post(self, request):
+		order = OrderSetForm(request.POST)
+		cart = CartForm(request.user, request.POST)
+		if cart.is_valid() and order.is_valid():
+			orderSet = order.save()
+			for pack in cart.cleaned_data['package_set']:
+				package = Service.objects.get(id = pack.id )
+				package.order_set = orderSet
+				package.save()
+			request.session['order_set_id'] = orderSet.id
+			return redirect(reverse('payment:process'))
+		else:
+			return redirect(reverse('packagecart'))
 
 #-----------------------------------------------------------------------------------------
 '''
@@ -67,7 +68,7 @@ class AddDirectShipping(TemplateView):
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
-			paid_key = None).order_by('-id')
+			paid_amount = None).order_by('-id')
 
 		return render(request, self.template_name,
 				{'form': form,
@@ -83,7 +84,7 @@ class AddDirectShipping(TemplateView):
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = False,
-			paid_key = None).order_by('-id')
+			paid_amount = None).order_by('-id')
 
 		if form.is_valid() and itemset.is_valid():
 			files = self.request.FILES.getlist('image')
@@ -103,7 +104,10 @@ class AddDirectShipping(TemplateView):
 				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
-			return redirect(reverse('add_direct_shipping'))
+			if "finish" in request.POST:
+				return redirect(reverse('packagecart',args = (selected_col,)))
+			else:
+				return redirect(reverse('add_direct_shipping'))
 		else:
 
 			return render(request, self.template_name,
@@ -133,7 +137,7 @@ class AddCoShipping(TemplateView):
 				package_list = Service.objects.filter(
 					user = request.user,
 					co_shipping = True,
-					paid_key = None).order_by('-id')
+					paid_amount = None).order_by('-id')
 
 				return render(request, self.template_name,
 					{'form': form,
@@ -156,7 +160,7 @@ class AddCoShipping(TemplateView):
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = True,
-			paid_key = None).order_by('-id')
+			paid_amount = None).order_by('-id')
 
 		if form.is_valid() and itemset.is_valid() and receiverform.is_valid():
 			files = self.request.FILES.getlist('image')
@@ -177,7 +181,10 @@ class AddCoShipping(TemplateView):
 				newimage = PackageSnapshot(package = package, snapshot = f)
 				newimage.save()
 
-			return redirect(reverse('add_co_shipping',args = (selected_col,)))
+			if "finish" in request.POST:
+				return redirect(reverse('packagecart',args = (selected_col,)))
+			else:
+				return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
 			return render(request, self.template_name, {
 													'form': form,
