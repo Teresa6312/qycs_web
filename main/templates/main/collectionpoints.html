@@ -41,23 +41,17 @@
     </div>
 </div>
 
-<div class="w3-cell-row w3-mobile">
-        <div class="w3-cell w3-container">
-          <input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}">
-          <div id="map" style="width:750px; height:500px;"></div>
-        </div>
-        <!-- {% if col_list %}
-          <div class="w3-cell w3-container content-background-color" style="min-width:400px;">
-            <h5>{% trans 'Select a Collection Point' %}</h5>
-              {% include "blocks/select_collection_point.html" %}
-          </div>
-        {% endif %} -->
+
+<div class="w3-container">
+  <input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}">
+  <div id="map"></div>
 </div>
+
 <br/>
 {% endblock %}
 
 {% block script%}
-<script src="{% static 'js/map.js' %}">let locations = '{{col_list}}';</script>
+<script src="{% static 'js/map.js' %}"></script>
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
 </script>

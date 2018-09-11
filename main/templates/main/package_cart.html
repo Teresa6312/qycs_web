@@ -23,14 +23,14 @@
 
     <table class="w3-mobile">
         <thead>
-            <tr><th class="w3-col w3-text-blue" style="width:100px;">
+            <tr><th class="w3-col w3-text-blue select_column">
               <input type="checkbox" id="select_all">&nbsp;{% trans 'Select All' %}
             </th><th style="width:100%;">{% trans 'Package' %}</th></tr>
         </thead>
         <tbody>
       {% if package_list %}
           {% for package in package_list %}
-              <tr class="w3-cell-row"><td  class="w3-cell" style="width:100px;">
+              <tr class="w3-cell-row"><td  class="w3-cell select_column">
                 <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
               </td><td class="w3-cell w3-rest">
                 <div class="w3-card-2 w3-round w3-panel package">

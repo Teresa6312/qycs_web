@@ -35,7 +35,7 @@
           <form method="post" enctype="multipart/form-data">{% csrf_token %}
                 {% block shippingset %} {% endblock%}
 
-                <fieldset class="module aligned w3-mobile">
+                <fieldset class="module w3-mobile">
                       <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Add Package' %}</h2>
                       <div class="form-row">
                         {{ form.wh_received.errors }}
@@ -93,7 +93,7 @@
 {% endblock %}
 
 {% block sidebar %}
-<div class="w3-container w3-cell w3-mobile w3-rest" style="min-width:400px;">
+<div class="w3-container w3-cell w3-mobile w3-rest sidebar" style="min-width:400px;">
     <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
         <h3>{% trans 'Packages' %}</h3>
             {% if package_list %}

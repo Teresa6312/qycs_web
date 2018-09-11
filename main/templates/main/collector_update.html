@@ -11,13 +11,17 @@
 
 
 {% block content %}
-<form method = "post" enctype="multipart/form-data" class="w3-card-2 w3-round w3-container w3-mobile" style="margin:auto; max-width:600px;">
+<form method = "post" enctype="multipart/form-data" class="w3-card-2 w3-round w3-container w3-mobile" style="margin:auto; max-width:767px;">
   	{% csrf_token %}
     <h3>{% trans 'Update my Collection Point information' %}</h3>
-    <fieldset class="module aligned w3-mobile">
+    <fieldset class="module w3-mobile">
         <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'My Collection Point Profile' %}</h2>
         <div class="form-row">
-        {% if user.collectionpoint.collector_icon %}<div class="w3-row w3-right">{% trans 'Currently' %}: <br/><img alt="collection point icon" src = "{{user.collectionpoint.collector_icon.url}}" style="max-width:200px;"/></div>{% endif %}
+        {% if user.collectionpoint.collector_icon %}
+        <div class="w3-row w3-right w3-mobile">{% trans 'Currently' %}: <br/>
+          <img alt="collection point icon" src = "{{user.collectionpoint.collector_icon.url}}" style="width:200px;"/>
+        </div>
+        {% endif %}
           {{ form.collector_icon.errors }}
           {{ form.collector_icon.label_tag }}
           <input type="file" name="collector_icon" id="id_collector_icon">
@@ -43,7 +47,7 @@
           {{ form.description.label_tag }} {{ form.description }}
         </div>
     </fieldset>
-    <fieldset class="module aligned w3-mobile">
+    <fieldset class="module w3-mobile">
         <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'My Schedule' %}</h2>
         <div class="form-row">
           {{ form.absent_start.errors }}

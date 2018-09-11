@@ -137,7 +137,22 @@ color:white;
     display: block;
 }
 
+#map{
+  width:80%;
+  height:500px;
+}
 
+fieldset label {
+  display: block;
+  padding: 4px 10px 0 0;
+  float: left;
+  width: 160px;
+  word-wrap: break-word;
+  line-height: 1;
+}
+.select_column{
+  width:100px;
+}
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child), .dropdown .dropbtn {
     display: none;
@@ -152,6 +167,21 @@ color:white;
   }
   #account_aside_bar{
     display: none;
+  }
+  #map{
+    width:100%;
+  }
+  .sidebar{
+    display: none;
+  }
+  fieldset label {
+    width: 100px;
+  }
+  fieldset{
+    padding: 0px;
+  }
+  .select_column{
+    width:50px;
   }
 }
 
@@ -184,6 +214,8 @@ color:white;
   border-top: solid 1px #eee;
   border-bottom: solid 1px #eee;
 }
+
+
 
 
 .aside-bar-background-color{
@@ -235,8 +267,7 @@ color:white;
   border-color: #fff;
   border-radius: 4px;
   border-style: outset;
-  /* min-width: 70px; */
-  margin: 10px;
+  margin-top: 10px;
 }
 
 .contentCSS input[readonly], .contentCSS textarea[readonly] {

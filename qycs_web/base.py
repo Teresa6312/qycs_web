@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -68,6 +68,7 @@ INSTALLED_APPS = [
 
     # for template calculation
     'mathfilters',
+
 ]
 
 # for sitemap

@@ -11,8 +11,8 @@
 
 {% block content %}
 <div class="w3-panel w3-mobile">
-    <div class="w3-panel w3-mobile">
-        <div class = "w3-card-4 w3-third w3-mobile" style="max-width:400px;">
+    <div class="w3-panel w3-col-row w3-mobile">
+        <div class = "w3-card-4 w3-third w3-mobile" style="max-width:300px;">
           {% if collector.collector_icon%}
               <img alt="collection point icon" src="{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
           {% else %}
@@ -20,7 +20,7 @@
           {% endif %}
         </div>
 
-        <div class = "w3-third w3-container w3-mobile">
+        <div class = "w3-half w3-container w3-mobile">
             <h2>{{collector.name}} ({% if collector.store %}{% trans 'Store Name' %}: {{collector.store_name}}
               {% else %}{% trans 'Personal Place' %}{% endif %})</h2>
             <h3>
@@ -44,7 +44,7 @@
           {% else %}<button type="button">{% trans 'get direction' %}</button>{% endif %}
           <button type="button" onclick="window.location.href='{{collector.get_absolute_url.add_co_shipping}}'">{% trans 'ship package' %}</button>
       </div>
-      <div class = "w3-card-2 w3-rest w3-container aside-bar-background-color w3-mobile" style="width:350px;">
+      <div class = "w3-card-2 w3-col w3-container aside-bar-background-color w3-mobile w3-right" style="width:220px;">
         <h5>{% trans 'Schedule' %}</h5>
         {% if collector.absent_start %}
           {% blocktrans %}
@@ -52,14 +52,14 @@
           {% endblocktrans %}
         <br/>
         {% endif %}
-          <div class = "w3-row w3-panel">
-            <div class="w3-third">{% trans 'Monday' %}: </div><div class="w3-twothird">{{collector.mon_start}} - {{collector.mon_end}}</div>
-            <div class="w3-third">{% trans 'Tuesday' %}: </div><div class="w3-twothird">{{collector.tue_start}} - {{collector.tue_end}}</div>
-            <div class="w3-third">{% trans 'Wednesday' %}: </div><div class="w3-twothird">{{collector.wed_start}} - {{collector.wed_end}}</div>
-            <div class="w3-third">{% trans 'Thursday' %}: </div><div class="w3-twothird">{{collector.thu_start}} - {{collector.thu_end}}</div>
-            <div class="w3-third">{% trans 'Friday' %}: </div><div class="w3-twothird">{{collector.fri_start}} - {{collector.fri_end}}</div>
-            <div class="w3-third">{% trans 'Saturday' %}: </div><div class="w3-twothird">{{collector.sat_start}} - {{collector.sat_end}}</div>
-            <div class="w3-third">{% trans 'Sunday' %}: </div><div class="w3-twothird">{{collector.sun_start}} - {{collector.sun_end}}</div>
+          <div class = "w3-col-row w3-mobile">
+            <div class="w3-col" style="width:100px;">{% trans 'Monday' %}: </div><div class="w3-rest">{{collector.mon_start}} - {{collector.mon_end}}</div>
+            <div class="w3-col" style="width:100px;">{% trans 'Tuesday' %}: </div><div class="w3-rest">{{collector.tue_start}} - {{collector.tue_end}}</div>
+            <div class="w3-col" style="width:100px;">{% trans 'Wednesday' %}: </div><div class="w3-rest">{{collector.wed_start}} - {{collector.wed_end}}</div>
+            <div class="w3-col" style="width:100px;">{% trans 'Thursday' %}: </div><div class="w3-rest">{{collector.thu_start}} - {{collector.thu_end}}</div>
+            <div class="w3-col" style="width:100px;">{% trans 'Friday' %}: </div><div class="w3-rest">{{collector.fri_start}} - {{collector.fri_end}}</div>
+            <div class="w3-col" style="width:100px;">{% trans 'Saturday' %}: </div><div class="w3-rest">{{collector.sat_start}} - {{collector.sat_end}}</div>
+            <div class="w3-col" style="width:100px;">{% trans 'Sunday' %}: </div><div class="w3-rest">{{collector.sun_start}} - {{collector.sun_end}}</div>
           </div>
       </div>
   </div>

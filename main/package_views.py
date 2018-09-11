@@ -61,11 +61,11 @@ class PackageCartView(TemplateView):
 				package.order_set = orderSet
 				package.save()
 				amount = package.get_total() + amount
-			if reward > 0 and coupon:
+			if 0 < reward/100 <= amount and coupon:
 				if amount*coupon.discount < reward:
 					orderSet.coupon = None
 					orderSet.reward_point_used = reward
-			elif reward > 0:
+			elif 0 < reward/100 <= amount:
 					orderSet.coupon = None
 					orderSet.reward_point_used = reward
 			orderSet.total_amount = amount
