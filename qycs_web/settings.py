@@ -52,6 +52,9 @@ DEBUG = False
 PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
 PAYPAL_TEST = False
 
+# email
+SPARKPOST_API_KEY = os.environ.get('SPARKPOST_API_KEY', '')
+EMAIL_BACKEND = 'sparkpost.django.email_backend.SparkPostEmailBackend'
 
 EMAIL_HOST  = os.environ.get('SPARKPOST_SMTP_HOST', '')
 EMAIL_PORT = os.environ.get('SPARKPOST_SMTP_PORT', '')
