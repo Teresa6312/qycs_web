@@ -93,8 +93,15 @@
             {{orderSet.total_amount|mul:100|sub:orderSet.reward_point_used|div:100|floatformat:"2"}}
           {% endif %}
         </span></div>
+        <br/>
       {{form.render}}
       </div>
 </div>
 <script src="{% static 'js/package_cart.js' %}"></script>
+<script>
+$(document).ready(function(){
+  $('input[type=image]').prop('src','https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif');
+  $('input[type=image]').prop('alt','Pay it now');
+});
+</script>
 {% endblock %}

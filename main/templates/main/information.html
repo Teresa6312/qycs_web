@@ -9,7 +9,7 @@
 <div class="w3-panel" style="max-width:800px; margin:auto;" >
 {% if information %}
   <h2>{{information.header}}</h2>
-  <p>{{information.english_content|linebreaks}}</p>
+  <p>{{information.english_content|linebreaks|safe}}</p>
 {% else %}
   <h2>{{empty}}</h2>
     <h3>{% trans 'Thank your for visiting our websit. The information will be post soon!' %}</h3>

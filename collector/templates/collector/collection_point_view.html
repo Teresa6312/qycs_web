@@ -101,7 +101,7 @@
                                 {% for response in review.reviewresponse_set.all %}
                                 <div class="w3-row w3-container">
                                     <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
-                                    <div class="w3-padding-small">{{response.meaasage|linebreaks}}</div>
+                                    <div class="w3-padding-small">{{response.meaasage|linebreaks|safe}}</div>
                                 </div>
                                 {% endfor %}
                             {% endif %}
@@ -131,7 +131,7 @@
                         {{question.creater.username}}
                       </div>
                       <div class="w3-rest w3-panel">
-                          <div class="w3-row">{{question.question|linebreaks}}</div>
+                          <div class="w3-row">{{question.question|linebreaks|safe}}</div>
                           {% if question.questionresponse_set.all %}
                               {% for response in question.questionresponse_set.all %}
                               <div class="w3-row w3-container">

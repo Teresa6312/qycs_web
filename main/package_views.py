@@ -128,7 +128,7 @@ class AddDirectShipping(TemplateView):
 				newimage.save()
 
 			if "finish" in request.POST:
-				return redirect(reverse('packagecart',args = (selected_col,)))
+				return redirect(reverse('packagecart'))
 			else:
 				return redirect(reverse('add_direct_shipping'))
 		else:
@@ -205,7 +205,7 @@ class AddCoShipping(TemplateView):
 				newimage.save()
 
 			if "finish" in request.POST:
-				return redirect(reverse('packagecart',args = (selected_col,)))
+				return redirect(reverse('packagecart'))
 			else:
 				return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:

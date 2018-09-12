@@ -53,13 +53,13 @@ PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
 PAYPAL_TEST = False
 
 # email
-SPARKPOST_API_KEY = os.environ.get('SPARKPOST_API_KEY', '')
-EMAIL_BACKEND = 'sparkpost.django.email_backend.SparkPostEmailBackend'
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', '')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST  = os.environ.get('SPARKPOST_SMTP_HOST', '')
-EMAIL_PORT = os.environ.get('SPARKPOST_SMTP_PORT', '')
-EMAIL_HOST_USER = os.environ.get('SPARKPOST_SMTP_USERNAME', '')
-EMAIL_HOST_PASSWORD = os.environ.get('SPARKPOST_SMTP_PASSWORD', '')
+EMAIL_HOST  = os.environ.get('SENDGRID_SMTP_HOST', '')
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 EMAIL_USE_TLS = True
 
 

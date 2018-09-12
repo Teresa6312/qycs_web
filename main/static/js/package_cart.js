@@ -92,8 +92,8 @@ function apply_coupon(csrf, url){
         }
     }
 }// end of apply coupon
-
 $(document).ready(function(){
+  $('input[type=image]').prop('src','https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif');
   //  for select all checkbox
       $('#select_all').change(function(){
         if($(this).prop('checked')){
