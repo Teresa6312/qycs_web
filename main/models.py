@@ -271,25 +271,6 @@ class Coupon(models.Model):
 		verbose_name_plural = _("Coupon")
 		ordering = [F('start_date').asc(nulls_last=True)]
 
-# class Payment(models.Model):
-# 	pay_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Paid Date'))
-# 	transaction_id = models.CharField(max_length = 50, blank = False, default='', unique = True, verbose_name= _('Payment Confirmation'))
-# 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
-# 	reward_point = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
-# 	deposit = models.BooleanField(default=False,verbose_name= _('Deposit'))
-# 	deposit.boolean = True
-#
-# 	amount = models.DecimalField(max_digits=10, decimal_places=2,verbose_name= _('Paid Amount'))
-# 	currency= models.CharField(max_length = 100, choices=CURRENCY_CHOICE, default='',verbose_name= _('Currency'))
-# 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
-#
-# 	def __str__(self):
-# 		return '%f %s'%(self.amount, self.currency)
-#
-# 	class Meta:
-# 		verbose_name_plural = _("Payment")
-# 		ordering = ['pay_date']
-
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
