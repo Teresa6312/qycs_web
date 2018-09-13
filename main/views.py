@@ -14,7 +14,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
 
-from django.contrib.auth import update_session_auth_hash, authenticate, login
+from django.contrib.auth import update_session_auth_hash, authenticate, login, logout
 from django.urls import reverse
 # used to reverse the url name as a url path
 
@@ -43,6 +43,9 @@ class HomeView(TemplateView):
 	def get(self, request):
 		return render(request, self.template_name)
 
+def logout_view(request):
+	logout(request)
+	return redirect(reverse('home'))
 
 class RegisterView(TemplateView):
 	template_name = 'main/register.html'
@@ -345,7 +348,7 @@ class EditAddressView(TemplateView):
 		add = Address.objects.get(pk=add_id)
 
 # never update an address that has been shipped with package(s)
-		if Service.objects.filter(ship_to_add=add).count()<1:
+		if Service.objects.filter(ship_to_add=add).count()==0:
 			# just update the addresss
 			addform = AddressForm(request.POST, instance = add)
 		else:
@@ -357,7 +360,7 @@ class EditAddressView(TemplateView):
 			updateaddress.user = request.user
 
 # when create a new address for update, neet to reset the old one's user to be null
-			if addform.instance == None:
+			if addform.instance:
 				add.user = None
 				add.save()
 
@@ -376,7 +379,7 @@ class DeleteAddressView(TemplateView):
 		add.save()
 
 		if add == request.user.default_address:
-			user = User.objects.get(user = request.user)
+			user = User.objects.get(pk = request.user.pk)
 			user.default_address = None
 			user.save()
 		return redirect(reverse('useraddress'))
@@ -386,7 +389,7 @@ class SetDefaultAddressView(TemplateView):
 
 	def get(self, request, add_id):
 		add = Address.objects.get(pk=add_id)
-		user = User.objects.get(user = request.user)
+		user = User.objects.get(pk = request.user.pk)
 		user.default_address = add
 		user.save()
 		return redirect(reverse('useraddress'))

@@ -26,17 +26,17 @@
             <h3>
               {% if not collector.status %}
                 <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
-                {% trans 'Not Avaliable!' %}
+                {% trans 'Closed!' %}
               {% else %}
                 <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
-                {% trans 'Good Service!' %}
+                {% trans 'Open!' %}
               {% endif %}
             </h3>
             <h4>
             </h4>
             <h4>{% trans 'Food Package' %}: {% if collector.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
             <h4>{% trans 'Regular Package' %}: {% if collector.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
-            <h4>{% trans 'Luxury Package' %}: {% if collector.luxury %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
+            <h4>{% trans 'Skincare Package' %}: {% if collector.skincare %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
           <h5>
             {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
           </h5>
@@ -66,7 +66,7 @@
     <hr>
     <div class="w3-panel w3-cell-row">
       <div class="w3-col" style="width:100px;">
-      {% trans 'Instruction' %}
+      {% trans 'Introduction' %}
       </div>
       <div class="w3-rest">{{collector.description}}</div>
     </div>

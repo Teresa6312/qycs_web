@@ -58,9 +58,11 @@ class PackageCartView(TemplateView):
 			amount = 0;
 			for pack in cart.cleaned_data['package_set']:
 				package = Service.objects.get(id = pack.id )
-				package.order_set = orderSet
-				package.save()
-				amount = package.get_total() + amount
+				if package.get_total()>0:
+					package.order_set = orderSet
+					package.save()
+					amount = package.get_total() + amount
+
 			if 0 < reward/100 <= amount and coupon:
 				if amount*coupon.discount < reward:
 					orderSet.coupon = None

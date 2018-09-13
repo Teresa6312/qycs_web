@@ -14,7 +14,7 @@ from django.core.validators import RegexValidator
 import datetime
 
 phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', \
-	message=_("Invalid phone number format. Enter as 123-456-0987."))
+	message=_("Invalid phone number format. Enter as 1-123-456-7890."))
 
 zip_regex = RegexValidator(regex=r'^[0-9]{2,6}(?:-[0-9]{4})?$|^$', message=_("Plese Enter a valid zip code."))
 
@@ -62,7 +62,7 @@ class User(AbstractUser):
 	birthday = models.DateField(blank=True, null=True,verbose_name= _('Birthday'))
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name=_('Profile Updated Date'))
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
-	language = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Prefer Language'))
+	language = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Preferred Language'))
 
 
 	def __str__(self):
@@ -149,7 +149,7 @@ class CollectionPoint(Address_Common_Info):
 	store.boolean = True
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
-	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat Name'))
+	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
 	wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
@@ -228,7 +228,7 @@ class CoReceiver(models.Model):
 class Warehouse(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Warehouse Updated Date'))
 	name = models.CharField(max_length=100, unique=True, default='',verbose_name= _('Warehouse Name'))
-	status = models.BooleanField(default = False,verbose_name= _('Avaliable'))
+	status = models.BooleanField(default = False,verbose_name= _('Available'))
 	status.boolean = True
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
@@ -454,7 +454,7 @@ class Service(models.Model):
 		elif self.paid_key:
 			return _('Package has been paid, and it is being prepared to ship out from Warehouse')
 		elif self.ready_date:
-			return _('Package is ready to paid.')
+			return _('Package is ready to pay.')
 		elif self.wh_received_date:
 			return _('Package arrived the Warehouse.')
 		else:
@@ -501,10 +501,10 @@ class PackageSnapshot(models.Model):
 class FavoriteWebsite(models.Model):
 
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
-	web_type = models.CharField(max_length = 50, choices = WEB_CATEGORY, blank=True, default='',verbose_name = _('Websit Category'))
-	web_name = models.CharField(max_length = 100, blank=True, default='', verbose_name = _('Websit Name'))
-	web_url = models.URLField (max_length = 1000, blank=True, default='', verbose_name = _('Websit url'))
-	rate = models.PositiveIntegerField(default=1, verbose_name = _('Rate'))
+	web_type = models.CharField(max_length = 50, choices = WEB_CATEGORY, blank=True, default='',verbose_name = _('Website Category'))
+	web_name = models.CharField(max_length = 100, blank=True, default='', verbose_name = _('Website Name'))
+	web_url = models.URLField (max_length = 1000, blank=True, default='', verbose_name = _('Website url'))
+	rate = models.PositiveIntegerField(default=1, verbose_name = _('Rating'))
 
 	class Meta:
 		verbose_name_plural = _("Favorite Website")
@@ -526,4 +526,4 @@ class Location(models.Model):
 	city = models.CharField(max_length=100, blank=True, default='',verbose_name= _('City'))
 	state = models.CharField(max_length=100, blank=True, default='',verbose_name= _('State/Province'))
 	country = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country'))
-	country_sortname = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country Sortname'))
+	country_shortname = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country Shortname'))

@@ -31,7 +31,8 @@ urlpatterns = [
 
 # login_required
 
-    path('accounts/logout/', login_required(auth_views.LogoutView.as_view(template_name='main/logout.html')), name = 'logout'),
+    path('myaccount/logout/', login_required(views.logout_view), name = 'logout'),
+
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
     path('myaccount/send-Confirmation-email/', login_required(views.sendConfirmationEmail), name="send_confirmation_email"),
     path('myaccount/profile/update', login_required(views.UpdateProfileView.as_view()), name='updateprofile'),
