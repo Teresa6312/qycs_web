@@ -28,15 +28,16 @@
 {% block footer %}{% endblock %}
 
 {% block content %}
-    <div class="w3-panel w3-center">
+    <div class="w3-padding-32 w3-center">
+      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" class="large_image"/></a>
     </div>
 
     <div id="content-main" class="w3-container">
         {% if user.is_authenticated %}
           <p class="errornote">
+            {{user.username}},&nbsp;
             {% blocktrans trimmed %}
-                You are authenticated as {{ username }}, but are not authorized to
-                access this page. Would you like to login to a different account?
+                you are not authorized to access this page. Would you like to login to a different account?
             {% endblocktrans %}
           </p>
         {% endif %}
@@ -57,6 +58,15 @@
             </p>
             {% endfor %}
         {% endif %}
+
+        <!-- <div class="socmed-login">
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
+            <i class="fa fa-google"></i>
+            <span>Sign Up with Google</span>
+            </a>
+            <br class="clear"/>
+        </div>
+        <div class="w3-center">OR</div> -->
 
         <form id="regForm" method="post">
             {% csrf_token %}
@@ -127,12 +137,12 @@
             </div>
 
 
-            <div class="w3-row w3-right">
-                <button type="button" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
+            <div class="w3-row w3-center">
+                <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
+                <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
                 <span id="submit_block">
-                  <button type = "submit" name="register" value ="Register">{% trans "Register" %}</button>
-                  <button type="submit" name="colregister" value="colregister">{% trans "Register as Collector" %}</button>
+                  <button class="logo-blue" type = "submit" name="register" value ="Register">{% trans "Register" %}</button>
+                  <button class="logo-red" type="submit" name="colregister" value="colregister">{% trans "Register as Collector" %}</button>
                 </span>
             </div>
 

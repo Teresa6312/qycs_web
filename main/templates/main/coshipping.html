@@ -7,8 +7,7 @@
 {% endblock%}
 
 {% block shippingset %}
-	<h2>{% trans 'Co-shipping' %}</h2>
-	<fieldset class="module aligned w3-mobile">
+	<div class="w3-mobile">
 		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Confirm the Receiver Information' %}</h2>
 		<button type="button" id="follow_user_infor">{% trans 'Follow User Information' %}</button>
 		<button type="button" id="use_last_infor">{% trans 'Use the last Receiver Information' %}</button>
@@ -24,8 +23,8 @@
 			{{ receiverform.phone.errors }}
 			{{ receiverform.phone.label_tag }} {{ receiverform.phone }}
 		</div>
-	</fieldset>
-	<fieldset class="module w3-mobile">
+	</div>
+	<div class="w3-mobile">
 		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Selected Collection Point' %}</h2>
 		<div class="w3-container">
 			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button><br/>
@@ -34,7 +33,7 @@
 			{% include "blocks/col_card_fields.html" with col=selected_col %}
 
 	  </div>
-	</fieldset>
+	</div>
 
 {% endblock %}
 

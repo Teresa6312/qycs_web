@@ -34,9 +34,9 @@ $(document).ready(function(){
       }
     });
     // $('container').find('input').each(function(){
-    //   if($(this).readonly){
-    //     $(this).addClass('w3-light-gray');
-    //       console.log($(this).id);
+    //   if($(this).prop('required')){
+    //     $(this).after('<span class="logo-text-red">*</span>')
+    //     console.log($(this).prop('name'));
     //   }
     // });
     $(".cleanBtn").click(function(){

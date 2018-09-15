@@ -7,20 +7,11 @@
     {% trans 'Add Package' %}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
-
-
 {% block messages %}
 {% endblock messages %}
 
 {% block content %}
-<div class="w3-cell w3-container w3-mobile" style="max-width:500px; width:81%;">
-
-    <div class="w3-container w3-round w3-border w3-mobile">
-
-
+<div class="w3-container w3-round w3-mobile" style="width:80%; margin:auto;">
       {% if messages %}
       <ul class="messagelist">{% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
@@ -33,10 +24,33 @@
       {% endif %}
 
           <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {% if form.no_rush_request %}
+            <div class="text-xlarge-bold">{% trans 'Direct Shipping' %}</div>
+            {% else %}
+            <div class="text-xlarge-bold">{% trans 'Co-hipping' %}</div>
+            {% endif %}
+          <div class="w3-cell-row">
+            <div class="w3-cell w3-container" style="width:50%;">
                 {% block shippingset %} {% endblock%}
 
-                <fieldset class="module w3-mobile">
-                      <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Add Package' %}</h2>
+                <div class="form-row">
+                    <div class="checkbox-row">
+                      {{ form.low_volume_request.errors }}
+                      {{ form.low_volume_request }}{{ form.low_volume_request.label_tag }}
+                    </div>
+                </div>
+                {% if form.no_rush_request %}
+                  <div class="form-row">
+                    <div class="checkbox-row">
+                      {{ form.no_rush_request.errors }}
+                      {{ form.no_rush_request }}{{ form.no_rush_request.label_tag }}
+                    </div>
+                  </div>
+                {% endif %}
+            </div>
+            <div class="w3-cell w3-container" style="width:50%;">
+                <div class="w3-mobile">
+                      <h5 class="logo-text-blue w3-light-grey text-large">{% trans 'Ship from' %}</h5>
                       <div class="form-row">
                         {{ form.wh_received.errors }}
                         {{ form.wh_received.label_tag }} {{ form.wh_received }}
@@ -54,31 +68,20 @@
                         {{ form.memo.errors }}
                         {{ form.memo.label_tag }} {{ form.memo }}
                       </div>
-                      <div class="form-row">
-                          <div class="checkbox-row">
-                            {{ form.low_volume_request.errors }}
-                            {{ form.low_volume_request.label_tag }}{{ form.low_volume_request }}
-                          </div>
-                      </div>
-                      {% if form.no_rush_request %}
-                        <div class="form-row">
-                          <div class="checkbox-row">
-                            {{ form.no_rush_request.errors }}
-                            {{ form.no_rush_request.label_tag }}{{ form.no_rush_request }}
-                          </div>
-                        </div>
-                      {% endif %}
-                </fieldset>
+
+                </div>
+              </div>
+            </div>
                 {{ itemset.management_form }}
                 <!-- {% include "blocks/fieldset.html" with fieldset=itemset title='Item Deatil' %} -->
 
-                <div id="add_item_btn_row" class="w3-center w3-panel w3-mobile">
-                  <button type="button" class="w3-third" id="add_snapshot_btn" onclick="AddSnapshotBlock()">{% trans 'Add Snapshot' %}</button>
-                    <div  class="w3-quarter">Or</div>
-                  <button type="button" class="w3-third" id="add_item_btn" onclick="createItemsetBlock()">{% trans "Add Items' Detail" %}</button>
+                <div id="add_item_btn_row" class="w3-center w3-cell-row">
+                  <button type="button" class="w3-twothird logo-red" id="add_snapshot_btn" onclick="AddSnapshotBlock()">{% trans 'Add Snapshot' %}</button>
+                  <div class="w3-cell w3-cell-middle">OR</div>
+                  <button type="button" class="w3-twothird w3-right logo-blue" id="add_item_btn" onclick="createItemsetBlock()">{% trans "Add Items' Detail" %}</button>
                 </div>
-
-                <div id="sub_btn_block" class="submit-row">
+<br/>
+                <div id="sub_btn_block" class="w3-panel submit-row">
                     {% block extrabtn %}
                     {% endblock %}
                     <button type="button" onclick="clearForm(this)">{% trans 'Clear Form' %}</button>
@@ -88,36 +91,11 @@
                 </div>
             </form>
     </div>
-</div>
+
 
 {% endblock %}
 
-{% block sidebar %}
-<div class="w3-container w3-cell w3-mobile w3-rest sidebar" style="min-width:400px;">
-    <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
-        <h3>{% trans 'Packages' %}</h3>
-            {% if package_list %}
-                {% for package in package_list %}
-                <div class="w3-panel">
-                    <h4 onclick="window.location.href='{{package.get_absolute_url}}'">{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
-                    {% if package.co_shipping %}
-                        {% trans 'Co-shipping to' %}: {{package.ship_to_col.name}}<br/>
-                        {{package.receiver.last_name}},{{package.receiver.first_name}}({{package.receiver.phone}})<br/>
-                    {% elif not package.co_shipping %}
-                        Direct Shipping to: {{package.ship_to_add}}<br/>
-                    {% endif %}
-                    {% if package.packagesnapshot_set.all %}{% trans 'Inserted' %} {{ package.packagesnapshot_set.count}} {% trans 'package snapshots' %}<br/>{% endif %}
-                    {% if package.item_set.all %}{% trans 'Entered' %} {{ package.item_set.count}} {% trans "Items' detail" %}<br/>{% endif %}
-                </div>
-                {% endfor %}
-            {% else %}
-                <p>{% if package.co_shipping %}{% trans 'No co-shipping packages in cart.' %}
-                  {% else %}{% trans 'No direct shipping packages in cart.' %}{% endif %}
-                </p>
-            {% endif %}
-    </div>
-</div>
-{% endblock %}
+
 
 
 {% block script%}

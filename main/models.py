@@ -278,6 +278,22 @@ class OrderSet(models.Model):
 	total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 
+	def get_should_pay_amount(self):
+		total_amount = 0
+		for package in self.service_set.all:
+			total_amount = total_amount + package.get_total()
+
+		return total_amount
+	#
+	# def check_currency(self):
+	# 	i = 0
+	# 	currency = 'USD'
+	# 	for package in self.service_set.all:
+	# 		if i == 0 and :
+	# 		total_amount = total_amount + package.get_total()
+	#
+	# 	return total_amount
+
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -349,6 +365,10 @@ class Service(models.Model):
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
+	ship_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Customer's Package's Carrier"))
+
+
+
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= _('Deposit Amount'))
 	# deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= _('Deposit Confirmation'))
 

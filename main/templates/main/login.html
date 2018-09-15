@@ -42,15 +42,16 @@
 {% endif %}
 
 <div id="content-main" class="w3-container">
-    <div class="w3-panel w3-center">
+    <div class="w3-padding-32 w3-center">
+      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" class="large_image"/></a>
     </div>
 
     {% if user.is_authenticated %}
     <p class="errornote">
-    {% blocktrans trimmed %}
-        You are authenticated as {{ user.username }}, but are not authorized to
-        access this page. Would you like to login to a different account?
-    {% endblocktrans %}
+      {{user.username}},&nbsp;
+      {% blocktrans trimmed %}
+          you are not authorized to access this page. Would you like to login to a different account?
+      {% endblocktrans %}
     </p>
     {% endif %}
 
@@ -71,17 +72,16 @@
       <input type="checkbox" name="rememberme" id="rememberme"/>Remember me
   </div>
   <div class="w3-center">
-    <input type="submit" value="{% trans 'Log in' %}" />
-    <button type="button" onclick="window.location.href = '{% url 'register'%}'">Sign Up</button>
+    <input class="logo-red"  type="submit" value="{% trans 'Log in' %}" />
   </div>
 </form>
-<div class="w3-center">OR</center>
-<div class="socmed-login">
-    <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
-    <i class="fa fa-google"></i>
-    <span>Login with Google</span>
-    </a>
-    <br class="clear"/>
-</div>
+<div class="w3-center">OR
+    <div class="socmed-login">
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
+        <i class="fa fa-google"></i>
+        <span>Login with Google</span>
+        </a>
+        <br class="clear"/>
+    </div>
 </div>
 {% endblock %}

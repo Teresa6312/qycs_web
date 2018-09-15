@@ -1,12 +1,13 @@
-{% extends "main/account.html" %}
+{% extends "main/base_site.html" %}
 
 {% load i18n static %}
 
 {% block title%}
-{% trans 'Packages History' %}
+{{user.username}}{% trans "'s Packasge History'" %}
 {% endblock%}
 
-{% block account_content %}
+{% block content %}
+<div class="w3-panel">
 	<h2>Packages History</h2>
 
 	<button type="button" onclick="window.location.href = '{% url 'collection_points' %}'">Add Co-shipping Package</button>
@@ -71,5 +72,5 @@
 	{% endfor %}
 
 </div>
-	<br/><br/>
+</div>
 {% endblock %}

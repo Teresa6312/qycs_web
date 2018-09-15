@@ -2,32 +2,13 @@
 {% load i18n static %}
 
 {% block title%}
-{% trans 'User Profile' %}
+{{user.username}}{% trans "'s Profile'" %}
 {% endblock%}
 
-{% block messages %}
-{% endblock messages %}
+
 
 {% block content %}
-<div class="w3-cell-row">
-	<div id="account_aside_bar" class="w3-cell aside-bar-background-color w3-mobile " style="width:20%;">
-		<div class="w3-bar-block">
-		    <a class="w3-bar-item w3-text-black" href="{% url 'account' %}">{% trans 'User Profile' %}</a>
-		    <a class="w3-bar-item w3-text-black" href="{% url 'useraddress' %}">{% trans 'Address Book' %}</a>
-		    <a class="w3-bar-item w3-text-black" href="{% url 'userpackage' %}">{% trans 'Packages History' %}</a>
-		    <a class="w3-bar-item w3-text-black" href="{% url 'userwallet' %}">{% trans 'Wallet' %}</a>
-		    <a class="w3-bar-item w3-text-black" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
-		</div>
-	</div>
-	<div class="w3-cell w3-rest w3-container w3-mobile">
-
-		{% if messages %}
-		<ul class="messagelist">{% for message in messages %}
-			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-		{% endfor %}</ul>
-		{% endif %}
-
-			{% block account_content%}
+<div class="w3-panel">
 
 					<h2>{{user.username}}
 					{% if user.collectionpoint %}
@@ -75,7 +56,5 @@
 					<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">{% trans 'Change Password' %}</button>
 
 
-			{% endblock %}
-	</div>
 </div>
 {% endblock %}

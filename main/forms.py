@@ -150,10 +150,28 @@ class ColChangeForm(forms.ModelForm):
 Create new Package
 '''
 #-----------------------------------------------------------------------------------------
-class PackageCreationForm(forms.ModelForm):
-	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True))
-	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE)
-	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True)
+
+class PackageCommonForm(forms.ModelForm):
+	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True),
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
+	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE,
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
+	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True,
+									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	memo = forms.CharField(label = 'Note', required=False,
+							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs with this package"),
+												"class":"w3-input w3-border",
+												"rows":5
+												}))
+	low_volume_request = forms.BooleanField(label = _("Minimize your package's volume"), required=False)
+
+	class Meta:
+		abstract = True
+
+class PackageCreationForm(PackageCommonForm):
 
 	class Meta:
 		model = Service
@@ -171,11 +189,8 @@ class PackageCreationForm(forms.ModelForm):
 Create new Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class CoShippingCreationForm(forms.ModelForm):
-	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True))
-	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE)
-	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True)
-
+class CoShippingCreationForm(PackageCommonForm):
+	no_rush_request = forms.BooleanField(label = _("No Rush Shipping (Double Points)"), required=False)
 	class Meta:
 		model = Service
 		fields = (
@@ -195,10 +210,7 @@ class CoShippingCreationForm(forms.ModelForm):
 Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class DirectShippingCreationForm(forms.ModelForm):
-	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True))
-	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE)
-	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True)
+class DirectShippingCreationForm(PackageCommonForm):
 
 	class Meta:
 		model = Service

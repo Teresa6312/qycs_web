@@ -135,8 +135,8 @@ TEMPLATES = [
 INSTALLED_APPS += ['gunicorn', ]
 
 
-
-
+# paypal buy now button image
+PAYPAL_BUY_BUTTON_IMAGE = 'https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif'
 
 
 # login settings

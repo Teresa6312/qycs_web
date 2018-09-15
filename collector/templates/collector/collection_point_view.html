@@ -46,12 +46,14 @@
       </div>
       <div class = "w3-card-2 w3-col w3-container aside-bar-background-color w3-mobile w3-right" style="width:220px;">
         <h5>{% trans 'Schedule' %}</h5>
+
         {% if collector.absent_start %}
-          {% blocktrans %}
-          Not avaliable from {{collector.absent_start|date:"M d, Y"}} to  {{collector.absent_end|date:"M d, Y"}}
-          {% endblocktrans %}
-        <br/>
+        <div class="w3-row w3-text-red">
+          <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:15px;"/>
+          {% trans 'Not avaliable from' %} {{collector.absent_start|date:"M d, Y"}} - {{collector.absent_end|date:"M d, Y"}}.
+        </div>
         {% endif %}
+
           <div class = "w3-col-row w3-mobile">
             <div class="w3-col" style="width:100px;">{% trans 'Monday' %}: </div><div class="w3-rest">{{collector.mon_start}} - {{collector.mon_end}}</div>
             <div class="w3-col" style="width:100px;">{% trans 'Tuesday' %}: </div><div class="w3-rest">{{collector.tue_start}} - {{collector.tue_end}}</div>

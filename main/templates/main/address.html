@@ -1,15 +1,16 @@
-{% extends "main/account.html" %}
+{% extends "main/base_site.html" %}
 {% load i18n static %}
 
 {% block title%}
-{% trans 'User Address Book' %}
+{{user.username}}{% trans "'s Address Book'" %}
 {% endblock%}
 
 {% block extrastyle %}
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 {% endblock %}
 
-{% block account_content %}
+{% block content %}
+<div class="w3-panel">
 {% if user.address_set.all %}
 <div id="address_book_block" class="w3-container w3-cell w3-mobile w3-card-2" style="overflow:auto;">
     <h2>{% trans 'Address Book' %}</h2>
@@ -197,7 +198,7 @@
 }
 </style>
 
-</div>
+</div></div>
 {% endblock %}
 
 {% block sidebar %}
