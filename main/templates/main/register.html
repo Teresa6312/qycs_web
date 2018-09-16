@@ -2,10 +2,8 @@
 {% load i18n static %}
 
 {% block extrastyle %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
-{{ form.media }}
-    <link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}" />
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
 {% endblock %}
 
 
@@ -70,7 +68,7 @@
 
         <form id="regForm" method="post">
             {% csrf_token %}
-            <h3>{% trans "Create My Qycs Account" %}</h3>
+            <div class="text-large">{% trans "Create My Qycs Account" %}</div>
 
             <!-- One "tab" for each step in the form: -->
             <div class="tab">
@@ -116,7 +114,7 @@
               </div>
             </div>
             <div class="tab WebFormSet">
-              <p>
+              <p class="w3-text-blue">
                 {% blocktrans %}
                     In order to provide the best service to you and other customers,
                     please enter 3 of your favorite shopping websites below!
@@ -124,14 +122,16 @@
               </p>
               {{ webformset.management_form }}
               {% for subform in webformset%}
-                  <div class="form-row">
-                    {{ subform.web_type.errors }}
-                    {{ subform.web_type.label_tag }}
-                    <div class="w3-row">{{ subform.web_type }}</div>
-                  </div>
-                  <div class="form-row">
-                    {{ subform.web_name.errors }}
-                    {{ subform.web_name.label_tag }} {{ subform.web_name }}
+                  <div class="form-row w3-row">
+                    <div class="w3-third">
+                      {{ subform.web_type.errors }}
+                      {{ subform.web_type.label_tag }}
+                      {{ subform.web_type }}
+                    </div>
+                    <div class="w3-rest">
+                      {{ subform.web_name.errors }}
+                      {{ subform.web_name.label_tag }} {{ subform.web_name }}
+                    </div>
                   </div>
               {% endfor %}
             </div>

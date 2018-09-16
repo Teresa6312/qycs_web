@@ -7,10 +7,6 @@
 {% endblock%}
 
 {% block shippingset %}
-<div class="w3-mobile">
-	<h5 class="logo-text-blue w3-light-grey text-large">{% trans 'Ship to' %}</h5>
 	{{form.ship_to_add.errors}}
 	{% include "blocks/address_block_all.html" with add_field_name='ship_to_add' %}
-</div>
-
 {% endblock %}

@@ -79,7 +79,8 @@ function validateForm() {
   }
   if (currentTab==0) {
     var email = document.getElementById('id_email')
-    if(!validateEmail(email.value)){
+
+    if(email.value!=null && !validateEmail(email.value)){
       valid = false;
     }
   }
@@ -90,7 +91,8 @@ function validateForm() {
     }
   }
   if (valid) {
-    document.getElementsByClassName("step")[currentTab].className += " finish";
+    document.getElementsByClassName("step")
+    [currentTab].className += " finish";
   }
   return valid; // return the valid status
 }

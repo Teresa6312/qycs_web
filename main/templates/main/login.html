@@ -2,10 +2,7 @@
 {% load i18n static %}
 
 {% block extrastyle %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
-{{ form.media }}
-    <link rel="stylesheet" href="{% static 'css/social_login.css'%}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}" />
 {% endblock %}
 
 {% block title%}
@@ -55,27 +52,27 @@
     </p>
     {% endif %}
 
-<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-  <div class="form-row">
-    {{ form.username.errors }}
-    {{ form.username.label_tag }} {{ form.username }}
-  </div>
-  <div class="form-row">
-    {{ form.password.errors }}
-    {{ form.password.label_tag }} {{ form.password }}
-    <input type="hidden" name="next" value="{{ next }}" />
-  </div>
-  <div class="w3-right">
-      <a class="w3-text-blue" href="{% url 'password_reset'%}">Forgot Password?</a>
-  </div>
-  <div>
-      <input type="checkbox" name="rememberme" id="rememberme"/>Remember me
-  </div>
-  <div class="w3-center">
-    <input class="logo-red"  type="submit" value="{% trans 'Log in' %}" />
-  </div>
-</form>
-<div class="w3-center">OR
+    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+      <div class="form-row">
+        {{ form.username.errors }}
+        {{ form.username.label_tag }} {{ form.username }}
+      </div>
+      <div class="form-row">
+        {{ form.password.errors }}
+        {{ form.password.label_tag }} {{ form.password }}
+        <input type="hidden" name="next" value="{{ next }}" />
+      </div>
+      <div class="w3-right">
+          <a class="w3-text-blue" href="{% url 'password_reset'%}">Forgot Password?</a>
+      </div>
+      <div>
+          <input type="checkbox" name="rememberme" id="rememberme"/>Remember me
+      </div>
+      <div class="w3-center">
+        <input class="logo-red"  type="submit" value="{% trans 'Log in' %}" />
+      </div>
+    </form>
+    <div class="w3-center">OR</div>
     <div class="socmed-login">
         <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
         <i class="fa fa-google"></i>
@@ -84,4 +81,5 @@
         <br class="clear"/>
     </div>
 </div>
+
 {% endblock %}

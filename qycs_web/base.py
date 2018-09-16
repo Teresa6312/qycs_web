@@ -254,7 +254,7 @@ LOGIN_REDIRECT_URL = '/myaccount/'
 ugettext = lambda s: s
 LANGUAGES = (
     ('en-us', _('English')),
-    ('zh', _('Chinese')),
+    ('zh-Hans', _('Simplified Chinese')),
 )
 
 LOCALE_PATHS = [

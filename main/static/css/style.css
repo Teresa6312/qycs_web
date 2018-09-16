@@ -46,23 +46,30 @@ body {
   font-weight: bold;
 }
 .text-large{
-  font-size: 1.5vw;
+  font-size: 1.7vw;
 }
 .text-large-bold{
-  font-size: 1.5vw;
+  font-size: 1.7vw;
   font-weight: bold;
 }
 .text-medium{
-  font-size: 1.2vw;
+  font-size: 1.5vw;
 }
 .text-medium-bold{
-  font-size: 1.2vw;
+  font-size: 1.5vw;
   font-weight: bold;
 }
 .text-regular{
   font-size: 1vw;
 }
 .text-regular-bold{
+  font-size: 1vw;
+  font-weight: bold;
+}
+.text-small{
+  font-size: 1vw;
+}
+.text-small-bold{
   font-size: 1vw;
   font-weight: bold;
 }
@@ -88,7 +95,6 @@ text-italic-bold{
   text-align: center;
   text-decoration: none;
   margin-left: 1vw;
-  font-size: 1.2vw;
   color: grey;
   font-weight: bold;
 }
@@ -107,7 +113,7 @@ text-italic-bold{
 }
 
 .dropdown .dropbtn {
-    font-size: 1.2vw;
+    font-size: 1vw;
     font-weight: bold;
     background-color:#fff;
     color: grey;
@@ -209,30 +215,58 @@ text-italic-bold{
 
 .w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
   color: #fff;
-  padding: 1vw 3.5vw;
-  border-radius: 6px;
+  padding: 0.4vw 3vw;
+  border-radius: 4px;
   border: none;
   margin: 0.5vw 0.5vw;
-  font: 1vw arial;
 }
 
 .contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover{
   opacity: 0.8;
   cursor:pointer;
 }
-
-
+.add-row{
+  background-color: #121A50;
+  color: #fff;
+  padding: 0.7vw 3vw;
+  border-radius: 4px;
+  border: none;
+  margin: 0.5vw 0.5vw;
+  width: 20vw;
+  float: right;
+  text-align:center;
+}
+.w3-modal .close-modal{
+  font-size: 2.5vw;
+  color: black;
+  padding: 0;
+  border: none;
+  margin: 0;
+  background-color: Transparent;
+}
+.contentCSS input[type="checkbox"]{
+  width: 1vw;
+  vertical-align: middle;
+}
+.contentCSS input, .contentCSS select, .contentCSS textarea{
+  padding: 0.2vw;
+  margin: 0.2vw 0.2vw 0.2vw 0;
+}
 .large_image{
   max-width: 45%;
   height: auto;
 }
+
 
 #map{
   width:80%;
   height:500px;
 }
 
-
+hr{
+  margin-top: 0;
+  margin-bottom: 0.5vw;
+}
 /*------------------for footer only---------------------*/
 
 #footer{
@@ -338,4 +372,110 @@ text-italic-bold{
       width: 100%;
       text-align: left;
     }
+  }
+
+
+  /* MESSAGES & ERRORS */
+  ul.messagelist {
+      padding: 0;
+      margin: 0;
+  }
+
+  ul.messagelist li {
+      display: block;
+      font-weight: 400;
+      font-size: 13px;
+      padding: 10px 10px 10px 65px;
+      margin: 0 0 10px 0;
+      background: #dfd url(admin/img/icon-yes.svg) 40px 12px no-repeat;
+      background-size: 16px auto;
+      color: #333;
+  }
+
+  ul.messagelist li.warning {
+      background: #ffc url(admin/img/icon-alert.svg) 40px 14px no-repeat;
+      background-size: 14px auto;
+  }
+
+  ul.messagelist li.error {
+      background: #ffefef url(admin/img/icon-no.svg) 40px 12px no-repeat;
+      background-size: 16px auto;
+  }
+
+  .errornote {
+      font-size: 14px;
+      font-weight: 700;
+      display: block;
+      padding: 10px 12px;
+      margin: 0 0 10px 0;
+      color: #ba2121;
+      border: 1px solid #ba2121;
+      border-radius: 4px;
+      background-color: #fff;
+      background-position: 5px 12px;
+  }
+
+  ul.errorlist {
+      margin: 0 0 4px;
+      padding: 0;
+      color: #ba2121;
+      background: #fff;
+  }
+
+  ul.errorlist li {
+      font-size: 13px;
+      display: block;
+      margin-bottom: 4px;
+  }
+
+  ul.errorlist li:first-child {
+      margin-top: 0;
+  }
+
+  ul.errorlist li a {
+      color: inherit;
+      text-decoration: underline;
+  }
+
+  td ul.errorlist {
+      margin: 0;
+      padding: 0;
+  }
+
+  td ul.errorlist li {
+      margin: 0;
+  }
+
+  .form-row.errors {
+      margin: 0;
+      border: none;
+      border-bottom: 1px solid #eee;
+      background: none;
+  }
+
+  .form-row.errors ul.errorlist li {
+      padding-left: 0;
+  }
+
+  .errors input, .errors select, .errors textarea {
+      border: 1px solid #ba2121;
+  }
+
+  div.system-message {
+      background: #ffc;
+      margin: 10px;
+      padding: 6px 8px;
+      font-size: .8em;
+  }
+
+  div.system-message p.system-message-title {
+      padding: 4px 5px 4px 25px;
+      margin: 0;
+      color: #c11;
+      background: #ffefef url(admin/img/icon-no.svg) 5px 5px no-repeat;
+  }
+
+  .description {
+      font-size: 12px;
+      padding: 5px 0 0 12px;
   }

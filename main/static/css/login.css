@@ -1,3 +1,25 @@
+#container {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 30vw;
+    margin: 5vw auto;
+    font-size: 1.2vw;
+}
+
+/* Style the input fields */
+input, textarea{
+  padding: 0.5vw;
+  width: 100%;
+  margin: 0;
+}
+
+select{
+  padding: 0.5vw;
+  margin: 0
+}
+
 /* SOCIAL MEDIA LOGIN */
 .socmed-login .socmed-btn {
     padding: 10px 25px;

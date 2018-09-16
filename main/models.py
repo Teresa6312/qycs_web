@@ -365,7 +365,7 @@ class Service(models.Model):
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
-	ship_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Customer's Package's Carrier"))
+	ship_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
 
 
 
@@ -502,7 +502,7 @@ class PackageSnapshot(models.Model):
 class FavoriteWebsite(models.Model):
 
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
-	web_type = models.CharField(max_length = 50, choices = WEB_CATEGORY, blank=True, default='',verbose_name = _('Website Category'))
+	web_type = models.CharField(max_length = 50, choices = WEB_CATEGORY, blank=True, default='',verbose_name = _('Category'))
 	web_name = models.CharField(max_length = 100, blank=True, default='', verbose_name = _('Website Name'))
 	web_url = models.URLField (max_length = 1000, blank=True, default='', verbose_name = _('Website url'))
 	rate = models.PositiveIntegerField(default=1, verbose_name = _('Rating'))

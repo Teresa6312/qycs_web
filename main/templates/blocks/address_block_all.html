@@ -18,7 +18,9 @@
 		{% elif user.default_address %}
 				{% include "blocks/default_address_card.html" with add=user.default_address %}
 		{% endif%}
-		<div class="w3-row"><button type="button" class="logo-red" id="remove_default_add_btn" style="display:none;">{% trans 'Remove Default Address' %}</button></div>
+		{% if add_field_name == 'default_address' %}
+				<div class="w3-row"><button type="button" class="logo-red" id="remove_default_add_btn" style="display:none;">{% trans 'Remove Default Address' %}</button></div>
+		{% endif %}
 </div>
 
 

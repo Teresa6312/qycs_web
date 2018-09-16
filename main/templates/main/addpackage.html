@@ -10,87 +10,114 @@
 {% block messages %}
 {% endblock messages %}
 
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
+{% endblock %}
+
+
 {% block content %}
-<div class="w3-container w3-round w3-mobile" style="width:80%; margin:auto;">
-      {% if messages %}
-      <ul class="messagelist">{% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-      {% endfor %}</ul>
-      {% endif %}
-      {% if form.errors or receiverform.errors %}
-          <p class="errornote">
-          {% trans "Please correct the error(s) below." %}
-          </p>
-      {% endif %}
 
-          <form method="post" enctype="multipart/form-data">{% csrf_token %}
-            {% if form.no_rush_request %}
-            <div class="text-xlarge-bold">{% trans 'Direct Shipping' %}</div>
-            {% else %}
-            <div class="text-xlarge-bold">{% trans 'Co-hipping' %}</div>
+{% if form.no_rush_request %}
+<div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Direct Shipping' %}</div>
+  {% else %}
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Co-hipping' %}</div>
+  {% endif %}
+</div>
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="tab">
+          <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
+            {% if messages %}
+            <ul class="messagelist">{% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+            {% endfor %}</ul>
             {% endif %}
-          <div class="w3-cell-row">
-            <div class="w3-cell w3-container" style="width:50%;">
-                {% block shippingset %} {% endblock%}
+            {% if form.errors or receiverform.errors %}
+                <p class="errornote">
+                {% trans "Please correct the error(s) below." %}
+                </p>
+            {% endif %}
 
-                <div class="form-row">
-                    <div class="checkbox-row">
-                      {{ form.low_volume_request.errors }}
-                      {{ form.low_volume_request }}{{ form.low_volume_request.label_tag }}
-                    </div>
-                </div>
-                {% if form.no_rush_request %}
-                  <div class="form-row">
-                    <div class="checkbox-row">
-                      {{ form.no_rush_request.errors }}
-                      {{ form.no_rush_request }}{{ form.no_rush_request.label_tag }}
+              <div class="w3-cell w3-container" style="width:50%;">
+                <div class="text-medium">{% trans 'Ship to' %}</div>
+              </div>
+              <div class="w3-cell w3-container" style="width:50%;">
+                <div class="text-medium">{% trans 'Ship from' %}</div>
+              </div>
+          </div>
+          <hr/>
+          <div class="w3-container w3-mobile" style="width:80%; margin:auto;">
+                <div class="w3-cell-row">
+                  <div class="w3-cell w3-container" style="width:50%;">
+                      {% if form.no_rush_request %}
+                        <div class="form-row">
+                            {{ form.ship_carrier.errors }}
+                            {{ form.ship_carrier.label_tag }}{{ form.ship_carrier }}
+                        </div>
+                        <div class="form-row">
+                            {{ form.no_rush_request.errors }}
+                            {{ form.no_rush_request }}&emsp;{{ form.no_rush_request.label_tag }}
+                        </div>
+                      {% endif %}
+                      <div class="form-row">
+                            {{ form.low_volume_request.errors }}
+                            {{ form.low_volume_request }}&emsp;{{ form.low_volume_request.label_tag }}
+                      </div>
+                      {% block shippingset %} {% endblock%}
+                  </div>
+                  <div class="w3-cell w3-container" style="width:50%;">
+                        <div class="form-row">
+                          {{ form.wh_received.errors }}
+                          {{ form.wh_received.label_tag }} {{ form.wh_received }}
+                        </div>
+                        <div class="form-row">
+                          {{ form.cust_carrier.errors }}
+                          {{ form.cust_carrier.label_tag }} {{ form.cust_carrier }}
+                        </div>
+                        <div class="form-row">
+                          {{ form.cust_tracking_num.errors }}
+                          {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num }}
+                        </div>
+
+                        <div class="form-row">
+                          {{ form.memo.errors }}
+                          {{ form.memo.label_tag }} {{ form.memo }}
+                        </div>
                     </div>
                   </div>
-                {% endif %}
-            </div>
-            <div class="w3-cell w3-container" style="width:50%;">
-                <div class="w3-mobile">
-                      <h5 class="logo-text-blue w3-light-grey text-large">{% trans 'Ship from' %}</h5>
-                      <div class="form-row">
-                        {{ form.wh_received.errors }}
-                        {{ form.wh_received.label_tag }} {{ form.wh_received }}
-                      </div>
-                      <div class="form-row">
-                        {{ form.cust_carrier.errors }}
-                        {{ form.cust_carrier.label_tag }} {{ form.cust_carrier }}
-                      </div>
-                      <div class="form-row">
-                        {{ form.cust_tracking_num.errors }}
-                        {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num }}
-                      </div>
+          </div>
+      </div>
+      <div class="tab">
 
-                      <div class="form-row">
-                        {{ form.memo.errors }}
-                        {{ form.memo.label_tag }} {{ form.memo }}
-                      </div>
+                    {{ itemset.management_form }}
 
-                </div>
-              </div>
-            </div>
-                {{ itemset.management_form }}
-                <!-- {% include "blocks/fieldset.html" with fieldset=itemset title='Item Deatil' %} -->
-
-                <div id="add_item_btn_row" class="w3-center w3-cell-row">
-                  <button type="button" class="w3-twothird logo-red" id="add_snapshot_btn" onclick="AddSnapshotBlock()">{% trans 'Add Snapshot' %}</button>
+                <div id="add_item_btn_row" class="w3-container w3-center w3-cell-row">
+                  <button type="button" class="w3-half logo-red" id="add_snapshot_btn" onclick="AddSnapshotBlock()">{% trans 'Add Snapshot' %}</button>
                   <div class="w3-cell w3-cell-middle">OR</div>
-                  <button type="button" class="w3-twothird w3-right logo-blue" id="add_item_btn" onclick="createItemsetBlock()">{% trans "Add Items' Detail" %}</button>
+                  <button type="button" class="w3-half w3-right logo-blue" id="add_item_btn" onclick="createItemsetBlock()">{% trans "Add Items' Detail" %}</button>
                 </div>
-<br/>
-                <div id="sub_btn_block" class="w3-panel submit-row">
-                    {% block extrabtn %}
-                    {% endblock %}
-                    <button type="button" onclick="clearForm(this)">{% trans 'Clear Form' %}</button>
-                    <input type="submit" name="next" value="{% trans 'Save and add new package' %}" />
-                    <input type="submit" name="finish" value="{% trans 'Submit' %}"/>
+        <div style="width:70%; margin:auto;" id="item_information_block">
+        </div>
 
-                </div>
-            </form>
     </div>
+    <div class="w3-row" style="width:70%; margin:auto">
+      <div class="w3-right">
+        <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
+        <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
+        <span id="submit_block">
+          {% block extrabtn %}
+          {% endblock %}
+          <button class="logo-red" type="button" onclick="clearForm(this)">{% trans 'Clear Form' %}</button>
+          <input class="logo-blue" type="submit" name="next" value="{% trans 'Save and add new package' %}" />
+          <input class="logo-red" type="submit" name="finish" value="{% trans 'Submit' %}"/>
+        </span>
+      </div>
+    </div>
+
+</form>
+
 
 
 {% endblock %}
@@ -99,6 +126,7 @@
 
 
 {% block script%}
+<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
 <script src="{% static 'js/jquery.formset.js' %}"></script>
 <script src="{% static 'js/packageset.js' %}"></script>
 <script>

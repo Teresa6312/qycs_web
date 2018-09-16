@@ -10,7 +10,9 @@ function createItemsetBlock() {
   itemsetblock.setAttribute("class", "w3-container w3-mobile");
   itemsetblock.setAttribute("id", "add_item_form");
 
-  var itemsetheader = document.createElement("h3");
+  var itemsetheader = document.createElement("div");
+  itemsetheader.setAttribute("class", "text-large");
+
   itemsetheader.innerHTML="Add details of each item in the package:"
   itemsetblock.appendChild(itemsetheader)
 
@@ -19,7 +21,8 @@ function createItemsetBlock() {
   itemblock.setAttribute("class", "w3-card-2 itemblock w3-panel w3-mobile");
 
 
-  var ihblock = document.createElement("h3");
+  var ihblock = document.createElement("div");
+  ihblock.setAttribute("class", "text-large");
   ihblock.setAttribute("class", "item_header w3-container");
   ihblock.innerHTML = 'Item Detail: ';
   itemblock.appendChild(ihblock);
@@ -114,7 +117,7 @@ function createItemsetBlock() {
   itemsetblock.appendChild(item_table);
 
   if($('#add_item_form').length==0){
-      $('#sub_btn_block').before(itemsetblock);
+      $('#item_information_block').append(itemsetblock);
       $('#add_item_form').hide().slideDown(300);
       $('#add_item_btn').text("Delect all Items");
   }//end if #add_snapshot_form exists
@@ -142,7 +145,8 @@ function AddSnapshotBlock(){
   snblock.setAttribute("class", "w3-panel w3-container");
   snblock.setAttribute("id", "add_snapshot_form");
 
-  var hd = document.createElement("h3");
+  var hd = document.createElement("div");
+  hd.setAttribute("class", "text-large");
   hd.innerHTML='Add Order Snapshot of the Package:';
   snblock.appendChild(hd);
 
@@ -156,7 +160,7 @@ function AddSnapshotBlock(){
   snblock.appendChild(im);
 
   if($('#add_snapshot_form').length==0){
-      $('#add_item_btn_row').after(snblock);
+      $('#item_information_block').append(snblock);
       $('#add_snapshot_form').hide().slideDown(300);
       $('#add_snapshot_btn').text("Delete Snapshot");
   }//end if #add_snapshot_form exists

@@ -211,7 +211,9 @@ Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class DirectShippingCreationForm(PackageCommonForm):
-
+	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = CARRIER_CHOICE,
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
 	class Meta:
 		model = Service
 		fields = (
@@ -220,6 +222,7 @@ class DirectShippingCreationForm(PackageCommonForm):
 			'cust_tracking_num',
 			'low_volume_request',
 			'no_rush_request',
+			'ship_carrier',
 			'ship_to_add',
 			'memo',
 			)

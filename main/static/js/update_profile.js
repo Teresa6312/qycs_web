@@ -24,7 +24,11 @@ function submitForm(csrf, submit_url, add_field_name){
           if($(data).find('#main_address_form').length == 0){
               $('#newAddressForm_js').remove();
               $('#default_address_card').remove();
-              $('#remove_default_add_btn').parent('div').before($(data).find('#default_address_card'));
+              if($('#remove_default_add_btn').length > 0){
+                  $('#remove_default_add_btn').parent('div').before($(data).find('#default_address_card'));
+              }else{
+                $('#default_address_block').append($(data).find('#default_address_card'));
+              }
               $('#id-new-address-modal').hide();
           }else{
             $('#id-new-address-content').before($(data).find('.messagelist'));
@@ -50,13 +54,13 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     addform.setAttribute("id", "newAddressForm_js");
 
 
-    var formblock = document.createElement("fieldset");
-    formblock.setAttribute("class", "module aligned w3-mobile");
+    var formblock = document.createElement("div");
 
     var fuiblock = document.createElement("div");
     fuiblock.setAttribute("id", "id_follow_user_infor_block");
 
     var fui = document.createElement("button");
+    fui.setAttribute("class", "logo-blue");
     fui.setAttribute("type", "button");
     fui.setAttribute("id", "id_follow_user_infor");
     fui.append("Follow User Information");
@@ -65,13 +69,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
       fn.value = user.first_name;
       ln.value = user.last_name;
       ph.value = user.phone;
+      co.value = user.country;
     };
 
     fuiblock.appendChild(fui);
     formblock.appendChild(fuiblock);
 
     var fnblock = document.createElement("div");
-    fnblock.setAttribute("class", "form-row");
+    fnblock.setAttribute("class", "w3-half w3-container");
 
     var fn_l = document.createElement("label");
     fn_l.setAttribute('for', 'id_first_name')
@@ -83,12 +88,13 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     fn.setAttribute("id", "id_first_name");
     fn.setAttribute("type", "text");
     fn.setAttribute("name", "first_name");
+    fn.setAttribute("class", "w3-input w3-border");
     fn.required = true;
     fnblock.appendChild(fn);
 
 
     var lnblock = document.createElement("div");
-    lnblock.setAttribute("class", "form-row");
+    lnblock.setAttribute("class", "w3-half w3-container");
 
     var ln_l = document.createElement("label");
     ln_l.setAttribute('for', 'id_last_name')
@@ -100,12 +106,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ln.setAttribute("id", "id_last_name");
     ln.setAttribute("type", "text");
     ln.setAttribute("name", "last_name");
+    ln.setAttribute("class", "w3-input w3-border");
     ln.required = true;
+
     lnblock.appendChild(ln);
 
+    var phrow = document.createElement("div");
+    phrow.setAttribute("class", "w3-row");
 
     var phblock = document.createElement("div");
-    phblock.setAttribute("class", "form-row");
+    phblock.setAttribute("class", "w3-half w3-container");
 
     var ph_l = document.createElement("label");
     ph_l.setAttribute('for', 'id_phone')
@@ -117,12 +127,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ph.setAttribute("id", "id_phone");
     ph.setAttribute("type", "text");
     ph.setAttribute("name", "phone");
+    ph.setAttribute("class", "w3-input w3-border");
+
     ph.required = true;
     phblock.appendChild(ph);
+    phrow.appendChild(phblock);
 
 
     var coblock = document.createElement("div");
-    coblock.setAttribute("class", "form-row");
+    coblock.setAttribute("class", "w3-third w3-container");
+
 
     var co_l = document.createElement("label");
     co_l.setAttribute('for', 'id_country')
@@ -134,12 +148,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     co.setAttribute("id", "id_country");
     co.setAttribute("type", "text");
     co.setAttribute("name", "country");
+    co.setAttribute("class", "w3-input w3-border");
+
     co.required = true;
     coblock.appendChild(co);
 
 
     var stblock = document.createElement("div");
-    stblock.setAttribute("class", "form-row");
+    stblock.setAttribute("class", "w3-third w3-container");
 
     var st_l = document.createElement("label");
     st_l.setAttribute('for', 'id_state')
@@ -151,13 +167,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     st.setAttribute("id", "id_state");
     st.setAttribute("type", "text");
     st.setAttribute("name", "state");
-    st.setAttribute("class", "form-row");
+    st.setAttribute("class", "w3-input w3-border");
+
     st.required = true;
     stblock.appendChild(st);
 
 
     var ctblock = document.createElement("div");
-    ctblock.setAttribute("class", "form-row");
+    ctblock.setAttribute("class", "w3-third w3-container");
 
     var ct_l = document.createElement("label");
     ct_l.setAttribute('for', 'id_city')
@@ -169,11 +186,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ct.setAttribute("id", "id_city");
     ct.setAttribute("type", "text");
     ct.setAttribute("name", "city");
+    ct.setAttribute("class", "w3-input w3-border");
     ct.required = true;
     ctblock.appendChild(ct);
 
+    var zprow = document.createElement("div");
+    zprow.setAttribute("class", "w3-row w3-container");
+
     var zpblock = document.createElement("div");
-    zpblock.setAttribute("class", "form-row");
+    zpblock.setAttribute("class", "w3-quarter w3-right");
+
 
     var zp_l = document.createElement("label");
     zp_l.setAttribute('for', 'id_zipcode')
@@ -186,12 +208,13 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     zp.setAttribute("id", "id_zipcode");
     zp.setAttribute("type", "text");
     zp.setAttribute("name", "zipcode");
+    zp.setAttribute("class", "w3-input w3-border");
     zp.required = true;
     zpblock.appendChild(zp);
-
+    zprow.appendChild(zpblock);
 
     var adblock = document.createElement("div");
-    adblock.setAttribute("class", "form-row");
+    adblock.setAttribute("class", "w3-container");
 
     var ad_l = document.createElement("label");
     ad_l.setAttribute('for', 'id_address')
@@ -203,13 +226,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ad.setAttribute("id", "id_address");
     ad.setAttribute("type", "text");
     ad.setAttribute("name", "address");
+    ad.setAttribute("class", "w3-input w3-border");
     ad.required = true;
     adblock.appendChild(ad);
 
 
 
     var apblock = document.createElement("div");
-    apblock.setAttribute("class", "form-row");
+    apblock.setAttribute("class", "w3-container");
 
     var ap_l = document.createElement("label");
     ap_l.setAttribute('for', 'id_apt')
@@ -221,24 +245,25 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ap.setAttribute("id", "id_apt");
     ap.setAttribute("type", "text");
     ap.setAttribute("name", "apt");
+    ap.setAttribute("class", "w3-input w3-border");
     apblock.appendChild(ap);
 
     formblock.appendChild(fnblock);
     formblock.appendChild(lnblock);
-    formblock.appendChild(phblock);
+    formblock.appendChild(phrow);
     formblock.appendChild(coblock);
     formblock.appendChild(stblock);
     formblock.appendChild(ctblock);
     formblock.appendChild(adblock);
     formblock.appendChild(apblock);
-    formblock.appendChild(zpblock);
+    formblock.appendChild(zprow);
 
     var btblock = document.createElement("div");
     btblock.setAttribute("class", "w3-right");
 
     var ca = document.createElement("button");
     ca.setAttribute("type", "button");
-    ca.setAttribute("class", "cancel-modal");
+    ca.setAttribute("class", "logo-red");
     ca.innerHTML = 'Cancel';
     ca.onclick = function(){
      $('#id-new-address-modal').hide();
@@ -247,6 +272,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var sv = document.createElement("button");
     sv.setAttribute("type", "button");
+    sv.setAttribute("class", "logo-blue");
     sv.setAttribute("id", "newAddressSubmitBtn");
     sv.setAttribute("onclick", "submitForm()");
     sv.innerHTML = 'Save';
@@ -312,7 +338,7 @@ $(document).ready(function(){
           add_id.setAttribute('id', 'id_ship_to_add');
           add_id.setAttribute('name', 'ship_to_add');
         }
-        add_card.append(add_id)
+        add_card.append(add_id);
         $('#remove_default_add_btn').parent('div').before(add_card);
       }
 
