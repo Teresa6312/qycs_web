@@ -113,7 +113,7 @@ class AddressForm(forms.ModelForm):
 	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('+1-234-567-8900'),"class":"w3-input w3-border"
-									}))
+																									}))
 	address = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder':  _("Street Address"),
 																		"class":"w3-input w3-border"
 																		}))
@@ -160,28 +160,52 @@ class ColCreationForm(forms.ModelForm):
 class ColChangeForm(forms.ModelForm):
 	absent_start = forms.DateField(required = False, widget=forms.SelectDateWidget(
 					empty_label=("Year", "Month", "Day"),
-					years = schedule_years))
+					years = schedule_years,
+					attrs={"class":"w3-quarter w3-border"}))
 	absent_end = forms.DateField(required = False, widget=forms.SelectDateWidget(
 					empty_label=("Year", "Month", "Day"),
-					years = schedule_years))
-	# forms.ChoiceField(label = _("Carrier")
-	# mon_start = forms.TimeField(required = False)
-	# mon_end = forms.TimeField(required = False)
-	# tue_start = forms.TimeField(required = False)
-	# tue_end = forms.TimeField(required = False)
-	# wed_start = forms.TimeField(required = False)
-	# wed_end = forms.TimeField(required = False)
-	# thu_start = forms.TimeField(required = False)
-	# thu_end = forms.TimeField(required = False)
-	# fri_start = forms.TimeField(required = False)
-	# fri_end = forms.TimeField(required = False)
-	# sat_start = forms.TimeField(required = False)
-	# sat_end = forms.TimeField(required = False)
-	# sun_end = forms.TimeField(required = False)
+					years = schedule_years,
+					attrs={"class":"w3-quarter w3-border"}))
 
+	mon_start = forms.TimeField(required = False, label= _('Monday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	mon_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	tue_start = forms.TimeField(required = False, label= _('Tuesday'), widget=forms.TextInput(attrs={'placeholder': _('From:  00:00:00'),"class":"w3-input w3-border"
+																									}))
+	tue_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	wed_start = forms.TimeField(required = False, label= _('Wednesday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	wed_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	thu_start = forms.TimeField(required = False, label= _('Thursday'), widget=forms.TextInput(attrs={'placeholder': _('From:  00:00:00'),"class":"w3-input w3-border"
+																									}))
+	thu_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	fri_start = forms.TimeField(required = False, label= _('Friday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	fri_end = forms.TimeField(required = False,  widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	sat_start = forms.TimeField(required = False, label= _('Saturday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	sat_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	sun_start = forms.TimeField(required = False, label= _('Sunday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	sun_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+																									}))
+	description = forms.CharField(label = 'Introduction', required=False,
+							widget=forms.Textarea(attrs={'placeholder':  _("Introduce yourself. This will show up in the website."),
+												"class":"w3-input w3-border",
+												"rows":5
+												}))
+	wechat = forms.CharField(label = _("Wechat ID"), required = False,
+									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
 	class Meta:
 		model = CollectionPoint
-		fields = ('collector_icon', 'wechat', 'wechat_qrcode','description',
+		fields = ('collector_icon', 'wechat', 'wechat_qrcode','description','show_contact',
 					'mon_start', 'mon_end', 'tue_start', 'tue_end',
 					'wed_start','wed_end','thu_start','thu_end',
 					'fri_start','fri_end','sat_start','sat_end',
@@ -340,12 +364,20 @@ class CoReceiverForm(forms.Form):
 	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder': _('First Name'),"class":"w3-input w3-border"}))
 	last_name = forms.CharField(required = True,  widget=forms.TextInput(attrs={'placeholder': _('Last Name'),"class":"w3-input w3-border"}))
 	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('Phone Number (+1-234-567-8900)'),"class":"w3-input w3-border"}))
+
 	def __init__(self, receiver=None, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		if receiver:
 			self.fields['first_name'].initial = receiver.first_name
 			self.fields['last_name'].initial = receiver.last_name
 			self.fields['phone'].initial = receiver.phone
+
+
+
+class CoReceiverCheckForm(forms.Form):
+	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder': _('First Name'),"class":"w3-input w3-border"}))
+	last_name = forms.CharField(required = True,  widget=forms.TextInput(attrs={'placeholder': _('Last Name'),"class":"w3-input w3-border"}))
+	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('Phone Number (+1-234-567-8900)'),"class":"w3-input w3-border"}))
 
 	def check(self):
 		self.first_name = self.cleaned_data['first_name'].title()
@@ -363,8 +395,6 @@ class CoReceiverForm(forms.Form):
 								 phone = self.cleaned_data['phone'])
 			 new.save()
 			 return new
-
-
 
 
 class EmailForm(forms.Form):

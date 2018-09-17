@@ -15,7 +15,7 @@
 {% block content %}
 
 
-<div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
+<div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
 
   <div class="text-xxlarge-bold w3-panel">{% trans 'Update Profile' %}</div>
 
@@ -41,78 +41,85 @@
 
 <form method="post" enctype="multipart/form-data" >{% csrf_token %}
 
-          <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
-              <div class="w3-cell w3-container" style="width:50%;">
-                <div class="text-medium">{% trans 'Personal information' %}</div>
-              </div>
-              <div class="w3-cell w3-container" style="width:50%;">
-                <div class="text-medium">{% trans "Shipping Information" %}</div>
-              </div>
-          </div>
-          <hr/>
-
-<div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
-            <div class="w3-cell w3-container" style="width:50%;">
-                  <div class="form-row">
-                    {{ form.username.errors }}
-
-                    {{ form.username.label_tag }} {{ form.username }}
-                    <input type="hidden" name="next" value="{{ next }}" />
+        <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
+            <div class="w3-cell" style="width:50%;">
+                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                    <div class="text-medium">{% trans 'Personal information' %}</div>
                   </div>
-                  <div class="w3-row">
-                    {{ form.first_name.errors }}
-                    {{ form.first_name.label_tag }} {{ form.first_name }}
-                  </div>
-                  <div class="w3-row">
-                    {{ form.last_name.errors }}
-                    {{ form.last_name.label_tag }} {{ form.last_name }}
-                  </div>
-                  <div class="w3-row">
-                    <div class="w3-row">{{ form.birthday.label_tag }}</div>
-                    {{ form.birthday.errors }}
-                    {{ form.birthday }}
-                  </div>
-                  <div class="w3-row">
-                    {{ form.email.errors }}
-                    {{ form.email.label_tag }} {{ form.email }}
-                  </div>
-                  <div class="form-row">
-                    {{ form.phone.errors }}
-                    {{ form.phone.label_tag }} {{ form.phone }}
-                  </div>
-                  <div class="w3-row">
-                    {{ form.country.errors }}
-                    {{ form.country.label_tag }} {{ form.country }}
-                  </div>
-                  <div class="form-row">
-                    {{ form.language.errors }}
-                    {{ form.language.label_tag }} {{ form.language }}
-                  </div>
-            </div>
-            <div class="w3-cell w3-container" style="width:50%;">
-              <div class="text-regular-bold">{{ form.default_address.label_tag }}</div>
-              {% include "blocks/address_block_all.html" with add_field_name='default_address' %}
-
-                  <div class="module w3-mobile">
-                    {% include "blocks/modal.html" with element='select-col' title=_('Select a Collection Point') block='select_collection_point_block' no_icon="yes" %}
-                    <div id="default_col_block">
-                      <div class="text-regular-bold">{{ form.default_col.label_tag }}</div>
-
-                      {% if user.collectionpoint and user.default_col %}
-                          {% include "blocks/default_col_card.html" with col=user.default_col no_icon="yes" %}
-                      {% elif user.default_col %}
-                          <div class="w3-row"><button class="logo-blue" type="button" id="select_col_btn"></button></div>
-                          {% include "blocks/default_col_card.html" with col=user.default_col no_icon="yes" %}
-                          <div class="w3-row"><button class="logo-red" type="button" id="remove_default_col_btn" style="display:none;">{% trans 'Remove Default Collection Point' %}</button></div>
-                      {% else %}
-                          <div class="w3-row"><button class="logo-blue" type="button" id="select_col_btn"></button></div>
-                          <div class="w3-row"><button class="logo-red" type="button" id="remove_default_col_btn" style="display:none;">{% trans 'Remove Default Collection Point' %}</button></div>
-                      {% endif %}
+                  <hr/>
+                  <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                        <div class="w3-row" style="width:97.5%;">
+                          {{ form.username.errors }}
+                          {{ form.username.label_tag }} {{ form.username }}
+                          <input type="hidden" name="next" value="{{ next }}" />
+                        </div>
+                        <div class="w3-row">
+                          <div class="w3-half">
+                            {{ form.first_name.errors }}
+                            {{ form.first_name.label_tag }} {{ form.first_name }}
+                          </div>
+                          <div class="w3-half">
+                          {{ form.last_name.errors }}
+                          {{ form.last_name.label_tag }} {{ form.last_name }}
+                        </div>
+                        </div>
+                        <div class="w3-row" style="width:97.5%;">
+                          <div class="w3-row">{{ form.birthday.label_tag }}</div>
+                          {{ form.birthday.errors }}
+                          {{ form.birthday }}
+                        </div>
+                        <div class="w3-row" style="width:97.5%;">
+                          {{ form.email.errors }}
+                          {{ form.email.label_tag }} {{ form.email }}
+                        </div>
+                        <div class="w3-row" style="width:97.5%;">
+                          {{ form.phone.errors }}
+                          {{ form.phone.label_tag }} {{ form.phone }}
+                        </div>
+                        <div class="w3-row">
+                          <div class="w3-half">
+                            {{ form.country.errors }}
+                            {{ form.country.label_tag }} {{ form.country }}
+                          </div>
+                          <div class="w3-half">
+                            {{ form.language.errors }}
+                            {{ form.language.label_tag }} {{ form.language }}
+                          </div>
+                        </div>
                     </div>
+
+            </div>
+
+
+
+
+            <div class="w3-cell" style="width:50%;">
+                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                    <div class="text-medium">{% trans 'Shipping Information' %}</div>
                   </div>
+                  <hr/>
+                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                        <div class="text-regular-bold">{{ form.default_address.label_tag }}</div>
+                        {% include "blocks/address_block_all.html" with add_field_name='default_address' %}
+
+                            <div class="w3-mobile">
+                              <div id="default_col_block">
+                                <div class="text-regular-bold">{{ form.default_col.label_tag }}</div>
+                                {% if user.collectionpoint and user.default_col %}
+                                    {% include "blocks/default_col_card.html" with col=user.default_col no_icon="yes" %}
+                                {% elif user.default_col %}
+                                    {% include "blocks/default_col_card.html" with col=user.default_col no_icon="yes" %}
+                                    <div class="w3-row"><button class="logo-red" type="button" id="remove_default_col_btn" style="display:none;">{% trans 'Remove Default Collection Point' %}</button></div>
+                                {% else %}
+                                    {% trans "You didn't set a default Collection Point." %}
+                                {% endif %}
+                              </div>
+                          </div>
+                </div>
+
             </div>
       </div>
-      <div class="w3-row" style="width:80%; margin:auto;">
+      <div class="w3-panel" style="width:80%; margin:auto;">
           <div class="w3-center">
               <button class="logo-red" type="button" onclick="window.location.href = document.referrer">{% trans "Cancel" %}</button>
               <input class="logo-blue" type="submit" value="Update">

@@ -19,7 +19,7 @@
 {% block content %}
 
 
-<div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
+<div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
   {% if form.ship_carrier %}
   <div class="text-xxlarge-bold w3-panel">{% trans 'Direct Shipping' %}</div>
   {% else %}
@@ -47,35 +47,36 @@
 
 <form method="post" enctype="multipart/form-data">{% csrf_token %}
     <div class="tab">
-          <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin:auto;">
-              <div class="w3-cell w3-container" style="width:50%;">
-                <div class="text-medium">{% trans 'Ship to' %}</div>
+        <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
+              <div class="w3-cell" style="width:50%;">
+                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                      <div class="text-medium">{% trans 'Ship to' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                          {% if form.ship_carrier %}
+                            <div class="form-row">
+                                {{ form.ship_carrier.errors }}
+                                {{ form.ship_carrier.label_tag }}{{ form.ship_carrier }}
+                            </div>
+                            <div class="form-row">
+                                {{ form.no_rush_request.errors }}
+                                {{ form.no_rush_request }}&emsp;{% trans 'No Rush Shipping (Double Points)' %}
+                            </div>
+                          {% endif %}
+                          <div class="form-row">
+                                {{ form.low_volume_request.errors }}
+                                {{ form.low_volume_request }}&emsp;{% trans "Minimize this package's volume" %}
+                          </div>
+                          {% block shippingset %} {% endblock%}
+                    </div>
               </div>
-              <div class="w3-cell w3-container" style="width:50%;">
-                <div class="text-medium">{% trans 'Ship from' %}</div>
-              </div>
-          </div>
-          <hr/>
-          <div class="w3-container w3-mobile" style="width:80%; margin:auto;">
-                <div class="w3-cell-row">
-                  <div class="w3-cell w3-container" style="width:50%;">
-                      {% if form.ship_carrier %}
-                        <div class="form-row">
-                            {{ form.ship_carrier.errors }}
-                            {{ form.ship_carrier.label_tag }}{{ form.ship_carrier }}
-                        </div>
-                        <div class="form-row">
-                            {{ form.no_rush_request.errors }}
-                            {{ form.no_rush_request }}&emsp;{% trans 'No Rush Shipping (Double Points)' %}
-                        </div>
-                      {% endif %}
-                      <div class="form-row">
-                            {{ form.low_volume_request.errors }}
-                            {{ form.low_volume_request }}&emsp;{% trans "Minimize this package's volume" %}
-                      </div>
-                      {% block shippingset %} {% endblock%}
-                  </div>
-                  <div class="w3-cell w3-container" style="width:50%;">
+              <div class="w3-cell" style="width:50%;">
+                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                      <div class="text-medium">{% trans 'Ship from' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
                         <div class="form-row">
                           {{ form.wh_received.errors }}
                           {{ form.wh_received.label_tag }} {{ form.wh_received }}
@@ -94,11 +95,11 @@
                           {{ form.memo.label_tag }} {{ form.memo }}
                         </div>
                     </div>
-                  </div>
+              </div>
           </div>
       </div>
       <div class="tab">
-        <div class="w3-container" style="width:80%;margin:auto;">
+        <div style="width:80%;margin:auto;">
           <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
         </div>
 <hr/>
@@ -109,14 +110,14 @@
               <input name="image" class="w3-input w3-border" id="id_image" type="file" multiple="">
             </div>
             <div class="w3-panel w3-center text-medium-bold">OR</div>
-            <div id = "add_item_form" class="w3-container">
+            <div id = "add_item_form" class="w3-container" style="margin:auto;">
               <div class="text-medium">{% trans 'Add details of each item in the package' %}</div>
 
               {{ itemset.management_form }}
 
               {% if itemset.forms %}
                   {% for subform in itemset.forms %}
-                      <table style="width:100%;">
+                      <table style="width:80%; margin:auto;">
                               <tr class="itemset_row" >
                                   <td>
                                     <div class="text-regular-bold">{% trans 'Item' %}</div>
@@ -156,14 +157,11 @@
         </div>
 
     </div>
-    <div class="w3-row" style="width:75%; margin:auto">
-      <div class="w3-right">
+    <div class="w3-row" style="width:80%; margin:auto">
+      <div class="w3-center">
         <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
         <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
         <span id="submit_block">
-          {% block extrabtn %}
-          {% endblock %}
-          <button class="logo-red" type="button" onclick="clearForm(this)">{% trans 'Clear Form' %}</button>
           <input class="logo-blue" type="submit" name="next" value="{% trans 'Save and add new package' %}" />
           <input class="logo-red" type="submit" name="finish" value="{% trans 'Submit' %}"/>
         </span>

@@ -4,7 +4,7 @@ from .models import (
 	)
 from .forms import (
 	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm,
-	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm
+	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm, CoReceiverCheckForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -178,7 +178,7 @@ class AddCoShipping(TemplateView):
 		col = CollectionPoint.objects.get(pk=selected_col)
 		form = CoShippingCreationForm(request.POST)
 		itemset = ItemFormset(request.POST)
-		receiverform = CoReceiverForm(request.POST)
+		receiverform = CoReceiverCheckForm(request.POST)
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = True,

@@ -8,41 +8,39 @@
 
 {% block content %}
 <div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
-    <div class="text-large-bold">{% trans 'Address Book' %}</div>
+    <div class="text-xxlarge-bold">{% trans 'Address Book' %}</div>
 </div>
 <hr/>
-<div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
-{% if user.address_set.all %}
+<div class="w3-panel" style="width:80%; margin:auto;">
 
+      {% if user.address_set.all %}
+            <div id="address_book_block" class="w3-col w3-mobile" style="width: 30vw;">
 
+                <div class="addresses_block w3-mobile" style="overflow:auto; min-height:30vw; max-height:70vw;">
+                <!-- display default address -->
+                      {% if user.default_address %}
+                        <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width:25vw;">
+                            {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
+                            <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">{% trans 'Edit' %}</button>
+                            <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">{% trans 'Delete' %}</button>
+                        </div>
+                      {% endif %}
 
-<div id="address_book_block" class="w3-col w3-mobile" style="width: 30vw;">
+                <!-- display other addresses -->
+                {% for address in user.address_set.all %}
+                {% if address != user.default_address%}
+                    <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width: 25vw;">
+                        {% include "blocks/address_card_fields.html" with add=address %}
+                        <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">{% trans 'Edit' %}</button>
+                        <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">{% trans 'Delete' %}</button>
+                        <button type="button" class="default_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">{% trans 'Set as Default' %}</button>
+                    </div>
+                {% endif %}{% endfor %}
 
-    <div class="addresses_block w3-mobile" style="overflow:auto; min-height:30vw; max-height:100vw;">
-    <!-- display default address -->
-          {% if user.default_address %}
-            <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width:25vw;">
-                {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
-                <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">Edit</button>
-                <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">Delete</button>
+                </div>
             </div>
-          {% endif %}
-
-    <!-- display other addresses -->
-    {% for address in user.address_set.all %}
-    {% if address != user.default_address%}
-        <div class="w3-card-4 w3-round w3-container w3-mobile w3-white" style="max-width: 325vw;">
-            {% include "blocks/address_card_fields.html" with add=address %}
-            <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
-        </div>
-    {% endif %}{% endfor %}
-
-    </div>
-</div>
-{% endif %}
-<div class="w3-col w3-container w3-mobile w3-card-4 w3-white"  style="width:30vw;">
+      {% endif %}
+<div class="w3-col w3-container w3-mobile w3-card-4 w3-white w3-margin-top w3-margin-left" style="width:35vw;">
   <form method = "post" enctype="multipart/form-data" id="main_address_form">
   {% csrf_token %}
   {% if addform.errors %}
@@ -55,7 +53,7 @@
       </p>
   {% endif %}
   <div class="w3-mobile">
-    <div class="text-medium">{% trans 'Address Form' %}</div>
+    <div class="text-medium w3-margin-top">{% trans 'Address Form' %}</div>
     <div class="w3-row"><button class="logo-blue" type="button" id="id_follow_user_infor">{% trans 'Follow User Information' %}</button></div>
       <div class="w3-half">
         {{ addform.first_name.errors }}
@@ -83,11 +81,11 @@
           {{ addform.city.label_tag }} {{ addform.city }}
         </div>
       </div>
-      <div class="w3-row">
+      <div class="w3-row" style="width:98.5%;">
         {{ addform.address.errors }}
         {{ addform.address.label_tag }} {{ addform.address }}
       </div>
-      <div class="w3-row">
+      <div class="w3-row" style="width:98.5%;">
         {{ addform.apt.errors }}
         {{ addform.apt }}
       </div>
@@ -120,9 +118,6 @@
       $('#'+id).remove()
     }
     if(list.length>50){
-      return
-    }else if (list.length==1) {
-      $('#'+comp).val(list[0])
       return
     }
     let content='<datalist clas="ui-autocomplete" id="'+id+'">';
@@ -173,8 +168,7 @@
     $('#id_follow_user_infor').click(function(){
         isThere("{{user.first_name}}","id_first_name");
         isThere("{{user.last_name}}","id_last_name");
-        isThere("{{user.email}}","id_email");
-        isThere("{{user.userprofile.phone}}","id_phone");
+        isThere("{{user.phone}}","id_phone");
     })
 
     var xhr;
@@ -209,7 +203,4 @@
 </style>
 
 </div></div>
-{% endblock %}
-
-{% block sidebar %}
 {% endblock %}

@@ -108,7 +108,7 @@ class CollectionPointAdmin(admin.ModelAdmin):
 		('location',               	{'fields': ['name','collector_icon', 'collector_icon_display', 'store', 'store_name', 'address', 'city', 'state','country', 'zipcode','memo',]}),
 		('License',					{'fields': ['license_image', 'license_image_display', 'id_image','id_image_display',]}),
 		('Document',				{'fields': ['wechat', 'wechat_qrcode', 'referrer', 'apply_reason', 'info_source',]}),
-		('Package',                 {'fields': ['food', 'regular', 'skincare',]}),
+		('Package',                 {'fields': ['food', 'regular', 'beauty',]}),
 		('Schedule',                {'fields': ['absent_start', 'absent_end',
 												'mon_start', 'mon_end',
 												'tue_start', 'tue_end',

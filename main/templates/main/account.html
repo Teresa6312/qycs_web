@@ -8,12 +8,20 @@
 
 
 {% block content %}
-<div class="w3-panel" style="width:70%; margin:auto;">
 
-					<div class="text-medium-bold w3-panel">{{user.username}}
-					{% if user.collectionpoint %}
-					({% trans 'Collector' %})
-					{% endif %}</div>
+<div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
+
+			<div class="text-xxlarge-bold">{{user.username}}{% trans "'s Profile" %}
+			{% if user.collectionpoint %}
+			({% trans 'Collector' %})
+			{% endif %}</div>
+
+</div>
+<hr/>
+
+<div class="w3-panel" style="width:80%; margin:auto;">
+
+
 						{% if not user.collectionpoint %}
 						<button type="button" class="logo-red" onclick="window.location.href = '{% url 'colregister'%}'"> {% trans 'Register as Collector' %}</button><br/>
 						{% endif%}

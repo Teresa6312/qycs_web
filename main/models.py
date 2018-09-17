@@ -169,15 +169,18 @@ class CollectionPoint(Address_Common_Info):
 	food.boolean = True
 	regular = models.BooleanField(default = False, verbose_name= _('Regular'))
 	regular.boolean = True
+	beauty = models.BooleanField(default = False, verbose_name= _('Beauty'))
+	beauty.boolean = True
 	skincare = models.BooleanField(default = False, verbose_name= _('Skincare'))
 	skincare.boolean = True
-
 
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Avaliable'))
 	status.boolean = True
 	collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))
+	show_contact = models.BooleanField(default = False, verbose_name= _('Show Contact Information'))
+	show_contact.boolean = True
 
 	# collection_point schedule
 	mon_start = models.TimeField(blank=True, null=True, verbose_name= _('Monday Start'))

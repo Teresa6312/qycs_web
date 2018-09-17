@@ -212,37 +212,7 @@ text-italic-bold{
   width:22vw;
 }
 
-.w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
-  color: #fff;
-  padding: 0.4vw 3vw;
-  border-radius: 4px;
-  border: none;
-  margin: 0.5vw 0.5vw;
-}
 
-.contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover{
-  opacity: 0.8;
-  cursor:pointer;
-}
-.add-row{
-  background-color: #121A50;
-  color: #fff;
-  padding: 0.7vw 3vw;
-  border-radius: 4px;
-  border: none;
-  margin: 0.5vw 0.5vw;
-  width: 20vw;
-  float: right;
-  text-align:center;
-}
-.w3-modal .close-modal{
-  font-size: 2.5vw;
-  color: black;
-  padding: 0;
-  border: none;
-  margin: 0;
-  background-color: Transparent;
-}
 .contentCSS input[type="checkbox"]{
   width: 1vw;
   height: 1vw;
@@ -275,10 +245,7 @@ hr{
 }
 
 
-table {
-    width: 100%;
-    display:block;
-}
+
 thead {
     display: block;
     width: 100%;
@@ -294,11 +261,7 @@ thead th{
   font-size: 1vw;
   vertical-align: middle;
 }
-tbody {
-    display: inline-block;
-    width: 100%;
-    overflow: auto;
-}
+
 tbody td {
   vertical-align: middle;
   border: none;
@@ -517,3 +480,58 @@ tbody td {
       font-size: 12px;
       padding: 5px 0 0 12px;
   }
+
+
+
+/* ---------------------------------------------*  buttons *------------------------------------------------------------ */
+
+.w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
+  color: #fff;
+  padding: 0.4vw 3vw;
+  border-radius: 4px;
+  border: none;
+  margin: 0.5vw 0.5vw;
+}
+
+.contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover{
+  opacity: 0.8;
+  cursor:pointer;
+}
+.add-row{
+  background-color: #121A50;
+  color: #fff;
+  padding: 0.4vw 3vw;
+  border-radius: 4px;
+  border: none;
+  margin: 0.5vw 0.5vw;
+  width: 20vw;
+  float: right;
+  text-align:center;
+}
+.w3-modal .close-modal{
+  font-size: 2.5vw;
+  color: black;
+  padding: 0;
+  border: none;
+  margin: 0;
+  background-color: Transparent;
+}
+.edit_btn{
+  background-color: #121A50;
+}
+.delete_btn{
+  background-color: #E73229;
+}
+.default_btn{
+  background-color: #E73229;
+}
+
+.cancel_btn{
+  background-color: #E73229;
+}
+.save_btn{
+  background-color: #121A50;
+}
+.response_btn{
+  background-color: #121A50;
+}
