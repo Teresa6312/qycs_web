@@ -8,49 +8,127 @@
 
 {% block content %}
 <div style="width:60%; margin:auto;">
+  <div class="w3-panel">
+    <div class="w3-right">
+      {{form.render}}
+        {% if orderSet.coupon %}
+          <div id="discount_block">{{orderSet.coupon.code}}(5% OFF):<span class="w3-right" id="discount_amount">
+            - {{orderSet.currency}}{{orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
+          </span></div>
+          <hr class="w3-border-black"/>
+        {% endif %}
+
+        <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">
+          {{orderSet.currency}}
+          {% if orderSet.coupon %}
+            {{100|sub:orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
+          {% else %}
+            {{orderSet.total_amount|mul:100|sub:orderSet.reward_point_used|div:100|floatformat:"2"}}
+          {% endif %}
+        </span></div>
+        <br/>
+      </div>
+    </div>
+
     <h4 class="w3-center aside-bar-background-color">{% trans 'Packages' %}</h4>
     <table class="w3-mobile">
         <tbody>
       {% if orderSet.service_set.all %}
           {% for package in orderSet.service_set.all %}
-              <tr class="w3-cell-row"><td class="w3-cell w3-rest">
-                <div class="w3-card-2 w3-round w3-panel package">
-                      <div class="w3-third w3-container">
-                        <h5 class="cust_tracking_num">{{package.cust_tracking_num}}</h5>
+          {% if not package.order %}
+            <tr class="w3-cell-row"><td class="w3-cell w3-rest">
+              <div class="w3-card-2 w3-round w3-panel package w3-padding-16">
+                    <div class="w3-third w3-container">
+                      <div class="cust_tracking_num text-regular-bold">{{package.cust_tracking_num}}</div>
 
-                          {{package.cust_carrier}} ({{package.wh_received.country}})<br/>
-                          {% if package.created_date %}
-                          {% trans 'Created on' %}: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
-                          {% if package.weight %}
-                            {{package.weight}}(KG)<br/>{% endif %}
-                    </div>
-                  <div class="w3-third w3-container">
+                        {{package.get_cust_carrier_display}} ({{package.wh_received.country}})<br/>
+                        {% if package.created_date %}
+                        {% trans 'Created on' %}: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
+                        {% if package.weight %}
+                          {{package.weight}}(KG)<br/>{% endif %}
+                  </div>
+                <div class="w3-third w3-container">
 
-                    {% if package.ship_to_add %}
-                    <h5>{% trans 'Direct Shipping to' %}:</h5>
+                  {% if package.ship_to_add %}
+                  <div class="text-regular-bold">{% trans 'Direct Shipping to' %}:</div>
 
-                          {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
-                            {{package.ship_to_add.address}}<br/>
-                            {% if package.ship_to_add.apt %}{{package.ship_to_add.apt}}<br/>{% endif %}
-                            {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
-                            {{package.ship_to_add.country}}<br/>
-
+                        {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
+                          {{package.ship_to_add.address}}{% if package.ship_to_add.apt %} | {{package.ship_to_add.apt}}{% endif %}<br/>
+                          {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
+                          {{package.ship_to_add.country}}<br/>
 
 
-                    {% elif package.ship_to_col %}
-                    <h5>{% trans 'Co-shipping to' %}:</h5>
-                          {{package.ship_to_col.name}}<br/>
-                              {{package.ship_to_col.address}}<br/>
-                              {% if package.ship_to_col.apt %}{{package.ship_to_col.apt}}<br/>{% endif %}
-                              {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
-                              {{package.ship_to_col.country}}<br/>
 
-                    {% endif %}
+                  {% elif package.ship_to_col %}
+                  <div class="text-regular-bold">{% trans 'Co-shipping to' %}:</div>
+                  <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
+                  <div class="logo-text-red">{{package.ship_to_col.name}}</div>
+                            {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
+                            {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
+                            {{package.ship_to_col.country}}<br/>
+
+                  {% endif %}
+
+                </div>
+
+                <div class="w3-third w3-container">
+                      <div class="text-regular-bold">{% trans 'Price' %}</div>
+                      {% if package.order_amount %}
+                        {% trans 'Order Amount' %}: {{package.currency}} <span id="order_amount_{{ forloop.counter0 }}" class="order_amount">{{package.order_amount}}</span><br/>
+                      {% endif %}
+                      {% if package.storage_fee %}
+                        {% trans 'Storage fee' %}: {{package.currency}} <span id="storage_fee_{{ forloop.counter0 }}" class="storage_fee">{{package.storage_fee}}</span><br/>
+                      {% endif %}
+                      {% if package.shipping_fee %}
+                        {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ forloop.counter0 }}" class="shipping_fee">{{package.shipping_fee}}</span><br/>
+                      {% endif %}
+                      {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
+
+                {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
+                </div>
+                </div>
+            </td></tr>
+            {% else %}
+
+            <tr class="w3-cell-row"><td class="w3-cell w3-rest">
+              <div class="w3-card-4 w3-border-red w3-round w3-panel package w3-border w3-padding-16">
+                    <div class="w3-third w3-container">
+                        <div class="cust_tracking_num text-regular-bold">{% trans 'Order'%} ({{package.created_date|date:"m/d/Y" }})</div>
+
+                        {% if package.ship_to_add %}
+                        <div>{% trans 'Direct Shipping to' %}:</div>
+
+                              {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
+                                {{package.ship_to_add.address}}{% if package.ship_to_add.apt %} | {{package.ship_to_add.apt}}{% endif %}<br/>
+                                {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
+                                {{package.ship_to_add.country}}<br/>
+
+                        {% elif package.ship_to_col %}
+                        <div>{% trans 'Co-shipping to' %}:</div>
+                        <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
+                        <div class="logo-text-red">{{package.ship_to_col.name}}</div>
+                                  {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
+                                  {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
+                                  {{package.ship_to_col.country}}<br/>
+
+                        {% endif %}
+
 
                   </div>
-
                   <div class="w3-third w3-container">
-                        <h5>Price:</h5>
+                    <div class="text-regular-bold">Items:</div>
+                      {% if package.item_set.all %}
+                        <ul>
+                          {% for item in package.item_set.all %}
+                          <li>{{item.item_name}} - {{item.currency}}{{item.item_value}}</li>
+                          {% endfor %}
+                        </ul>
+                      {% else %}
+                          {% trans 'No information at this time.' %}
+                      {% endif %}
+                  </div>
+                  <div class="w3-third w3-container">
+                    <div class="text-regular-bold">{% trans 'Price' %}</div>
                         {% if package.order_amount %}
                           {% trans 'Order Amount' %}: {{package.currency}} <span id="order_amount_{{ forloop.counter0 }}" class="order_amount">{{package.order_amount}}</span><br/>
                         {% endif %}
@@ -62,40 +140,16 @@
                         {% endif %}
                         {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
 
-                  {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
-                  <button type="button" class="w3-right" onclick="window.open('{{package.get_absolute_url}}')">detail</button>
+                      {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
                   </div>
-                  </div>
-              </td></tr>
+                </div>
+
+            </td></tr>
+            {% endif %}
           {% endfor %}
       {% endif %}
-      <tbody>
+      </tbody>
     </table>
-
-
-      <div class="w3-panel w3-right">
-        {% if orderSet.coupon %}
-          <h5 id="discount_block">{{orderSet.coupon.code}}(5% OFF):<span class="w3-right" id="discount_amount">
-            - {{orderSet.currency}}{{orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
-          </span></h5>
-        {% endif %}
-        {% if orderSet.reward_point_used > 0 %}
-          <h5 id="reward_used_block">{{orderSet.reward_point_used}} points:<span class="w3-right" id="reward_discount_amount">
-            - {{orderSet.currency}}{{orderSet.reward_point_used|div:100|floatformat:"2"}}
-          </span></h5>
-        {% endif %}
-        <hr class="w3-border-black"/>
-        <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">
-          {{orderSet.currency}}
-          {% if orderSet.coupon %}
-            {{100|sub:orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
-          {% else %}
-            {{orderSet.total_amount|mul:100|sub:orderSet.reward_point_used|div:100|floatformat:"2"}}
-          {% endif %}
-        </span></div>
-        <br/>
-      {{form.render}}
-      </div>
-</div>
+  </div>
 <script src="{% static 'js/package_cart.js' %}"></script>
 {% endblock %}

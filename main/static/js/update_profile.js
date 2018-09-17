@@ -267,6 +267,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ca.innerHTML = 'Cancel';
     ca.onclick = function(){
      $('#id-new-address-modal').hide();
+     addform.remove();
     };
     btblock.appendChild(ca);
 
@@ -298,6 +299,10 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
 $(document).ready(function(){
 
+  $('#id-new-address-modal .close-modal').click(function(){
+    $('#newAddressForm_js').remove();
+  });
+
   $("#select_address_btn").click(function(){
        $('#id-select-address-modal').show();
   });
@@ -323,7 +328,7 @@ $(document).ready(function(){
         var add_card = document.createElement('div');
         add_card.setAttribute('id', 'default_address_card');
         add_card.setAttribute('class', 'w3-card-2 w3-round w3-container w3-mobile w3-half');
-        add_card.style.maxWidth = "300px";
+        add_card.style.maxWidth = "30vw";
         var add_fields = document.createElement('div');
         add_fields.setAttribute('id', 'default_address_card_fields');
         add_card.append(add_fields);
@@ -366,11 +371,12 @@ $(document).ready(function(){
         $('#id-select-col-modal').hide();
 
         let element=$(this).clone();
-        element.addClass("w3-half")
+        let id = element.attr("id");
         element.removeClass("colchoice")
+        element.attr('id','default_col_card');
+
         $('#remove_default_col_btn').parent('div').before(element);
-        $('#default_col_block').find('.w3-card-2').attr('id','default_col_card');
-        $('#default_col_card').append('<input type="hidden" id="id_default_col" name="default_col" value='+$(this).attr("id")+' />');
+        $('#default_col_card').append('<input type="hidden" id="id_default_col" name="default_col" value='+id+' />');
         $('#remove_default_col_btn').show();
         $(this).addClass("w3-pale-green");
     });// END OF select collection point

@@ -9,6 +9,7 @@ from .forms import (
 
 from .code import send_confirmation_email
 
+from django.forms.utils import ErrorList
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -35,7 +36,7 @@ from django.db import IntegrityError
 
 from django.db import IntegrityError
 from django.core.serializers.json import DjangoJSONEncoder
-
+from datetime import date
 
 class HomeView(TemplateView):
 	template_name = 'main/home.html'
@@ -209,8 +210,29 @@ class CollectorUpdateView(TemplateView):
 			col = CollectionPoint.objects.get(collector = request.user)
 			form = ColChangeForm(request.POST, request.FILES, instance=col)
 			if form.is_valid():
-				form.save()
-				return redirect(reverse('account'))
+
+				update = form.save(commit=False)
+				if 'absent_start' in form.changed_data or 'absent_end' in form.changed_data:
+					if update.absent_start:
+						if update.absent_start< date.today() or not update.absent_end or update.absent_start>update.absent_end:
+							if not update.absent_end:
+								errors = form._errors.setdefault("absent_end", ErrorList())
+								errors.append(_("This field is required after you entered the Unavaliable Start Date."))
+							if update.absent_start>update.absent_end:
+								errors = form._errors.setdefault("absent_end", ErrorList())
+								errors.append(_("Enter a valid date."))
+							if update.absent_start< date.today():
+								errors = form._errors.setdefault("absent_start", ErrorList())
+								errors.append(_("Enter a valid date."))
+							return render(request, self.template_name, {'form': form,})
+					elif update.absent_end:
+						if not update.absent_start:
+							errors = form._errors.setdefault("absent_start", ErrorList())
+							errors.append(_("This field is required after you entered the Unavaliable End Date."))
+							return render(request, self.template_name, {'form': form,})
+
+				update.save()
+				return redirect(update.get_absolute_url())
 		except:
 # to the prev page create next for each views
 			pass
@@ -406,7 +428,7 @@ class CollectionPointView(TemplateView):
 		return render(request, self.template_name, {'col_list': self.col_json,})
 
 	def post(self, request):
-		print(request.POST.get('selected_col'))
+
 		try:
 			col = CollectionPoint.objects.get(pk=request.POST.get('selected_col'))
 			if not col.status:

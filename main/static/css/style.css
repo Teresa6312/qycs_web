@@ -100,7 +100,7 @@ text-italic-bold{
 }
 
 
-.topnav a:hover {
+.topnav a:hover, .topnav button:hover {
   color:#3a3a3a
 }
 .topnav .icon {
@@ -162,7 +162,7 @@ text-italic-bold{
 }
 
 .circle{
-  margin-top: 8vw;
+  margin-top: 5vw;
   overflow: hidden;
   height: 100%;
   float:left;
@@ -177,7 +177,7 @@ text-italic-bold{
   padding-left: 15vw;
   margin: 0.2vw 0vw;
   position: relative;
-  left: -11vw;
+  left: -12vw;
   width:28vw;
 }
 
@@ -194,12 +194,11 @@ text-italic-bold{
 
 #shipping_full_circle{
   border-radius:50%;
-  padding:10vw 4vw;
+  padding:12.5vw 5vw;
   background-color: #E73229;
   font-size: 1.2vw;
-  padding-right: 10vw;
-  margin: 0.2vw 0vw;
-  width:22vw;
+  padding-right: 11vw;
+  width:28vw;
 }
 
 
@@ -246,12 +245,19 @@ text-italic-bold{
 }
 .contentCSS input[type="checkbox"]{
   width: 1vw;
+  height: 1vw;
   vertical-align: middle;
 }
 .contentCSS input, .contentCSS select, .contentCSS textarea{
   padding: 0.2vw;
   margin: 0.2vw 0.2vw 0.2vw 0;
 }
+
+
+.w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
+  width: 95%;
+}
+
 .large_image{
   max-width: 45%;
   height: auto;
@@ -267,6 +273,38 @@ hr{
   margin-top: 0;
   margin-bottom: 0.5vw;
 }
+
+
+table {
+    width: 100%;
+    display:block;
+}
+thead {
+    display: block;
+    width: 100%;
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+}
+thead th{
+  text-align: center;
+  border: none;
+  background-color: #ffffff;
+  font-size: 1vw;
+  vertical-align: middle;
+}
+tbody {
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+}
+tbody td {
+  vertical-align: middle;
+  border: none;
+  position: relative;
+}
+
 /*------------------for footer only---------------------*/
 
 #footer{

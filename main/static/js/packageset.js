@@ -178,3 +178,86 @@ function AddSnapshotBlock(){
 function clearForm(){
   $('form').find("input[type=text], textarea").val("");
 }
+
+
+// ----------------------------------------------multistepform----------------------------------------------------
+
+var currentTab = 0;
+
+function showTab(n) {
+  // This function will display the specified tab of the form ...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+
+  //fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("submit_block").style.display = "inline";
+  } else {
+    document.getElementById("nextBtn").style.display = "inline";
+    document.getElementById("submit_block").style.display = "none";
+  }
+  //run a function that displays the correct step indicator:
+}
+
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) {
+    if($('.errornote').length==0){
+        var p = document.createElement('p');
+        p.setAttribute('class','errornote');
+        p.innerHTML = 'Please correct the error(s) below.';
+        $('#message_block').append(p);
+        $('.errornote').hide().slideDown(200);
+    }
+    return false;
+  }else{
+    $('.errornote').slideUp(200, function(){
+      $('#errornote').remove();
+    });
+    x[currentTab].style.display = "none";
+    currentTab = currentTab + n;
+    showTab(currentTab);
+  }
+
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, j, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input", "textarea");
+
+  for (i = 0; i < y.length; i++) {
+    if (y[i].value == "" && y[i].required) {
+      y[i].className += " invalid";
+      valid = false;
+    }
+
+  }
+  var selects = x[currentTab].getElementsByTagName("select");
+  for (j = 0; j < selects.length; j++) {
+    var index = selects[j].selectedIndex
+    if (selects[j].options[index].value == "" && selects[j].required) {
+      selects[j].className += " invalid";
+      valid = false;
+    }
+  }
+
+
+  return valid; // return the valid status
+}
+
+
+
+$(document).ready(function(){
+    showTab(currentTab);
+})

@@ -5,19 +5,23 @@
 {{user.username}}{% trans "'s Address Book'" %}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
 
 {% block content %}
-<div class="w3-panel">
+<div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
+    <div class="text-large-bold">{% trans 'Address Book' %}</div>
+</div>
+<hr/>
+<div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
 {% if user.address_set.all %}
-<div id="address_book_block" class="w3-container w3-cell w3-mobile w3-card-2" style="overflow:auto;">
-    <h2>{% trans 'Address Book' %}</h2>
-    <div class="addresses_block grey-background w3-mobile" style="overflow:auto; max-height:600px;">
+
+
+
+<div id="address_book_block" class="w3-col w3-mobile" style="width: 30vw;">
+
+    <div class="addresses_block w3-mobile" style="overflow:auto; min-height:30vw; max-height:100vw;">
     <!-- display default address -->
           {% if user.default_address %}
-            <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width:300px;">
+            <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width:25vw;">
                 {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
                 <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">Edit</button>
                 <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">Delete</button>
@@ -27,7 +31,7 @@
     <!-- display other addresses -->
     {% for address in user.address_set.all %}
     {% if address != user.default_address%}
-        <div class="w3-card-2 w3-round w3-container w3-mobile w3-white" style="max-width: 300px;">
+        <div class="w3-card-4 w3-round w3-container w3-mobile w3-white" style="max-width: 325vw;">
             {% include "blocks/address_card_fields.html" with add=address %}
             <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
             <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
@@ -38,7 +42,7 @@
     </div>
 </div>
 {% endif %}
-<div class="w3-container w3-cell w3-mobile w3-card-2">
+<div class="w3-col w3-container w3-mobile w3-card-4 w3-white"  style="width:30vw;">
   <form method = "post" enctype="multipart/form-data" id="main_address_form">
   {% csrf_token %}
   {% if addform.errors %}
@@ -50,50 +54,56 @@
           {% endif %}
       </p>
   {% endif %}
-  <fieldset class="module aligned w3-mobile">
-    <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Address' %}</h2>
-    <button type="button" id="id_follow_user_infor">Follow User Information</button>
-      <div class="form-row">
+  <div class="w3-mobile">
+    <div class="text-medium">{% trans 'Address Form' %}</div>
+    <div class="w3-row"><button class="logo-blue" type="button" id="id_follow_user_infor">{% trans 'Follow User Information' %}</button></div>
+      <div class="w3-half">
         {{ addform.first_name.errors }}
         {{ addform.first_name.label_tag }} {{ addform.first_name }}
       </div>
-      <div class="form-row">
+      <div class="w3-half">
         {{ addform.last_name.errors }}
         {{ addform.last_name.label_tag }} {{ addform.last_name }}
       </div>
-      <div class="form-row">
+      <div class="w3-half">
         {{ addform.phone.errors }}
         {{ addform.phone.label_tag }} {{ addform.phone }}
       </div>
-      <div class="form-row">
-        {{ addform.country.errors }}
-        {{ addform.country.label_tag }} {{ addform.country }}
+      <div class="w3-row">
+        <div class="w3-third">
+          {{ addform.country.errors }}
+          {{ addform.country.label_tag }} {{ addform.country }}
+        </div>
+        <div class="w3-third">
+          {{ addform.state.errors }}
+          {{ addform.state.label_tag }} {{ addform.state }}
+        </div>
+        <div class="w3-third">
+          {{ addform.city.errors }}
+          {{ addform.city.label_tag }} {{ addform.city }}
+        </div>
       </div>
-      <div class="form-row">
-        {{ addform.state.errors }}
-        {{ addform.state.label_tag }} {{ addform.state }}
-      </div>
-      <div class="form-row">
-        {{ addform.city.errors }}
-        {{ addform.city.label_tag }} {{ addform.city }}
-      </div>
-      <div class="form-row">
+      <div class="w3-row">
         {{ addform.address.errors }}
         {{ addform.address.label_tag }} {{ addform.address }}
       </div>
-      <div class="form-row">
+      <div class="w3-row">
         {{ addform.apt.errors }}
-        {{ addform.apt.label_tag }} {{ addform.apt }}
+        {{ addform.apt }}
       </div>
-      <div class="form-row">
-        {{ addform.zipcode.errors }}
-        {{ addform.zipcode.label_tag }} {{ addform.zipcode }}
+      <div class="w3-row">
+          <div class="w3-quarter w3-right">
+            {{ addform.zipcode.errors }}
+            {{ addform.zipcode.label_tag }} {{ addform.zipcode }}
+          </div>
       </div>
-      <div class="submit-row w3-container">
-          <button type="button" class="cleanBtn">{% trans 'Cancel' %}</button>
-          <input type = "submit" value = "{% trans 'Save' %}"/>
+      <div class="w3-row">
+        <div class="w3-right">
+          <button type="button" class="cleanBtn logo-red">{% trans 'Cancel' %}</button>
+          <input class="cleanBtn logo-blue" type = "submit" value = "{% trans 'Save' %}"/>
+        </div>
       </div>
-  </fieldset>
+  </div>
 </form>
 </div>
 <script>

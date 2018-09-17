@@ -8,14 +8,14 @@
 
 
 {% block content %}
-<div class="w3-panel">
+<div class="w3-panel" style="width:70%; margin:auto;">
 
-					<h2>{{user.username}}
+					<div class="text-medium-bold w3-panel">{{user.username}}
 					{% if user.collectionpoint %}
 					({% trans 'Collector' %})
-					{% endif %}</h2>
+					{% endif %}</div>
 						{% if not user.collectionpoint %}
-						<button type = "button" onclick="window.location.href = '{% url 'colregister'%}'"> {% trans 'Register as Collector' %}</button><br/>
+						<button type="button" class="logo-red" onclick="window.location.href = '{% url 'colregister'%}'"> {% trans 'Register as Collector' %}</button><br/>
 						{% endif%}
 						<div class = "w3-container">
 								{% trans 'First Name' %}: {{user.first_name}}<br/>
@@ -34,8 +34,8 @@
 								{% trans 'Birthday' %}: {{user.birthday|date:"M d, Y" }}<br/>
 								{% trans 'Country' %}: {{user.country }}<br/>
 
-								{% trans 'Preferred language' %}: {{user.language }}<br/>
-								<h4>{% trans 'Default Address' %}</h4>
+								{% trans 'Preferred language' %}:{{ user.get_language_display }}<br/>
+								<div class="text-regular-bold w3-padding-16">{% trans 'Default Address' %}</div>
 
 									{% if user.default_address %}
 												{% include "blocks/default_address_card.html" with add=user.default_address%}
@@ -44,16 +44,16 @@
 									{% endif %}
 
 		            <div class="w3-row">
-									<h4>{% trans 'Default Collection Point' %}</h4>
+									<div class="text-regular-bold  w3-padding-16">{% trans 'Default Collection Point' %}</div>
 										{% if user.default_col%}
-												{% include "blocks/default_col_card.html" with col=user.default_col%}
+												{% include "blocks/default_col_card.html" with col=user.default_col %}
 										{% else %}
 												{% trans 'No default Collection Point!' %}
 		                {% endif %}
 							</div>
 					</div>
-					<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">{% trans 'Update Profile' %}</button>
-					<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">{% trans 'Change Password' %}</button>
+					<button class="logo-red" type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">{% trans 'Update Profile' %}</button>
+					<button class="logo-blue" type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">{% trans 'Change Password' %}</button>
 
 
 </div>

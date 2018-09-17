@@ -1,7 +1,7 @@
 
 
 /* Mark input boxes that gets an error on validation: */
-input.invalid {
+input.invalid, select.invalid, textarea .invalid{
   background-color: #ffdddd;
 }
 

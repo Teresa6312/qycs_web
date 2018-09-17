@@ -6,7 +6,6 @@
       {{add.phone}}<br/>
   {% endif %}
   {{add.country}} | {{add.state}} | {{add.city}}<br/>
-  {{add.address}}<br/>
-  {% if add.apt %}{{add.apt}}<br/>{% endif %}
+  {{add.address}}{% if add.apt %} --{{add.apt}}{% endif %}<br/>
   {{add.zipcode}}<br/>
 </div>

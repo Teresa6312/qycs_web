@@ -40,7 +40,7 @@ function nextPrev(n) {
     if($('.errornote').length==0){
         var p = document.createElement('p');
         p.setAttribute('class','errornote');
-        p.innerHTML = 'Please correct the error below.';
+        p.innerHTML = 'Please correct the error(s) below.';
         $('Form').before(p);
         $('.errornote').hide().slideDown(200);
     }
@@ -79,8 +79,7 @@ function validateForm() {
   }
   if (currentTab==0) {
     var email = document.getElementById('id_email')
-
-    if(email.value!=null && !validateEmail(email.value)){
+    if(!validateEmail(email.value)){
       valid = false;
     }
   }
@@ -91,8 +90,7 @@ function validateForm() {
     }
   }
   if (valid) {
-    document.getElementsByClassName("step")
-    [currentTab].className += " finish";
+    document.getElementsByClassName("step")[currentTab].className += " finish";
   }
   return valid; // return the valid status
 }

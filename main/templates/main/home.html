@@ -9,21 +9,21 @@
 
 {% block content %}
 <div class="w3-row w3-margin-top">
-        <div class="w3-col half_circle_left" style="width:17vw;">
+        <div class="w3-col half_circle_left" style="width:16vw;">
           <div id="shipping_half_circle">
             <a href="{% url 'shipping' %}">
               <i class="fa fa-caret-left"></i>&emsp;{% trans 'SHIPPING' %}
             </a>
           </div>
         </div>
-        <div class="w3-col w3-right half_circle_right" style="width:17vw;">
+        <div class="w3-col w3-right half_circle_right" style="width:16vw;">
           <div id="tracking_half_circle">
             <a href="">{% trans 'TRACKING' %}&emsp;<i class="fa fa-caret-right"></i></a>
           </div>
         </div>
         <div class="w3-rest w3-center">
           <div class="text-xxlarge w3-text-blue w3-margin-top">{% trans 'Welcome To' %}</div>
-          <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" class="large_image"/></a>
+          <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" style="max-width:30vw; margin:auto;"/></a>
           <div class="text-regular-bold">Express - Modern Transport & Logistics</div>
             {% if user.is_authenticated %}
               <div class="text-xxxlarge w3-text-blue w3-padding-32" >
