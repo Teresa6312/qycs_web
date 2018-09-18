@@ -27,7 +27,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
+ADMINS = (
+    ('Cuishan', 'cuishan1122@gmail.com'),
+)
+MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ['*',]
 
@@ -258,6 +263,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 
 LOGIN_URL = '/accounts/login/'

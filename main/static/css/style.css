@@ -369,16 +369,10 @@ tbody td {
 /*------------------for footer only---------------------*/
 
 #footer{
-  padding-top: 1vw;
   width:100%;
   bottom:0;
   margin-top: 1vw;
-}
-
-#footer .social-networks {
-    text-align: center;
-    padding-top: 30px;
-    padding-bottom: 16px;
+  margin-bottom: 0.7vw;
 }
 
 #footer h5{
@@ -391,9 +385,6 @@ tbody td {
   color: black;
 }
 
-#footer .social-networks a:hover {
-    text-decoration: none;
-}
 
 #footer .wechat:hover {
     color:  #008000;
