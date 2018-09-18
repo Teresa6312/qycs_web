@@ -47,12 +47,17 @@
             {% endif %}
               <a href="{% url 'packagecart' %}">
                 <img src="{% static 'image/cart.png' %}" alt="cart" style="max-width:2vw; margin:auto;">
+                {% if user.is_authenticated %}
                 <div class="mini_full_circle w3-display-container">
                   <div class="w3-display-middle" id="packageNumberContainerID">
+
                   <script>
                   getPackageNumber("{% url 'packageNumber' %}","packageNumberContainerID")
                   </script>
+
+
                 </div></div>
+                {%endif%}
               </a>
 
 
