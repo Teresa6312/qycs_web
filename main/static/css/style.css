@@ -181,6 +181,53 @@ text-italic-bold{
   float:left;
 }
 
+/* animation block  */
+@-webkit-keyframes hoverIN {
+    from {
+      left: 0vw;
+    }
+    to {
+      left: 3vw;
+    }
+}
+
+@-webkit-keyframes hoverOUT {
+    from {
+      left: 3vw;
+    }
+    to {
+      left: 0vw;
+    }
+}
+
+@-webkit-keyframes hoverShippingIN {
+    from {
+      left: -12vw;
+    }
+    to {
+      left: -15vw;
+    }
+}
+
+@-webkit-keyframes hoverShippingOUT {
+    from {
+      left: -15vw;
+    }
+    to {
+      left: -12vw;
+    }
+}
+
+#tracking_half_circle:hover{
+  /* animation passing name  */
+  animation-name: hoverIN;
+  animation-duration: .5s;
+  left: 3vw;
+}
+
+
+
+
 .half_circle_right{
   margin-top: 8vw;
   overflow: hidden;
@@ -196,6 +243,13 @@ text-italic-bold{
   float:left;
 }
 
+#shipping_half_circle:hover{
+  animation-name: hoverShippingIN;
+  animation-duration: .5s;
+  left: -15vw;
+}
+
+
 #shipping_half_circle{
   border-radius:50%;
   padding:12.5vw 2vw;
@@ -206,6 +260,8 @@ text-italic-bold{
   position: relative;
   left: -12vw;
   width:28vw;
+  animation-name: hoverShippingOUT;
+  animation-duration: .5s;
 }
 
 #tracking_half_circle{
@@ -216,6 +272,8 @@ text-italic-bold{
   padding-right: 11vw;
   position: relative;
   width:28vw;
+  animation-name: hoverOUT;
+  animation-duration: .5s;
 }
 
 
