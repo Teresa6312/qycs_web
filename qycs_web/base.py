@@ -77,9 +77,6 @@ INSTALLED_APPS = [
     # for upload and storage images
     'cloudinary',
 
-    # photo_album
-    'photo_albums',
-
     'django.contrib.admindocs',
 ]
 
@@ -134,7 +131,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # cloudinary
-                'photo_album.context_processors.consts',
+                'main.context_processors.consts',
 
                 # social media login
                 'social_django.context_processors.backends',
