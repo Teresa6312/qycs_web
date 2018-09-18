@@ -32,6 +32,10 @@ class PackagesView(TemplateView):
 			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
 
 
+def ReturnPackageNumber(request):
+	packageNumber=Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date').count()
+	return HttpResponse(packageNumber)
+
 class PackageCartView(TemplateView):
 	template_name = 'main/package_cart.html'
 

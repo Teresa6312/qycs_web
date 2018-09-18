@@ -42,7 +42,19 @@ $(document).ready(function(){
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
+
 })
+
+function getPackageNumber(url,id){
+    $.ajax({
+        url: url,
+        success: function(data){
+          $('#'+id).text(data)
+        }
+      });
+}//end of getPackageNumber
+
+
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
