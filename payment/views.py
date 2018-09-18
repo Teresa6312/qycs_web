@@ -22,7 +22,7 @@ def payment_process(request):
     if orderSet.coupon:
         paypal_dict = {
             "business" : settings.PAYPAL_RECEIVER_EMAIL,
-            "amount": orderSet.total_amount,
+            "amount": (orderSet.total_amount + orderSet.insurance),
             "currency_code": orderSet.currency,
             "item_name": "{} packages".format(orderSet.service_set.all().count()),
             "discount_rate": orderSet.coupon.discount,

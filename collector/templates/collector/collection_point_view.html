@@ -65,21 +65,21 @@
   </div>
 
     <hr/>
-
+<div style="width:80%; margin:auto;">
     <div class="w3-panel w3-cell-row">
-      <div class="w3-col" style="width:7vw;">
+      <div class="w3-row text-regular-bold">
       {% trans 'Introduction' %}
       </div>
-      <div class="w3-rest">{{collector.description|linebreaks|safe}}</div>
+      <div class="w3-row w3-margin-left">{{collector.description|linebreaks|safe}}</div>
     </div>
 
 {% if collector.show_contact %}
     <div class="w3-panel w3-cell-row">
-      <div class="w3-col" style="width:7vw;">
+      <div class="w3-row text-regular-bold">
       {% trans 'Contact Information' %}
       </div>
-      <div class="w3-rest">
-          {% trans 'Email' %}: {{collector.user.email}}<br/>
+      <div class="w3-row w3-margin-left">
+          {% trans 'Email' %}: {{collector.collector.email}}<br/>
           {% if collector.wechat_qrcode %}
             {% trans 'Wechat' %}: <img alt="collection point icon" src="{{collector.wechat_qrcode.url}}" style="width:25vw; margin:auto;">
           {% elif collector.wechat %}
@@ -88,7 +88,7 @@
       </div>
     </div>
 {% endif %}
-
+</div>
     <div class="w3-panel">
       <form method="post">
         {% csrf_token %}

@@ -7,20 +7,6 @@
 
 
 
-{% block extrastyle %}
-<style>
-  #shop-content {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'image/brand_red.png' %}");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    padding-top: 5vw;
-    min-height: 40vw;
-    background-position: center;
-  }
-</style>
-{% endblock %}
-
-
 {% block content %}
 <div id="shop-content" class="w3-row w3-center w3-text-white w3-mobile">
     <div class="text-xxxlarge-bold w3-text-white">{% trans "Do you like to shop globally?" %}</div>

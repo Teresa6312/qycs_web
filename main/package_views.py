@@ -223,11 +223,11 @@ class PackageDetailView(TemplateView):
 
 	def get(self, request, pack_id):
 		try:
-			package = Service.objects.get(pk=pack_id)
+			package = Service.objects.get(pk=pack_id,user=request.user)
 			return render(request, self.template_name , {'package': package})
 		except ObjectDoesNotExist:
 			messages.error(request, _("Cannot Find the package"))
-			return render(request,reverse('userpackages'))
+			# return render(request,reverse('userpackages'))
 
 
 def couponView(request):

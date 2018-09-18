@@ -9,7 +9,6 @@
 <meta name="author" content="Qycs Technique team">
 {% endblock %}
 
-
 {% block coltype %}contentCSS{% endblock %}
 
 {% block branding %}
@@ -24,20 +23,18 @@
             {% if user.is_authenticated %}
             {% if user.default_col %}<a href="{% url 'add_co_shipping' user.default_col.pk %}">{% trans "Quick Co-shipping" %}</a>{% endif %}
             <a href="{% url 'add_direct_shipping' %}">{% trans "Quick Direct Shipping" %}</a>
-
-
               <!--Dropdown Click Button-->
               <div class="dropdown">
-                <button type="button" class="dropbtn">{{user.username}}
+                <button type="button" class="dropbtn"><span class="logo-text-blue">{{user.username}}</span>
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                  {% if user.default_col %}<a href="{{user.default_col.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
-                  <a href="{% url 'account' %}">{% trans "My Profile" %}</a>
-                  <a href="{% url 'useraddress' %}">{% trans "My Address book" %}</a>
-                  <a href="{% url 'userpackage' %}">{% trans "My Packages History" %}</a>
-                  <a href="{% url 'userwallet' %}">{% trans "My Wallet" %}</a>
-                  <a href="{% url 'logout' %}">{% trans "Logout" %}</a>
+                  {% if user.default_col %}<a href="{{user.default_col.get_absolute_url}}">{% trans "Collection Point" %}</a>{% endif %}
+                  <a href="{% url 'account' %}">{% trans "Profile" %}</a>
+                  <a href="{% url 'useraddress' %}">{% trans "Address Book" %}</a>
+                  <a href="{% url 'userpackage' %}">{% trans "Packages History" %}</a>
+                  <a href="{% url 'userwallet' %}">{% trans "Wallet" %}</a>
+                  <a href="{% url 'logout' %}">{% trans "Log Out" %}</a>
                 </div>
               </div>
             {% else %}
@@ -48,43 +45,11 @@
 
 
             {% endif %}
-            <div class="dropdown">
-              <button type="button" class="dropbtn" onclick="window.location.href = '{% url 'packagecart' %}'">{% trans "Upcoming Packages" %}</button>
-              <div class="dropdown-content">
-                    {% if user.service_set.all %}
-                        {% for package in  user.service_set.all %}
-                              {% if not packages.paid_amount %}
-                                        {% if not package.order %}
-                                              <div class="w3-panel">
-                                                  <div class="text-large-bold" onclick="window.location.href='{{package.get_absolute_url}}'">{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</div>
-                                                  {% if package.co_shipping %}
-                                                      {% trans 'Co-shipping to' %}: {{package.ship_to_col.name}}<br/>
-                                                      {{package.receiver.last_name}},{{package.receiver.first_name}}({{package.receiver.phone}})<br/>
-                                                  {% elif not package.co_shipping %}
-                                                      Direct Shipping to: {{package.ship_to_add}}<br/>
-                                                  {% endif %}
-                                                  {% if package.packagesnapshot_set.all %}{% trans 'Inserted' %} {{ package.packagesnapshot_set.count}} {% trans 'package snapshots' %}<br/>{% endif %}
-                                                  {% if package.item_set.all %}{% trans 'Entered' %} {{ package.item_set.count}} {% trans "Items' detail" %}<br/>{% endif %}
-                                              </div>
-                                        {% else %}
-                                            {% trans 'Order created on'%} {{package.created_date|date:"M d, Y" }}<br/>
-                                            {% if package.item_set.all %}
-                                              <ul>
-                                                {% for item in package.item_set.all %}
-                                                <li>item.item_name</li>
-                                                {% endfor %}
-                                              </ul>
-                                            {% else %}
-                                                {% trans 'No information at this time.' %}
-                                            {% endif %}
-                                        {% endif %}
-                                {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        {% trans 'No shipping packages and orders in cart.' %}
-                    {% endif %}
-              </div>
-            </div>
+              <a href="{% url 'packagecart' %}">
+                <img src="{% static 'image/cart.png' %}" alt="cart" style="max-width:2vw; margin:auto;">
+                <div class="mini_full_circle w3-display-container"><div class="w3-display-middle">100</div></div>
+              </a>
+
 
           <a href="{% url 'packagecart' %}"></a>
 
@@ -115,52 +80,66 @@
 
 
 {% block footer %}
+<hr/>
 <div id="footer">
-  <div class="w3-row">
-    <div class="w3-col w3-container m2 l2">
-      <div class="w3-center"><a href="{% url 'home' %}"><img style="max-width:10vw; margin:auto;" src="{% static 'image/slogan.png'%}" alt="qycs slogan icon"></a></div>
-    </div>
-    <div class="w3-col w3-container m2 l2">
-      <div class="text-medium-bold logo-text-blue" >{% trans "My Qycs" %}</div>
+  <div class="w3-row" style="width:70%; margin:auto;">
+    <div class="w3-col w3-container m3 l3">
+      <div class="text-regular-bold logo-text-blue" >{% trans "My Qycs" %}</div>
 
-      <a class="w3-text-white" href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'fqa'%}">{% trans "FQA" %}</a><br/>
-
-    </div>
-    <div class="w3-col w3-container m2 l2">
-      <div class="text-medium-bold logo-text-blue" >{% trans "Consumer Guide" %}</div>
-      <a class="w3-text-white" href="{% url 'information' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
+      <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
+      <a href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
+      <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
+      <a href="{% url 'information' 'fqa'%}">{% trans "FQAs" %}</a><br/>
 
     </div>
     <div class="w3-col w3-container m3 l3">
-      <div class="text-medium-bold logo-text-blue">{% trans "Service Guide" %}</div>
+      <div class="text-regular-bold logo-text-blue" >{% trans "Consumer Guide" %}</div>
+      <a href="{% url 'information' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
+      <a href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
+      <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
 
-      <a class="w3-text-white" href="{% url 'information' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
-      <a class="w3-text-white" href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
+    </div>
+    <div class="w3-col w3-container m3 l3">
+      <div class="text-regular-bold logo-text-blue">{% trans "Service Guide" %}</div>
+
+      <a  href="{% url 'information' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
+      <a href="{% url 'information' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
+      <a href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
 
     </div>
 
-    <div class="w3-col w3-container m2 l2">
-      <div class="social-networks">
-        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" width="40" height="40">
-
-        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" width="40" height="40">
-
+    <div class="w3-col w3-container m3 l3">
+      <div class="w3-row">
+          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:5vw; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
       </div>
 
+      <div class="w3-panel w3-center">
+        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="width:2.5vw;">
+        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="width:2.5vw;">
+      </div>
+      <div class="w3-panel w3-center">
+        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:10vw;">
+    </div>
     </div>
 
 
   </div>
 
 </div>
-<div id="rights" class="footer-copyright">
-  &copy; {% trans "Qycs Global Shipping Inc." %} | {% trans "All Rights Reserved" %} © 2018 |
-  <a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a>
+<div id="rights" class="footer-copyright w3-row"  style="width:100%; margin:auto;">
+      <div class="w3-col" style="width:50%;">
+            <div class="w3-container" style="width:80%; margin-left:20%;">
+              <div>&copy; 2018 {% trans "Qycs Global Shipping Inc." %} {% trans "All Rights Reserved" %}</div>
+            </div>
+      </div>
+
+
+      <div class="w3-rest">
+            <div class="w3-container" style="width:80%;">
+              <div><a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a></div>
+            </div>
+      </div>
+
 </div>
+
 {% endblock %}

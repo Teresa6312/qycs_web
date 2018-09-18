@@ -3,8 +3,20 @@
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
 
+
+function updateCollectionPointsTable(pointsArray){
+  $('#CollectionPointID').find('tr').each(function(){
+    $(this).css('display','none')
+  })
+  for(var pt in pointsArray){
+    let tableRow=$('#CollectionPointID').find('#'+pointsArray[pt].id)
+    tableRow.css('display','table-row')
+  }
+}//end of updateCollectionPointsTable
+
+
     var map, infoWindow;
-    let locations = [];
+
 
     let positions = [];
 
@@ -30,7 +42,7 @@
                     result_points.push(locations.find(obj => obj.id === positions[i].id));
                 }
             }
-            // console.log(result_points);
+            updateCollectionPointsTable(result_points);
         });
 
 
@@ -76,11 +88,12 @@
 //marker.setMap(map);
 
       infoWindow = new google.maps.InfoWindow;
-
+      // console.log(navigator.geolocation);
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
             map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -108,6 +121,7 @@
                  infoWindow.setPosition(marker.position);
                  infoWindow.setContent(location.address);
                  infoWindow.open(resultsMap,marker);
+
                 }
              })(marker));
            } else {

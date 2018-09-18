@@ -4,7 +4,7 @@ from .models import (
 	)
 from .forms import (
 	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
-	ColCreationForm, EmailForm, ColChangeForm
+	ColCreationForm, EmailForm, ColChangeForm, TrackingForm
 	)
 
 from .code import send_confirmation_email
@@ -418,29 +418,56 @@ class SetDefaultAddressView(TemplateView):
 		return redirect(reverse('useraddress'))
 
 
+def return_col_address_str():
+	col_list = CollectionPoint.objects.filter(status=True)
+	col_address = list((CollectionPoint.objects.filter(status=True).
+					values('address', 'apt', 'city', 'state', 'country', 'zipcode' )))
+	col_address_str=list()
+	c=0
+	for rec in col_list:
+		temp=dict()
+		str_add=''
+		temp['id']=rec.pk
+		for param in col_address[c]:
+			str_add+=col_address[c][param]+' '
+		temp['address']=str_add
+		col_address_str.append(temp)
+		c+=1
+
+	col_str_json=json.dumps(list(col_address_str), cls=DjangoJSONEncoder)
+
+	return dict(col_list=col_list, col_str_json=col_str_json)
+
 
 class CollectionPointView(TemplateView):
 	template_name = 'main/collectionpoints.html'
-	col_list = (CollectionPoint.objects.filter(status=True).
-					values('pk', 'name', 'store', 'absent_start', 'absent_end', 'food', 'regular', 'skincare', 'address', 'apt', 'city', 'state', 'country', 'zipcode' ))
-	col_json = json.dumps(list(col_list), cls=DjangoJSONEncoder)
 
 	def get(self, request):
-		return render(request, self.template_name, {'col_list': self.col_json,})
-
-	def post(self, request):
-
-		try:
-			col = CollectionPoint.objects.get(pk=request.POST.get('selected_col'))
-			if not col.status:
-				messages.error(request, _("The Collection Point you select is not avaliable. Please select another one." ))
-				return render(request, self.template_name, {'col_list': self.col_json,})
-			else:
-				return redirect(reverse('add_co_shipping',args = (col.pk,)))
-		except:
-			messages.error(request, _("Your didn't select a Collection Point yet."))
-			return render(request, self.template_name, {'col_list': self.col_json,})
-
+		col_dict=return_col_address_str()
+		return render(request, self.template_name, {'col_list': col_dict['col_list'],'col_str_json': col_dict['col_str_json']})
+#
+# class CollectionPointView(TemplateView):
+# 	template_name = 'main/collectionpoints.html'
+# 	col_list = (CollectionPoint.objects.filter(status=True).
+# 					values('pk', 'name', 'store', 'absent_start', 'absent_end', 'food', 'regular', 'skincare', 'address', 'apt', 'city', 'state', 'country', 'zipcode' ))
+# 	col_json = json.dumps(list(col_list), cls=DjangoJSONEncoder)
+#
+# 	def get(self, request):
+# 		return render(request, self.template_name, {'col_list': self.col_json,})
+#
+# 	def post(self, request):
+#
+# 		try:
+# 			col = CollectionPoint.objects.get(pk=request.POST.get('selected_col'))
+# 			if not col.status:
+# 				messages.error(request, _("The Collection Point you select is not avaliable. Please select another one." ))
+# 				return render(request, self.template_name, {'col_list': self.col_json,})
+# 			else:
+# 				return redirect(reverse('add_co_shipping',args = (col.pk,)))
+# 		except:
+# 			messages.error(request, _("Your didn't select a Collection Point yet."))
+# 			return render(request, self.template_name, {'col_list': self.col_json,})
+#
 
 
 class ShippingView(TemplateView):
@@ -462,6 +489,39 @@ class ShoppingView(TemplateView):
 
 	def get(self, request):
 		return render(request, self.template_name)
+
+class TrackingView(TemplateView):
+	template_name = 'main/tracking.html'
+
+	def get(self, request):
+		return render(request, self.template_name)
+
+	def post(self, request):
+		form = TrackingForm(request.POST)
+		if form.is_valid():
+			str = form.cleaned_data['cust_tracking_num']
+			if ',' in  str :
+				nums =  str.split(',')
+			elif ';' in str :
+				nums =  str.split(';')
+			else:
+				nums =  str.split() or str.strip('\n') or str.lstrip('\n\r') or str.rstrip('\n\t')
+			packages = []
+			for num in nums:
+				try:
+					package = Service.objects.get(cust_tracking_num__iexact = num.strip())
+					packages.append(package)
+				except:
+					messages.error(request, _(num +" was not found."))
+
+			if len(packages) > 0:
+				return render(request, 'main/tracked.html', {'packages':packages,})
+			else:
+				return render(request, self.template_name)
+		else:
+			messages.error(request, _("Invalid tracking number."))
+			return render(request, self.template_name)
+
 
 class InformationView(TemplateView):
 	template_name = 'main/information.html'

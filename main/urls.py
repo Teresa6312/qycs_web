@@ -24,6 +24,7 @@ urlpatterns = [
     path('shipping/', views.ShippingView.as_view(), name='shipping'),
 
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
+    path('tracking/', views.TrackingView.as_view(), name='tracking'),
 
 
     # path('image/', views.AddImageView.as_view(), name='image'),

@@ -353,6 +353,9 @@ ItemFormset = inlineformset_factory(Service,
 class SnapshotForm(forms.Form):
 	Snapshot = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True,}))
 
+class TrackingForm(forms.Form):
+	cust_tracking_num = forms.CharField(required = True)
+
 
 
 #-----------------------------------------------------------------------------------------

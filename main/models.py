@@ -10,6 +10,7 @@ from django.urls import reverse
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
+from cloudinary.models import CloudinaryField
 
 from datetime import date
 
@@ -23,6 +24,12 @@ CARRIER_CHOICE = (
 	('YT', _('Yuan Tong')),
 	('UPS', _('UPS')),
 	('DHL', _('DHL')),
+)
+INSURANCE_CHOICE = (
+	(0, _('NO insurance')),
+	(3, _('$3 instance')),
+	(5, _('$5 instance')),
+	(10, _('$10 instance')),
 )
 CURRENCY_CHOICE = (
 	('CNY', _('China Yuan')),
@@ -148,8 +155,12 @@ class CollectionPoint(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Collection Point Updated Date'))
 	collector = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True,verbose_name= _('Collector'))
 	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License Type'))
-	license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
-	id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
+	# license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
+	# id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
+
+	collector_icon = CloudinaryField('collector_icon')
+	license_image = CloudinaryField('collector_license')
+	id_image = CloudinaryField('collector_id')
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))
 	store = models.BooleanField(default = True, verbose_name= _('Store'))
@@ -177,7 +188,7 @@ class CollectionPoint(Address_Common_Info):
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Avaliable'))
 	status.boolean = True
-	collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
+	# collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))
 	show_contact = models.BooleanField(default = False, verbose_name= _('Show Contact Information'))
 	show_contact.boolean = True
@@ -199,6 +210,8 @@ class CollectionPoint(Address_Common_Info):
 	sun_end = models.TimeField(blank=True, null=True, verbose_name= _('Sunday End'))
 	absent_start = models.DateField(blank=True, null=True, verbose_name= _('Absent Start'))
 	absent_end = models.DateField(blank=True, null=True, verbose_name= _('Absent End'))
+
+
 
 
 	def __str__(self):
@@ -294,6 +307,8 @@ class OrderSet(models.Model):
 	reward_point_used = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
 	total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
+	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=True, default=0, verbose_name= _('Insurance Plan'))
+
 
 	def get_should_pay_amount(self):
 		total_amount = 0
@@ -511,7 +526,8 @@ class Item(models.Model):
 
 class PackageSnapshot(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package'))
-	snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
+	# snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
+	snapshot = CloudinaryField('package_snapshot')
 
 	class Meta:
 		verbose_name_plural = _("Package Snapshot")

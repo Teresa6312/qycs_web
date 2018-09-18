@@ -5,13 +5,6 @@
 {% trans "Qycs's Collection Points" %}
 {% endblock%}
 
-{% block messages %}
-    {% if messages %}
-    <ul class="messagelist">{% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-    {% endfor %}</ul>
-    {% endif %}
-{% endblock messages %}
 
 {% block content %}
 
@@ -23,11 +16,11 @@
             <form method = "post">
               {% csrf_token %}
               <input type="hidden" id="id_selected_col" name="selected_col" value="{{user.default_col.pk}}" />
-              {% if user.default_col %}
-                  <div class="w3-border w3-round w3-container w3-mobile w3-half" style="max-width: 300px;">
-                    {% include "blocks/col_card_fields.html" with col=user.default_col no_icon='yes' %}
-                  </div>
-              {% endif %}
+
+
+
+
+
               <input id="add_package_btn" type="submit" value="{% trans 'Add package' %}">
             </form>
         {% else %}
@@ -44,14 +37,52 @@
 
 <div class="w3-container">
   <input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}">
+  <!-- {% if user.default_col %}
+      <div class="w3-border w3-round w3-container w3-mobile w3-half" style="max-width: 300px;">
+        {% include "blocks/col_card_fields.html" with col=user.default_col no_icon='yes' %}
+      </div>
+  {% endif %} -->
+  <Table id="CollectionPointID">
+    <tbody>
+      {% for col in col_list  %}
+      <tr id="{{col.pk}}">
+        <td>
+          <div class="w3-border w3-round w3-container w3-mobile w3-half" id="CollectionCart" style="max-width: 300px;">
+            {% include "blocks/col_card_fields.html" with col=col no_icon='yes' %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </Table>
+
   <div id="map"></div>
 </div>
+
+<style>
+#CollectionPointID{
+  position: absolute;
+  z-index: 100;
+  margin-left: 75%;
+}
+#CollectionCart{
+  background-color: white;
+  width: 400px;
+}
+</style>
 
 <br/>
 {% endblock %}
 
 {% block script%}
+
+<script>
+  let locations={{col_str_json|safe}}
+</script>
+<!-- <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script> -->
 <script src="{% static 'js/map.js' %}"></script>
+
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLyUK5D-laS8iQsSDWwOhehl-Gvhz8xfA&libraries=places&callback=initAutocomplete">
 </script>
