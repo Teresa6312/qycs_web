@@ -78,7 +78,7 @@ INSTALLED_APPS = [
     'cloudinary',
 
     # photo_album
-    'photo_album',
+    'photo_albums',
 
     'django.contrib.admindocs',
 ]
