@@ -400,7 +400,6 @@ class DeleteAddressView(TemplateView):
 		add = Address.objects.get(pk=add_id)
 		add.user = None
 		add.save()
-
 		if add == request.user.default_address:
 			user = User.objects.get(pk = request.user.pk)
 			user.default_address = None

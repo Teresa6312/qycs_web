@@ -3,25 +3,8 @@ body {
   position: relative;
   margin: 0;
   overflow: auto;
-  font-size: 1vw;
   background-size: 100%;
   background-image: url("/static/image/home_background.png");
-}
-
-#shop-content {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/image/brand_red.png");
-  background-size: 100%;
-  background-repeat: no-repeat;
-  padding-top: 5vw;
-  min-height: 40vw;
-  background-position: center;
-}
-.home_loged{
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-image: url("/static/image/car_background.png");
-  background-position: right 0 bottom 0;
-  padding-bottom: 10vw;
 }
 .logo-red{
   background-color: #E73229;
@@ -90,6 +73,10 @@ body {
   font-size: 1vw;
   font-weight: bold;
 }
+text-italic-bold{
+  font: italic bold,arial;
+}
+
 a{
   color: #fff;
 }
@@ -99,12 +86,9 @@ a:link, a:visited{
 a:hover{
   text-decoration: underline;
 }
-text-italic-bold{
-  font: italic bold,arial;
-}
+
 
 /*----------------- header and bar ---------------------------*/
-
 .topnav{
   margin-top: 0.2vw;
 }
@@ -113,7 +97,7 @@ text-italic-bold{
   display: block;
   text-align: center;
   text-decoration: none;
-  margin-left: 1vw;
+  padding: 1vw;
   color: #939393;
   font-weight: bold;
   text-transform: uppercase;
@@ -130,16 +114,16 @@ text-italic-bold{
 .dropdown {
     float: left;
     overflow: hidden;
+    min-width: 100px;
 }
 
 .dropdown .dropbtn {
-    font-size: 1vw;
     font-weight: bold;
     background-color: Transparent;
     color: grey;
     border: none;
     outline: none;
-    margin-left: 1vw;
+    padding: 1vw;
     text-transform: uppercase;
 }
 
@@ -159,7 +143,7 @@ text-italic-bold{
     text-decoration: none;
     display: block;
     text-align: left;
-    font-size: 0.9vw;
+    font-size: 13px;
     text-transform: capitalize;
     margin: 0;
 }
@@ -172,8 +156,32 @@ text-italic-bold{
     display: block;
 }
 
-/*------------------------ content --------------------------*/
+/*------------------------------------ content --------------------------------------*/
+.w3-card-2, .w3-card-4, .w3-border{
+  background-color: white;
+}
 
+.large_image{
+  max-width: 45%;
+  height: auto;
+}
+
+#shop-content {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/image/brand_red.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  padding-top: 5vw;
+  min-height: 40vw;
+  background-position: center;
+}
+.home_loged{
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url("/static/image/car_background.png");
+  background-position: right 0 bottom 0;
+  padding-bottom: 10vw;
+}
+/*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
   margin-top: 8vw;
   overflow: hidden;
@@ -298,19 +306,19 @@ text-italic-bold{
 }
 
 .mini_full_circle{
-  height: 2vw;
-  width: 2vw;
+  height: 15px;
+  width: 15px;
   background-color: #E73229;
   border-radius: 50%;
   display: inline-block;
   margin: auto;
   color: #fff;
-  font-size: 0.8vw;
+  font-size: 8px;
 }
 
-.w3-card-2, .w3-card-4, .w3-border{
-  background-color: white;
-}
+
+
+/* ---------------------------------- for inputs ----------------------------------- */
 .contentCSS input[type="checkbox"]{
   width: 1vw;
   height: 1vw;
@@ -326,24 +334,45 @@ text-italic-bold{
   width: 95%;
 }
 
-.large_image{
-  max-width: 45%;
-  height: auto;
-}
 
-
+/* --------------------------- for the map ----------------------------------- */
 #map{
-  width:80%;
   height:500px;
+  width: 100%;
 }
-
+#CollectionPointID{
+  max-height:500px;
+  overflow-y: visible;
+  width: 300px;
+  border: solid;
+  border-color: #2196F3;
+}
+#CollectionCart{
+  background-color: white;
+  width: 280px;
+  display: block;
+  margin: 10px 10px;
+}
+#pac-input{
+  width: 250px;
+  border: none;
+  background-color: Transparent;
+}
+#search_block{
+  position: absolute;
+  z-index: 1;
+  margin-left: 600px;
+  margin-top: 10px;
+  height: 40px;
+  border-color: black;
+  background-color: #fff;
+  padding: 0.2vw 1vw;
+}
 hr{
   margin-top: 0;
   margin-bottom: 0.5vw;
 }
-
-
-
+/* ---------------------------------------- for the table ----------------------------------- */
 thead {
     display: block;
     width: 100%;
@@ -366,7 +395,7 @@ tbody td {
   position: relative;
 }
 
-/*------------------for footer only---------------------*/
+/*---------------------------------------for footer only----------------------------------------*/
 
 #footer{
   width:100%;
@@ -374,14 +403,13 @@ tbody td {
   margin-top: 1vw;
   margin-bottom: 0.7vw;
 }
-
 #footer h5{
-  font-size: 1.5vw;
   font-weight: bold;
-}
+  color: #121A50;
 
+
+}
 #footer a{
-  font-size: 1vw;
   color: black;
 }
 
@@ -399,10 +427,26 @@ tbody td {
     color: #fff;
   }
 
-
+/*----------------------------------------for small screem ----------------------------------*/
   @media screen and (max-width: 600px) {
-    .topnav a:not(:first-child), .dropdown .dropbtn {
+    .dropdown .dropdown-content{
+      display: block;
+      background-color: Transparent;
+      box-shadow: none;
+      padding-left: 10px;
+    }
+    .topnav{
+      padding: 0;
+      margin: 0;
+      z-index: 1;
+    }
+    .topnav a, .dropdown .dropbtn {
       display: none;
+    }
+    .topnav a:hover {
+      color: #2196F3;
+      background-color:#FFF;
+      box-shadow:0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.19)
     }
     .topnav a.icon {
       float: right;
@@ -454,7 +498,7 @@ tbody td {
   }
 
 
-  /* MESSAGES & ERRORS */
+/* ---------------------------------MESSAGES & ERRORS ----------------------------------------------*/
   ul.messagelist {
       padding: 0;
       margin: 0;
@@ -613,6 +657,13 @@ tbody td {
 .response_btn{
   background-color: #121A50;
 }
+
+/* ------------------------------------- for tracking and tracked page ------------------------------------------------------- */
+#tracking_block{
+  width:40vw;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+}
 #track_btn{
   color: red;
   padding: 0;
@@ -621,7 +672,8 @@ tbody td {
   font-weight: bold;
   background-color: Transparent;
   font-size: 1.5vw;
-  width: 9.5vw;
+  display:inline-block;
+  margin-left: 1.5vw;
 }
 .tracking{
   margin-top: 4vw;

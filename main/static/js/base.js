@@ -49,7 +49,10 @@ function getPackageNumber(url,id){
     $.ajax({
         url: url,
         success: function(data){
-          $('#'+id).text(data)
+          if (parseFloat(data)>0){
+            $('#'+id).text(data);
+            $('#package_num').show();
+          }
         }
       });
 }//end of getPackageNumber

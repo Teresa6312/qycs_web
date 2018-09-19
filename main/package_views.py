@@ -198,7 +198,11 @@ class AddCoShipping(TemplateView):
 			package.user = request.user
 
 			package.save()
-
+			if not request.user.default_col:
+				user = User.objects.get(id = request.user.id)
+				user.default_col = col
+				user.save()
+				
 			itemset.instance = package
 			itemset.save()
 

@@ -27,9 +27,9 @@ CARRIER_CHOICE = (
 )
 INSURANCE_CHOICE = (
 	(0, _('NO insurance')),
-	(3, _('$3 instance')),
-	(5, _('$5 instance')),
-	(10, _('$10 instance')),
+	(3, _('$3 insurance')),
+	(5, _('$5 insurance')),
+	(10, _('$10 insurance')),
 )
 CURRENCY_CHOICE = (
 	('CNY', _('China Yuan')),

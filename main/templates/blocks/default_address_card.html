@@ -4,7 +4,7 @@
 
     {% if add_field_name %}<input type="hidden" id="id_{{add_field_name}}" name="{{add_field_name}}" value="{{add.pk}}" />{% endif %}
     <div id="default_address_card_fields">
-        {% include "blocks/address_card_fields.html" with default='(default)'%}
+        {% include "blocks/address_card_fields.html"%}
     </div>
 
 </div>
