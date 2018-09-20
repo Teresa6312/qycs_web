@@ -162,7 +162,7 @@
           <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon" class="w3-input w3-border"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
           <hr class="w3-border-black"/>
         <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
-        {{order.insurance.label_tag}}{{order.insurance}}
+        {{order.insurance.label_tag}}<br/>{{order.insurance}}
         <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
     </div>
 </div>

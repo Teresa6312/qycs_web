@@ -22,7 +22,7 @@
         <div class="text-xxxlarge-bold">{% trans 'TRACK PACKAGES' %}</div>
         <form method="post">
             {% csrf_token %}
-            <div class="w3-border w3-border-grey w3-light-grey" style="width:40vw;">
+            <div id="tracking_block">
               <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" placeholder="TRACKING NUMBERS" title="YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR SEMICOLON.">
                 <input type="submit" value="TRACK" id="track_btn">
             </div>

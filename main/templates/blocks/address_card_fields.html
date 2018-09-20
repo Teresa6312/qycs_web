@@ -1,7 +1,10 @@
 {% load i18n static %}
 
 <div class="add_fields">
-  <div class="text-regular-bold">{{add.last_name}}, {{add.first_name}} {{default}}</div>
+  <div class="text-regular-bold">{{add.last_name}}, {{add.first_name}}
+     {% if col == user.default_address %}
+     - {% trans 'Default' %}
+     {% endif %}</div>
   {% if add.phone%}
       {{add.phone}}<br/>
   {% endif %}

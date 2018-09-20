@@ -16,6 +16,9 @@
   {% else %}
       ({% trans 'Personal Place' %})
   {% endif %}
+  {% if col == user.default_col %}
+   - {% trans 'Default' %}
+  {% endif %}
 </div>
 {% if col.absent_start and not col.absent_ended %}
 <div class="w3-row w3-text-red">
@@ -23,7 +26,7 @@
   {% trans 'Not avaliable from' %} {{col.absent_start|date:"M d, Y"}} - {{col.absent_end|date:"M d, Y"}}.
 </div>
 {% endif %}
-<a href="{% url 'add_co_shipping' col.pk %}">{% trans "Add package" %}</a> | 
+<a class="w3-text-blue" href="{% url 'add_co_shipping' col.pk %}">{% trans "Add package" %}</a> |
 <a class="w3-text-blue" href="{{col.get_absolute_url}}">{% trans 'visit collection point' %}</a><br/>
 {% trans 'Food' %}: {% if col.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:1vw;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:1vw;"/> {% endif %} |
 {% trans 'Regular' %}: {% if col.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:1vw;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:1vw;"/> {% endif %} |

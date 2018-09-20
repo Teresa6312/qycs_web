@@ -27,9 +27,9 @@ CARRIER_CHOICE = (
 )
 INSURANCE_CHOICE = (
 	(0, _('NO insurance')),
-	(3, _('$3 instance')),
-	(5, _('$5 instance')),
-	(10, _('$10 instance')),
+	(3, _('$3 insurance')),
+	(5, _('$5 insurance')),
+	(10, _('$10 insurance')),
 )
 CURRENCY_CHOICE = (
 	('CNY', _('China Yuan')),
@@ -158,8 +158,8 @@ class CollectionPoint(Address_Common_Info):
 	# license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
 	# id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
 
-	collector_icon = CloudinaryField('collector_icon')
-	license_image = CloudinaryField('collector_license')
+	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
+	license_image = CloudinaryField('collector_license', blank=True, null=True)
 	id_image = CloudinaryField('collector_id')
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))

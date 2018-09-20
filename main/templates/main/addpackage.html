@@ -117,27 +117,26 @@
 
               {% if itemset.forms %}
                   {% for subform in itemset.forms %}
-                      <table style="width:80%; margin:auto;">
-                              <tr class="itemset_row" >
-                                  <td>
-                                    <div class="text-regular-bold">{% trans 'Item' %}</div>
+                      <table style="width:95%; margin:auto;">
+                                <tr class="itemset_row w3-cell-row"><th  class="w3-cell select_column" style="width:5%;">{% trans 'Item' %}</th>
+                                  <td class="w3-cell w3-rest">
                                       <div class="w3-container">
                                         {{ subform.item_name.errors }}
                                         {{ subform.item_name.label_tag }} {{ subform.item_name }}
                                       </div>
-                                      <div class="w3-row">
-                                          <div class="w3-third w3-container">
+                                      <div class="w3-col-row">
+                                          <div class="w3-col w3-container" style="width:100px;">
                                             {{ subform.item_quantity.errors }}
                                             {{ subform.item_quantity.label_tag }} {{ subform.item_quantity }}
                                           </div>
-                                          <div class="w3-twothird w3-container">
+                                          <div class="w3-third w3-container">
                                             {{ subform.item_detail.errors }}
                                             {{ subform.item_detail.label_tag }} {{ subform.item_detail }}
                                           </div>
-                                      </div>
-                                      <div class="w3-container">
-                                        {{ subform.item_url.errors }}
-                                        {{ subform.item_url.label_tag }} {{ subform.item_url }}
+                                          <div class="w3-rest w3-container">
+                                            {{ subform.item_url.errors }}
+                                            {{ subform.item_url.label_tag }} {{ subform.item_url }}
+                                          </div>
                                       </div>
                                       <div class="w3-container">
                                         {{ subform.low_volume_request.errors }}

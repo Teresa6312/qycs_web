@@ -323,7 +323,7 @@ class ItemForm(forms.ModelForm):
 	memo = forms.CharField( label = 'Note', required=False,
 							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this item',
 												"class":"w3-input w3-border",
-												"rows": 5 }))
+												"rows": 3 }))
 
 	class Meta:
 		model = Item

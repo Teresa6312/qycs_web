@@ -292,8 +292,8 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     if($('#newAddressForm_js').length==0){
         $('#id-new-address-content').append(addform);
    }
+   $("input[required]").before('<span class="required_stick">*</span>');
    $('#id-new-address-modal').show();
-
 }//end of create address form
 
 
