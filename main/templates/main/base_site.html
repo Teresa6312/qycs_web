@@ -9,128 +9,152 @@
 <meta name="author" content="Qycs Technique team">
 {% endblock %}
 
-
 {% block coltype %}contentCSS{% endblock %}
 
 {% block branding %}
-  <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" height="60" class="w3-panel"/></a>
-{% endblock %}
-
-
-
-{% block nav-global %}
-<div class="w3-bar">
-    <div class="topnav" id="myTopnav">
-      <a href="{% url 'home' %}">{% trans "Home" %}</a>
-      <a href="{% url 'add_direct_shipping' %}">{% trans "Direct Shipping" %}</a>
-      <a href="{% url 'collection_points' %}">{% trans "Co-Shipping" %}</a>
-      <a href="{% url 'information' 'price_list' %}">{% trans "Price List" %}</a>
-      <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
-      {% if user.collectionpoint %}<a href="{{user.collectionpoint.get_absolute_url}}">{% trans "My Collection Point" %}</a>{% endif %}
-      <div id="account_nav">
-          {% if user.is_authenticated %}
-
-            <!--Dropdown Click Button-->
-            <div class="dropdown">
-              <button type="button" class="dropbtn">{{user.username}}
-                <i class="fa fa-caret-down"></i>
-              </button>
-              <div class="dropdown-content">
-                <a href="{% url 'account' %}">{% trans "User Profile" %}</a>
-                <a href="{% url 'useraddress' %}">{% trans "Address book" %}</a>
-                <a href="{% url 'userpackage' %}">{% trans "Packages History" %}</a>
-                <a href="{% url 'userwallet' %}">{% trans "Wallet" %}</a>
-                <a href="{% url 'logout' %}">{% trans "Logout" %}</a>
+<div class="w3-row">
+  <div class="w3-col w3-left" style="width:20%;">
+      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" style="width=100%; max-width:150px; margin:auto;"></a>
+  </div>
+  <div class="w3-rest w3-right">
+      <div class="topnav" id="myTopnav">
+        <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
+        <a href="{% url 'collection_points' %}">{% trans "Collection Points" %}</a>
+        <a href="{% url 'information' 'shipping_guide'%}">{% trans "Price List" %}</a>
+            {% if user.is_authenticated %}
+                {% if user.default_col %}
+                <a href="{% url 'add_co_shipping' user.default_col.pk %}">
+                  {% trans "Quick Co-shipping" %}
+                </a>
+                {% endif %}
+                <a href="{% url 'add_direct_shipping' %}">{% trans "Quick Direct Shipping" %}</a>
+                <!--Dropdown Click Button-->
+                <div class="dropdown">
+                    <button type="button" class="dropbtn">
+                      <span class="logo-text-blue">{{user.username}}</span>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                      {% if user.default_col %}<a href="{{user.default_col.get_absolute_url}}">{% trans "Collection Point" %}</a>{% endif %}
+                      <a href="{% url 'account' %}">{% trans "Profile" %}</a>
+                      <a href="{% url 'useraddress' %}">{% trans "Address Book" %}</a>
+                      <a href="{% url 'userpackage' %}">{% trans "Packages History" %}</a>
+                      <a href="{% url 'userwallet' %}">{% trans "Wallet" %}</a>
+                      <a href="{% url 'logout' %}">{% trans "Log Out" %}</a>
+                    </div>
               </div>
-            </div>
-          {% else %}
+            {% else %}
 
-            <div class="dropdown">
-              <button type="button" class="dropbtn">{% trans "Login/Sign Up" %}
-                <i class="fa fa-caret-down"></i>
-              </button>
 
-              <div class="dropdown-content">
-                <a href="{% url 'login' %}">{% trans "Login" %}</a>
-                <a href="{% url 'register' %}">{% trans "Sign Up" %}</a>
-              </div>
-            </div>
+            <a href="{% url 'login' %}"><span class="logo-text-blue" >{% trans "Log in" %}</span>&emsp;/ </a>
+            <a href="{% url 'register' %}"><span class="logo-text-red" >{% trans "Sign Up" %}</span></a>
 
-          {% endif %}
 
-        <a href="{% url 'packagecart' %}">{% trans "Upcoming Packages" %}</a>
+            {% endif %}
+              <a href="{% url 'packagecart' %}">
+                <img src="{% static 'image/cart.png' %}" alt="cart" style="max-width:30px; margin:auto;">
+                {% if user.is_authenticated %}
+                <div class="mini_full_circle w3-display-container" id="package_num" style="display:none;">
+                  <div class="w3-display-middle" id="packageNumberContainerID">
+
+                  <script>
+                  getPackageNumber("{% url 'packageNumber' %}","packageNumberContainerID")
+                  </script>
+
+
+                </div></div>
+                {%endif%}
+              </a>
+
+      <a href="javascript:void(0);" class="icon" onclick="openMenu()">
+        <i class="fa fa-bars"></i></a>
     </div>
-    <a href="javascript:void(0);" class="icon" onclick="openMenu()">
-      <i class="fa fa-bars"></i></a>
   </div>
 </div>
-
-{% include "blocks/modal.html" with element='wechat' title='Contact Us' block='wechat_qrcode_block'%}
-{% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
-<script src="{% static 'js/base.js' %}"></script>
-<script>
-function openMenu() {
-  var mynnav = document.getElementById("myTopnav");
-  if (mynnav.className === "topnav") {
-      mynnav.className += " responsive";
-  } else {
-      mynnav.className = "topnav";
+  {% include "blocks/modal.html" with element='wechat' title='Contact Us' block='wechat_qrcode_block'%}
+  {% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
+  <script src="{% static 'js/base.js' %}"></script>
+  <script>
+  function openMenu() {
+    var mynnav = document.getElementById("myTopnav");
+    if (mynnav.className === "topnav") {
+        mynnav.className += " responsive";
+    } else {
+        mynnav.className = "topnav";
+    }
   }
-}
-</script>
+  </script>
   {% block script%}
   {% endblock%}
 {% endblock %}
 
 
 
+
+
 {% block footer %}
+<hr/>
 <div id="footer">
-  <div class="w3-row">
-    <div class="w3-col w3-container m4 l2">
-      <h5 class="w3-center"><a href="{% url 'home' %}"><img width="120" height="120" src="{% static 'image/slogan.png'%}" alt="qycs slogan icon"></a></h5>
-    </div>
-    <div class="w3-col w3-container m4 l2">
-      <h5 class="yellow-text" >{% trans "My Qycs" %}</h5>
+  <div class="w3-row" style="width:70%; margin:auto;">
+    <div class="w3-col w3-container m3 l3">
+      <h5>{% trans "My Qycs" %}</h5>
 
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
-
-    </div>
-    <div class="w3-col w3-container m4 l2">
-      <h5 class="yellow-text" >{% trans "Consumer Guide" %}</h5>
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
+      <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
+      <a href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
+      <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
+      <a href="{% url 'information' 'fqa'%}">{% trans "FQAs" %}</a><br/>
 
     </div>
-    <div class="w3-col w3-container m4 l2">
-      <h5 class="yellow-text">{% trans "Service Guide" %}</h5>
+    <div class="w3-col w3-container m3 l3">
+      <h5>{% trans "Consumer Guide" %}</h5>
 
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
-      <a class="w3-text-white w3-medium" href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
+      <a href="{% url 'information' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
+      <a href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
+      <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
+
+    </div>
+    <div class="w3-col w3-container m3 l3">
+      <h5>{% trans "Service Guide" %}</h5>
+
+      <a  href="{% url 'information' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
+      <a href="{% url 'information' 'collection_point_guide'%}">{% trans "Collection Points" %}</a><br/>
+      <a href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
 
     </div>
 
-    <div class="w3-col w3-container m4 l2">
-      <div class="social-networks">
-        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" width="40" height="40">
-
-        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" width="40" height="40">
-
+    <div class="w3-col w3-container m3 l3">
+      <div class="w3-row">
+          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:100px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
       </div>
 
-      <button type="button" class="btn btn-default">{% trans "Contact us" %}</button><br/>
-
+      <div class="w3-padding-16 w3-center">
+        <img alt="customer service icon" src="{% static 'image/customer_service.svg' %}" style="height:38px;">
+        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="height:38px;">
+        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="height:38px;">
+      </div>
+      <div class="w3-padding-small w3-center">
+        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:200px;">
+    </div>
     </div>
 
 
   </div>
 
 </div>
-<div id="rights" class="footer-copyright">
-  &copy; {% trans "Qycs Global Shipping Inc." %} | {% trans "All Rights Reserved" %} © 2018 |
-  <a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a>
+<div id="rights" class="footer-copyright w3-row"  style="width:100%; margin:auto;">
+      <div class="w3-col" style="width:50%;">
+            <div class="w3-container" style="width:80%; margin-left:20%;">
+              <div>&copy; 2018 {% trans "Qycs Global Shipping Inc." %} {% trans "All Rights Reserved" %}</div>
+            </div>
+      </div>
+
+
+      <div class="w3-rest">
+            <div class="w3-container" style="width:80%;">
+              <div><a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a></div>
+            </div>
+      </div>
+
 </div>
+
 {% endblock %}

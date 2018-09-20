@@ -1,14 +1,18 @@
 from . import views
 from . import package_views as pk_views
+from . import information_views as info_views
 from django.urls import path, re_path
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+
 # , permission_required
 
 
 
 urlpatterns = [
+
+# cloudinary urls
 
 # open for everyone
     path('', views.HomeView.as_view(), name='home'),
@@ -24,6 +28,9 @@ urlpatterns = [
     path('shipping/', views.ShippingView.as_view(), name='shipping'),
 
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
+    path('tracking/', views.TrackingView.as_view(), name='tracking'),
+
+    path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
 
 
     # path('image/', views.AddImageView.as_view(), name='image'),
@@ -58,24 +65,25 @@ urlpatterns = [
     path('packages/direct-shipping/add', login_required(pk_views.AddDirectShipping.as_view()), name='add_direct_shipping'),
     path('packages/', login_required(pk_views.PackagesView.as_view()), name='packages'),
     path('packages/cart/', login_required(pk_views.PackageCartView.as_view()), name='packagecart'),
+    path('packages/cart/number', login_required(pk_views.ReturnPackageNumber), name='packageNumber'),
     path('packages/cart/coupon', login_required(pk_views.couponView), name='coupon'),
 
 
 
 # need to locked for logged in user
-    path('accounts/reset-password/', auth_views.password_reset,
+    path('accounts/reset-password/', auth_views.PasswordResetView.as_view(),
         {'template_name':'password/password_reset_form.html',
             'email_template_name': 'email/password_reset_email.html',
         },  name='password_reset'),
 
-    path('accounts/reset-password/done/', auth_views.password_reset_done,
+    path('accounts/reset-password/done/', auth_views.PasswordResetDoneView.as_view(),
         {'template_name':'password/password_reset_done.html'}, name='password_reset_done'),
 
     re_path(r'^accounts/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        auth_views.password_reset_confirm, {'template_name':'password/password_reset_confirm.html'},
+        auth_views.PasswordResetConfirmView.as_view(), {'template_name':'password/password_reset_confirm.html'},
         name='password_reset_confirm'),
 
-    path('accounts/reset-password/complete/', auth_views.password_reset_complete,
+    path('accounts/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(),
         {'template_name':'password/password_reset_complete.html'}, name='password_reset_complete'),
 
 ]

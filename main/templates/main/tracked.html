@@ -1,0 +1,134 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Tracking' %}
+{% endblock%}
+
+
+{% block messages %}
+{% endblock messages %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/timeline.css'%}"/>
+<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600,700' rel='stylesheet' type='text/css'>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="text-xxlarge-bold" style="width:80%; margin:auto;">
+  {% trans 'Tracking' %}
+</div>
+
+<div id="message_block">
+  {% if messages %}
+  <ul class="messagelist">{% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+  {% endfor %}</ul>
+  {% endif %}
+</div>
+
+<hr/>
+<div style="width:80%; margin:auto;">
+      {% for package in packages %}
+      <div class="text-large-bold">{{package.cust_tracking_num}}</div>
+      <div class="w3-panel">
+        <ul class="timeline" id="timeline">
+          <li class="li complete">
+            <div class="timestamp">
+              <span class="author">{% trans 'Package Created on' %}</span>
+              <span class="date">{{package.created_date}}</span>
+            </div>
+            <div class="status">
+              <h4> {% trans 'Marked' %} </h4>
+            </div>
+          </li>
+          <li class="li complete">
+            <div class="timestamp">
+              <span class="author">{% trans 'Package Arrived at Warehouse on' %}</span>
+              <span class="date">{{package.wh_received_date}}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Warehouse Received' %}</h4>
+            </div>
+          </li>
+
+          <li class="li complete">
+            <div class="timestamp">
+              <span class="author">{% trans 'Package was ready to pay on' %}</span>
+              <span class="date">{{package.ready_date}}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Ready to Pay' %}</h4>
+            </div>
+          </li>
+
+          <li class="li complete">
+            <div class="timestamp">
+              <span class="author">{% trans 'Package was paid on' %}</span>
+              <span class="date">{{package.ready_date}}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Paid' %}</h4>
+            </div>
+          </li>
+          <li class="li complete">
+            <div class="timestamp">
+              <span class="author">{% trans 'Package was shipped on' %}</span>
+              <span class="date">{{package.parent_package.shipped_date}}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Shipped' %}</h4>
+            </div>
+          </li>
+          <li class="li">
+            <div class="timestamp">
+              <span class="author">{% trans 'Package was delieved on' %}</span>
+              <span class="date">{{package.delieved_date}}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'delieved' %}</h4>
+            </div>
+          </li>
+         </ul>
+      </div>
+      {% endfor %}
+</div>
+
+<tabel>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</tabel>
+<script>
+    var completes = document.querySelectorAll(".complete");
+
+    function toggleComplete(){
+     var lastComplete = completes[completes.length - 1];
+     lastComplete.classList.toggle('complete');
+    }
+
+</script>
+
+{% endblock %}

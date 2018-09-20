@@ -19,6 +19,8 @@ $(document).ready(function(){
         $(this).css('background-color','#fff');
       }
     });
+    $("input[required]").before('<span class="required_stick">*</span>');
+    $("select[required]").before('<span class="required_stick">*</span>');
     $('#id_email').change(function(){
       if(!validateEmail($(this).val())){
         $(this).css('background-color','#ffdddd');
@@ -34,15 +36,30 @@ $(document).ready(function(){
       }
     });
     // $('container').find('input').each(function(){
-    //   if($(this).readonly){
-    //     $(this).addClass('w3-light-gray');
-    //       console.log($(this).id);
+    //   if($(this).prop('required')){
+    //     $(this).after('<span class="logo-text-red">*</span>')
+    //     console.log($(this).prop('name'));
     //   }
     // });
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
+
 })
+
+function getPackageNumber(url,id){
+    $.ajax({
+        url: url,
+        success: function(data){
+          if (parseFloat(data)>0){
+            $('#'+id).text(data);
+            $('#package_num').show();
+          }
+        }
+      });
+}//end of getPackageNumber
+
+
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

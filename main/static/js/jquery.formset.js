@@ -36,15 +36,15 @@
                 if (row.is('TR')) {
                     // If the forms are laid out in table rows, insert
                     // the remove button into the last table cell:
-                    row.children(':last').append('<button type="button" class="det_btn w3-panel" style="float:right;"><a class="' + options.deleteCssClass +'" href="javascript:void(0)">' + options.deleteText + '</a></button>');
+                    row.children(':last').append('<button type="button" class="logo-red w3-panel" style="float:right;"><a class="' + options.deleteCssClass +'" href="javascript:void(0)">' + options.deleteText + '</a></button>');
                 } else if (row.is('UL') || row.is('OL')) {
                     // If they're laid out as an ordered/unordered list,
                     // insert an <li> after the last list item:
-                    row.append('<li><button type="button" class="det_btn w3-panel" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button></li>');
+                    row.append('<li><button type="button" class="logo-red w3-panel" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button></li>');
                 } else {
                     // Otherwise, just insert the remove button as the
                     // last child element of the form's container:
-                    row.append('<button type="button" class="det_btn w3-panel" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button>');
+                    row.append('<button type="button" class="logo-red w3-panel" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button>');
                 }
                 row.find('a.' + options.deleteCssClass).click(function() {
                     var row = $(this).parents('.' + options.formCssClass),
@@ -189,7 +189,7 @@
         formTemplate: null,              // The jQuery selection cloned to generate new form instances
         addText: 'add another',          // Text for the add link
         deleteText: 'remove',            // Text for the delete link
-        addCssClass: 'add-row w3-center',          // CSS class applied to the add link
+        addCssClass: 'add-row',          // CSS class applied to the add link
         deleteCssClass: 'hidden',    // CSS class applied to the delete link
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         extraClasses: [],                // Additional CSS classes, which will be applied to each form in turn

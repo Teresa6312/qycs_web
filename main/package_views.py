@@ -4,7 +4,7 @@ from .models import (
 	)
 from .forms import (
 	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm,
-	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm
+	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm, CoReceiverCheckForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -22,6 +22,8 @@ from django.utils.translation import gettext as _
 from django.shortcuts import render
 # from django.core.serializers.json import DjangoJSONEncoder
 #
+import datetime
+
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
@@ -29,6 +31,10 @@ class PackagesView(TemplateView):
 		return render(request, self.template_name,
 			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
 
+
+def ReturnPackageNumber(request):
+	packageNumber=Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date').count()
+	return HttpResponse(packageNumber)
 
 class PackageCartView(TemplateView):
 	template_name = 'main/package_cart.html'
@@ -47,10 +53,6 @@ class PackageCartView(TemplateView):
 				coupon = Coupon.objects.get(code = request.POST.get('coupon'))
 			except:
 				coupon = None
-			try:
-				reward = int(request.POST.get('reward_point_used'))
-			except:
-				reward = 0
 
 			orderSet = OrderSet(coupon = coupon, total_amount = 0.0)
 			orderSet.save()
@@ -63,13 +65,6 @@ class PackageCartView(TemplateView):
 					package.save()
 					amount = package.get_total() + amount
 
-			if 0 < reward/100 <= amount and coupon:
-				if amount*coupon.discount < reward:
-					orderSet.coupon = None
-					orderSet.reward_point_used = reward
-			elif 0 < reward/100 <= amount:
-					orderSet.coupon = None
-					orderSet.reward_point_used = reward
 			orderSet.total_amount = amount
 			orderSet.currency = orderSet.service_set.first().currency
 			orderSet.save()
@@ -132,6 +127,7 @@ class AddDirectShipping(TemplateView):
 			if "finish" in request.POST:
 				return redirect(reverse('packagecart'))
 			else:
+				messages.info(request,_(package.cust_tracking_num + ' is created successfully!'))
 				return redirect(reverse('add_direct_shipping'))
 		else:
 
@@ -153,8 +149,13 @@ class AddCoShipping(TemplateView):
 
 
 	def get(self, request, selected_col):
+		today = datetime.datetime.now()
+		try:
+			 last_created = Service.objects.filter(user = request.user,co_shipping = True).latest('created_date')
+			 receiverform = CoReceiverForm(receiver = last_created.receiver)
+		except:
+			receiverform = CoReceiverForm()
 		form = CoShippingCreationForm()
-		receiverform = CoReceiverForm()
 		itemset = ItemFormset()
 		try:
 			col = CollectionPoint.objects.get(pk=selected_col)
@@ -181,7 +182,7 @@ class AddCoShipping(TemplateView):
 		col = CollectionPoint.objects.get(pk=selected_col)
 		form = CoShippingCreationForm(request.POST)
 		itemset = ItemFormset(request.POST)
-		receiverform = CoReceiverForm(request.POST)
+		receiverform = CoReceiverCheckForm(request.POST)
 		package_list = Service.objects.filter(
 			user = request.user,
 			co_shipping = True,
@@ -197,7 +198,11 @@ class AddCoShipping(TemplateView):
 			package.user = request.user
 
 			package.save()
-
+			if not request.user.default_col:
+				user = User.objects.get(id = request.user.id)
+				user.default_col = col
+				user.save()
+				
 			itemset.instance = package
 			itemset.save()
 
@@ -209,6 +214,7 @@ class AddCoShipping(TemplateView):
 			if "finish" in request.POST:
 				return redirect(reverse('packagecart'))
 			else:
+				messages.info(request,_(package.cust_tracking_num + ' is created successfully!'))
 				return redirect(reverse('add_co_shipping',args = (selected_col,)))
 		else:
 			return render(request, self.template_name, {
@@ -225,11 +231,11 @@ class PackageDetailView(TemplateView):
 
 	def get(self, request, pack_id):
 		try:
-			package = Service.objects.get(pk=pack_id)
+			package = Service.objects.get(pk=pack_id,user=request.user)
 			return render(request, self.template_name , {'package': package})
 		except ObjectDoesNotExist:
 			messages.error(request, _("Cannot Find the package"))
-			return render(request,reverse('userpackages'))
+			# return render(request,reverse('userpackages'))
 
 
 def couponView(request):

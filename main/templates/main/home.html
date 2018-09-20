@@ -5,12 +5,43 @@
 {% trans 'Home' %}
 {% endblock%}
 
+
+{% block coltype %}{% if user.is_authenticated %}home_loged{% else %}contentCSS{% endif %}{% endblock %}
+
 {% block content %}
-<div class="w3-panel">
-    <div class="w3-center w3-panel"><img src="{% static 'image/qycs.ico' %}" alt="logo" height="200" class="w3-panel w3-center"/></div>
-    <div class="w3-center w3-panel w3-padding-32">
-      <a href="{% url 'shipping' %}"><span class="w3-padding-32 w3-red w3-circle w3-center w3-xxlarge w3-mobile">&emsp;{% trans 'I want to ship' %}&emsp;</span></a>
-      <a href="{% url 'userpackage' %}"><span class="w3-padding-32 w3-red w3-circle w3-center w3-xxlarge w3-mobile">&emsp;{% trans 'I want to check' %}&emsp;</span></a>
-    </div>
+<div class="w3-row w3-margin-top">
+        <div class="w3-col half_circle_left" style="width:16vw;">
+          <div id="shipping_half_circle">
+            <a href="{% url 'shipping' %}">
+              <i class="fa fa-caret-left"></i>&emsp;{% trans 'SHIPPING' %}
+            </a>
+          </div>
+        </div>
+        <div class="w3-col w3-right half_circle_right" style="width:16vw;">
+          <div id="tracking_half_circle">
+            <a href="{% url 'tracking' %}">{% trans 'TRACKING' %}&emsp;<i class="fa fa-caret-right"></i></a>
+          </div>
+        </div>
+        <div class="w3-rest w3-center w3-margin-bottom">
+          <div class="text-xxlarge w3-text-blue w3-margin-top">{% trans 'Welcome To' %}</div>
+          <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" style="max-width:30vw; margin:auto;"/></a>
+          <div class="text-regular-bold">{% trans 'Express - Modern Transport & Logistics' %}</div>
+            {% if user.is_authenticated %}
+              <div class="w3-padding-16">
+                        <img src="{% static 'image/hankshake.png' %}" alt="hank shake" style="max-width:8vw; margin:auto;">
+              </div>
+              <div class="text-xxxlarge w3-text-blue" >
+                {% trans "WE'RE RECRUITING" %}
+                <div class="text-xxxlarge-bold">{% trans "COLLECTION POINTS." %}</div>
+              </div>
+            {% else %}
+                  <div class="text-xxxlarge w3-padding-32">
+                    <span style="font-weight: bold;">{% trans 'Sign Up now! ' %}</span>{% trans 'Get Special Offer'%}<br/>
+                    <span class="text-xxxlarge">{% trans '10% OFF every shipping!' %}</span>
+                  </div>
+                  <button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'login' %}'">{% trans 'Log in' %}</button>
+                  <button class="logo-red" type="button"  onclick="window.location.href = '{% url 'register' %}'">{% trans 'Sign up' %}</button>
+            {% endif %}
+        </div>
 </div>
 {% endblock %}

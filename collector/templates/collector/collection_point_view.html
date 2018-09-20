@@ -5,14 +5,10 @@
 {{collector.name}}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
-
 {% block content %}
 <div class="w3-panel w3-mobile">
     <div class="w3-panel w3-col-row w3-mobile">
-        <div class = "w3-card-4 w3-third w3-mobile" style="max-width:300px;">
+        <div class = "w3-card-4 w3-third w3-mobile" style="max-width:25vw;">
           {% if collector.collector_icon%}
               <img alt="collection point icon" src="{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
           {% else %}
@@ -21,78 +17,104 @@
         </div>
 
         <div class = "w3-half w3-container w3-mobile">
-            <h2>{{collector.name}} ({% if collector.store %}{% trans 'Store Name' %}: {{collector.store_name}}
-              {% else %}{% trans 'Personal Place' %}{% endif %})</h2>
-            <h3>
+            <div class="text-xlarge-bold">{{collector.name}} ({% if collector.store %}{% trans 'Store Name' %}: {{collector.store_name}}
+              {% else %}{% trans 'Personal Place' %}{% endif %})</div>
+            <div class="text-medium-bold">
               {% if not collector.status %}
-                <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:1.5vw;"/>
                 {% trans 'Closed!' %}
               {% else %}
-                <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:1.5vw;"/>
                 {% trans 'Open!' %}
               {% endif %}
-            </h3>
+            </div>
             <h4>
             </h4>
-            <h4>{% trans 'Food Package' %}: {% if collector.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
-            <h4>{% trans 'Regular Package' %}: {% if collector.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
-            <h4>{% trans 'Skincare Package' %}: {% if collector.skincare %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/> {% endif %} </h4>
-          <h5>
-            {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
-          </h5>
-          {% if user.collectionpoint %}<button type="button" onclick="window.location.href='{% url 'collector_update'%}'">{% trans 'Update Profile' %}</button>
-          {% else %}<button type="button">{% trans 'get direction' %}</button>{% endif %}
-          <button type="button" onclick="window.location.href='{{collector.get_absolute_url.add_co_shipping}}'">{% trans 'ship package' %}</button>
+            <div class="text-regular-bold">{% trans 'Food Package' %}: {% if collector.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:1.5vw;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:1.5vw;"/> {% endif %} </div>
+            <div class="text-regular-bold">{% trans 'Regular Package' %}: {% if collector.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:1.5vw;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:1.5vw;"/> {% endif %} </div>
+            <div class="text-regular-bold">{% trans 'Beauty Package' %}: {% if collector.beauty %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:1.5vw;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:1.5vw;"/> {% endif %} </div>
+            <div class="text-regular-bold">{% trans 'Location:' %}</div><div>
+              {{collector.address}} {% if collector.apt %}({{collector.apt}}){% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}
+            </div>
+          {% if user.collectionpoint %}<button type="button" class="logo-blue" onclick="window.location.href='{% url 'collector_update'%}'">{% trans 'Update Profile' %}</button>
+          {% else %}<button type="button"  onclick="window.open('https://www.google.com/maps/dir//{{collector.address}} {% if collector.apt %}{{collector.apt}}{% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}')" class="logo-blue">{% trans 'get direction' %}</button>{% endif %}
+
+
+          <button type="button" class="logo-red" onclick="window.location.href='{% url 'add_co_shipping' user.default_col.pk %}'">{% trans 'ship package' %}</button>
       </div>
-      <div class = "w3-card-2 w3-col w3-container aside-bar-background-color w3-mobile w3-right" style="width:220px;">
-        <h5>{% trans 'Schedule' %}</h5>
-        {% if collector.absent_start %}
-          {% blocktrans %}
-          Not avaliable from {{collector.absent_start|date:"M d, Y"}} to  {{collector.absent_end|date:"M d, Y"}}
-          {% endblocktrans %}
-        <br/>
-        {% endif %}
-          <div class = "w3-col-row w3-mobile">
-            <div class="w3-col" style="width:100px;">{% trans 'Monday' %}: </div><div class="w3-rest">{{collector.mon_start}} - {{collector.mon_end}}</div>
-            <div class="w3-col" style="width:100px;">{% trans 'Tuesday' %}: </div><div class="w3-rest">{{collector.tue_start}} - {{collector.tue_end}}</div>
-            <div class="w3-col" style="width:100px;">{% trans 'Wednesday' %}: </div><div class="w3-rest">{{collector.wed_start}} - {{collector.wed_end}}</div>
-            <div class="w3-col" style="width:100px;">{% trans 'Thursday' %}: </div><div class="w3-rest">{{collector.thu_start}} - {{collector.thu_end}}</div>
-            <div class="w3-col" style="width:100px;">{% trans 'Friday' %}: </div><div class="w3-rest">{{collector.fri_start}} - {{collector.fri_end}}</div>
-            <div class="w3-col" style="width:100px;">{% trans 'Saturday' %}: </div><div class="w3-rest">{{collector.sat_start}} - {{collector.sat_end}}</div>
-            <div class="w3-col" style="width:100px;">{% trans 'Sunday' %}: </div><div class="w3-rest">{{collector.sun_start}} - {{collector.sun_end}}</div>
-          </div>
+      <div class = "w3-card-2 w3-col w3-container aside-bar-background-color w3-mobile w3-right" style="width:17vw;">
+              <div class="text-medium-bold w3-margin-top">{% trans 'Schedule' %}</div>
+
+              {% if collector.absent_start %}
+              <div class="w3-row w3-text-red">
+                <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:1.2vw;"/>
+                {% trans 'Not avaliable from' %} {{collector.absent_start|date:"M d, Y"}} - {{collector.absent_end|date:"M d, Y"}}.
+              </div>
+              {% endif %}
+
+                <div class = "w3-col-row w3-mobile">
+                  <div class="w3-col" style="width:7vw;">{% trans 'Monday' %}: </div><div class="w3-rest">{{collector.mon_start}} - {{collector.mon_end}}</div>
+                  <div class="w3-col" style="width:7vw;">{% trans 'Tuesday' %}: </div><div class="w3-rest">{{collector.tue_start}} - {{collector.tue_end}}</div>
+                  <div class="w3-col" style="width:7vw;">{% trans 'Wednesday' %}: </div><div class="w3-rest">{{collector.wed_start}} - {{collector.wed_end}}</div>
+                  <div class="w3-col" style="width:7vw;">{% trans 'Thursday' %}: </div><div class="w3-rest">{{collector.thu_start}} - {{collector.thu_end}}</div>
+                  <div class="w3-col" style="width:7vw;">{% trans 'Friday' %}: </div><div class="w3-rest">{{collector.fri_start}} - {{collector.fri_end}}</div>
+                  <div class="w3-col" style="width:7vw;">{% trans 'Saturday' %}: </div><div class="w3-rest">{{collector.sat_start}} - {{collector.sat_end}}</div>
+                  <div class="w3-col" style="width:7vw;">{% trans 'Sunday' %}: </div><div class="w3-rest">{{collector.sun_start}} - {{collector.sun_end}}</div>
+                </div>
       </div>
   </div>
-    <hr>
+
+    <hr/>
+<div style="width:80%; margin:auto;">
     <div class="w3-panel w3-cell-row">
-      <div class="w3-col" style="width:100px;">
+      <div class="w3-row text-regular-bold">
       {% trans 'Introduction' %}
       </div>
-      <div class="w3-rest">{{collector.description}}</div>
+      <div class="w3-row w3-margin-left">{{collector.description|linebreaks|safe}}</div>
     </div>
+
+{% if collector.show_contact %}
+    <div class="w3-panel w3-cell-row">
+      <div class="w3-row text-regular-bold">
+      {% trans 'Contact Information' %}
+      </div>
+      <div class="w3-row w3-margin-left">
+          {% trans 'Email' %}: {{collector.collector.email}}<br/>
+          {% if collector.wechat_qrcode %}
+            {% trans 'Wechat' %}: <img alt="collection point icon" src="{{collector.wechat_qrcode.url}}" style="width:25vw; margin:auto;">
+          {% elif collector.wechat %}
+            {% trans 'Wechat ID' %}: {{collector.wechat}}
+          {% endif %}
+      </div>
+    </div>
+{% endif %}
+</div>
     <div class="w3-panel">
       <form method="post">
         {% csrf_token %}
 
           <div style="display:block;">
               <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Reviews');">
-                <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black"><h5>{% trans 'Reviews' %}</h5></div>
+                <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black"><div class='text-medium'>{% trans 'Reviews' %}</div></div>
               </a>
               <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'Questions');">
-                <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-text-black"><h5>{% trans 'Questions' %}</h5></div>
+                <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding w3-text-black"><div class='text-medium'>{% trans 'Questions' %}</div></div>
               </a>
           </div>
 
-          <textarea class="w3-input w3-border w3-panel" name="message" id="id_message"></textarea>
-          <div id="Reviews" class="message_block">
-              <div class="submit-row"><button type="submit" name="review">{% trans 'Save Review' %}</button></div>
+          <textarea class="w3-input w3-border w3-panel" name="message" id="id_message" rows="5"></textarea>
 
+
+          <div id="Reviews" class="message_block">
+            <div class="w3-row">
+              <div class="w3-right"><button type="submit" name="review" class="save_btn">{% trans 'Save Review' %}</button></div>
+            </div>
             {% if collector.review_set.all %}
             {% for review in collector.review_set.all %}
               <div class="w3-card-2 w3-panel" id="review_block_{{review.id}}">
                   <div class="w3-row w3-mobile">
-                        <div class="w3-col w3-center" style="width:70px;">
-                          <img alt="user icon" src="{% static 'image/user_icon.png' %}" width="60" height="60"><br/>
+                        <div class="w3-col w3-center w3-margin-top" style="width:5vw;">
+                          <img alt="user icon" src="{% static 'image/user_icon.png' %}" style="width:3vw;"><br/>
                           {{review.creater.username}}
                         </div>
                         <div class="w3-rest w3-panel">
@@ -101,12 +123,12 @@
                                 {% for response in review.reviewresponse_set.all %}
                                 <div class="w3-row w3-container">
                                     <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
-                                    <div class="w3-padding-small">{{response.meaasage|linebreaks|safe}}</div>
+                                    <div class="w3-margin-left">{{response.meaasage|linebreaks|safe}}</div>
                                 </div>
                                 {% endfor %}
                             {% endif %}
                             <div class="w3-right w3-row">
-                              <button type="button" class="w3-right response_btn_{{review.id}}" onclick="AddResponseForm('{{review.id}}','review')">
+                              <button type="button" class="response_btn w3-right response_btn_{{review.id}}" onclick="AddResponseForm('{{review.id}}','review')">
                                 {% trans 'response' %}
                               </button>
                             </div>
@@ -118,16 +140,18 @@
           </div>
 
       <div id="Questions" class="message_block" style="display:none">
-        <div class="submit-row"><button type="submit" name="question">{% trans 'Save Question' %}</button></div>
+        <div class="w3-row">
+          <div class="w3-right"><button type="submit" name="question" class="save_btn">{% trans 'Save Question' %}</button></div>
+        </div>
 
         {% if collector.question_set.all %}
         {% for question in collector.question_set.all %}
 
-           {% if question.creater.pk == user.pk%}
+           {% if question.creater.pk == user.pk or question.receiver.pk == user.pk %}
                 <div class="w3-card-2 w3-panel" id="question_block_{{question.id}}">
                   <div class="w3-row w3-mobile">
-                      <div class="w3-col w3-center" style="width:70px;">
-                        <img alt="user icon" src="{% static 'image/user_icon.png' %}" width="60" height="60"><br/>
+                    <div class="w3-col w3-center w3-margin-top" style="width:5vw;">
+                      <img alt="user icon" src="{% static 'image/user_icon.png' %}" style="width:3vw;"><br/>
                         {{question.creater.username}}
                       </div>
                       <div class="w3-rest w3-panel">
@@ -136,12 +160,12 @@
                               {% for response in question.questionresponse_set.all %}
                               <div class="w3-row w3-container">
                                   <div class="w3-text-blue">{% trans 'Response By ' %}{{response.creater.username}} {% trans 'on' %} {{response.created}}</div>
-                                  <div class="w3-padding-small">{{response.meaasage|linebreaks}}</div>
+                                  <div class="w3-margin-left">{{response.meaasage|linebreaks}}</div>
                               </div>
                               {% endfor %}
                           {% endif %}
                           <div class="w3-right w3-row">
-                            <button type="button" class=" w3-right response_btn_{{question.id}}" onclick="AddResponseForm('{{question.id}}','question')">
+                            <button type="button" class="response_btn w3-right response_btn_{{question.id}}" onclick="AddResponseForm('{{question.id}}','question')">
                               {% trans 'response' %}
                             </button>
                           </div>

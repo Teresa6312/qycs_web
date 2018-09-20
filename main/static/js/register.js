@@ -40,7 +40,7 @@ function nextPrev(n) {
     if($('.errornote').length==0){
         var p = document.createElement('p');
         p.setAttribute('class','errornote');
-        p.innerHTML = 'Please correct the error below.';
+        p.innerHTML = 'Please correct the error(s) below.';
         $('Form').before(p);
         $('.errornote').hide().slideDown(200);
     }

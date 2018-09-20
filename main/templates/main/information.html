@@ -8,11 +8,41 @@
 {% block content %}
 <div class="w3-panel" style="max-width:800px; margin:auto;" >
 {% if information %}
-  <h2>{{information.header}}</h2>
-  <p>{{information.english_content|linebreaks|safe}}</p>
+      <div class="text-xxlarge">{{information.header}}</div>
+      <div id="content">
+        {% if not information.english_file %}
+          <p>{{information.english_content|linebreaks|safe}}</p>
+        {% endif %}
+      </div>
 {% else %}
-  <h2>{{empty}}</h2>
-    <h3>{% trans 'Thank your for visiting our websit. The information will be post soon!' %}</h3>
+
+  <div class="text-xxlarge">{{empty}}</div>
+    <div class="text-medium">{% trans 'Thank your for visiting our website. The information will be post soon!' %}</div>
 {% endif %}
+
+
+
+
 </div>
+
+
+<script>
+function loadDoc(url) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("content").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+}
+$(document).ready(function(){
+  var en_url = '{{information.english_file.url}}';
+  if(en_url!=''){
+    loadDoc(en_url)
+  }
+});
+</script>
+
 {% endblock %}

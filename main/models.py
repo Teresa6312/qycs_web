@@ -10,8 +10,9 @@ from django.urls import reverse
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
+from cloudinary.models import CloudinaryField
 
-import datetime
+from datetime import date
 
 phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', \
 	message=_("Invalid phone number format. Enter as 1-123-456-7890."))
@@ -23,6 +24,12 @@ CARRIER_CHOICE = (
 	('YT', _('Yuan Tong')),
 	('UPS', _('UPS')),
 	('DHL', _('DHL')),
+)
+INSURANCE_CHOICE = (
+	(0, _('NO insurance')),
+	(3, _('$3 insurance')),
+	(5, _('$5 insurance')),
+	(10, _('$10 insurance')),
 )
 CURRENCY_CHOICE = (
 	('CNY', _('China Yuan')),
@@ -49,6 +56,11 @@ INFORMATION_SOURCES = (
 	('DN', _('Dealmoon')),
 )
 
+LANGUAGE_CATEGORY = (
+	('EN', _('English')),
+	('CN', _('Chinese')),
+)
+
 class User(AbstractUser):
 	email = models.EmailField(blank=False, default='', unique=True, verbose_name = _("Email"))
 	email_confirmed = models.BooleanField(default =False, verbose_name= _('Email Confirmed'))
@@ -62,7 +74,8 @@ class User(AbstractUser):
 	birthday = models.DateField(blank=True, null=True,verbose_name= _('Birthday'))
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name=_('Profile Updated Date'))
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
-	language = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Preferred Language'))
+	language = models.CharField(max_length=100, choices=LANGUAGE_CATEGORY,  blank=True, default='',verbose_name= _('Preferred Language'))
+	memo = models.TextField(blank = True, default='', verbose_name= _('Memo'))
 
 
 	def __str__(self):
@@ -70,6 +83,7 @@ class User(AbstractUser):
 			return '%s %s: %s'%(self.first_name, self.last_name, self.email)
 		else:
 			return '%s : %s'%(self.username, self.email)
+
 
 	class Meta(AbstractUser.Meta):
 		verbose_name_plural = _("Users")
@@ -88,7 +102,7 @@ class Employee(models.Model):
 	is_active.boolean = True
 
 	def __str__(self):
-		return '%s %s: %s'%(self.user.first_name, self.user.last_name, self.position)
+		return '%s %s: %s'%(self.employee.first_name, self.employee.last_name, self.position)
 
 	class Meta:
 		verbose_name_plural = _("Employees")
@@ -141,8 +155,12 @@ class CollectionPoint(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Collection Point Updated Date'))
 	collector = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True,verbose_name= _('Collector'))
 	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License Type'))
-	license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
-	id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
+	# license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
+	# id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
+
+	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
+	license_image = CloudinaryField('collector_license', blank=True, null=True)
+	id_image = CloudinaryField('collector_id')
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))
 	store = models.BooleanField(default = True, verbose_name= _('Store'))
@@ -162,15 +180,18 @@ class CollectionPoint(Address_Common_Info):
 	food.boolean = True
 	regular = models.BooleanField(default = False, verbose_name= _('Regular'))
 	regular.boolean = True
+	beauty = models.BooleanField(default = False, verbose_name= _('Beauty'))
+	beauty.boolean = True
 	skincare = models.BooleanField(default = False, verbose_name= _('Skincare'))
 	skincare.boolean = True
-
 
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Avaliable'))
 	status.boolean = True
-	collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
+	# collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))
+	show_contact = models.BooleanField(default = False, verbose_name= _('Show Contact Information'))
+	show_contact.boolean = True
 
 	# collection_point schedule
 	mon_start = models.TimeField(blank=True, null=True, verbose_name= _('Monday Start'))
@@ -191,16 +212,25 @@ class CollectionPoint(Address_Common_Info):
 	absent_end = models.DateField(blank=True, null=True, verbose_name= _('Absent End'))
 
 
+
+
 	def __str__(self):
 		return '%s %s %s'%(self.name, self.collector.first_name, self.collector.last_name)
 
 	def get_absolute_url(self):
 		return reverse('collection_point_view', args=[str(self.pk)])
 
+	@property
+	def absent_started(self):
+	    return date.today() > self.absent_start
+
+	@property
+	def absent_ended(self):
+	    return date.today() > self.absent_end
 
 	def status_all(self):
 		if self.absent_start and self.absent_end:
-			if datetime.date.today()>=self.absent_start and datetime.date.today()<=self.absent_end:
+			if date.today()>=self.absent_start and date.today()<=self.absent_end:
 				return False
 			else:
 				return self.status
@@ -271,31 +301,30 @@ class Coupon(models.Model):
 		verbose_name_plural = _("Coupon")
 		ordering = [F('start_date').asc(nulls_last=True)]
 
-# class Payment(models.Model):
-# 	pay_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Paid Date'))
-# 	transaction_id = models.CharField(max_length = 50, blank = False, default='', unique = True, verbose_name= _('Payment Confirmation'))
-# 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
-# 	reward_point = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
-# 	deposit = models.BooleanField(default=False,verbose_name= _('Deposit'))
-# 	deposit.boolean = True
-#
-# 	amount = models.DecimalField(max_digits=10, decimal_places=2,verbose_name= _('Paid Amount'))
-# 	currency= models.CharField(max_length = 100, choices=CURRENCY_CHOICE, default='',verbose_name= _('Currency'))
-# 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
-#
-# 	def __str__(self):
-# 		return '%f %s'%(self.amount, self.currency)
-#
-# 	class Meta:
-# 		verbose_name_plural = _("Payment")
-# 		ordering = ['pay_date']
-
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
 	reward_point_used = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
 	total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
+	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=True, default=0, verbose_name= _('Insurance Plan'))
+
+
+	def get_should_pay_amount(self):
+		total_amount = 0
+		for package in self.service_set.all:
+			total_amount = total_amount + package.get_total()
+
+		return total_amount
+	#
+	# def check_currency(self):
+	# 	i = 0
+	# 	currency = 'USD'
+	# 	for package in self.service_set.all:
+	# 		if i == 0 and :
+	# 		total_amount = total_amount + package.get_total()
+	#
+	# 	return total_amount
 
 
 class ParentPackage(models.Model):
@@ -332,7 +361,7 @@ class ParentPackage(models.Model):
 
 	class Meta:
 		verbose_name_plural = _("Parent Package")
-		ordering = ['created_date']
+		ordering = ['-created_date']
 
 class Service(models.Model):
 	user = models.ForeignKey(User, on_delete=models.DO_NOTHING , related_name='client_user',verbose_name= _('User'))
@@ -345,6 +374,7 @@ class Service(models.Model):
 	co_shipping = models.NullBooleanField(verbose_name= _('Co-Shipping'))
 	co_shipping.boolean = True
 	parent_package = models.ForeignKey(ParentPackage, on_delete=models.DO_NOTHING, blank = True, null=True,verbose_name= _('Parent Package'))
+
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
 
@@ -368,6 +398,10 @@ class Service(models.Model):
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
+	ship_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
+
+
+
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= _('Deposit Amount'))
 	# deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= _('Deposit Confirmation'))
 
@@ -462,7 +496,7 @@ class Service(models.Model):
 
 	class Meta:
 		verbose_name_plural = _("Package/Order")
-		ordering = ['created_date']
+		ordering = ['-created_date']
 
 class Item(models.Model):
 	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package/Order'))
@@ -492,7 +526,8 @@ class Item(models.Model):
 
 class PackageSnapshot(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package'))
-	snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
+	# snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
+	snapshot = CloudinaryField('package_snapshot')
 
 	class Meta:
 		verbose_name_plural = _("Package Snapshot")
@@ -501,7 +536,7 @@ class PackageSnapshot(models.Model):
 class FavoriteWebsite(models.Model):
 
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
-	web_type = models.CharField(max_length = 50, choices = WEB_CATEGORY, blank=True, default='',verbose_name = _('Website Category'))
+	web_type = models.CharField(max_length = 50, choices = WEB_CATEGORY, blank=True, default='',verbose_name = _('Category'))
 	web_name = models.CharField(max_length = 100, blank=True, default='', verbose_name = _('Website Name'))
 	web_url = models.URLField (max_length = 1000, blank=True, default='', verbose_name = _('Website url'))
 	rate = models.PositiveIntegerField(default=1, verbose_name = _('Rating'))

@@ -1,22 +1,14 @@
-{% extends "main/account.html" %}
+{% extends "main/base_site.html" %}
 {% load i18n static %}
 
 {% block title%}
 {% trans 'Register Collection Point' %}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
 
-{% block account_content %}
+{% block content %}
 <form method = "post" enctype="multipart/form-data" class="w3-card-2 w3-round w3-container w3-mobile" style="margin:auto; max-width:600px;">
   	{% csrf_token %}
-    {% if userform.errors or colform.errors %}
-        <p class="errornote">
-        {% trans "Please correct the error(s) below." %}
-        </p>
-    {% endif %}
 
     <h3>{% trans 'Register my location as a Package Collection Point' %}</h3>
     <fieldset class="module aligned w3-mobile">

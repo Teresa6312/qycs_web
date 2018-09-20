@@ -7,11 +7,6 @@
 {% endblock%}
 
 {% block shippingset %}
-<h2>{% trans 'Direct Shipping' %}</h2>
-<fieldset class="module w3-mobile">
-	<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Ship to' %}</h2>
 	{{form.ship_to_add.errors}}
 	{% include "blocks/address_block_all.html" with add_field_name='ship_to_add' %}
-</fieldset>
-
 {% endblock %}

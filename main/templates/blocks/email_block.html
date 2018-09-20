@@ -2,21 +2,21 @@
   <form enctype="multipart/form-data" method="post" id="contact_us_form" novalidate>
     <div class="w3-container">
         <label for="id-email">{% trans 'My Email Address'%}</label>
-        <input id="id-email" type="text" class= "w3-input" name="email" value="{{user.email}}" required/>
-        <p class="w3-cell-row">
+        <input id="id-email" type="text" class= "w3-input w3-border" name="email" value="{{user.email}}" required/>
+        <div class="w3-cell-row w3-padding-small">
             <label class="w3-cell-middle switch">
               <input id="id-cc" name="cc" type="checkbox" checked>
               <span class="slider round"></span>
             </label>
-            <span class="w3-cell-middle">{% trans 'cc to my email address'%}&nbsp;</span>
-        </p>
+            <span class="w3-cell-middle">&nbsp;{% trans 'cc to my email address'%}</span>
+        </div>
         <label for="id-subject">{% trans 'Subject'%}</label>
-        <input id="id-subject" type="text" class= "w3-input" name="subject" required/>
-        <textarea id="id-content" class= "w3-input w3-border w3-panel" name="content" required>
+        <input id="id-subject" type="text" class= "w3-input w3-border" name="subject" required/>
+        <textarea id="id-content" class= "w3-input w3-border w3-panel" name="content" rows="5" required>
         </textarea>
     </div>
     <div class="w3-right">
-      <button type = "button" class="cancel-modal">Cancel</button>
-      <button type="button" id="send_email_btn" onclick="send_email('send_email_btn','{{csrf_token}}')">Submit</button>
+      <button type = "button" class="logo-red">{% trans 'Cancel' %}</button>
+      <button type="button" id="send_email_btn" class="logo-blue" onclick="send_email('send_email_btn','{{csrf_token}}')">{% trans 'Submit' %}</button>
     </div>
   </form>

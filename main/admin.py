@@ -103,21 +103,22 @@ class CollectionPointAdmin(admin.ModelAdmin):
 	def status_all_display(self, obj):
 		return obj.status_all()
 
-	fieldsets = [
-		('Collector', 				{'fields': ['collector', 'store', 'status',"status_all_display",]}),
-		('location',               	{'fields': ['name','collector_icon', 'collector_icon_display', 'store', 'store_name', 'address', 'city', 'state','country', 'zipcode','memo',]}),
-		('License',					{'fields': ['license_image', 'license_image_display', 'id_image','id_image_display',]}),
-		('Document',				{'fields': ['wechat', 'wechat_qrcode', 'referrer', 'apply_reason', 'info_source',]}),
-		('Package',                 {'fields': ['food', 'regular', 'skincare',]}),
-		('Schedule',                {'fields': ['absent_start', 'absent_end',
-												'mon_start', 'mon_end',
-												'tue_start', 'tue_end',
-												'wed_start', 'wed_end',
-												'thu_start', 'thu_end',
-												'fri_start', 'fri_end',
-												'sat_start', 'sat_end',
-												'sun_start', 'sun_end',]}),
-	]
+	fieldsets = (
+	('Collector', 				{'fields': ['collector', 'status',"status_all_display",]}),
+	('location',               	{'fields': ['name','collector_icon', 'collector_icon_display', 'store', 'store_name', 'address', 'city', 'state','country', 'zipcode','memo',]}),
+	('License',					{'fields': ['license_image', 'license_image_display', 'id_image','id_image_display',]}),
+	('Document',				{'fields': ['wechat', 'wechat_qrcode', 'referrer', 'apply_reason', 'info_source',]}),
+	('Package',                 {'fields': ['food', 'regular', 'beauty',]}),
+	('Schedule',                {'fields': ['absent_start', 'absent_end',
+											'mon_start', 'mon_end',
+											'tue_start', 'tue_end',
+											'wed_start', 'wed_end',
+											'thu_start', 'thu_end',
+											'fri_start', 'fri_end',
+											'sat_start', 'sat_end',
+											'sun_start', 'sun_end',]}),
+
+	)
 
 
 admin.site.register(CollectionPoint, CollectionPointAdmin)

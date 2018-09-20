@@ -27,7 +27,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
+ADMINS = (
+    ('Cuishan', 'cuishan1122@gmail.com'),
+)
+MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ['*',]
 
@@ -69,6 +74,10 @@ INSTALLED_APPS = [
     # for template calculation
     'mathfilters',
 
+    # for upload and storage images
+    'cloudinary',
+
+    'django.contrib.admindocs',
 ]
 
 # for sitemap
@@ -135,8 +144,8 @@ TEMPLATES = [
 INSTALLED_APPS += ['gunicorn', ]
 
 
-
-
+# paypal buy now button image
+PAYPAL_BUY_BUTTON_IMAGE = 'https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif'
 
 
 # login settings
@@ -151,7 +160,17 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 
 WSGI_APPLICATION = 'qycs_web.wsgi.application'
 
@@ -247,14 +266,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/myaccount/'
+LOGIN_REDIRECT_URL = '/'
 
 ugettext = lambda s: s
 LANGUAGES = (
     ('en-us', _('English')),
-    ('zh', _('Chinese')),
+    ('zh-Hans', _('Simplified Chinese')),
 )
 
 LOCALE_PATHS = [
