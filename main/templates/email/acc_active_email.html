@@ -3,5 +3,5 @@
 {% autoescape off %}
 Hi {{ user.username }},
 Please click on the link to confirm your registration,
-{{ protocol }}://www.myqycs.com{% url 'activate' uidb64=uid token=token %}
+www.myqycs.com{% url 'activate' uidb64=uid token=token %}
 {% endautoescape %}
