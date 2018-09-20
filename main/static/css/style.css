@@ -6,6 +6,9 @@ body {
   background-size: 100%;
   background-image: url("/static/image/home_background.png");
 }
+.contentCSS{
+  min-height: 32vw;
+}
 .logo-red{
   background-color: #E73229;
 }
@@ -161,6 +164,9 @@ a:hover{
   background-color: white;
 }
 
+#customer_service_block{
+  background-color:#161d57;
+}
 .large_image{
   max-width: 45%;
   height: auto;
@@ -181,6 +187,11 @@ a:hover{
   background-position: right 0 bottom 0;
   padding-bottom: 10vw;
 }
+
+.wechat, .email{
+  cursor:pointer;
+}
+
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
   margin-top: 8vw;
@@ -234,7 +245,12 @@ a:hover{
   left: 3vw;
 }
 
-
+#shipping_full_circle:hover{
+  /* animation passing name  */
+  animation-name: hoverIN;
+  animation-duration: .5s;
+  left: 3vw;
+}
 
 
 .half_circle_right{
@@ -320,11 +336,11 @@ a:hover{
 
 /* ---------------------------------- for inputs ----------------------------------- */
 .contentCSS input[type="checkbox"]{
-  width: 1vw;
-  height: 1vw;
+  width: 15px;
+  height: 15px;
   vertical-align: middle;
 }
-.contentCSS input, .contentCSS select, .contentCSS textarea{
+.contentCSS input, .contentCSS select, .contentCSS textarea, .w3-modal-content input, .w3-modal-content select, .w3-modal-content textarea{
   padding: 0.2vw;
   margin: 0.2vw 0.2vw 0.2vw 0;
 }
@@ -334,14 +350,19 @@ a:hover{
   width: 95%;
 }
 
+.required_stick{
+  color: red;
+  content:"*";
+  display:inline-block;
+}
 
 /* --------------------------- for the map ----------------------------------- */
 #map{
-  height:500px;
+  height:35vw;
   width: 100%;
 }
 #CollectionPointID{
-  max-height:500px;
+  height:35vw;
   overflow-y: visible;
   width: 300px;
   border: solid;
@@ -378,13 +399,13 @@ thead {
     width: 100%;
     background-color: #ffffff;
     border: none;
-    border-bottom: 1px solid #eee;
-    border-top: 1px solid #eee;
+    border-bottom: 2px solid black;
+    background-color: Transparent;
 }
 thead th{
   text-align: center;
   border: none;
-  background-color: #ffffff;
+  background-color: Transparent;
   font-size: 1vw;
   vertical-align: middle;
 }
@@ -393,6 +414,62 @@ tbody td {
   vertical-align: middle;
   border: none;
   position: relative;
+}
+/* ----------------------------------- for checkbox switch------------------------------------------- */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 26px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #00CC00;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 26px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.checkbox-txt{
+  margin-top: 15px;
+  margin-bottom: 30px;
 }
 
 /*---------------------------------------for footer only----------------------------------------*/
@@ -423,7 +500,6 @@ tbody td {
     text-align: center;
     margin: 0;
     padding: 0.5vw;
-    font-size: 1vw;
     color: #fff;
   }
 

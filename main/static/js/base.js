@@ -19,6 +19,8 @@ $(document).ready(function(){
         $(this).css('background-color','#fff');
       }
     });
+    $("input[required]").before('<span class="required_stick">*</span>');
+    $("select[required]").before('<span class="required_stick">*</span>');
     $('#id_email').change(function(){
       if(!validateEmail($(this).val())){
         $(this).css('background-color','#ffdddd');

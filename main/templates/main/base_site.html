@@ -20,6 +20,7 @@
       <div class="topnav" id="myTopnav">
         <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
         <a href="{% url 'collection_points' %}">{% trans "Collection Points" %}</a>
+        <a href="{% url 'information' 'shipping_guide'%}">{% trans "Price List" %}</a>
             {% if user.is_authenticated %}
                 {% if user.default_col %}
                 <a href="{% url 'add_co_shipping' user.default_col.pk %}">
@@ -123,15 +124,16 @@
 
     <div class="w3-col w3-container m3 l3">
       <div class="w3-row">
-          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:60px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
+          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:100px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
       </div>
 
-      <div class="w3-padding-small w3-center">
-        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="width:25px;">
-        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="width:25px;">
+      <div class="w3-padding-16 w3-center">
+        <a href="{% url 'customer_service'%}"><img alt="customer service icon" src="{% static 'image/customer_service.svg' %}" style="height:38px;"></a>
+        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="height:38px;">
+        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="height:38px;">
       </div>
       <div class="w3-padding-small w3-center">
-        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:100px;">
+        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:200px;">
     </div>
     </div>
 

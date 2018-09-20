@@ -1,5 +1,6 @@
 from . import views
 from . import package_views as pk_views
+from . import information_views as info_views
 from django.urls import path, re_path
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
@@ -28,6 +29,8 @@ urlpatterns = [
 
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
+
+    path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
 
 
     # path('image/', views.AddImageView.as_view(), name='image'),
