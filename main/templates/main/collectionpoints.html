@@ -17,6 +17,12 @@
   <div id="search_block"><input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}"><i class="fa fa-search"></i></div>
   <div calss="we-cell-row">
     <Table class="w3-cell" id="CollectionPointID">
+      <div id="no_collection_point" style="display:none;">
+        {% blocktrans %}
+        Sorry, We do not have collection points in this area. You can use our direct shipping service by click "QUICK DIRECT SHIPPING" IN THE MENU ON TOP .
+        {% endblocktrans %}
+
+      </div>
       <tbody>
         {% for col in col_list  %}
         <tr id="{{col.pk}}">
@@ -43,8 +49,10 @@
   let locations={{col_str_json|safe}}
 </script>
 <script src="{% static 'js/map.js' %}"></script>
-<script async defer
+<!-- <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLyUK5D-laS8iQsSDWwOhehl-Gvhz8xfA&libraries=places&callback=initAutocomplete">
+</script> -->
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
 </script>
-
 {% endblock %}
