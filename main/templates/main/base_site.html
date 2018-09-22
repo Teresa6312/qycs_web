@@ -73,7 +73,6 @@
 </div>
   {% include "blocks/modal.html" with element='wechat' title='Contact Us' block='wechat_qrcode_block'%}
   {% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
-  <script src="{% static 'js/base.js' %}"></script>
   <script>
   function openMenu() {
     var mynnav = document.getElementById("myTopnav");
@@ -93,11 +92,13 @@
 
 
 {% block footer %}
-<hr/>
-<div id="footer">
-  <div class="w3-row" style="width:70%; margin:auto;">
+<div id="footer" class="w3-mobile">
+  {% block footer_line %}
+  <hr/>
+  {% endblock%}
+  <div class="w3-row" style="width:80%; margin:auto;">
     <div class="w3-col w3-container m3 l3">
-      <h5>{% trans "My Qycs" %}</h5>
+      <h5>{% trans "My QYCS" %}</h5>
 
       <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
       <a href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
@@ -124,7 +125,7 @@
 
     <div class="w3-col w3-container m3 l3">
       <div class="w3-row">
-          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:100px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
+          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:80px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
       </div>
 
       <div class="w3-padding-16 w3-center">
@@ -139,22 +140,22 @@
 
 
   </div>
+  <div id="rights" class="footer-copyright w3-row w3-mobile"  style="width:100%; margin:auto;">
+        <div class="w3-col m6 l6" style="width:50%;">
+              <div class="w3-container" style="width:80%; margin-left:20%;">
+                <div>&copy; 2018 {% trans "Qycs Global Shipping Inc." %} {% trans "All Rights Reserved" %}</div>
+              </div>
+        </div>
 
+
+        <div class="w3-rest m6 l6">
+              <div class="w3-container" style="width:80%;">
+                <div><a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a></div>
+              </div>
+        </div>
+
+  </div>
 </div>
-<div id="rights" class="footer-copyright w3-row"  style="width:100%; margin:auto;">
-      <div class="w3-col" style="width:50%;">
-            <div class="w3-container" style="width:80%; margin-left:20%;">
-              <div>&copy; 2018 {% trans "Qycs Global Shipping Inc." %} {% trans "All Rights Reserved" %}</div>
-            </div>
-      </div>
 
-
-      <div class="w3-rest">
-            <div class="w3-container" style="width:80%;">
-              <div><a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a></div>
-            </div>
-      </div>
-
-</div>
 
 {% endblock %}
