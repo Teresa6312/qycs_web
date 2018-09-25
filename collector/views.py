@@ -43,7 +43,6 @@ class ColRegisterView(TemplateView):
 		userform.fields['password'].required = False
 
 		colform = ColCreationForm(request.POST, request.FILES)
-		posted = colform.instance
 		if colform.is_valid() and userform.is_valid():
 			user = userform.save(request.user)
 			collector = colform.save(commit=False)
@@ -54,10 +53,10 @@ class ColRegisterView(TemplateView):
 			messages.info(request, _('Thank you for applied collection point. We will process your application in a week.'))
 			return redirect(reverse('account'))
 		else:
+
 			return render(request, self.template_name, {
 					 'colform': colform,
 					 'userform': userform,
-					 'posted': posted,
 					 })
 
 class CollectorUpdateView(TemplateView):
