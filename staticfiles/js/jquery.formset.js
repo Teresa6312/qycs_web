@@ -36,15 +36,15 @@
                 if (row.is('TR')) {
                     // If the forms are laid out in table rows, insert
                     // the remove button into the last table cell:
-                    row.children(':last').append('<button type="button" class="logo-red w3-panel" style="float:right;"><a class="' + options.deleteCssClass +'" href="javascript:void(0)">' + options.deleteText + '</a></button>');
+                    row.children(':last').append('<button type="button" class="logo-red w3-panel remove-row" style="float:right;"><a class="' + options.deleteCssClass +'" href="javascript:void(0)">' + options.deleteText + '</a></button>');
                 } else if (row.is('UL') || row.is('OL')) {
                     // If they're laid out as an ordered/unordered list,
                     // insert an <li> after the last list item:
-                    row.append('<li><button type="button" class="logo-red w3-panel" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button></li>');
+                    row.append('<li><button type="button" class="logo-red w3-panel remove-row" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button></li>');
                 } else {
                     // Otherwise, just insert the remove button as the
                     // last child element of the form's container:
-                    row.append('<button type="button" class="logo-red w3-panel" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button>');
+                    row.append('<button type="button" class="logo-red w3-panel remove-row" style="float:right;"><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></button>');
                 }
                 row.find('a.' + options.deleteCssClass).click(function() {
                     var row = $(this).parents('.' + options.formCssClass),

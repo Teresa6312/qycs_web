@@ -19,7 +19,7 @@ $(document).ready(function(){
         $(this).css('background-color','#fff');
       }
     });
-    $("input[required]").before('<span class="required_stick">*</span>');
+    $(".contentCSS input[required]").before('<span class="required_stick">*</span>');
     $("select[required]").before('<span class="required_stick">*</span>');
     $('#id_email').change(function(){
       if(!validateEmail($(this).val())){
@@ -35,12 +35,6 @@ $(document).ready(function(){
         $(this).css('background-color','#fff');
       }
     });
-    // $('container').find('input').each(function(){
-    //   if($(this).prop('required')){
-    //     $(this).after('<span class="logo-text-red">*</span>')
-    //     console.log($(this).prop('name'));
-    //   }
-    // });
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
