@@ -117,8 +117,8 @@
 
               {% if itemset.forms %}
                   {% for subform in itemset.forms %}
-                      <table style="width:95%; margin:auto;">
-                                <tr class="itemset_row w3-cell-row"><th  class="w3-cell select_column" style="width:5%;">{% trans 'Item' %}</th>
+                      <table style="width:95%; margin:auto;" id="item_table">
+                                <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">0</span></th>
                                   <td class="w3-cell w3-rest">
                                       <div class="w3-container">
                                         {{ subform.item_name.errors }}
@@ -194,6 +194,14 @@ $(document).ready(function(){
 			 $('#id_last_name').val('{{user.service_set.first.receiver.last_name}}');
 			 $('#id_phone').val('{{user.service_set.first.receiver.phone}}');
 	});
+  	$(".add-row").click(function(){
+      $('table').find('.item_num').each(function(){
+        $(this).text($(this).parents('tr').find('.item_name').prop('id').split('-')[1]);
+      });
+    });
+    $(".remove-row a").click(function(){
+      // $('.item_num').text($(this).closest('.item_name').prop('id').split('-')[1]);
+    });
 });
 </script>
 {% endblock%}

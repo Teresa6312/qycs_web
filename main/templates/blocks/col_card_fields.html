@@ -1,9 +1,14 @@
 {% load i18n static %}
-
+{% load cloudinary %}
+{% cloudinary_includes %}
+{% cloudinary_js_config %}
 
 
 {% if col.collector_icon and not no_icon %}
-<div style="max-width:15vw; height:10vw; margin:auto;" class="w3-padding-16"><img alt="collection point icon" src = "{{col.collector_icon.url}}" height="100%;"></div>
+<div style="max-width:15vw; height:10vw; margin:auto;" class="w3-padding-16">
+  {% cloudinary col.collector_icon format="jpg" width=120 height=80 crop="fill" %}
+
+</div>
 {% endif %}
 <div class="text-regular-bold">{{col.name}}
   {% if not col.status %}

@@ -1,0 +1,240 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% load cloudinary %}
+
+{% block extrastyle %}
+    {% cloudinary_includes %}
+    {% cloudinary_js_config %}
+{% endblock %}
+
+{% block title%}
+{% trans 'Register Collection Point' %}
+{% endblock%}
+
+
+{% block content %}
+
+  {% if posted %}
+    <div class="results">
+      {% if posted.errors %}
+        Errors: {{ posted.errors }}
+      {% else %}
+        <div class="uploaded_info">
+          <div class="data">
+            <table>
+              {% for key, value in posted.image.metadata.items %}
+                <tr><td>{{ key }}</td><td>{{ value }}</td></tr>
+              {% endfor %}
+            </table>
+          </div>
+          <div class="image">
+            {% cloudinary posted.image THUMBNAIL %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+
+
+  <div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
+    <div class="text-xxlarge-bold w3-panel">{% trans 'Register my location as a Package Collection Point' %}</div>
+
+    <div id="message_block">
+      {% if messages %}
+      <ul class="messagelist">{% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+      {% endfor %}</ul>
+      {% endif %}
+
+      {% if form.errors or receiverform.errors or itemset.errors %}
+          <p class="errornote">
+          {% trans "Please correct the error(s) below." %}
+          </p>
+      {% endif %}
+    </div>
+    <div class="w3-mobile">
+        <div class="text-medium">{% trans 'Collection Point Registration Terms' %}</div>
+        <div class="w3-card-2" style="height:300px; overflow:auto;">{{term|linebreaks}}</div>
+        <div class="w3-center">{{colform.agreement}}{{colform.agreement.label_tag}}</div>
+    </div>
+  </div>
+
+
+
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+
+      <div class="tab">
+          <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
+                <div class="w3-cell" style="width:50%;">
+                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                        <div class="text-medium">{% trans 'My Profile' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                          <div class="w3-row">
+
+                            {{ userform.username.label_tag }} {{ userform.username.errors }}{{ userform.username }}
+                            <input type="hidden" name="next" value="{{ next }}" />
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.first_name.label_tag }}{{ userform.first_name.errors }} {{ userform.first_name }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.last_name.label_tag }} {{ userform.last_name.errors }}{{ userform.last_name }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.birthday.label_tag }}{{ userform.birthday.errors }}<br/>{{ userform.birthday }}
+                          </div>
+                          <div class="w3-row">
+                            {{ userform.email.errors }}
+                            {{ userform.email.label_tag }} {{ userform.email }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.phone.label_tag }}   {{ userform.phone.errors }}{{ userform.phone }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.country.label_tag }} {{ userform.country.errors }}{{ userform.country }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.language.label_tag }} {{ userform.language.errors }} {{ userform.language }}
+                          </div>
+                    </div>
+                </div>
+                <div class="w3-cell" style="width:50%;">
+                      <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                          <div class="text-medium">{% trans 'My Location' %}</div>
+                      </div>
+                      <hr/>
+                      <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                          <div class="w3-row">
+                            {{ colform.name.errors }}
+                            {{ colform.name.label_tag }} {{ colform.name }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.collector_icon.errors }}
+                            {{ colform.collector_icon.label_tag }} {{ colform.collector_icon }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.store.errors }}
+                            {{ colform.store.label_tag }} {{ colform.store }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.store_name.errors }}
+                            {{ colform.store_name.label_tag }} {{ colform.store_name }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.country.errors }}
+                            {{ colform.country.label_tag }} {{ colform.country }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.state.errors }}
+                            {{ colform.state.label_tag }} {{ colform.state }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.city.errors }}
+                            {{ colform.city.label_tag }} {{ colform.city }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.address.errors }}
+                            {{ colform.address.label_tag }} {{ colform.address }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.apt.errors }}
+                            {{ colform.apt.label_tag }} {{ colform.apt }}
+                          </div>
+                          <div class="w3-row">
+                            {{ colform.zipcode.errors }}
+                            {{ colform.zipcode.label_tag }} {{ colform.zipcode }}
+                          </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab">
+            <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
+                  <div class="w3-cell" style="width:50%;">
+                      <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                          <div class="text-medium">{% trans 'Document' %}</div>
+                      </div>
+                      <hr/>
+                      <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                            <div class="w3-row">
+                              {{ colform.license_type.errors }}
+                              {{ colform.license_type.label_tag }} {{ colform.license_type }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.license_image.errors }}
+                              {{ colform.license_image.label_tag }} {{ colform.license_image }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.id_image.errors }}
+                              {{ colform.id_image.label_tag }} {{ colform.id_image }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.wechat.errors }}
+                              {{ colform.wechat.label_tag }} {{ colform.wechat }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.wechat_qrcode.errors }}
+                              {{ colform.wechat_qrcode.label_tag }} {{ colform.wechat_qrcode }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.referrer.errors }}
+                              {{ colform.referrer.label_tag }} {{ colform.referrer }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.apply_reason.errors }}
+                              {{ colform.apply_reason.label_tag }} {{ colform.apply_reason }}
+                            </div>
+                            <div class="w3-row">
+                              {{ colform.info_source.errors }}
+                              {{ colform.info_source.label_tag }} {{ colform.info_source }}
+                            </div>
+                      </div>
+                  </div>
+              </div>
+        </div>
+
+    <div class="submit-row w3-container">
+      <button type="button" class="cleanBtn">{% trans 'Clear Form' %}</button>
+        <button  type="button" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
+        <input type = "submit" value = "{% trans 'Register' %}"/>
+    </div>
+  </form>
+
+
+  <script>
+
+  $(function() {
+    if($.fn.cloudinary_fileupload !== undefined) {
+      $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+    }
+  });
+
+  $('#id_store').change( function(){
+          if (!$(this).is(':checked')) {
+            $('#id_store_name').closest('.w3-row').slideUp(300, function(){
+                $('#id_store_name').closest('.w3-row').hide();
+            });
+            $('#id_license_type').closest('.w3-row').slideUp(300, function(){
+                $('#id_license_type').closest('.w3-row').hide();
+            });
+            $('#id_license_image').closest('.w3-row').slideUp(300, function(){
+                $('#id_license_image').closest('.w3-row').hide();
+            });
+          }else{
+            $('#id_store_name').closest('.w3-row').hide().slideDown(300);
+            $('#id_license_image').closest('.w3-row').hide().slideDown(300);
+            $('#id_license_type').closest('.w3-row').hide().slideDown(300);
+          }
+      });
+  </script>
+{% endblock %}

@@ -19,8 +19,6 @@ urlpatterns = [
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             views.activate, name='activate'),
-    path('accounts/colregister/', views.ColRegisterView.as_view(), name = 'colregister'),
-
     path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
 
     path('myaccount/location/', views.locationView, name='location'),
@@ -51,8 +49,6 @@ urlpatterns = [
     path('myaccount/address/<int:add_id>/delete', login_required(views.DeleteAddressView.as_view()), name='deleteaddress'),
     path('myaccount/address/<int:add_id>/set_dedault_address', login_required(views.SetDefaultAddressView.as_view()), name='set_dedault_address'),
 
-
-    path('myaccount/collection-point/update', login_required(views.CollectorUpdateView.as_view()), name='collector_update'),
 
     path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 

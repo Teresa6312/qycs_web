@@ -1,6 +1,8 @@
 from .models import Review, Question, ReviewResponse, QuestionResponse
-from main.models import CollectionPoint
-from .forms import MessageForm, ResponseForm
+from main.models import CollectionPoint, Resource
+from main.forms import  NewUserChangeForm
+
+from .forms import MessageForm, ResponseForm, ColChangeForm, ColCreationForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -8,8 +10,102 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext as _
 
-class CollectionPointView(TemplateView):
+
+
+class ColRegisterView(TemplateView):
+	template_name = 'collector/colregister.html'
+
+	def get(self, request):
+		try:
+			return redirect(reverse('collection_point_view',args = (request.user.collectionpoint.pk,)))
+		except:
+			userform = NewUserChangeForm(instance=request.user)
+			userform.fields['password'].required = False
+			userform.fields['phone'].required = True
+			userform.fields['first_name'].required = True
+			userform.fields['last_name'].required = True
+			colform = ColCreationForm()
+			try:
+				text = Resource.objects.get(title='colregister')
+				term = text.english_content
+			except:
+				term = _('Term is not avaliable Right now.')
+			return render(request, self.template_name, {'colform': colform,
+														'userform': userform,
+														"term": term,
+														})
+
+
+	def post(self, request):
+		userform  = NewUserChangeForm(request.POST, instance=request.user)
+		userform.fields['password'].required = False
+
+		colform = ColCreationForm(request.POST, request.FILES)
+		posted = colform.instance
+		if colform.is_valid() and userform.is_valid():
+			user = userform.save(request.user)
+			collector = colform.save(commit=False)
+			collector.collector = user
+			collector.save()
+			user.default_col = collector
+			user.save()
+			messages.info(request, _('Thank you for applied collection point. We will process your application in a week.'))
+			return redirect(reverse('account'))
+		else:
+			return render(request, self.template_name, {
+					 'colform': colform,
+					 'userform': userform,
+					 'posted': posted,
+					 })
+
+class CollectorUpdateView(TemplateView):
+	template_name = 'collector/collector_update.html'
+
+	def get(self, request):
+		if request.user.collectionpoint:
+			form = ColChangeForm(instance = request.user.collectionpoint)
+			return render(request, self.template_name, {'form': form})
+		else:
+			return redirect(reverse('colregister'))
+
+	def post(self, request):
+		try:
+			col = CollectionPoint.objects.get(collector = request.user)
+			form = ColChangeForm(request.POST, request.FILES, instance=col)
+			if form.is_valid():
+
+				update = form.save(commit=False)
+				if 'absent_start' in form.changed_data or 'absent_end' in form.changed_data:
+					if update.absent_start:
+						if update.absent_start< date.today() or not update.absent_end or update.absent_start>update.absent_end:
+							if not update.absent_end:
+								errors = form._errors.setdefault("absent_end", ErrorList())
+								errors.append(_("This field is required after you entered the Unavaliable Start Date."))
+							if update.absent_start>update.absent_end:
+								errors = form._errors.setdefault("absent_end", ErrorList())
+								errors.append(_("Enter a valid date."))
+							if update.absent_start< date.today():
+								errors = form._errors.setdefault("absent_start", ErrorList())
+								errors.append(_("Enter a valid date."))
+							return render(request, self.template_name, {'form': form,})
+					elif update.absent_end:
+						if not update.absent_start:
+							errors = form._errors.setdefault("absent_start", ErrorList())
+							errors.append(_("This field is required after you entered the Unavaliable End Date."))
+							return render(request, self.template_name, {'form': form,})
+
+				update.save()
+				return redirect(update.get_absolute_url())
+			else:
+				print(form.errors)
+				return render(request, self.template_name, {'form': form,
+															})
+		except:
+			return render(request, self.template_name)
+
+class CollectionPointDetailView(TemplateView):
 	template_name = 'collector/collection_point_view.html'
 
 	def get(self, request, col_pk):

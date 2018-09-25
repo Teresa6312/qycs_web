@@ -1,6 +1,13 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
 
+{% load cloudinary %}
+
+{% block extrastyle %}
+    {% cloudinary_includes %}
+    {% cloudinary_js_config %}
+{% endblock %}
+
 {% block title%}
 {% trans 'User Collection Point Profile Update' %}
 {% endblock%}
@@ -158,6 +165,12 @@
   </form>
 
   <script>
+  $(function() {
+    if($.fn.cloudinary_fileupload !== undefined) {
+      $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+    }
+  });
+
   $('#id_store').change( function(){
           if (!$(this).is(':checked')) {
             $('#id_store_name').closest('.form-row').slideUp(300, function(){

@@ -161,6 +161,7 @@ class CollectionPoint(Address_Common_Info):
 	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
 	license_image = CloudinaryField('collector_license', blank=True, null=True)
 	id_image = CloudinaryField('collector_id')
+	wechat_qrcode = CloudinaryField('collector_wechat', blank=True, null=True)
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))
 	store = models.BooleanField(default = True, verbose_name= _('Store'))
@@ -168,7 +169,7 @@ class CollectionPoint(Address_Common_Info):
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
 	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
-	wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
+	# wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
 	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information Source'))

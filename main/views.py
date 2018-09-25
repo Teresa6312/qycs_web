@@ -3,8 +3,7 @@ from .models import (
 	User, Warehouse, FavoriteWebsite, Location
 	)
 from .forms import (
-	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet,
-	ColCreationForm, EmailForm, ColChangeForm, TrackingForm
+	NewUserCreationForm, NewUserChangeForm, AddressForm, WebFormSet, EmailForm, TrackingForm
 	)
 
 from .code import send_confirmation_email
@@ -155,90 +154,6 @@ class SendEmailView(TemplateView):
 			return redirect(reverse('home'))
 
 
-class ColRegisterView(TemplateView):
-	template_name = 'main/colregister.html'
-
-	def get(self, request):
-		userform = NewUserChangeForm(instance=request.user)
-		userform.fields['password'].required = False
-		userform.fields['phone'].required = True
-		userform.fields['first_name'].required = True
-		userform.fields['last_name'].required = True
-		colform = ColCreationForm()
-		try:
-			text = Resource.objects.get(title='colregister')
-			term = text.english_content
-		except:
-			term = _('Term is not avaliable Right now.')
-
-		return render(request, self.template_name, {'colform': colform,
-													'userform': userform,
-													"term": term,
-													})
-
-	def post(self, request):
-		userform  = NewUserChangeForm(request.POST, instance=request.user)
-		userform.fields['password'].required = False
-		colform = ColCreationForm(request.POST, request.FILES)
-		if colform.is_valid() and userform.is_valid():
-			user = userform.save(request.user)
-			collector = colform.save(commit=False)
-			collector.collector = user
-			collector.save()
-			user.default_col = collector
-			user.save()
-			messages.info(request, _('Thank you for applied collection point. We will process your application in a week.'))
-			return redirect(reverse('account'))
-		else:
-			return render(request, self.template_name, {
-					 'colform': colform,
-					 'userform': userform,
-					 })
-
-class CollectorUpdateView(TemplateView):
-	template_name = 'main/collector_update.html'
-
-	def get(self, request):
-		if request.user.collectionpoint:
-			form = ColChangeForm(instance = request.user.collectionpoint)
-			return render(request, self.template_name, {'form': form})
-		else:
-			return redirect(reverse('colregister'))
-
-	def post(self, request):
-		try:
-			col = CollectionPoint.objects.get(collector = request.user)
-			form = ColChangeForm(request.POST, request.FILES, instance=col)
-			if form.is_valid():
-
-				update = form.save(commit=False)
-				if 'absent_start' in form.changed_data or 'absent_end' in form.changed_data:
-					if update.absent_start:
-						if update.absent_start< date.today() or not update.absent_end or update.absent_start>update.absent_end:
-							if not update.absent_end:
-								errors = form._errors.setdefault("absent_end", ErrorList())
-								errors.append(_("This field is required after you entered the Unavaliable Start Date."))
-							if update.absent_start>update.absent_end:
-								errors = form._errors.setdefault("absent_end", ErrorList())
-								errors.append(_("Enter a valid date."))
-							if update.absent_start< date.today():
-								errors = form._errors.setdefault("absent_start", ErrorList())
-								errors.append(_("Enter a valid date."))
-							return render(request, self.template_name, {'form': form,})
-					elif update.absent_end:
-						if not update.absent_start:
-							errors = form._errors.setdefault("absent_start", ErrorList())
-							errors.append(_("This field is required after you entered the Unavaliable End Date."))
-							return render(request, self.template_name, {'form': form,})
-
-				update.save()
-				return redirect(update.get_absolute_url())
-			else:
-				print(form.errors)
-				return render(request, self.template_name, {'form': form,
-															})
-		except:
-			return render(request, self.template_name)
 
 
 class AccountView(TemplateView):
@@ -370,7 +285,7 @@ class EditAddressView(TemplateView):
 
 		add = Address.objects.get(pk=add_id)
 
-# never update an address that has been shipped with package(s)
+		# never update an address that has been shipped with package(s)
 		if Service.objects.filter(ship_to_add=add).count()==0:
 			# just update the addresss
 			addform = AddressForm(request.POST, instance = add)
@@ -382,7 +297,7 @@ class EditAddressView(TemplateView):
 			updateaddress = addform.save(commit = False)
 			updateaddress.user = request.user
 
-# when create a new address for update, neet to reset the old one's user to be null
+			# when create a new address for update, neet to reset the old one's user to be null
 			if addform.instance:
 				add.user = None
 				add.save()
@@ -444,29 +359,7 @@ class CollectionPointView(TemplateView):
 	def get(self, request):
 		col_dict=return_col_address_str()
 		return render(request, self.template_name, {'col_list': col_dict['col_list'],'col_str_json': col_dict['col_str_json']})
-#
-# class CollectionPointView(TemplateView):
-# 	template_name = 'main/collectionpoints.html'
-# 	col_list = (CollectionPoint.objects.filter(status=True).
-# 					values('pk', 'name', 'store', 'absent_start', 'absent_end', 'food', 'regular', 'skincare', 'address', 'apt', 'city', 'state', 'country', 'zipcode' ))
-# 	col_json = json.dumps(list(col_list), cls=DjangoJSONEncoder)
-#
-# 	def get(self, request):
-# 		return render(request, self.template_name, {'col_list': self.col_json,})
-#
-# 	def post(self, request):
-#
-# 		try:
-# 			col = CollectionPoint.objects.get(pk=request.POST.get('selected_col'))
-# 			if not col.status:
-# 				messages.error(request, _("The Collection Point you select is not avaliable. Please select another one." ))
-# 				return render(request, self.template_name, {'col_list': self.col_json,})
-# 			else:
-# 				return redirect(reverse('add_co_shipping',args = (col.pk,)))
-# 		except:
-# 			messages.error(request, _("Your didn't select a Collection Point yet."))
-# 			return render(request, self.template_name, {'col_list': self.col_json,})
-#
+
 
 
 class ShippingView(TemplateView):

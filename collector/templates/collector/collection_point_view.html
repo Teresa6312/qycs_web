@@ -1,5 +1,7 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
+{% load cloudinary %}
+
 
 {% block title%}
 {{collector.name}}
@@ -10,9 +12,11 @@
     <div class="w3-panel w3-col-row w3-mobile">
         <div class = "w3-card-4 w3-third w3-mobile" style="max-width:25vw;">
           {% if collector.collector_icon%}
-              <img alt="collection point icon" src="{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
+              <!-- <img alt="collection point icon" src="{{collector.collector_icon.url}}" style="width:100%; margin:auto;"> -->
+              {% cloudinary collector.collector_icon format="jpg" width=120 height=80 crop="fill" %}
           {% else %}
               <img alt="user icon" src="{% static 'image/user_icon.png' %}" style="width:100%; margin:auto;">
+
           {% endif %}
         </div>
 
@@ -188,6 +192,7 @@
 
 {% block script%}
 <script>
+
 
 function AddResponseForm(id, type){
 

@@ -174,13 +174,14 @@ a:hover{
 }
 .contentCSS, .tracking_page{
   padding-bottom: 200px;
+  position: inherit;
 }
 .home_logged{
   background-size: 100%;
   background-repeat: no-repeat;
   background-image: url("/static/image/car_background.png");
-  background-position: right 0 bottom 200px;
-  padding-bottom: 400px;
+  background-position: right 0 bottom 180px;
+  padding-bottom: 300px;
 }
 
 .wechat, .email{
@@ -420,6 +421,10 @@ tbody td {
   vertical-align: middle;
   border: none;
   position: relative;
+}
+tr th{
+  text-align: center;
+  vertical-align: top;
 }
 /* ----------------------------------- for checkbox switch------------------------------------------- */
 .switch {
