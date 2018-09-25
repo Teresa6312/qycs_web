@@ -41,19 +41,17 @@ class ColRegisterView(TemplateView):
 	def post(self, request):
 		userform  = NewUserChangeForm(request.POST, instance=request.user)
 		userform.fields['password'].required = False
-
 		colform = ColCreationForm(request.POST, request.FILES)
 		if colform.is_valid() and userform.is_valid():
-			user = userform.save(request.user)
 			collector = colform.save(commit=False)
-			collector.collector = user
+			collector.collector = request.user
 			collector.save()
+			user = userform.save(commit=False)
 			user.default_col = collector
 			user.save()
 			messages.info(request, _('Thank you for applied collection point. We will process your application in a week.'))
 			return redirect(reverse('account'))
 		else:
-
 			return render(request, self.template_name, {
 					 'colform': colform,
 					 'userform': userform,
@@ -74,7 +72,6 @@ class CollectorUpdateView(TemplateView):
 			col = CollectionPoint.objects.get(collector = request.user)
 			form = ColChangeForm(request.POST, request.FILES, instance=col)
 			if form.is_valid():
-
 				update = form.save(commit=False)
 				if 'absent_start' in form.changed_data or 'absent_end' in form.changed_data:
 					if update.absent_start:
