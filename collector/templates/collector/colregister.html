@@ -27,17 +27,17 @@
           </p>
       {% endif %}
     </div>
-    <div class="w3-mobile">
-        <div class="text-medium">{% trans 'Collection Point Registration Terms' %}</div>
-        <div class="w3-card-2" style="height:300px; overflow:auto;">{{term|linebreaks}}</div>
-        <div class="w3-center">{{colform.agreement}}{{colform.agreement.label_tag}}</div>
-    </div>
+
   </div>
 
 
 
   <form method="post" enctype="multipart/form-data">{% csrf_token %}
-
+    <div class="w3-mobile">
+        <div class="text-medium">{% trans 'Collection Point Registration Terms' %}</div>
+        <div class="w3-card-2" style="height:300px; overflow:auto;">{{term|linebreaks}}</div>
+        <div class="w3-center">{{colform.agreement}}{{colform.agreement.label_tag}}</div>
+    </div>
       <div class="tab">
           <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
                 <div class="w3-cell" style="width:50%;">
