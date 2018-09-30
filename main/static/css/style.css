@@ -540,6 +540,18 @@ input:checked + .slider:before {
     .home_logged{
       background-position: right 0 bottom 0;
     }
+    .content_left{
+      width:95%;
+      margin-left:5%;
+    }
+    .content_right{
+      width:95%;
+    }
+    .content_center{
+      width:95%;
+      margin: auto;
+    }
+
     #footer{
       position:relative;
       height:auto;

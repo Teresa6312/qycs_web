@@ -39,6 +39,7 @@ body {
 }
 .text-xxlarge{
   font-size: 2.5vw;
+  font-family: Georgia;
 }
 .text-xxlarge-bold{
   font-size: 2.5vw;
@@ -164,6 +165,7 @@ a:hover{
 
 /*------------------------------------ content --------------------------------------*/
 
+
 #shop-content {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/image/brand_red.png");
   background-size: 100%;
@@ -182,6 +184,17 @@ a:hover{
   background-image: url("/static/image/car_background.png");
   background-position: right 0 bottom 180px;
   padding-bottom: 300px;
+}
+.content_left{
+  width:80%;
+  margin-left:20%;
+}
+.content_right{
+  width:80%;
+}
+.content_center{
+  width:80%;
+  margin: auto;
 }
 
 .wechat, .email{
@@ -527,6 +540,18 @@ input:checked + .slider:before {
     .home_logged{
       background-position: right 0 bottom 0;
     }
+    .content_left{
+      width:95%;
+      margin-left:5%;
+    }
+    .content_right{
+      width:95%;
+    }
+    .content_center{
+      width:95%;
+      margin: auto;
+    }
+
     #footer{
       position:relative;
       height:auto;
@@ -708,6 +733,9 @@ input:checked + .slider:before {
 
 
 /* ---------------------------------------------*  buttons *------------------------------------------------------------ */
+#login_btn{
+  margin: 0.5vw 0;
+}
 
 .w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
   color: #fff;
