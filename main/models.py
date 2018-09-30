@@ -19,11 +19,41 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 
 zip_regex = RegexValidator(regex=r'^[0-9]{2,6}(?:-[0-9]{4})?$|^$', message=_("Plese Enter a valid zip code."))
 
+SHIPPING_CARRIER_CHOICE = (
+('DHL', _('DHL')),
+('EMS', _('EMS')),
+('FEDEX', _('FEDEX')),
+('SF EXPRESS', _('SF EXPRESS')),
+('UPS', _('UPS')),
+('Cheapest', _('The cheapest one')),
+('Fastest', _('The fastest one')),
+)
+
 CARRIER_CHOICE = (
-	('ZT', _('Zhong Tong')),
-	('YT', _('Yuan Tong')),
-	('UPS', _('UPS')),
-	('DHL', _('DHL')),
+ ('SF', _('ShunFeng／顺丰速运')),
+ ('ChinaPost', _('YouZheng／中国邮政')),
+ ('ZTO', _('ZhongTong／中通速递')),
+ ('YTO', _('YuanTong／圆通速递')),
+ ('STO', _('ShenTong／申通速递')),
+ ('ZJS', _('ZhaiJiSong／宅急送')),
+ ('YD', _('YunDa／韵达快递')),
+ ('JD', _('JingDong／京东物流')),
+ ('BS', _('BaiShi／百世快递')),
+ ('TTK', _('Tiantian／天天快递')),
+ ('EYB', _('EyouBao／E邮宝')),
+ ('AAE', _('AAE／AAE快递')),
+ ('ADA', _('AnDa／安达速递')),
+ ('DP', _('DeBang／德邦快递')),
+ ('DD', _('DangDang／当当网')),
+ ('UCE', _('YouSu／优速快递')),
+ ('QF', _('QuanFeng／全峰快递')),
+ ('QY', _('QuanYi／全一快递')),
+ ('DHL', _('DHL')),
+ ('EMS', _('EMS')),
+ ('FEDEX', _('FedEx／联邦快递')),
+ ('SF EXPRESS', _('SF EXPRESS／顺丰速运')),
+ ('UPS', _('UPS/联合国际快递')),
+ ('OTHERS', _('Others／其他')),
 )
 INSURANCE_CHOICE = (
 	(0, _('NO insurance')),
@@ -36,24 +66,26 @@ CURRENCY_CHOICE = (
 	('USD', _('US Dollar')),
 )
 WEB_CATEGORY = (
-	('Clothing', _('Clothing')),
-	('Bag', _('Bag')),
-	('Jewelry', _('Jewelry')),
-	('Sport', _('Sport')),
-	('Beauty', _('Beauty')),
-	('Baby', _('Baby')),
-	('Other', _('Other')),
+ ('Clothing', _('Clothing')),
+ ('Bag', _('Bag')),
+ ('Jewelry', _('Jewelry')),
+ ('Sport', _('Sport')),
+ ('Beauty', _('Beauty')),
+ ('Baby', _('Baby')),
+ ('Other', _('Other')),
 )
+
 PACKAGE_CATEGORY = (
-	('F', _('Food')),
-	('R', _('Regular')),
-	('S', _('Skincare')),
-	('L', _('Luxury')),
-	('M', _('Mix')),
+ ('F', _('Food')),
+ ('R', _('Regular')),
+ ('B', _('Beauty')),
+ ('L', _('Luxury')),
+ ('M', _('Mix')),
 )
+
 INFORMATION_SOURCES = (
 	('WC', _('WeChat')),
-	('DN', _('Dealmoon')),
+	('DM', _('Dealmoon')),
 )
 
 LANGUAGE_CATEGORY = (
@@ -399,7 +431,7 @@ class Service(models.Model):
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
-	ship_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
+	ship_carrier = models.CharField(max_length = 100, choices=SHIPPING_CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
 
 
 

@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="text-xxlarge-bold" style="width:80%; margin:auto;">
+<div class="text-xxlarge-bold content_center">
   {% trans 'Tracking' %}
 </div>
 
@@ -29,7 +29,7 @@
 </div>
 
 <hr/>
-<div style="width:80%; margin:auto;">
+<div class="content_center">
       {% for package in packages %}
       <div class="text-large-bold">{{package.cust_tracking_num}}</div>
       <div class="w3-panel">

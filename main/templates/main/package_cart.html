@@ -8,7 +8,7 @@
 {% block content %}
 <form method = "post" class="w3-margin-top">
 {% csrf_token %}
-<div class="w3-cell w3-container w3-mobile" style="width:80%;">
+<div class="w3-cell w3-container w3-mobile">
     <div class="w3-container">
 
 
@@ -21,7 +21,7 @@
         <thead>
             <tr><th class="w3-col w3-text-blue select_column text-regular-bold">
               <input type="checkbox" id="select_all">&nbsp;{% trans 'Select All' %}
-            </th><th class="text-regular-bold" style="width:80%;">{% trans 'Package(s) / Order(s)' %}</th></tr>
+            </th><th class="text-regular-bold content_right">{% trans 'Package(s) / Order(s)' %}</th></tr>
         </thead>
         <tbody>
       {% if package_list %}
@@ -162,7 +162,7 @@
           <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon" class="w3-input w3-border"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
           <hr class="w3-border-black"/>
         <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
-        {{order.insurance.label_tag}}<br/>{{order.insurance}}
+        <div class="w3-row">{{order.insurance.label_tag}}<span class="w3-right" id="id_total_amount">{{order.insurance}}</span></div>
         <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
     </div>
 </div>

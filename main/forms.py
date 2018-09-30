@@ -2,7 +2,7 @@ from django import forms
 from .models import (
 	User, Address, Service, CollectionPoint, Warehouse,
 	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
-	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY
+	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY, SHIPPING_CARRIER_CHOICE
 	)
 # from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
@@ -215,7 +215,7 @@ Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class DirectShippingCreationForm(PackageCommonForm):
-	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = CARRIER_CHOICE,
+	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = SHIPPING_CARRIER_CHOICE,
 									widget=forms.Select(attrs={"class":"w3-select w3-border"
 									}))
 	class Meta:

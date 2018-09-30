@@ -18,7 +18,7 @@
 {% block content %}
 
 
-<div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
+<div class="w3-cell-row w3-mobile content_center">
 
   <div class="text-xxlarge-bold w3-panel">{% trans 'Update My Collection Point information' %}</div>
 
@@ -46,11 +46,11 @@
 
         <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
             <div class="w3-cell" style="width:50%;">
-                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                  <div class="w3-cell-row w3-container w3-mobile content_left">
                     <div class="text-medium">{% trans 'My Collection Point Profile' %}</div>
                   </div>
                   <hr/>
-                  <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                  <div class="w3-cell-row w3-container w3-mobile content_left">
 
                       <div class="w3-row">
                       {% if user.collectionpoint.collector_icon %}
@@ -86,11 +86,11 @@
             </div>
 
             <div class="w3-cell" style="width:50%;">
-                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                  <div class="w3-cell-row w3-container w3-mobile content_right">
                     <div class="text-medium">{% trans 'My Schedule' %}</div>
                   </div>
                   <hr/>
-                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                  <div class="w3-cell-row w3-container w3-mobile content_right">
                       <div class="w3-row">
                         {{ form.absent_start.label_tag }}{{ form.absent_start.errors }}<div class="w3-row">{{ form.absent_start }}</div>
                       </div>
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-        <div class="w3-panel" style="width:80%; margin:auto;">
+        <div class="w3-panel content_center">
             <div class="w3-right">
                 <button class="cancel_btn" type="button" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
                 <input class="save_btn" type = "submit" value = "{% trans 'Update' %}"/>

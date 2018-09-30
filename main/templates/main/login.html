@@ -63,23 +63,18 @@
         <input type="hidden" name="next" value="{{ next }}" />
       </div>
       <div class="w3-right">
-          <a class="w3-text-blue" href="{% url 'password_reset'%}">Forgot Password?</a>
+          <a class="w3-text-blue" href="{% url 'password_reset'%}">{% trans 'Forgot Password?' %}</a>
       </div>
-      <!-- <div>
-          <input type="checkbox" name="rememberme" id="rememberme"/>Remember me
-      </div> -->
+
       <div class="w3-center">
-        <input class="logo-red"  type="submit" value="{% trans 'Log in' %}" />
+        <input id="login_btn" class="logo-blue"  type="submit" value="{% trans 'Log in' %}" />
       </div>
     </form>
-    <div class="w3-center">OR</div>
-    <div class="socmed-login">
-        <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
-        <i class="fa fa-google"></i>
-        <span>Login with Google</span>
-        </a>
-        <br class="clear"/>
-    </div>
+    <div class="w3-center">{% trans 'OR' %}<br/>
+
+    <button class="logo-red w3-row" type="button" onclick="window.location.href = '{% url 'social:begin' 'google-oauth2' %}'"><i class="fa fa-google"></i>&emsp;{% trans 'Login with Google' %}</button>
+
+  </div>
 </div>
 
 {% endblock %}

@@ -8,12 +8,12 @@
 
 {% block content %}
 
-<div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
+<div class="w3-panel w3-margin-top content_center">
     <div class="text-large-bold">{% trans 'Packages History' %}</div>
 </div>
 <hr/>
 
-<div class="w3-panel"  style="overflow:auto; min-height:30vw; width:80%; margin:auto;">
+<div class="w3-panel content_center"  style="overflow:auto; min-height:30vw;">
 	<button type="button" class="logo-red" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
 
 	<button type="button" class="logo-blue" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>

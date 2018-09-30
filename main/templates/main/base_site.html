@@ -14,7 +14,7 @@
 {% block branding %}
 <div class="w3-row">
   <div class="w3-col w3-left" style="width:20%;">
-      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" style="width=100%; max-width:150px; margin:auto;"></a>
+      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" style="max-width:150px; margin:auto;"></a>
   </div>
   <div class="w3-rest w3-right">
       <div class="topnav" id="myTopnav">
@@ -96,14 +96,14 @@
   {% block footer_line %}
   <hr/>
   {% endblock%}
-  <div class="w3-row" style="width:80%; margin:auto;">
+  <div class="w3-row w3-padding-small content_center">
     <div class="w3-col w3-container m3 l3">
       <h5>{% trans "My QYCS" %}</h5>
 
       <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
-      <a href="{% url 'information' 'join_us'%}">{% trans "Join us" %}</a><br/>
+      <a href="{% url 'information' 'join_us'%}">{% trans "Join Us" %}</a><br/>
       <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
-      <a href="{% url 'information' 'fqa'%}">{% trans "FQAs" %}</a><br/>
+      <a href="{% url 'information' 'fqa'%}">{% trans "FAQs" %}</a><br/>
 
     </div>
     <div class="w3-col w3-container m3 l3">
@@ -129,27 +129,27 @@
       </div>
 
       <div class="w3-padding-16 w3-center">
-        <img alt="customer service icon" src="{% static 'image/customer_service.svg' %}" style="height:38px;">
-        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="height:38px;">
-        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="height:38px;">
+        <a class="w3-text-black" href="{% url 'customer_service' %}" ><img alt="customer service icon" src="{% static 'image/customer_service.svg' %}" style="height:35px;"></a>
+        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="height:35px;">
+        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="height:35px;">
       </div>
       <div class="w3-padding-small w3-center">
-        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:200px;">
+        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:180px;">
     </div>
     </div>
 
 
   </div>
   <div id="rights" class="footer-copyright w3-row w3-mobile"  style="width:100%; margin:auto;">
-        <div class="w3-col m6 l6" style="width:50%;">
-              <div class="w3-container" style="width:80%; margin-left:20%;">
+        <div class="w3-col m6 l6">
+              <div class="w3-container content_left">
                 <div>&copy; 2018 {% trans "Qycs Global Shipping Inc." %} {% trans "All Rights Reserved" %}</div>
               </div>
         </div>
 
 
         <div class="w3-rest m6 l6">
-              <div class="w3-container" style="width:80%;">
+              <div class="w3-container content_right">
                 <div><a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a></div>
               </div>
         </div>

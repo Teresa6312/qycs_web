@@ -189,12 +189,7 @@ function showTab(n) {
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
 
-  //fix the Previous/Next buttons:
-  if (n == 0) {
-    document.getElementById("prevBtn").style.display = "none";
-  } else {
-    document.getElementById("prevBtn").style.display = "inline";
-  }
+
   if (n == (x.length - 1)) {
     document.getElementById("nextBtn").style.display = "none";
     document.getElementById("submit_block").style.display = "inline";
@@ -260,4 +255,14 @@ function validateForm() {
 
 $(document).ready(function(){
     showTab(currentTab);
+    $("#prevBtn").click(function(){
+        if(currentTab==0){
+          window.location.href='javascript:history.back()';
+        }else{
+          nextPrev(-1);
+        }
+    });
+    $("#nextBtn").click(function(){
+        nextPrev(1);
+    });
 })

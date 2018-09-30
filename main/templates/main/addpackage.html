@@ -19,7 +19,7 @@
 {% block content %}
 
 
-<div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
+<div class="w3-cell-row w3-mobile content_center">
   {% if form.ship_carrier %}
   <div class="text-xxlarge-bold w3-panel">{% trans 'Direct Shipping' %}</div>
   {% else %}
@@ -49,11 +49,11 @@
     <div class="tab">
         <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
               <div class="w3-cell" style="width:50%;">
-                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                    <div class="w3-cell-row w3-container w3-mobile content_left">
                       <div class="text-medium">{% trans 'Ship to' %}</div>
                     </div>
                     <hr/>
-                    <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                    <div class="w3-cell-row w3-container w3-mobile content_left">
                           {% if form.ship_carrier %}
                             <div class="form-row">
                                 {{ form.ship_carrier.errors }}
@@ -72,11 +72,11 @@
                     </div>
               </div>
               <div class="w3-cell" style="width:50%;">
-                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                    <div class="w3-cell-row w3-container w3-mobile content_right">
                       <div class="text-medium">{% trans 'Ship from' %}</div>
                     </div>
                     <hr/>
-                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                    <div class="w3-cell-row w3-container w3-mobile content_right">
                         <div class="form-row">
                           {{ form.wh_received.errors }}
                           {{ form.wh_received.label_tag }} {{ form.wh_received }}
@@ -99,11 +99,11 @@
           </div>
       </div>
       <div class="tab">
-        <div style="width:80%;margin:auto;">
+        <div class="content_center">
           <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
         </div>
 <hr/>
-        <div style="width:70%;margin:auto;" id="item_information_block">
+        <div class="content_center" id="item_information_block">
 
             <div class="w3-panel w3-container" id="add_snapshot_form">
               <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
@@ -156,10 +156,11 @@
         </div>
 
     </div>
-    <div class="w3-row" style="width:80%; margin:auto">
+    <div class="w3-row content_center">
       <div class="w3-center">
-        <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
-        <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
+
+        <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
+        <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
         <span id="submit_block">
           <input class="logo-blue" type="submit" name="next" value="{% trans 'Save and add new package' %}" />
           <input class="logo-red" type="submit" name="finish" value="{% trans 'Submit' %}"/>

@@ -20,15 +20,15 @@
 
   <div class="w3-rest tracking">
     <div class="w3-padding-64">
-        <div class="text-xxxlarge-bold">{% trans 'TRACK PACKAGES' %}</div>
+        <div class="text-xxxlarge-bold">{% trans 'TRACK PACKAGE(S)' %}</div>
         <form method="post">
             {% csrf_token %}
             <div id="tracking_block">
-              <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" placeholder="TRACKING NUMBERS" title="YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR SEMICOLON.">
-                <input type="submit" value="TRACK" id="track_btn">
+              <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" placeholder="{% trans 'Enter one or more tracking numbers' %}" title="{% trans 'YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR SEMICOLON.' %'}">
+                <input type="submit" value="{% trans 'TRACK'%}" id="track_btn">
             </div>
         </form>
-        <div class="text-regular-bold">{% trans 'MULTIPLE TRACKING NUMBERS'%} | <a class="w3-text-black" href="#" >{% trans 'NEED HELP?' %}</a></div>
+        <div class="text-regular-bold"><a class="w3-text-black" href="{% url 'customer_service' %}" >{% trans 'NEED HELP?' %}</a></div>
     </div>
   </div>
 

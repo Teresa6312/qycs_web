@@ -1,18 +1,59 @@
 from django import forms
 from .models import Review, Question
 from django.utils.translation import gettext as _
-from main.models import CollectionPoint
+from main.models import CollectionPoint, INFORMATION_SOURCES
 from main.forms import schedule_years
 
 class MessageForm(forms.Form):
-    message = forms.CharField(required=True)
+	message = forms.CharField(required=True)
 
 class ResponseForm(forms.Form):
-    response = forms.CharField(required=True)
-    response_for = forms.IntegerField(required=True)
+	response = forms.CharField(required=True)
+	response_for = forms.IntegerField(required=True)
 
 class ColCreationForm(forms.ModelForm):
 	agreement = forms.BooleanField(required = True, label = _("Agree"))
+	store_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	license_type = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	license_image = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={"class":"w3-input w3-border"
+									}))
+	id_image = forms.FileField(required = True, widget=forms.ClearableFileInput(attrs={"class":"w3-input w3-border"
+									}))
+	address = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder':  _("Street Address"),
+																		"class":"w3-input w3-border"
+																		}))
+	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={'placeholder':  _("Apartment/Suit/Unit"),
+																		"class":"w3-input w3-border"
+																		}))
+	city = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	state = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	country = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	collector_icon = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	wechat = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	wechat_qrcode = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={"class":"w3-input w3-border"
+									}))
+	referrer = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	info_source = forms.ChoiceField(label = _("Information Source"), required = False, choices = INFORMATION_SOURCES,
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
+	apply_reason = forms.CharField(required=False,
+							widget=forms.Textarea(attrs={'placeholder':  _("Please tell us why you want to join us"),
+												"class":"w3-input w3-border",
+												"rows":3
+												}))
+
 	class Meta:
 		model = CollectionPoint
 		fields = ('store','store_name','license_type', 'license_image','id_image',
