@@ -31,21 +31,19 @@
 <hr/>
 <div class="content_center">
       {% for package in packages %}
-      <div class="text-large-bold">{{package.cust_tracking_num}}</div>
+      <div class="text-large-bold">{{package.cust_tracking_num}}({{package.get_cust_carrier_display}})</div>
       <div class="w3-panel">
-        <ul class="timeline" id="timeline">
-          <li class="li complete">
+        <ul class="timeline w3-cell-row">
+          <li class="li complete w3-cell">
             <div class="timestamp">
-              <span class="author">{% trans 'Package Created on' %}</span>
               <span class="date">{{package.created_date}}</span>
             </div>
             <div class="status">
               <h4> {% trans 'Marked' %} </h4>
             </div>
           </li>
-          <li class="li complete">
+          <li class="li complete w3-cell">
             <div class="timestamp">
-              <span class="author">{% trans 'Package Arrived at Warehouse on' %}</span>
               <span class="date">{{package.wh_received_date}}</span>
             </div>
             <div class="status">
@@ -53,9 +51,8 @@
             </div>
           </li>
 
-          <li class="li complete">
+          <li class="li complete w3-cell">
             <div class="timestamp">
-              <span class="author">{% trans 'Package was ready to pay on' %}</span>
               <span class="date">{{package.ready_date}}</span>
             </div>
             <div class="status">
@@ -63,27 +60,24 @@
             </div>
           </li>
 
-          <li class="li complete">
+          <li class="li complete w3-cell">
             <div class="timestamp">
-              <span class="author">{% trans 'Package was paid on' %}</span>
               <span class="date">{{package.ready_date}}</span>
             </div>
             <div class="status">
               <h4>{% trans 'Paid' %}</h4>
             </div>
           </li>
-          <li class="li complete">
+          <li class="li complete w3-cell">
             <div class="timestamp">
-              <span class="author">{% trans 'Package was shipped on' %}</span>
               <span class="date">{{package.parent_package.shipped_date}}</span>
             </div>
             <div class="status">
               <h4>{% trans 'Shipped' %}</h4>
             </div>
           </li>
-          <li class="li">
+          <li class="li w3-cell">
             <div class="timestamp">
-              <span class="author">{% trans 'Package was delieved on' %}</span>
               <span class="date">{{package.delieved_date}}</span>
             </div>
             <div class="status">
@@ -94,41 +88,12 @@
       </div>
       {% endfor %}
 </div>
-
-<tabel>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-</tabel>
 <script>
     var completes = document.querySelectorAll(".complete");
-
     function toggleComplete(){
      var lastComplete = completes[completes.length - 1];
      lastComplete.classList.toggle('complete');
     }
-
 </script>
 
 {% endblock %}

@@ -134,6 +134,14 @@
                     </div>
                   </div>
               {% endfor %}
+              <div class="text-regular-bold">{% trans 'Terms and Conditions' %}</div>
+                  <div class="text-small">
+                      {{form.privacy_policy_agree}}
+                      {% blocktrans %}
+                          I have read, understood and agreed to be bound by myqycs.com Terms of Use. I also understood how MYQYCS intends to use my information.
+                      {% endblocktrans %}
+                      <a href="{% url 'information' 'policy'%}">{% trans 'Privacy Policy' %}</a>
+                </div>
             </div>
 
 

@@ -28,7 +28,6 @@
                 </a>
                 {% endif %}
                 <a href="{% url 'add_direct_shipping' %}">{% trans "Quick Direct Shipping" %}</a>
-                <!--Dropdown Click Button-->
                 <div class="dropdown">
                     <button type="button" class="dropbtn">
                       <span class="logo-text-blue">{{user.username}}</span>
@@ -97,7 +96,7 @@
   <hr/>
   {% endblock%}
   <div class="w3-row w3-padding-small content_center">
-    <div class="w3-col w3-container m3 l3">
+    <div class="w3-col w3-container m3 l3" id="myqycs_block">
       <h5>{% trans "My QYCS" %}</h5>
 
       <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
@@ -106,7 +105,7 @@
       <a href="{% url 'information' 'fqa'%}">{% trans "FAQs" %}</a><br/>
 
     </div>
-    <div class="w3-col w3-container m3 l3">
+    <div class="w3-col w3-container m3 l3" id="consumer_block">
       <h5>{% trans "Consumer Guide" %}</h5>
 
       <a href="{% url 'information' 'shipping_guide'%}">{% trans "Shipping Guide" %}</a><br/>
@@ -114,7 +113,7 @@
       <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
 
     </div>
-    <div class="w3-col w3-container m3 l3">
+    <div class="w3-col w3-container m3 l3" id="service_block">
       <h5>{% trans "Service Guide" %}</h5>
 
       <a  href="{% url 'information' 'insurance_guide'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
@@ -123,7 +122,7 @@
 
     </div>
 
-    <div class="w3-col w3-container m3 l3">
+    <div class="w3-col w3-container m3 l3" id="contact_block">
       <div class="w3-row">
           <img src="{% static 'image/brand.png' %}" alt="logo" style="width:80px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
       </div>
@@ -148,7 +147,7 @@
         </div>
 
 
-        <div class="w3-rest m6 l6">
+        <div class="w3-col m6 l6">
               <div class="w3-container content_right">
                 <div><a href="{% url 'information' 'policy'%}">{% trans "Privacy Policy" %}</a> | <a href="{% url 'information' 'service_term'%}">{% trans "Terms of Service" %}</a></div>
               </div>

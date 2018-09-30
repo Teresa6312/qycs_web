@@ -22,10 +22,11 @@ class NewUserCreationForm(UserCreationForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
 					empty_label=("Year", "Month", "Day"),
 					years = birthday_years))
+	privacy_policy_agree = forms.BooleanField(required = True)
 	class Meta(UserCreationForm.Meta):
 		model = User
 		fields = ('username', 'email', 'first_name', 'last_name',
-					'phone', 'country', 'language', 'birthday', 'password1', 'password2',)
+					'phone', 'country', 'language', 'birthday', 'password1', 'password2', 'privacy_policy_agree')
 
 	def save(self, commit=True, *args, **kwargs):
 		user = super(NewUserCreationForm, self).save(commit=False, *args, **kwargs)

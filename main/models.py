@@ -107,6 +107,7 @@ class User(AbstractUser):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name=_('Profile Updated Date'))
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
 	language = models.CharField(max_length=100, choices=LANGUAGE_CATEGORY,  blank=True, default='',verbose_name= _('Preferred Language'))
+	privacy_policy_agree = models.BooleanField(default =False, verbose_name= _('Privacy Policy Agreement'))
 	memo = models.TextField(blank = True, default='', verbose_name= _('Memo'))
 
 

@@ -46,7 +46,8 @@
 </div>
 {% endblock%}
 
-{% if user.is_authenticated %}
-  {% block footer_line %}
-  {% endblock %}
+{% block footer_line %}
+{% if not user.is_authenticated %}
+  <hr/>
 {% endif %}
+{% endblock %}
