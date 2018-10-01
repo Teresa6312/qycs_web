@@ -28,6 +28,9 @@ urlpatterns = [
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
     path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
+    path('price-list/', views.PriceListView.as_view(), name='price_list'),
+
+
 
 
 # login_required

@@ -2,9 +2,10 @@
 <!-- id-{{element}}-modal start here -->
 <div id="id-{{element}}-modal" class="w3-modal">
   <div class="w3-modal-content" style="width:50%;">
-    <div class="w3-grey w3-container">
+    <div class="w3-container">
         <button type="button" class="w3-right close-modal">&times;</button>
         <div class="w3-center text-medium w3-padding-small">{{title}}</div>
+        <hr/>
     </div>
     <div id="id-{{element}}-content" class="modal-content" style="overflow:auto;max-height:95%;">
         {% if block == 'wechat_qrcode_block' %}

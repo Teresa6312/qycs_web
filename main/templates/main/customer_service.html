@@ -27,37 +27,37 @@
   <tr class="w3-row">
     <th class="w3-quarter">
       <img src="{% static 'image/global-shop.png' %}" alt="global shop"/>
-      <div class="text-regular-bold">{% trans 'Global Shop' %}</div>
+    <a href="{% url 'shopping' %}">  <div class="text-regular-bold w3-text-black">{% trans 'Global Shop' %}</div></a>
     </th>
     <th class="w3-quarter">
       <img src="{% static 'image/collection-points.png' %}" alt="collection points" />
-      <div class="text-regular-bold">{% trans 'Collection Points' %}</div>
+    <a href="{% url 'information' 'collection_points' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Collection Points' %}</div></a>
     </th>
     <th class="w3-quarter">
       <img src="{% static 'image/shipping.png' %}" alt="shipping" />
-      <div class="text-regular-bold">{% trans 'Shipping' %}</div>
+      <a href="{% url 'information' 'coshipping_guide' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Co-Shipping' %}</div></a>
     </th>
     <th class="w3-quarter">
       <img src="{% static 'image/users-collectors.png' %}" alt="users-collectors"/>
-      <div class="text-regular-bold">{% trans 'Users and Collectors' %}</div>
+      <a href="{% url 'information' 'use_guide' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Users and Collectors' %}</div></a>
     </th>
   </tr>
   <tr class="w3-row">
     <th class="w3-quarter">
       <img src="{% static 'image/reward-points.png' %}" alt="reward points" />
-      <div class="text-regular-bold">{% trans 'Reward Points' %}</div>
+        <a href="{% url 'information' 'reward_points' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Reward Points' %}</div></a>
     </th>
     <th class="w3-quarter">
       <img src="{% static 'image/return-policy.png' %}" alt="return policy" />
-      <div class="text-regular-bold">{% trans 'Return Policy' %}</div>
+      <a href="{% url 'information' 'return_policy' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Return Policy' %}</div></a>
     </th>
     <th class="w3-quarter">
       <img src="{% static 'image/contact-us.png' %}" alt="contact us"/>
-      <div class="text-regular-bold">{% trans 'Contact Us' %}</div>
+      <a href="{% url 'information' 'contact' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Contact Us' %}</div></a>
     </th>
     <th class="w3-quarter">
       <img src="{% static 'image/faqs.png' %}" alt="FAQs"/>
-      <div class="text-regular-bold">{% trans 'FAQs' %}</div>
+      <a href="{% url 'information' 'faqs' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'FAQs' %}</div></a>
     </th>
   </tr>
 </table>

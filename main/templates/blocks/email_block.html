@@ -16,7 +16,7 @@
         </textarea>
     </div>
     <div class="w3-right">
-      <button type = "button" class="logo-red">{% trans 'Cancel' %}</button>
+      <button type = "button" class="logo-red cancel-modal">{% trans 'Cancel' %}</button>
       <button type="button" id="send_email_btn" class="logo-blue" onclick="send_email('send_email_btn','{{csrf_token}}')">{% trans 'Submit' %}</button>
     </div>
   </form>

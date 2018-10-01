@@ -1,17 +1,24 @@
 html{
-  height: 100%;
+    height: 100%;
 }
-body {
+
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
+  /* margin: 0; */
   overflow: auto;
   background-size: 100%;
   background-image: url("/static/image/home_background.png");
-  min-height:100%;
-  position:relative;
-  overflow: hidden;
+  /* min-height:100%; */
+  /* position:relative; */
+  /* overflow: hidden; */
 }
 
+#container{
+  flex: 1 0 auto;
+}
 .logo-red{
   background-color: #E73229;
 }
@@ -31,53 +38,53 @@ body {
   color: #ffcc00;
 }
 .text-xxxlarge{
-  font-size: 3vw;
+  font-size: 35px;
 }
 .text-xxxlarge-bold{
-  font-size: 3vw;
+  font-size: 35px;
   font-weight: bold;
 }
 .text-xxlarge{
-  font-size: 2.5vw;
+  font-size: 30px;
   font-family: Georgia;
 }
 .text-xxlarge-bold{
-  font-size: 2.5vw;
+  font-size: 30px;
   font-weight: bold;
 }
 .text-xlarge{
-  font-size: 2vw;
+  font-size: 25px;
 }
 .text-xlarge-bold{
-  font-size: 2vw;
+  font-size: 25px;
   font-weight: bold;
 }
 .text-large{
-  font-size: 1.7vw;
+  font-size: 20px;
 }
 .text-large-bold{
-  font-size: 1.7vw;
+  font-size: 20px;
   font-weight: bold;
 }
 .text-medium{
-  font-size: 1.5vw;
+  font-size: 18px;
 }
 .text-medium-bold{
-  font-size: 1.5vw;
+  font-size: 18px;
   font-weight: bold;
 }
 .text-regular{
-  font-size: 1vw;
+  font-size: 15px;
 }
 .text-regular-bold{
-  font-size: 1vw;
+  font-size: 15px;
   font-weight: bold;
 }
 .text-small{
-  font-size: 0.9vw;
+  font-size: 12px;
 }
 .text-small-bold{
-  font-size: 0.9vw;
+  font-size: 12px;
   font-weight: bold;
 }
 text-italic-bold{
@@ -174,16 +181,13 @@ a:hover{
   min-height: 40vw;
   background-position: center;
 }
-.contentCSS, .tracking_page{
-  padding-bottom: 200px;
-  position: inherit;
-}
+
 .home_logged{
   background-size: 100%;
   background-repeat: no-repeat;
   background-image: url("/static/image/car_background.png");
-  background-position: right 0 bottom 200px;
-  padding-bottom: 330px;
+  background-position: right 0 bottom 0vw;
+  padding-bottom: 10vw;
 }
 .content_left{
   width:80%;
@@ -208,18 +212,6 @@ a:hover{
   background-color:rgb(22,29,87);
 }
 
-#customer_service_table{
-  background-color: lightgrey;
-  width: 100%;
-  margin: 30px;
-}
-
-#customer_service_table th{
-  width: 23%;
-  height: 140px;
-  background-color: white;
-  margin: 2px 1%;
-}
 
 #customer_service_table img{
   width:60px;
@@ -230,6 +222,7 @@ a:hover{
   max-width: 45%;
   height: auto;
 }
+
 
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
@@ -318,7 +311,7 @@ a:hover{
   border-radius:50%;
   padding:12.5vw 2vw;
   background-color: #E73229;
-  font-size: 1.2vw;
+  font-size: 1.4vw;
   padding-left: 15vw;
   margin: 0.2vw 0vw;
   position: relative;
@@ -332,7 +325,7 @@ a:hover{
   border-radius:50%;
   padding:12.7vw 5vw;
   background-color: #121A50;
-  font-size: 1.2vw;
+  font-size: 1.4vw;
   padding-right: 11vw;
   position: relative;
   width:28vw;
@@ -433,6 +426,7 @@ hr{
   margin-bottom: 0.5vw;
 }
 /* ---------------------------------------- for the table ----------------------------------- */
+
 thead {
     display: block;
     width: 100%;
@@ -445,7 +439,7 @@ thead th{
   text-align: center;
   border: none;
   background-color: Transparent;
-  font-size: 1vw;
+  font-size: 15px;
   vertical-align: middle;
 }
 
@@ -457,6 +451,19 @@ tbody td {
 tr th{
   text-align: center;
   vertical-align: top;
+}
+
+#customer_service_table{
+  background-color: lightgrey;
+  width: 100%;
+  margin: 30px;
+}
+
+#customer_service_table th{
+  width: 23%;
+  height: 140px;
+  background-color: white;
+  margin: 2px 1%;
 }
 /* ----------------------------------- for checkbox switch------------------------------------------- */
 .switch {
@@ -518,19 +525,16 @@ input:checked + .slider:before {
 /*---------------------------------------for footer only----------------------------------------*/
 
 #footer{
+  flex: 0 0 auto;
   width:100%;
   bottom:0;
-  margin-top: 1vw;
-  position:absolute;
-  /* height:200px; */
+  padding-top: 0.5vw;
   padding-bottom: 0;
   margin-bottom: 0;
 }
 #footer h5{
   font-weight: bold;
   color: #121A50;
-
-
 }
 #footer a{
   color: black;
@@ -783,7 +787,7 @@ input:checked + .slider:before {
   text-align:center;
 }
 .w3-modal .close-modal{
-  font-size: 2.5vw;
+  font-size: 30px;
   color: black;
   padding: 0;
   border: none;
@@ -823,7 +827,7 @@ input:checked + .slider:before {
   margin: 0;
   font-weight: bold;
   background-color: Transparent;
-  font-size: 1.5vw;
+  font-size: 25px;
   display:inline-block;
   margin-left: 1.5vw;
 }
@@ -835,5 +839,5 @@ input:checked + .slider:before {
   margin: 0;
   height: 4vw;
   width: 30vw;
-  font-size: 1.5vw;
+  font-size: 25px;
 }

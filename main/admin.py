@@ -5,7 +5,7 @@ from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
 	Warehouse, PackageSnapshot, ParentPackage, Item,
-	Coupon, FavoriteWebsite, Resource
+	Coupon, FavoriteWebsite, Resource, PriceRate
 )
 from django.utils.html import mark_safe
 
@@ -266,7 +266,14 @@ class FavoriteWebsiteAdmin(admin.ModelAdmin):
 admin.site.register(FavoriteWebsite, FavoriteWebsiteAdmin)
 
 class ResourceAdmin(admin.ModelAdmin):
-	list_display = ('title','header',)
-	search_fields = ['title', 'header',]
+	list_display = ('title','english_header', 'chinese_header')
+	search_fields = ['title', 'english_header', 'chinese_header']
 
 admin.site.register(Resource, ResourceAdmin)
+
+
+class PriceRateAdmin(admin.ModelAdmin):
+	list_display = ('category','from_country', 'to_country', 'package_type', 'first_weight_price', 'next_weight_price', 'avg_weight_price', 'carrier', 'shipping_currency', 'rate')
+	search_fields = ['from_country', 'to_country',]
+
+admin.site.register(PriceRate, PriceRateAdmin)

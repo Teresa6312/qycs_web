@@ -1,5 +1,5 @@
 from .models import (
-	Address, Service, CollectionPoint, Resource,
+	Address, Service, CollectionPoint, Resource, PriceRate,
 	User, Warehouse, FavoriteWebsite, Location
 	)
 from .forms import (
@@ -422,8 +422,17 @@ class InformationView(TemplateView):
 		try:
 			information = Resource.objects.get(title=title)
 			if information.english_content != '' or information.chinese_content != '':
+				print(information.english_header)
 				return render(request, self.template_name, {'information': information})
 			else:
 				return render(request, self.template_name, {'empty': _('Upcoming information')})
 		except:
 			return render(request, self.template_name, {'empty': _('Upcoming information')})
+
+
+class PriceListView(TemplateView):
+	template_name = 'main/price_list.html'
+
+	def get(self, request):
+		price_list = PriceRate.objects.filter(category='ship', from_country='cn', to_country='us')
+		return render(request, self.template_name, {'price_list': price_list})

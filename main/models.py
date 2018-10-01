@@ -76,8 +76,8 @@ WEB_CATEGORY = (
 )
 
 PACKAGE_CATEGORY = (
- ('F', _('Food')),
- ('R', _('Regular')),
+ ('F', _('Food/Grocery')),
+ ('R', _('Regular Goods')),
  ('B', _('Beauty')),
  ('L', _('Luxury')),
  ('M', _('Mix')),
@@ -93,6 +93,27 @@ LANGUAGE_CATEGORY = (
 	('CN', _('Chinese')),
 )
 
+COUNTRY_CHOICE = (
+	('cn', _('China')),
+	('us', _('United States'))
+)
+
+PRICERATE_CATEGORY = (
+	('ship', _('Shipping Price')),
+	('currency', _('Currency Rate')),
+)
+PRICE_CARRIER_CHOICE = (
+('DHL', _('DHL')),
+('EMS', _('EMS')),
+('FEDEX', _('FEDEX')),
+('SF EXPRESS', _('SF EXPRESS')),
+('UPS', _('UPS')),
+('DHL+', _('DHL 21kg+')),
+('EMS+', _('EMS 21kg+')),
+('FEDEX+', _('FEDEX 21kg+')),
+('SF EXPRESS+', _('SF EXPRESS 21kg+')),
+('UPS+', _('UPS 21kg+')),
+)
 class User(AbstractUser):
 	email = models.EmailField(blank=False, default='', unique=True, verbose_name = _("Email"))
 	email_confirmed = models.BooleanField(default =False, verbose_name= _('Email Confirmed'))
@@ -581,7 +602,8 @@ class FavoriteWebsite(models.Model):
 
 class Resource(models.Model):
 	title = models.CharField(max_length=100, default='', unique=True, verbose_name= _('Title'))
-	header = models.CharField(max_length=100, default='', unique=True, verbose_name= _('Header'))
+	english_header = models.CharField(max_length=100, default='', verbose_name= _('English Header'))
+	chinese_header = models.CharField(max_length=100, default='', verbose_name= _('Chinese Header'))
 	english_content = models.TextField(blank=True, default='',  verbose_name= _('English Version Content'))
 	chinese_content = models.TextField(blank=True, default='', verbose_name= _('Chinese Version Content'))
 	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
@@ -599,3 +621,18 @@ class Location(models.Model):
 	state = models.CharField(max_length=100, blank=True, default='',verbose_name= _('State/Province'))
 	country = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country'))
 	country_shortname = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country Shortname'))
+
+
+class PriceRate(models.Model):
+	category = models.CharField(max_length = 50, choices = PRICERATE_CATEGORY, blank=True, default='', verbose_name = _('Category'))
+	from_country = models.CharField(max_length=50, choices = COUNTRY_CHOICE, blank=True, default='', verbose_name= _('From Country'))
+	to_country = models.CharField(max_length=50, choices = COUNTRY_CHOICE, blank=True, default='', verbose_name= _('To_Country'))
+	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
+	carrier = models.CharField(max_length = 100, choices=PRICE_CARRIER_CHOICE, blank=True, default='', verbose_name= _('Shipping Carrier'))
+	period = models.CharField(max_length = 100, default='',  blank=True, verbose_name= _('Shipping Period'))
+	shipping_currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency for Shipping Price'))
+	first_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('First Weight Price'))
+	next_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Next Weight Price'))
+	avg_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Average Weight Price'))
+
+	rate = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Currency Rate'))

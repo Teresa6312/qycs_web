@@ -1,7 +1,7 @@
 {% load i18n static %}
 
 {% if col_list %}
-    <div  class="w3-panel" style="overflow:auto;max-height:50vw;">
+    <div  class="w3-panel" style="overflow:auto;max-height:600px;">
         {% for colchoice in col_list %}
             <div class="w3-half w3-container">
                 <div class="w3-border w3-round w3-container w3-mobile colchoice {% if user.default_col == colchoice %}w3-pale-green{% endif%}"  style="max-width: 30vw;" id="{{ colchoice.pk }}">

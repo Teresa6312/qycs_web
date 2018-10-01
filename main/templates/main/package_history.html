@@ -9,7 +9,7 @@
 {% block content %}
 
 <div class="w3-panel w3-margin-top content_center">
-    <div class="text-large-bold">{% trans 'Packages History' %}</div>
+    <div class="text-xxlarge-bold">{% trans 'Packages History' %}</div>
 </div>
 <hr/>
 
@@ -17,13 +17,8 @@
 	<button type="button" class="logo-red" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
 
 	<button type="button" class="logo-blue" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
-	<div class="text-medium">{% trans 'view packages placed with in' %}</div>
-	<select>
-		{% for year in package_list.created_date.year %}
-	    <option value="all"  selected>all</option>
-	    <option value={{year}}>{{year}}</option>
-	    {% endfor %}
-	</select>
+
+
 <div class="packages_block"  style="overflow:auto; max-height:500px;">
 
 	<table class="w3-mobile">

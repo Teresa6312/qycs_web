@@ -1,10 +1,10 @@
 {% load i18n static %}
 
 
-<div  class="w3-panel" style="overflow:auto; max-height:50vw;">
+<div  class="w3-panel" style="overflow:auto; max-height:600px;">
       {% for colchoice in col_list %}
           <div class="w3-container">
-              <div class="w3-border w3-round w3-container w3-mobile colchoice {% if user.default_col == colchoice %}w3-pale-green{% endif%}"  style="width: 30vw;" id="{{ colchoice.pk }}">
+              <div class="w3-border w3-round w3-container w3-mobile colchoice {% if user.default_col == colchoice %}w3-pale-green{% endif%}"  style="width: 350px;" id="{{ colchoice.pk }}">
                 {% include "blocks/col_card_fields.html" with col=colchoice %}
               </div>
           </div>
