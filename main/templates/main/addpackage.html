@@ -47,110 +47,100 @@
 
 <form method="post" enctype="multipart/form-data">{% csrf_token %}
     <div class="tab">
-        <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
-              <div class="w3-cell" style="width:50%;">
-                    <div class="w3-cell-row w3-container w3-mobile content_left">
+        <div class="w3-col-row w3-mobile">
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_left">
                       <div class="text-medium">{% trans 'Ship to' %}</div>
                     </div>
                     <hr/>
-                    <div class="w3-cell-row w3-container w3-mobile content_left">
+                    <div class="w3-container w3-mobile content_left">
                           {% if form.ship_carrier %}
-                            <div class="form-row">
-                                {{ form.ship_carrier.errors }}
-                                {{ form.ship_carrier.label_tag }}{{ form.ship_carrier }}
+                            <div class="w3-row">
+
+                                {{ form.ship_carrier.label_tag }}{{ form.ship_carrier.errors }}{{ form.ship_carrier }}
                             </div>
-                            <div class="form-row">
+                            <div class="w3-row">
                                 {{ form.no_rush_request.errors }}
                                 {{ form.no_rush_request }}&emsp;{% trans 'No Rush Shipping (Double Points)' %}
                             </div>
                           {% endif %}
-                          <div class="form-row">
+                          <div class="w3-row">
                                 {{ form.low_volume_request.errors }}
                                 {{ form.low_volume_request }}&emsp;{% trans "Minimize this package's volume" %}
                           </div>
                           {% block shippingset %} {% endblock%}
                     </div>
               </div>
-              <div class="w3-cell" style="width:50%;">
-                    <div class="w3-cell-row w3-container w3-mobile content_right">
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_right">
                       <div class="text-medium">{% trans 'Ship from' %}</div>
                     </div>
                     <hr/>
-                    <div class="w3-cell-row w3-container w3-mobile content_right">
-                        <div class="form-row">
-                          {{ form.wh_received.errors }}
-                          {{ form.wh_received.label_tag }} {{ form.wh_received }}
+                    <div class="w3-container w3-mobile content_right">
+                        <div class="w3-row">
+                          {{ form.wh_received.label_tag }} {{ form.wh_received.errors }} {{ form.wh_received }}
                         </div>
-                        <div class="form-row">
-                          {{ form.cust_carrier.errors }}
-                          {{ form.cust_carrier.label_tag }} {{ form.cust_carrier }}
+                        <div class="w3-row">
+                          {{ form.cust_carrier.label_tag }}  {{ form.cust_carrier.errors }} {{ form.cust_carrier }}
                         </div>
-                        <div class="form-row">
-                          {{ form.cust_tracking_num.errors }}
-                          {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num }}
+                        <div class="w3-row">
+                          {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num.errors }} {{ form.cust_tracking_num }}
                         </div>
 
-                        <div class="form-row">
-                          {{ form.memo.errors }}
-                          {{ form.memo.label_tag }} {{ form.memo }}
+                        <div class="w3-row">
+                          {{ form.memo.label_tag }} {{ form.memo.errors }} {{ form.memo }}
                         </div>
                     </div>
               </div>
           </div>
       </div>
       <div class="tab">
-        <div class="content_center">
-          <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
-        </div>
-<hr/>
-        <div class="content_center" id="item_information_block">
+          <div class="content_center">
+              <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
+          </div>
+          <hr/>
+          <div class="content_center" id="item_information_block">
 
-            <div class="w3-panel w3-container" id="add_snapshot_form">
-              <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
-              <input name="image" class="w3-input w3-border" id="id_image" type="file" multiple="">
-            </div>
-            <div class="w3-panel w3-center text-medium-bold">OR</div>
-            <div id = "add_item_form" class="w3-container" style="margin:auto;">
-              <div class="text-medium">{% trans 'Add details of each item in the package' %}</div>
-
-              {{ itemset.management_form }}
-
-              {% if itemset.forms %}
-                  {% for subform in itemset.forms %}
-                      <table style="width:95%; margin:auto;" id="item_table">
-                                <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">0</span></th>
-                                  <td class="w3-cell w3-rest">
-                                      <div class="w3-container">
-                                        {{ subform.item_name.errors }}
-                                        {{ subform.item_name.label_tag }} {{ subform.item_name }}
-                                      </div>
-                                      <div class="w3-col-row">
-                                          <div class="w3-col w3-container" style="width:100px;">
-                                            {{ subform.item_quantity.errors }}
-                                            {{ subform.item_quantity.label_tag }} {{ subform.item_quantity }}
+              <div class="w3-panel w3-container" id="add_snapshot_form">
+                    <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
+                    <input name="image" class="w3-input w3-border" id="id_image" type="file" multiple="">
+              </div>
+              <div class="w3-panel w3-center text-medium-bold">{% trans 'OR' %}</div>
+              <div id = "add_item_form" class="w3-container" style="margin:auto;">
+                  <div class="text-medium">{% trans 'Add details of each item in the package' %}</div>
+                  <hr/>
+                  {{ itemset.management_form }}
+                  {% if itemset.forms %}
+                      {% for subform in itemset.forms %}
+                          <table style="width:95%; margin:auto;" id="item_table">
+                                    <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">0</span></th>
+                                      <td class="w3-cell w3-rest">
+                                          <div class="w3-container">
+                                            {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
                                           </div>
-                                          <div class="w3-third w3-container">
-                                            {{ subform.item_detail.errors }}
-                                            {{ subform.item_detail.label_tag }} {{ subform.item_detail }}
+                                          <div class="w3-col-row">
+                                              <div class="w3-col w3-container" style="width:100px;">
+                                                {{ subform.item_quantity.label_tag }} {{ subform.item_quantity.errors }} {{ subform.item_quantity }}
+                                              </div>
+                                              <div class="w3-third w3-container">
+                                                {{ subform.item_detail.label_tag }} {{ subform.item_detail.errors }} {{ subform.item_detail }}
+                                              </div>
+                                              <div class="w3-rest w3-container">
+                                                {{ subform.item_url.label_tag }} {{ subform.item_url.errors }} {{ subform.item_url }}
+                                              </div>
                                           </div>
-                                          <div class="w3-rest w3-container">
-                                            {{ subform.item_url.errors }}
-                                            {{ subform.item_url.label_tag }} {{ subform.item_url }}
+                                          <div class="w3-container">
+                                            {{ subform.low_volume_request.errors }}
+                                            {{ subform.low_volume_request }}{% trans "Minimize this item's volume" %}
                                           </div>
-                                      </div>
-                                      <div class="w3-container">
-                                        {{ subform.low_volume_request.errors }}
-                                        {{ subform.low_volume_request }}{% trans "Minimize this item's volume" %}
-                                      </div>
-                                      <div class="w3-container">
-                                        {{ subform.memo.errors }}
-                                        {{ subform.memo.label_tag }}{{subform.memo}}
-                                      </div>
-                                  </td>
-                              </tr>
-                      </table>
-                  {% endfor %}
-              {% endif %}
+                                          <div class="w3-container">
+                                            {{ subform.memo.label_tag }}{{ subform.memo.errors }}{{subform.memo}}
+                                          </div>
+                                      </td>
+                                  </tr>
+                          </table>
+                      {% endfor %}
+                  {% endif %}
           </div>
 
         </div>
@@ -199,9 +189,6 @@ $(document).ready(function(){
       $('table').find('.item_num').each(function(){
         $(this).text($(this).parents('tr').find('.item_name').prop('id').split('-')[1]);
       });
-    });
-    $(".remove-row a").click(function(){
-      // $('.item_num').text($(this).closest('.item_name').prop('id').split('-')[1]);
     });
 });
 </script>

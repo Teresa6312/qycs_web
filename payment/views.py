@@ -28,8 +28,8 @@ def payment_process(request):
             "discount_rate": orderSet.coupon.discount,
             "invoice": orderSet.id,
             "notify_url": 'http://{}{}'.format(host, reverse('payment:process')),
-            "return": 'http://{}{}'.format(host, reverse('payment:done')),
-            "cancel_return": 'http://{}{}'.format(host, reverse('payment:canceled')),
+            "return": 'http://{}{}'.format(host, reverse('userpackage')),
+            "cancel_return": 'http://{}{}'.format(host, reverse('package_cart')),
         }
     else:
         paypal_dict = {
@@ -39,8 +39,8 @@ def payment_process(request):
             "item_name": "{} package(s)/order(s)".format(orderSet.service_set.all().count()),
             "invoice": orderSet.id,
             "notify_url": 'http://{}{}'.format(host, reverse('payment:process')),
-            "return": 'http://{}{}'.format(host, reverse('payment:done')),
-            "cancel_return": 'http://{}{}'.format(host, reverse('payment:canceled')),
+            "return": 'http://{}{}'.format(host, reverse('userpackage')),
+            "cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
         }
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)

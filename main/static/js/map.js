@@ -21,16 +21,16 @@ function updateCollectionPointsTable(pointsArray){
     let positions = [];
 
     function initAutocomplete() {
-// creste map
+// create map
         map = new google.maps.Map(document.getElementById('map'), {
             center: new google.maps.LatLng(40.597509,-73.981832),
             zoom: 6,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
-        var input = document.getElementById('pac-input');
+        var input = document.getElementById('search_block');
         var searchBox = new google.maps.places.SearchBox(input);
-        // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); note: it will shift position of side list
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //note: it will shift position of side list
 
 // Bias the SearchBox results towards current map's viewport.
         map.addListener('bounds_changed', function() {
@@ -119,7 +119,7 @@ function updateCollectionPointsTable(pointsArray){
              google.maps.event.addListener(marker, 'mouseover', (function(marker) {
                 return function() {
                  infoWindow.setPosition(marker.position);
-                 infoWindow.setContent(location.address);
+                 infoWindow.setContent(location.address+'<a href="/packages/'+location.id+'/add" class="w3-text-blue"><i>add package</i></a>');
                  infoWindow.open(resultsMap,marker);
 
                 }

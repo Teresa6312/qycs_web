@@ -14,14 +14,14 @@
 
 {% block content %}
 <div class="w3-panel w3-mobile content_center">
-  <h2>{{package.cust_tracking_num}}
-   - {{package.cust_carrier}}
-  {% if package.order %}({% trans 'Order' %})
-  {% elif package.coshiping %}({% trans 'Co-shipping Package' %})
-  {% else %}({% trans 'Direct Shipping' %})
-  {% endif %}
-  </h2>
-        <div class="w3-panel">
+    <h2>{{package.cust_tracking_num}}
+     - {{package.cust_carrier}}
+    {% if package.order %}({% trans 'Order' %})
+    {% elif package.coshiping %}({% trans 'Co-shipping Package' %})
+    {% else %}({% trans 'Direct Shipping' %})
+    {% endif %}
+    </h2>
+    <div class="w3-panel">
         <ul class="timeline">
           <li class="li {% if package.created_date %}complete{% endif %}">
             <div class="timestamp">
@@ -75,12 +75,20 @@
           </li>
          </ul>
       </div>
+
+
+
       <hr/>
-      {% if package.issue %}<h5><img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:2vw;"/>{% trans 'This package has the following issue' %}</h5>
-      {{package.issue|linebreaks|safe}}{% endif %}
+
+
+      {% if package.issue %}
+          <h5><img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:2vw;"/>{% trans 'This package has the following issue' %}</h5>
+          {{package.issue|linebreaks|safe}}
+      {% endif %}
+
       <div class="w3-panel content_center">
-        <div class="w3-twothird">
-          <div>
+        <div class="w3-half">
+          <div class="w3-panel">
               {% if package.ship_to_add %}
               <h6>{% trans 'Direct Shipping to' %}:</h6>
               <div class="w3-margin-left">
@@ -92,15 +100,19 @@
               {% elif package.ship_to_col %}
               <h6>{% trans 'Co-shipping to' %}:</h6>
               <div class="w3-margin-left">
-              <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
-              <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
-                        {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
-                        {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
-                        {{package.ship_to_col.country}}<br/>
+                  <div class="logo-text-blue">
+                      <i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})
+                  </div>
+                  <div class="w3-row">
+                      <a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a>
+                  </div>
+                  {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
+                  {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
+                  {{package.ship_to_col.country}}<br/>
               </div>
+              {% endif %}
           </div>
 
-          {% endif %}
           <div class="w3-row">
               <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.package_type}}{% else %}N/A{% endif %}</h6>
 
@@ -140,36 +152,37 @@
               {% if package.shipping_fee %}
                 <h6>{% trans 'Shipping fee' %}: {{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
               {% endif %}
-          </div>
+        </div>
 
+        <div class="w3-row">
+            {% if package.packagesnapshot_set.all %}
+                <h5>{% trans 'Package Snapshot' %}:</h5>
+                {% for image in package.packagesnapshot_set.all %}
+                    <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+                      {% cloudinary image format="jpg" width=120 height=80 crop="fill" %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
+            {% endif %}
 
-        {% if package.packagesnapshot_set.all %}
-        <h5>{% trans 'Package Snapshot' %}:</h5>
-          {% for image in package.packagesnapshot_set.all %}
-          <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
-            {% cloudinary image format="jpg" width=120 height=80 crop="fill" %}
-          </div>
-          {% endfor %}
-        {% else %}
-        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
-        {% endif %}
-
-        {% if package.item_set.all %}
-        <h5>{% trans 'Package Item details'%}:</h5>
-          {% for item in package.item_set.all %}
-          <div class="w3-row  w3-card-2 w3-container">
-            {% trans 'Item name' %}: {{item.item_name}}<br/>
-            {% trans 'Item detail' %}:{{item.item_detail}}<br/>
-            {% trans 'Item quantity' %}:{{item.item_quantity}}<br/>
-          </div>
-          {% endfor %}
-          {% else %}
-          <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
-        {% endif %}
+            {% if package.item_set.all %}
+            <h5>{% trans 'Package Item details'%}:</h5>
+                  {% for item in package.item_set.all %}
+                  <div class="w3-row  w3-card-2 w3-container">
+                    {% trans 'Item name' %}: {{item.item_name}}<br/>
+                    {% trans 'Item detail' %}:{{item.item_detail}}<br/>
+                    {% trans 'Item quantity' %}:{{item.item_quantity}}<br/>
+                  </div>
+                  {% endfor %}
+            {% else %}
+                  <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
+            {% endif %}
+        </div>
+      </div>
+    <div class="w3-half">
+      <img class="w3-right" src="{% static 'image/slogan.png' %}" alt="no" style="width:300px;"/>
     </div>
-    <div class="w3-third">
-      <img src="{% static 'image/slogan.png' %}" alt="no" style="width:300px;"/>
-    </div>
+  </div>
 </div>
-
 {% endblock %}

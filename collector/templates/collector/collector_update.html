@@ -43,15 +43,13 @@
 
 
 <form method="post" enctype="multipart/form-data" >{% csrf_token %}
-
-        <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
-            <div class="w3-cell" style="width:50%;">
-                  <div class="w3-cell-row w3-container w3-mobile content_left">
-                    <div class="text-medium">{% trans 'My Collection Point Profile' %}</div>
-                  </div>
-                  <hr/>
-                  <div class="w3-cell-row w3-container w3-mobile content_left">
-
+    <div class="w3-col-row w3-mobile">
+        <div class="w3-col w3-container m6 l6">
+              <div class="w3-container w3-mobile content_left">
+                <div class="text-medium">{% trans 'My Collection Point Profile' %}</div>
+              </div>
+              <hr/>
+              <div class="w3-container w3-mobile content_left">
                       <div class="w3-row">
                       {% if user.collectionpoint.collector_icon %}
                       <div class="w3-row w3-mobile">{% trans 'Currently Icon' %}:</br/>
@@ -84,13 +82,12 @@
                       </div>
                   </div>
             </div>
-
-            <div class="w3-cell" style="width:50%;">
-                  <div class="w3-cell-row w3-container w3-mobile content_right">
+            <div class="w3-col w3-container m6 l6">
+                  <div class="w3-container w3-mobile content_right">
                     <div class="text-medium">{% trans 'My Schedule' %}</div>
                   </div>
                   <hr/>
-                  <div class="w3-cell-row w3-container w3-mobile content_right">
+                  <div class="w3-container w3-mobile content_right">
                       <div class="w3-row">
                         {{ form.absent_start.label_tag }}{{ form.absent_start.errors }}<div class="w3-row">{{ form.absent_start }}</div>
                       </div>

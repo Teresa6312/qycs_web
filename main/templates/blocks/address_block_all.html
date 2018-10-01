@@ -34,7 +34,7 @@
 		                'phone': '{{user.phone}}',
 										'country': '{{user.country}}'
 		              };
-		      createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
+					getAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');							
 		  });
 		});//end of ready function
 </script>
