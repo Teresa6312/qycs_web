@@ -232,6 +232,17 @@ class DirectShippingCreationForm(PackageCommonForm):
 			'memo',
 			)
 
+class PackageChangeForm(forms.ModelForm):
+		class Meta:
+			model = Service
+			fields = (
+				'no_rush_request',
+				'ship_carrier',
+				'ship_to_add',
+				'ship_to_col',
+				'receiver',
+				'memo',
+				)
 #-----------------------------------------------------------------------------------------
 '''
 Create new Item in Package

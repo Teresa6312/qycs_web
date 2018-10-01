@@ -201,7 +201,7 @@ class CollectionPoint(Address_Common_Info):
 	store.boolean = True
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
-	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
+	wechat = models.CharField(max_length = 100, unique = True, blank=False, null=True, verbose_name= _('WeChat ID'))
 	# wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
@@ -586,6 +586,9 @@ class Resource(models.Model):
 	chinese_content = models.TextField(blank=True, default='', verbose_name= _('Chinese Version Content'))
 	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
 	chinese_file = models.FileField(upload_to = 'resource/chinese', blank=True, verbose_name= _('Chinese Version File'))
+
+	def __str__(self):
+		return self.title
 
 	def get_absolute_url(self):
 		return reverse('information', args=[str(self.title)])

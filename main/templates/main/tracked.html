@@ -1,6 +1,7 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
 
+
 {% block title%}
 {% trans 'Tracking' %}
 {% endblock%}
@@ -17,7 +18,7 @@
 
 {% block content %}
 <div class="text-xxlarge-bold content_center">
-  {% trans 'Tracking' %}
+  {% trans 'Tracked' %}
 </div>
 
 <div id="message_block">
@@ -31,60 +32,61 @@
 <hr/>
 <div class="content_center">
       {% for package in packages %}
-      <div class="text-large-bold">{{package.cust_tracking_num}}({{package.get_cust_carrier_display}})</div>
+      <div class="text-medium-bold logo-red w3-text-white">&emsp;{{package.cust_tracking_num}}({{package.get_cust_carrier_display}})</div>
       <div class="w3-panel">
-        <ul class="timeline w3-cell-row">
-          <li class="li complete w3-cell">
+        <ul class="timeline">
+          <li class="li {% if package.created_date %}complete{% endif %}">
             <div class="timestamp">
-              <span class="date">{{package.created_date}}</span>
+              <span class="date">{% if package.created_date %}{{package.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
             </div>
             <div class="status">
-              <h4> {% trans 'Marked' %} </h4>
+              <h4>{% trans 'Package Marked' %}</h4>
             </div>
           </li>
-          <li class="li complete w3-cell">
+          <li class="li {% if package.wh_received_date %}complete{% endif %}">
             <div class="timestamp">
-              <span class="date">{{package.wh_received_date}}</span>
+              <span class="date">{% if package.wh_received_date %}{{package.wh_received_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
             </div>
             <div class="status">
               <h4>{% trans 'Warehouse Received' %}</h4>
             </div>
           </li>
 
-          <li class="li complete w3-cell">
+          <li class="li {% if package.ready_date %}complete{% endif %}">
             <div class="timestamp">
-              <span class="date">{{package.ready_date}}</span>
+              <span class="date">{% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
             </div>
             <div class="status">
               <h4>{% trans 'Ready to Pay' %}</h4>
             </div>
           </li>
 
-          <li class="li complete w3-cell">
+          <li class="li {% if package.paid_amount and package.order_set.created_date %}complete{% endif %}">
             <div class="timestamp">
-              <span class="date">{{package.ready_date}}</span>
+              <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
             </div>
             <div class="status">
               <h4>{% trans 'Paid' %}</h4>
             </div>
           </li>
-          <li class="li complete w3-cell">
+          <li class="li {% if package.parent_package.shipped_date %}complete{% endif %}">
             <div class="timestamp">
-              <span class="date">{{package.parent_package.shipped_date}}</span>
+              <span class="date">{% if package.parent_package.shipped_date %}{{package.parent_package.shipped_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
             </div>
             <div class="status">
               <h4>{% trans 'Shipped' %}</h4>
             </div>
           </li>
-          <li class="li w3-cell">
+          <li class="li {% if package.delieved_date %}complete{% endif %}">
             <div class="timestamp">
-              <span class="date">{{package.delieved_date}}</span>
+              <span class="date">{% if package.delieved_date %}{{package.delieved_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
             </div>
             <div class="status">
               <h4>{% trans 'delieved' %}</h4>
             </div>
           </li>
          </ul>
+         <button type="button" class="w3-right logo-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'view more detail' %}</button>
       </div>
       {% endfor %}
 </div>

@@ -1,99 +1,175 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
+{% load cloudinary %}
 
-
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/timeline.css'%}"/>
+<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600,700' rel='stylesheet' type='text/css'>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
 
 {% block title%}
 {% trans 'Package Detail' %}
 {% endblock%}
 
 {% block content %}
-<div class="w3-panel w3-mobile" style="width:500px; margin:auto;">
+<div class="w3-panel w3-mobile content_center">
+  <h2>{{package.cust_tracking_num}}
+   - {{package.cust_carrier}}
+  {% if package.order %}({% trans 'Order' %})
+  {% elif package.coshiping %}({% trans 'Co-shipping Package' %})
+  {% else %}({% trans 'Direct Shipping' %})
+  {% endif %}
+  </h2>
+        <div class="w3-panel">
+        <ul class="timeline">
+          <li class="li {% if package.created_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.created_date %}{{package.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Package Marked' %}</div>
+            </div>
+          </li>
+          <li class="li {% if package.wh_received_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.wh_received_date %}{{package.wh_received_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Warehouse Received' %}</div>
+            </div>
+          </li>
 
-      <h2>{{package.cust_tracking_num}}
-       - {{package.cust_carrier}}
-      {% if package.order %}(Order)
-      {% elif package.coshiping%}(Co-shipping Package)
-      {% else %}(Direct Shipping)
-      {% endif %}
-      </h2>
-      <h6>Ship to:</h6>
-      <div class="w3-container">
-          {% if package.ship_to_add %}
-          {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
-          {% elif package.ship_to_col %}
-          {% include "blocks/col_card_fields.html" with col=package.ship_to_col no_icon='yes' %}
-          {% endif %}
+          <li class="li {% if package.ready_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Ready to Pay' %}</div>
+            </div>
+          </li>
+
+          <li class="li {% if package.paid_amount and package.order_set.created_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Paid' %}</div>
+            </div>
+          </li>
+          <li class="li {% if package.parent_package.shipped_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.parent_package.shipped_date %}{{package.parent_package.shipped_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Shipped' %}</div>
+            </div>
+          </li>
+          <li class="li {% if package.delieved_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.delieved_date %}{{package.delieved_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'delieved' %}</div>
+            </div>
+          </li>
+         </ul>
       </div>
-      <div class="w3-row">
-          <h6>Package type: {{package.package_type}}</h6>
-          <h6>Outgoing shipping carrier:{{package.parent_package.carrier}}</h6>
-          <h6>Weight: {{package.Weight}}(kg)</h6>
-          <h6>Original Amount: {% if package.shipping_fee %}{{package.shipping_fee}}{% else %}N/A{% endif %}</h6>
-          {% if package.storage_fee %}<h6>Storage fee: {{package.storage_fee}}</h6>{% endif %}
-          <h6>Paid Amount: {% if package.paid_amount %}{{package.paid_amount}}{% else %}N/A{% endif %}</h6>
-          {% if package.storage_fee %}<h6>Storage fee: {{package.storage_fee}}</h6>{% endif %}
+      <hr/>
+      {% if package.issue %}<h5><img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:2vw;"/>{% trans 'This package has the following issue' %}</h5>
+      {{package.issue|linebreaks|safe}}{% endif %}
+      <div class="w3-panel content_center">
+        <div class="w3-twothird">
+          <div>
+              {% if package.ship_to_add %}
+              <h6>{% trans 'Direct Shipping to' %}:</h6>
+              <div class="w3-margin-left">
+                  {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
+                    {{package.ship_to_add.address}}{% if package.ship_to_add.apt %} | {{package.ship_to_add.apt}}{% endif %}<br/>
+                    {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
+                    {{package.ship_to_add.country}}<br/>
+              </div>
+              {% elif package.ship_to_col %}
+              <h6>{% trans 'Co-shipping to' %}:</h6>
+              <div class="w3-margin-left">
+              <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
+              <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
+                        {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
+                        {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
+                        {{package.ship_to_col.country}}<br/>
+              </div>
+          </div>
 
-          <h6>Low Volume Weight Requested:
-
-          {% if package.low_volume_request %}
-          <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
-           {% else %}
-          <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
-          {% endif %}</h6>
-          {% if not package.co_shipping %}<h6>No Rush Requested: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
-
-      </div>
-
-
-      {% if package.created_date %}
-          <h6>Package added by me on:</h6>
-          <p>&emsp;{{package.created_date}}</p>
-      {% endif %}
-      {% if package.wh_received_date %}
-          <h6>Package arrived in Warehouse on:</h6>
-          <p>>&emsp;{{package.wh_received_date}}</p>
-      {% endif %}
-      {% if package.parent_package.shipped_date %}
-          <h6>Package shipped from Warehouse on:</h6>
-          <p>>&emsp;{{package.parent_package.shipped_date}}</p>
-      {% endif %}
-
-      {% if package.received_date and package.ship_to_col %}
-          <h6>Package arrived at Collection Point on:</h6>
-          <p>>&emsp;{{package.received_date}}</p>
-          {% if package.picked_up_date %}
-              <h6>Package picked up by receiver on:</h6>
-              <p>>&emsp;{{package.picked_up_date}}</p>
           {% endif %}
-      {% endif %}
+          <div class="w3-row">
+              <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.package_type}}{% else %}N/A{% endif %}</h6>
+
+              {% if not package.ship_carrier == '' %}<h6>{% trans 'Selected shipping carrier' %}:{{package.ship_carrier}}</h6>{% endif %}
+              {% if not package.co_shipping %}<h6>{% trans 'No Rush Requested' %}: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
+
+              {% if not package.coshiping %}
+                  <h6>{% trans 'Low Volume Weight Requested'%}:
+                      {% if package.low_volume_request %}
+                      <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                       {% else %}
+                      <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                      {% endif %}
+                  </h6>
+              {% endif %}
 
 
+              <h6>{% trans 'Weight' %}:
+                {% if package.volume_weight and package.weight %}
+                    {% if package.volume_weight > package.weight %}
+                        {{package.volume_weight}}
+                    {% else %}
+                        {{package.weight}}
+                    {% endif %}
+                    (kg)
+                {% else %}
+                N/A
+                {% endif %}
+              </h6>
 
-      {% if package.packageimage_set.all %}
-      <h5>Package Snapshot:</h5>
-        {% for image in package.packageimage_set.all %}
-        <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
-          <img src = "{{image.image.url}}">
-        </div>
-        {% endfor %}
-      {% else %}
-      <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>Didn't insert any snapshot.<br/><br/>
-      {% endif %}
+              {% if package.order_amount %}
+                <h6>{% trans 'Order Amount' %}: {{package.currency}} <span class="order_amount">{{package.order_amount}}</span></h6>
+              {% endif %}
+              {% if package.storage_fee %}
+                <h6>{% trans 'Storage fee' %}: {{package.currency}} <span class="storage_fee">{{package.storage_fee}}</span></h6>
+              {% endif %}
+              {% if package.shipping_fee %}
+                <h6>{% trans 'Shipping fee' %}: {{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
+              {% endif %}
+          </div>
 
-      {% if package.item_set.all %}
-      <h5>Package Item details:</h5>
-        {% for item in package.item_set.all %}
-        <div class="w3-row  w3-card-2 w3-container">
-          Item name: {{item.item_name}}<br/>
-          Item detail:{{item.item_detail}}<br/>
-          Item quantity:{{item.item_quantity}}<br/>
-        </div>
-        {% endfor %}
+
+        {% if package.packagesnapshot_set.all %}
+        <h5>{% trans 'Package Snapshot' %}:</h5>
+          {% for image in package.packagesnapshot_set.all %}
+          <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+            {% cloudinary image format="jpg" width=120 height=80 crop="fill" %}
+          </div>
+          {% endfor %}
         {% else %}
-        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>Didn't enter any item details.<br/><br/>
-      {% endif %}
+        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
+        {% endif %}
 
+        {% if package.item_set.all %}
+        <h5>{% trans 'Package Item details'%}:</h5>
+          {% for item in package.item_set.all %}
+          <div class="w3-row  w3-card-2 w3-container">
+            {% trans 'Item name' %}: {{item.item_name}}<br/>
+            {% trans 'Item detail' %}:{{item.item_detail}}<br/>
+            {% trans 'Item quantity' %}:{{item.item_quantity}}<br/>
+          </div>
+          {% endfor %}
+          {% else %}
+          <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
+        {% endif %}
+    </div>
+    <div class="w3-third">
+      <img src="{% static 'image/slogan.png' %}" alt="no" style="width:300px;"/>
+    </div>
 </div>
 
 {% endblock %}

@@ -55,7 +55,7 @@
                     {% elif package.ship_to_col %}
                     <div class="text-regular-bold">{% trans 'Co-shipping to' %}:</div>
                     <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
-                    <div class="logo-text-red">{{package.ship_to_col.name}}</div>
+                    <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
                               {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
                               {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
                               {{package.ship_to_col.country}}<br/>
@@ -102,7 +102,7 @@
                           {% elif package.ship_to_col %}
                           <div>{% trans 'Co-shipping to' %}:</div>
                           <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
-                          <div class="logo-text-red">{{package.ship_to_col.name}}</div>
+                          <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
                                     {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
                                     {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
                                     {{package.ship_to_col.country}}<br/>

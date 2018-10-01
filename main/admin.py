@@ -266,7 +266,7 @@ class FavoriteWebsiteAdmin(admin.ModelAdmin):
 admin.site.register(FavoriteWebsite, FavoriteWebsiteAdmin)
 
 class ResourceAdmin(admin.ModelAdmin):
-	list_display = ('id', 'title','header',)
+	list_display = ('title','header',)
 	search_fields = ['title', 'header',]
 
 admin.site.register(Resource, ResourceAdmin)

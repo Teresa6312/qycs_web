@@ -27,15 +27,10 @@ urlpatterns = [
 
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
-
     path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
 
 
-    # path('image/', views.AddImageView.as_view(), name='image'),
-
-
 # login_required
-
     path('myaccount/logout/', login_required(views.logout_view), name = 'logout'),
 
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
@@ -56,7 +51,6 @@ urlpatterns = [
 
     path('myaccount/packages', login_required(pk_views.PackagesView.as_view()), name='userpackage'),
 
-    # path('packages/add/', login_required(pk_views.AddPackageView.as_view()), name='add_package'),
     path('packages/<int:selected_col>/add', login_required(pk_views.AddCoShipping.as_view()), name='add_co_shipping'),
     path('packages/direct-shipping/add', login_required(pk_views.AddDirectShipping.as_view()), name='add_direct_shipping'),
     path('packages/', login_required(pk_views.PackagesView.as_view()), name='packages'),

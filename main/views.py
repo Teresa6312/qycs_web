@@ -421,7 +421,7 @@ class InformationView(TemplateView):
 	def get(self, request, title):
 		try:
 			information = Resource.objects.get(title=title)
-			if information.english_content!='':
+			if information.english_content != '' or information.chinese_content != '':
 				return render(request, self.template_name, {'information': information})
 			else:
 				return render(request, self.template_name, {'empty': _('Upcoming information')})

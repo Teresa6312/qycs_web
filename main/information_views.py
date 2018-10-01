@@ -9,20 +9,20 @@ class CustomerServiceView(TemplateView):
 	def get(self, request):
 		return render(request, self.template_name)
 
-class AboutUsView(TemplateView):
-	template_name = 'main/about_us.html'
-
-	def get(self, request):
-		return render(request, self.template_name)
-
-class FQAView(TemplateView):
-	template_name = 'main/fqa.html'
-
-	def get(self, request):
-		return render(request, self.template_name)
-
-class FQAView(TemplateView):
-	template_name = 'main/fqa.html'
-
-	def get(self, request):
-		return render(request, self.template_name)
+# class AboutUsView(TemplateView):
+# 	template_name = 'main/about_us.html'
+#
+# 	def get(self, request):
+# 		return render(request, self.template_name)
+#
+# class FQAView(TemplateView):
+# 	template_name = 'main/fqa.html'
+#
+# 	def get(self, request):
+# 		return render(request, self.template_name)
+#
+# class FQAView(TemplateView):
+# 	template_name = 'main/fqa.html'
+#
+# 	def get(self, request):
+# 		return render(request, self.template_name)

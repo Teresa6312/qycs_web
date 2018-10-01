@@ -28,7 +28,7 @@ class ColRegisterView(TemplateView):
 			userform.fields['last_name'].required = True
 			colform = ColCreationForm()
 			try:
-				text = Resource.objects.get(title='colregister')
+				text = Resource.objects.get(title='collection_point_term')
 				term = text.english_content
 			except:
 				term = _('Term is not avaliable Right now.')

@@ -9,13 +9,17 @@
 {% endblock%}
 
 
+{% block messages %}
+{% endblock messages %}
+
+
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
 {% endblock %}
 
 
 {% block content %}
-  <div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
+  <div class="w3-cell-row w3-mobile content_center">
     <div class="text-xxlarge-bold w3-panel">{% trans 'Register my location as a Package Collection Point' %}</div>
 
     <div id="message_block">
@@ -25,7 +29,7 @@
       {% endfor %}</ul>
       {% endif %}
 
-      {% if form.errors or receiverform.errors or itemset.errors %}
+      {% if form.errors %}
           <p class="errornote">
           {% trans "Please correct the error(s) below." %}
           </p>
@@ -36,20 +40,20 @@
 
 
 
+
+
+
+
+
   <form method="post" enctype="multipart/form-data">{% csrf_token %}
-      <div class="w3-mobile"  style="width:80%; margin:auto;">
-          <div class="text-medium">{% trans 'Collection Point Registration Terms' %}</div>
-          <div class="w3-card-2" style="height:300px; overflow:auto;">{{term|linebreaks}}</div>
-          <div class="w3-center">{{colform.agreement}}{{colform.agreement.label_tag}}</div>
-      </div>
       <div class="tab">
           <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
                 <div class="w3-cell" style="width:50%;">
-                    <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                      <div class="w3-cell-row w3-container w3-mobile content_left">
                         <div class="text-medium">{% trans 'My Profile' %}</div>
-                    </div>
-                    <hr/>
-                    <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                      </div>
+                      <hr/>
+                      <div class="w3-cell-row w3-container w3-mobile content_left">
                           <div class="w3-row">
                             {{ userform.username.label_tag }} {{ userform.username.errors }}{{ userform.username }}
                             <input type="hidden" name="next" value="{{ next }}" />
@@ -67,15 +71,12 @@
                             {{ userform.birthday.label_tag }}{{ userform.birthday.errors }}<br/>{{ userform.birthday }}
                           </div>
                           <div class="w3-row">
-                            {{ userform.email.errors }}
-                            {{ userform.email.label_tag }} {{ userform.email }}
+
+                            {{ userform.email.label_tag }} {{ userform.email.errors }}{{ userform.email }}
                           </div>
                           <div class="w3-row">
 
                             {{ userform.phone.label_tag }}   {{ userform.phone.errors }}{{ userform.phone }}
-                          </div>
-                          <div class="w3-half">
-                            {{ userform.country.label_tag }} {{ userform.country.errors }}{{ userform.country }}
                           </div>
                           <div class="w3-half">
                             {{ userform.language.label_tag }} {{ userform.language.errors }} {{ userform.language }}
@@ -83,11 +84,11 @@
                     </div>
                 </div>
                 <div class="w3-cell" style="width:50%;">
-                      <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                      <div class="w3-cell-row w3-container w3-mobile content_right">
                           <div class="text-medium">{% trans 'My Location' %}</div>
                       </div>
                       <hr/>
-                      <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                      <div class="w3-cell-row w3-container w3-mobile content_right">
                           <div class="w3-row">
 
                             {{ colform.name.label_tag }}{{ colform.name.errors }} {{ colform.name }}
@@ -131,11 +132,11 @@
         <div class="tab">
             <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
                   <div class="w3-cell" style="width:50%;">
-                      <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+                      <div class="w3-cell-row w3-container w3-mobile content_left">
                           <div class="text-medium">{% trans 'Document' %}</div>
                       </div>
                       <hr/>
-                      <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                      <div class="w3-cell-row w3-container w3-mobile content_left">
                             <div class="w3-row">
 
                               {{ colform.license_type.label_tag }} {{ colform.license_type.errors }}{{ colform.license_type }}
@@ -160,11 +161,11 @@
                   </div>
 
                   <div class="w3-cell" style="width:50%;">
-                        <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                        <div class="w3-cell-row w3-container w3-mobile content_right">
                             <div class="text-medium">{% trans 'Other Information' %}</div>
                         </div>
                         <hr/>
-                        <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                        <div class="w3-cell-row w3-container w3-mobile content_right">
                           <div class="w3-row">
 
                             {{ colform.referrer.label_tag }}   {{ colform.referrer.errors }}{{ colform.referrer }}
@@ -183,24 +184,37 @@
                   </div>
 
               </div>
+              <div class="w3-mobile content_center">
+                  <div class="text-medium">{% trans 'Collection Point Registration Terms' %}</div>
+                  <div class="w3-card-2 w3-container w3-margin-top content_center" style="height:300px; overflow:auto;" id="term_block">{{term|linebreaks}}</div>
+                  <div class="w3-center content_center">{{colform.agreement}}
+                    {% blocktrans %}
+                      I have read, understood and agreed to be bound by myqycs.com Collection Points' Registration terms. I also understood how MYQYCS intends to use my information.
+                    {% endblocktrans %}
+                  </div>
+              </div>
         </div>
 
-    <div class="w3-row" style="width:80%; margin:auto">
-      <div class="w3-center">
-        <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
-        <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
-        <span id="submit_block">
-            <button  type="button" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
-            <input type = "submit" value = "{% trans 'Register' %}"/>
-        </span>
-      </div>
-    </div>
 
+        <div class="w3-row content_center">
+          <div class="w3-center">
+
+            <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
+            <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
+            <span id="submit_block">
+              <button  type="button" class="logo-red" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
+              <input class="logo-red" type="submit" name="finish" value="{% trans 'Register' %}"/>
+            </span>
+          </div>
+        </div>
+      
   </form>
+  <script src="{% static 'js/packageset.js' %}"></script>
+{% endblock %}
 
 
-  <script>
-
+{% block script%}
+<script>
   $(function() {
     if($.fn.cloudinary_fileupload !== undefined) {
       $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
@@ -224,5 +238,27 @@
             $('#id_license_type').closest('.w3-row').hide().slideDown(300);
           }
       });
+
+      function loadDoc(url) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("term_block").innerHTML = this.responseText;
+          }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+      }
+      $(document).ready(function(){
+        var url = '';
+        if ('{{LANGUAGE_CODE}}'=="en-us"){
+          url = "/static/information/collection_point_terms_en.txt";
+        }else if('{{LANGUAGE_CODE}}'=="zh-Hans"){
+          url = "/static/information/collection_point_terms_cn.txt";
+        }
+        if(url!=''){
+          loadDoc(url)
+        }
+      });
   </script>
-{% endblock %}
+{% endblock%}

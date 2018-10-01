@@ -2,26 +2,24 @@
 {% load i18n static %}
 
 {% block title%}
-{{empty}}{{information.header}}
+{{empty}}{{information.header|title}}
 {% endblock%}
 
 {% block content %}
-<div class="w3-panel content_center">
+<div class="w3-panel content_center" id="content_block">
 {% if information %}
-      <div class="text-xxlarge">{{information.header}}</div>
-      <div id="content">
-        {% if not information.english_file %}
+      <div class="text-xxlarge">{{information.header|title}}</div>
+      <div>
+        {% if LANGUAGE_CODE == "en-us" %}
           <p>{{information.english_content|linebreaks|safe}}</p>
+        {% elif LANGUAGE_CODE == "zh-Hans" %}
+          <p>{{information.chinese_content|linebreaks|safe}}</p>
         {% endif %}
       </div>
 {% else %}
-
   <div class="text-xxlarge">{{empty}}</div>
     <div class="text-medium">{% trans 'Thank your for visiting our website. The information will be post soon!' %}</div>
 {% endif %}
-
-
-
 
 </div>
 
@@ -31,16 +29,21 @@ function loadDoc(url) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("content").innerHTML = this.responseText;
+      document.getElementById("content_block").innerHTML = this.responseText;
     }
   };
   xhttp.open("GET", url, true);
   xhttp.send();
 }
 $(document).ready(function(){
-  var en_url = '{{information.english_file.url}}';
-  if(en_url!=''){
-    loadDoc(en_url)
+  var url = '';
+  if ('{{LANGUAGE_CODE}}'=="en-us"){
+    url = '/static/information/'+'{{information.title}}'+"_en.txt";
+  }else if('{{LANGUAGE_CODE}}'=="zh-Hans"){
+    url = '/static/information/'+'{{information.title}}'+"_cn.txt";
+  }
+  if(url!=''){
+    loadDoc(url)
   }
 });
 </script>

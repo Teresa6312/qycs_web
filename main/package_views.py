@@ -4,7 +4,7 @@ from .models import (
 	)
 from .forms import (
 	ItemFormset, PackageCreationForm, CoShippingCreationForm, DirectShippingCreationForm,
-	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm, CoReceiverCheckForm
+	CoReceiverForm, SnapshotForm, OrderSetForm, CartForm, CoReceiverCheckForm, PackageChangeForm
 	)
 from django.db import transaction
 from django.contrib import messages
@@ -20,6 +20,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 # from django.core.serializers.json import DjangoJSONEncoder
 #
 import datetime
@@ -202,7 +203,7 @@ class AddCoShipping(TemplateView):
 				user = User.objects.get(id = request.user.id)
 				user.default_col = col
 				user.save()
-				
+
 			itemset.instance = package
 			itemset.save()
 
@@ -231,12 +232,31 @@ class PackageDetailView(TemplateView):
 
 	def get(self, request, pack_id):
 		try:
-			package = Service.objects.get(pk=pack_id,user=request.user)
-			return render(request, self.template_name , {'package': package})
+			package = Service.objects.get(pk=pack_id)
+			if package.user == request.user:
+				return render(request, self.template_name , {'package': package})
+			else:
+				messages.error(request, _(package.cust_tracking_num + " is not your package. You cannot view the detail."))
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 		except ObjectDoesNotExist:
 			messages.error(request, _("Cannot Find the package"))
-			# return render(request,reverse('userpackages'))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+class PackageChangeView(TemplateView):
+	template_name = 'main/package_change.html'
+
+	def get(self, request, pack_id):
+		try:
+			package = Service.objects.get(pk=pack_id)
+			if package.user == request.user:
+				form = PackageChangeForm(instance=package)
+				return render(request, self.template_name , {'form': form})
+			else:
+				messages.error(request, _(package.cust_tracking_num + " is not your package. You cannot view the detail."))
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+		except ObjectDoesNotExist:
+			messages.error(request, _("Cannot Find the package"))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def couponView(request):
 	if request.POST:
