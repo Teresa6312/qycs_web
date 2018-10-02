@@ -25,6 +25,7 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('collection-point/<int:col_pk>/view', col_views.CollectionPointDetailView.as_view(), name='collection_point_view'),
     path('information/<str:title>/', main_views.InformationView.as_view(), name='information'),
+    path('_/', include('django.conf.urls.i18n')),
     path('gloabl-shop/', main_views.ShoppingView.as_view(), name='shopping'),
     path('collection-points/', main_views.CollectionPointView.as_view(), name='collection_points'),
 

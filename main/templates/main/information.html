@@ -5,7 +5,7 @@
 {{empty}}
 {% if LANGUAGE_CODE == "en-us" %}
     {{information.english_header|title}}
-{% elif LANGUAGE_CODE == "zh-Hans" %}
+{% elif LANGUAGE_CODE == "zh-hans" %}
     {{information.chinese_header|title}}
 {% endif %}
 {% endblock%}
@@ -16,7 +16,7 @@
     {% if LANGUAGE_CODE == "en-us" %}
         <div class="text-xxlarge">{{information.english_header}}</div>
           <p>{{information.english_content|linebreaks|safe}}</p>
-    {% elif LANGUAGE_CODE == "zh-Hans" %}
+    {% elif LANGUAGE_CODE == "zh-hans" %}
       <div class="text-xxlarge">{{information.chinese_header|title}}</div>
           <p>{{information.chinese_header|linebreaks|safe}}</p>
     {% endif %}
@@ -43,7 +43,7 @@ $(document).ready(function(){
   var url = '';
   if ('{{LANGUAGE_CODE}}'=="en-us"){
     url = '/static/information/'+'{{information.title}}'+"_en.txt";
-  }else if('{{LANGUAGE_CODE}}'=="zh-Hans"){
+  }else if('{{LANGUAGE_CODE}}'=="zh-hans"){
     url = '/static/information/'+'{{information.title}}'+"_cn.txt";
   }
   if(url!=''){

@@ -42,13 +42,26 @@
                     </div>
               </div>
             {% else %}
-
-
             <a href="{% url 'login' %}"><span class="logo-text-blue" >{% trans "Log in" %}</span>&emsp;/ </a>
             <a href="{% url 'register' %}"><span class="logo-text-red" >{% trans "Sign Up" %}</span></a>
-
-
             {% endif %}
+            <div class="dropdown">
+              <button type="button" class="dropbtn">
+                Language/语言
+              </button>
+              <div class="dropdown-content">
+                  <form action="/_/setlang/" method="post">
+                      {% csrf_token %}
+                      <input name="next" type="hidden" value="{{ redirect_to }}"/>
+                      <select name="language">
+                          {% for lang in LANGUAGES %}
+                              <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+                          {% endfor %}
+                      </select>
+                      <input type="submit" value="Change"/>
+                  </form>
+                </div>
+            </div>
               <a href="{% url 'packagecart' %}">
                 <img src="{% static 'image/cart.png' %}" alt="cart" style="max-width:30px; margin:auto;">
                 {% if user.is_authenticated %}
@@ -69,6 +82,9 @@
     </div>
   </div>
 </div>
+
+
+
   {% include "blocks/modal.html" with element='wechat' title='Contact Us' block='wechat_qrcode_block'%}
   {% include "blocks/modal.html" with element='email' title='Contact Us' block='email_block'%}
   <script>
@@ -80,6 +96,7 @@
         mynnav.className = "topnav";
     }
   }
+  var csrf = "{{csrf_token}}"
   </script>
   {% block script%}
   {% endblock%}
