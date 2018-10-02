@@ -60,6 +60,7 @@ INSURANCE_CHOICE = (
 	(3, _('$3 insurance')),
 	(5, _('$5 insurance')),
 	(10, _('$10 insurance')),
+	(15, _('$15 insurance')),
 )
 CURRENCY_CHOICE = (
 	('CNY', _('China Yuan')),

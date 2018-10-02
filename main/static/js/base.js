@@ -38,28 +38,7 @@ $(document).ready(function(){
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
-    // set language
-    $("#language").change(function(){
-      let object={'csrfmiddlewaretoken': csrf,
-                  'language':$("#language option:selected").text()};
-
-      $.ajax({
-        type: "POST",
-        url: "/_/setlang/",
-        data: object,
-        success: function(data){
-          console.log('yes');
-          location.reload();
-        },
-        failure: function(data){
-          console.log('failure');
-        },
-      });
-
-
-
-    });
-})
+});
 
 function getPackageNumber(url,id){
     $.ajax({
