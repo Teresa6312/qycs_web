@@ -55,7 +55,7 @@
                       <input name="next" type="hidden" value="{{ redirect_to }}"/>
                           <select name="language">
                                 <option value="en-us">English</option>
-                                <option value="zh-Hans">简体中文</option>                                                
+                                <option value="zh-Hans">简体中文</option>
                           </select>
                       <input type="submit" value="Change"/>
                   </form>
@@ -95,7 +95,6 @@
         mynnav.className = "topnav";
     }
   }
-  var csrf = "{{csrf_token}}"
   </script>
   {% block script%}
   {% endblock%}
@@ -112,33 +111,33 @@
   {% endblock%}
   <div class="w3-row w3-padding-small content_center">
     <div class="w3-col w3-container m4 l3" id="myqycs_block">
-      <h5>{% trans "My QYCS" %}</h5>
-
-      <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
-      <a href="{% url 'information' 'join_us'%}">{% trans "Join Us" %}</a><br/>
-      <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
-      <a href="{% url 'information' 'faqs'%}">{% trans "FAQs" %}</a><br/>
-
+        <h5>{% trans "My QYCS" %}</h5>
+        <div class="footer_links">
+          <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
+          <a href="{% url 'information' 'join_us'%}">{% trans "Join Us" %}</a><br/>
+          <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
+          <a href="{% url 'information' 'faqs'%}">{% trans "FAQs" %}</a><br/>
+        </div>
     </div>
     <div class="w3-col w3-container m4 l3" id="consumer_block">
       <h5>{% trans "Consumer Guide" %}</h5>
-
-      <a href="{% url 'information' 'coshipping_guide'%}">{% trans "Co-shipping Guide" %}</a><br/>
-      <a href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
-      <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
-
+      <div class="footer_links">
+          <a href="{% url 'information' 'coshipping_guide'%}">{% trans "Co-shipping Guide" %}</a><br/>
+          <a href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
+          <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
+      </div>
     </div>
     <div class="w3-col w3-container m4 l3" id="service_block">
       <h5>{% trans "Service Guide" %}</h5>
-
-      <a  href="{% url 'information' 'insurance'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
-      <a href="{% url 'information' 'collection_points'%}">{% trans "Collection Points" %}</a><br/>
-      <a href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
-
+      <div class="footer_links">
+        <a  href="{% url 'information' 'insurance'%}">{% trans "Qycs Shipping Insurance" %}</a><br/>
+        <a href="{% url 'information' 'collection_points'%}">{% trans "Collection Points" %}</a><br/>
+        <a href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
+      </div>
     </div>
 
     <div class="w3-col w3-container m5 l3" id="contact_block">
-      <div class="w3-row">
+      <div class="w3-row w3-center">
           <img src="{% static 'image/brand.png' %}" alt="logo" style="width:70px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
       </div>
 
