@@ -1,17 +1,24 @@
 html{
-  height: 100%;
+    height: 100%;
 }
-body {
+
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
+  /* margin: 0; */
   overflow: auto;
   background-size: 100%;
   background-image: url("/static/image/home_background.png");
-  min-height:100%;
-  position:relative;
-  overflow: hidden;
+  /* min-height:100%; */
+  /* position:relative; */
+  /* overflow: hidden; */
 }
 
+#container{
+  flex: 1 0 auto;
+}
 .logo-red{
   background-color: #E73229;
 }
@@ -31,53 +38,53 @@ body {
   color: #ffcc00;
 }
 .text-xxxlarge{
-  font-size: 3vw;
+  font-size: 35px;
 }
 .text-xxxlarge-bold{
-  font-size: 3vw;
+  font-size: 35px;
   font-weight: bold;
 }
 .text-xxlarge{
-  font-size: 2.5vw;
+  font-size: 30px;
   font-family: Georgia;
 }
 .text-xxlarge-bold{
-  font-size: 2.5vw;
+  font-size: 30px;
   font-weight: bold;
 }
 .text-xlarge{
-  font-size: 2vw;
+  font-size: 25px;
 }
 .text-xlarge-bold{
-  font-size: 2vw;
+  font-size: 25px;
   font-weight: bold;
 }
 .text-large{
-  font-size: 1.7vw;
+  font-size: 20px;
 }
 .text-large-bold{
-  font-size: 1.7vw;
+  font-size: 20px;
   font-weight: bold;
 }
 .text-medium{
-  font-size: 1.5vw;
+  font-size: 18px;
 }
 .text-medium-bold{
-  font-size: 1.5vw;
+  font-size: 18px;
   font-weight: bold;
 }
 .text-regular{
-  font-size: 1vw;
+  font-size: 15px;
 }
 .text-regular-bold{
-  font-size: 1vw;
+  font-size: 15px;
   font-weight: bold;
 }
 .text-small{
-  font-size: 1vw;
+  font-size: 12px;
 }
 .text-small-bold{
-  font-size: 1vw;
+  font-size: 12px;
   font-weight: bold;
 }
 text-italic-bold{
@@ -98,6 +105,11 @@ a:hover{
 /*----------------- header and bar ---------------------------*/
 .topnav{
   margin-top: 0.2vw;
+}
+.topnav select{
+  border: none;
+  color: black;
+  background-color: Transparent;
 }
 .topnav a {
   float: left;
@@ -174,16 +186,13 @@ a:hover{
   min-height: 40vw;
   background-position: center;
 }
-.contentCSS, .tracking_page{
-  padding-bottom: 200px;
-  position: inherit;
-}
+
 .home_logged{
   background-size: 100%;
   background-repeat: no-repeat;
   background-image: url("/static/image/car_background.png");
-  background-position: right 0 bottom 180px;
-  padding-bottom: 300px;
+  background-position: right 0 bottom 0vw;
+  padding-bottom: 10vw;
 }
 .content_left{
   width:80%;
@@ -205,13 +214,24 @@ a:hover{
 }
 
 #customer_service_block{
-  background-color:#161d57;
+  background-color:rgb(22,29,87);
 }
+
+
+#customer_service_table img{
+  width:60px;
+  margin:20px 20px;
+}
+
 .large_image{
   max-width: 45%;
   height: auto;
 }
 
+#main_address_form{
+  margin-left: 25px;
+  margin-top: 15px;
+}
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
   margin-top: 8vw;
@@ -299,7 +319,7 @@ a:hover{
   border-radius:50%;
   padding:12.5vw 2vw;
   background-color: #E73229;
-  font-size: 1.2vw;
+  font-size: 1.4vw;
   padding-left: 15vw;
   margin: 0.2vw 0vw;
   position: relative;
@@ -313,7 +333,7 @@ a:hover{
   border-radius:50%;
   padding:12.7vw 5vw;
   background-color: #121A50;
-  font-size: 1.2vw;
+  font-size: 1.4vw;
   padding-right: 11vw;
   position: relative;
   width:28vw;
@@ -400,20 +420,18 @@ a:hover{
   background-color: Transparent;
 }
 #search_block{
-  position: absolute;
-  z-index: 1;
-  margin-left: 600px;
-  margin-top: 10px;
-  height: 40px;
+  font-size: 20px;
   border-color: black;
   background-color: #fff;
-  padding: 0.2vw 1vw;
+  padding: 0 3px;
+  margin-top: 0.5vw;
 }
 hr{
   margin-top: 0;
   margin-bottom: 0.5vw;
 }
 /* ---------------------------------------- for the table ----------------------------------- */
+
 thead {
     display: block;
     width: 100%;
@@ -426,10 +444,14 @@ thead th{
   text-align: center;
   border: none;
   background-color: Transparent;
-  font-size: 1vw;
+  font-size: 15px;
   vertical-align: middle;
 }
 
+table {
+  max-height:450px;
+  overflow:auto;
+}
 tbody td {
   vertical-align: middle;
   border: none;
@@ -438,6 +460,19 @@ tbody td {
 tr th{
   text-align: center;
   vertical-align: top;
+}
+
+#customer_service_table{
+  background-color: lightgrey;
+  width: 100%;
+  margin: 30px;
+}
+
+#customer_service_table th{
+  width: 23%;
+  height: 140px;
+  background-color: white;
+  margin: 2px 1%;
 }
 /* ----------------------------------- for checkbox switch------------------------------------------- */
 .switch {
@@ -499,19 +534,16 @@ input:checked + .slider:before {
 /*---------------------------------------for footer only----------------------------------------*/
 
 #footer{
+  flex: 0 0 auto;
   width:100%;
   bottom:0;
-  margin-top: 1vw;
-  position:absolute;
-  /* height:200px; */
+  padding-top: 0.5vw;
   padding-bottom: 0;
   margin-bottom: 0;
 }
 #footer h5{
   font-weight: bold;
   color: #121A50;
-
-
 }
 #footer a{
   color: black;
@@ -542,19 +574,41 @@ input:checked + .slider:before {
     }
     .content_left{
       width:95%;
-      margin-left:5%;
+      margin:auto;
     }
     .content_right{
       width:95%;
+      margin:auto;
+      margin-top: 10px;
     }
     .content_center{
       width:95%;
       margin: auto;
     }
-
+    #main_address_form{
+      margin: 20px auto;
+    }
     #footer{
       position:relative;
       height:auto;
+    }
+    #consumer_block, #service_block{
+      display: none;
+    }
+    #customer_service_table img{
+      width:40px;
+      margin:10px 10px;
+    }
+    #customer_service_table{
+      background-color: lightgrey;
+      width: 100%;
+      margin: 10px;
+    }
+    #customer_service_table th{
+      width: 23%;
+      height: 140px;
+      background-color: white;
+      margin: 2px 1%;
     }
     .dropdown .dropdown-content{
       display: block;
@@ -583,10 +637,11 @@ input:checked + .slider:before {
       float: left;
       display: block;
     }
-    #account_aside_bar{
+    #CollectionPointID{
       display: none;
     }
     #map{
+      display: block;
       width:100%;
     }
     .sidebar{
@@ -761,7 +816,7 @@ input:checked + .slider:before {
   text-align:center;
 }
 .w3-modal .close-modal{
-  font-size: 2.5vw;
+  font-size: 30px;
   color: black;
   padding: 0;
   border: none;
@@ -790,9 +845,10 @@ input:checked + .slider:before {
 
 /* ------------------------------------- for tracking and tracked page ------------------------------------------------------- */
 #tracking_block{
-  width:40vw;
+  width:400px;
   border: 1px solid #eee;
   background-color: #fafafa;
+  display: inline-block;
 }
 #track_btn{
   color: red;
@@ -801,9 +857,10 @@ input:checked + .slider:before {
   margin: 0;
   font-weight: bold;
   background-color: Transparent;
-  font-size: 1.5vw;
-  display:inline-block;
-  margin-left: 1.5vw;
+  font-size: 25px;
+  display:inline;
+  text-align:right;
+  width: 20%;
 }
 .tracking{
   margin-top: 4vw;
@@ -811,7 +868,7 @@ input:checked + .slider:before {
 .tracking #id_cust_tracking_num{
   border: none;
   margin: 0;
-  height: 4vw;
-  width: 30vw;
-  font-size: 1.5vw;
+  height: 30px;
+  width: 75%;
+  font-size: 25px;
 }
