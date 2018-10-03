@@ -38,6 +38,9 @@ $(document).ready(function(){
     $(".cleanBtn").click(function(){
       $(this).closest('form').find("input[type=text], textarea").val("");
     });
+    $("#footer h5").click(function(){
+      $(this).parents('.w3-col').find('.footer_links').show();
+    });
 });
 
 function getPackageNumber(url,id){

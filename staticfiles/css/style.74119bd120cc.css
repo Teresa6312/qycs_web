@@ -6,14 +6,10 @@ body{
     display: flex;
     flex-direction: column;
     height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  /* margin: 0; */
-  overflow: auto;
-  background-size: 100%;
-  background-image: url("/static/image/home_background.6c00fd6d0f09.png");
-  /* min-height:100%; */
-  /* position:relative; */
-  /* overflow: hidden; */
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: auto;
+    background-size: 100%;
+    background-image: url("/static/image/home_background.6c00fd6d0f09.png");
 }
 
 #container{
@@ -37,32 +33,32 @@ body{
 .yellow-text{
   color: #ffcc00;
 }
-.text-xxxlarge{
+.text-xxxlarge, .home-xxxlarge{
   font-size: 35px;
 }
-.text-xxxlarge-bold{
+.text-xxxlarge-bold, .home-xxxlarge-bold{
   font-size: 35px;
   font-weight: bold;
 }
-.text-xxlarge{
+.text-xxlarge, .home-xxlarge{
   font-size: 30px;
   font-family: Georgia;
 }
-.text-xxlarge-bold{
+.text-xxlarge-bold, .home-xxlarge-bold{
   font-size: 30px;
   font-weight: bold;
 }
-.text-xlarge{
+.text-xlarge, .home-xlarge{
   font-size: 25px;
 }
-.text-xlarge-bold{
+.text-xlarge-bold, .home-xlarge-bold{
   font-size: 25px;
   font-weight: bold;
 }
-.text-large{
+.text-large, .home-large{
   font-size: 20px;
 }
-.text-large-bold{
+.text-large-bold, .home-large-bold{
   font-size: 20px;
   font-weight: bold;
 }
@@ -239,6 +235,7 @@ a:hover{
   position: relative;
   height: 100%;
   float:left;
+  width: 16vw;
 }
 
 /* animation block  */
@@ -299,6 +296,7 @@ a:hover{
   position: relative;
   height: 100%;
   float:right;
+  width: 16vw;
 }
 
 .circle{
@@ -316,27 +314,30 @@ a:hover{
 
 
 #shipping_half_circle{
+  width:28vw;
+  height:28vw;
   border-radius:50%;
-  padding:12.5vw 2vw;
+  padding-top:13vw;
   background-color: #E73229;
-  font-size: 1.4vw;
-  padding-left: 15vw;
-  margin: 0.2vw 0vw;
+  font-size: 1.5vw;
+  text-align: right;
+  padding-right: 3vw;
   position: relative;
   left: -12vw;
-  width:28vw;
   animation-name: hoverShippingOUT;
   animation-duration: .5s;
 }
 
 #tracking_half_circle{
-  border-radius:50%;
-  padding:12.7vw 5vw;
-  background-color: #121A50;
-  font-size: 1.4vw;
-  padding-right: 11vw;
-  position: relative;
   width:28vw;
+  height:28vw;
+  border-radius:50%;
+  padding-top:13vw;
+  background-color: #121A50;
+  text-align: left;
+  font-size: 1.5vw;
+  padding-left: 3vw;
+  position: relative;
   animation-name: hoverOUT;
   animation-duration: .5s;
 }
@@ -566,8 +567,34 @@ input:checked + .slider:before {
 }
 /*----------------------------------------for small screem ----------------------------------*/
   @media screen and (max-width: 600px) {
-    .contentCSS{
-      padding-bottom: 10px;
+    .home-xxxlarge{
+      font-size: 28px;
+    }
+    .home-xxxlarge-bold{
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .home-xxlarge{
+      font-size: 25px;
+      font-family: Georgia;
+    }
+  .home-xxlarge-bold{
+      font-size: 25px;
+      font-weight: bold;
+    }
+  .home-xlarge{
+      font-size: 22px;
+    }
+    .home-xlarge-bold{
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .home-large{
+      font-size: 20px;
+    }
+    .home-large-bold{
+      font-size: 20px;
+      font-weight: bold;
     }
     .home_logged{
       background-position: right 0 bottom 0;
@@ -591,9 +618,14 @@ input:checked + .slider:before {
     #footer{
       position:relative;
       height:auto;
+      text-align: center;
     }
-    #consumer_block, #service_block{
+  .footer_links{
       display: none;
+    }
+    #footer h5{
+      margin: 0;
+      cursor:pointer;
     }
     #customer_service_table img{
       width:40px;
@@ -621,7 +653,7 @@ input:checked + .slider:before {
       margin: 0;
       z-index: 1;
     }
-    .topnav a, .dropdown .dropbtn {
+    .topnav a, .dropdown .dropbtn, .topnav form {
       display: none;
     }
     .topnav a:hover {
@@ -632,6 +664,7 @@ input:checked + .slider:before {
     .topnav a.icon {
       float: right;
       display: block;
+      padding: 5px 10px;
     }
     #account_nav{
       float: left;
@@ -656,6 +689,10 @@ input:checked + .slider:before {
     .select_column{
       width:50px;
     }
+
+    #shipping_half_circle, #tracking_half_circle{
+      font-size: 2.2vw;
+    }
   }
 
   @media screen and (max-width: 600px) {
@@ -672,6 +709,13 @@ input:checked + .slider:before {
     }
     .topnav.responsive .dropdown {float: none;}
     .topnav.responsive .dropdown-content {position: relative;}
+    .topnav.responsive form {
+          display: block;
+          background-color: Transparent;
+          box-shadow: none;
+          padding-left: 10px;
+        }
+
     .topnav.responsive .dropdown .dropbtn {
       display: block;
       width: 100%;

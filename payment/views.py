@@ -5,15 +5,6 @@ from paypal.standard.forms import PayPalPaymentsForm
 from main.models import OrderSet
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def payment_done(request):
-    return render(request, 'payment/done.html')
-
-@csrf_exempt
-def payment_canceled(request):
-    return render(request, 'payment/canceled.html')
-
-
 def payment_process(request):
     order_set_id = request.session.get('order_set_id')
     orderSet = get_object_or_404(OrderSet, id = order_set_id)
