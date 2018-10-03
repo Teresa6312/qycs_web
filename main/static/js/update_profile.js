@@ -34,7 +34,7 @@ function submitForm(csrf, submit_url, add_field_name){
             $('#id-new-address-content').before($(data).find('.messagelist'));
             $('.messagelist').hide().slideDown(500);
             $(data).find('.errorlist').each(function(){
-                var input = $(this ).parent('.form-row').find('input');
+                var input = $(this ).parent('div').find('input');
                 $('#id-new-address-content').find('#'+input.prop("id")).before($(this));
             });
             $('.errorlist').hide().slideDown(500);
@@ -83,7 +83,6 @@ function getAddForm(user,csrf, submit_url, add_field_name){
               sv.setAttribute("type", "button");
               sv.setAttribute("class", "logo-blue");
               sv.setAttribute("id", "newAddressSubmitBtn");
-              sv.setAttribute("onclick", "submitForm()");
               sv.innerHTML = 'Save';
               sv.onclick = function(){
                 if($('.addform-errors').length>0){
@@ -339,7 +338,6 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     sv.setAttribute("type", "button");
     sv.setAttribute("class", "logo-blue");
     sv.setAttribute("id", "newAddressSubmitBtn");
-    sv.setAttribute("onclick", "submitForm()");
     sv.innerHTML = 'Save';
     sv.onclick = function(){
       if($('.addform-errors').length>0){
