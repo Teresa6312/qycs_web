@@ -157,9 +157,9 @@
         <div class="w3-row">
             {% if package.packagesnapshot_set.all %}
                 <h5>{% trans 'Package Snapshot' %}:</h5>
-                {% for image in package.packagesnapshot_set.all %}
+                {% for snapshot in package.packagesnapshot_set.all %}
                     <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
-                      {% cloudinary image format="jpg" width=120 height=80 crop="fill" %}
+                      {% cloudinary snapshot.snapshot format="jpg" width=120 height=80 crop="fill" %}
                     </div>
                 {% endfor %}
             {% else %}

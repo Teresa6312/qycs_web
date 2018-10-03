@@ -35,7 +35,7 @@ class ColCreationForm(forms.ModelForm):
 									}))
 	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	collector_icon = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	collector_icon = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={"class":"w3-input w3-border"
 									}))
 	name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
