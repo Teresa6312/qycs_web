@@ -1,0 +1,14 @@
+{% load i18n static %}
+
+<div class="add_fields">
+  <div class="text-regular-bold">{{add.last_name}}, {{add.first_name}}
+     {% if col == user.default_address %}
+     - {% trans 'Default' %}
+     {% endif %}</div>
+  {% if add.phone%}
+      {{add.phone}}<br/>
+  {% endif %}
+  {{add.country}} | {{add.state}} | {{add.city}}<br/>
+  {{add.address}}{% if add.apt %} --{{add.apt}}{% endif %}<br/>
+  {{add.zipcode}}<br/>
+</div>

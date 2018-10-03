@@ -1,0 +1,32 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Global Shop' %}
+{% endblock%}
+
+
+
+{% block content %}
+<div id="shop-content" class="w3-row w3-center w3-text-white w3-mobile">
+    <div class="text-xxxlarge-bold w3-text-white">{% trans "Do you like to shop globally?" %}</div>
+    <div class="text-medium w3-panel">{% trans "Contact me now!" %}</div>
+    <div class="text-medium w3-panel">{% trans "And you can shop in Qycs Website later!" %}</div>
+    <div class="text-medium w3-panel">{% trans "DON'T miss our updates!" %}</div>
+
+    <button id="show-content" type="button" class="logo-blue">{% trans 'Click Me' %}</button>
+    <div id="help-content" style="display:none;">
+      <div class="w3-panel text-medium">*   {% trans 'Scan me, add me, ask me, and buy from me!' %}   *</div>
+      <img src="{% static 'image/qrcode.jpg' %}" height="200" class="w3-panel">
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#show-content").click(function(){
+        $('#help-content').show();
+        $('#help-content').hide().slideDown(500);
+    });
+});
+</script>
+{% endblock %}

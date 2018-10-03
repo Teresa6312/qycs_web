@@ -1,31 +1,6 @@
-<div class="w3-card-2 w3-round w3-half w3-container">
-  {% if user.userprofile.default_col.image %}
-      <div class="w3-half w3-right">
+{% load i18n static %}
 
-          <img src = "{{user.userprofile.default_col.image.url}}" style="width:100%">
-
-      </div>
-  {% endif %}
-
-    <div class="w3-rest">
-          <h4>
-              {{user.userprofile.default_col.name}}
-              {% if user.userprofile.default_col.store %}
-                  (Store)
-              {% else %}
-                  (Personal Place)
-              {% endif %}
-         </h4>
-          {{user.userprofile.default_col.address}}<br/>
-
-          {% if user.userprofile.default_col.apt %}
-              {{user.userprofile.default_col.apt}}
-          {% endif %}
-
-          {{user.userprofile.default_col.city}}, {{user.userprofile.default_col.state}} {{user.userprofile.default_col.zipcode}}<br/>
-          {{user.userprofile.default_col.country}}<br/>
-
-
-    </div>
-
+<div id="default_col_card" class="w3-border w3-round w3-container w3-mobile w3-half" style="width: 3500px;">
+  <input type="hidden" id="id_default_col" name="default_col" value="{{col.pk}}" />
+  {% include "blocks/col_card_fields.html" with col=col %}
 </div>

@@ -2,46 +2,52 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{% trans "Qycs's Collection Points" %}
 {% endblock%}
 
-{% block messages %}
-    {% if messages %}
-    <ul class="messagelist">{% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-    {% endfor %}</ul>
-    {% endif %}
-    {% if form.errors %}
-    <ul class="messagelist">
-        {% for message in form.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-{% endblock messages %}
 
 {% block content %}
-<div class="w3-cell w3-mobile">
-    <div class="w3-threequarter w3-container">
-        <h1> Our Collection Points: </h1>
 
-        create a drop dowm memu for cities states and countries which will impact the map
+<div class="w3-panel w3-mobile">
+    <div class="text-xxlarge-bold w3-panel">{% trans 'Our Collection Points' %}</div>
+    <div class="logo-text-blue"><i>{% trans 'if you cannot find any collection points in the map, you can use our direct shipping service.' %}</i><button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Direct shipping' %}</button></div>
 
-        <form method="post">
-        {% csrf_token %}
+</div>
 
-            {% include "blocks/sellect_collection_point.html" with col_list=col_list%}
-
-            <input type="submit" value="Add Package" />
-        </form>
-    </div>
+<div class="w3-container">
+  <div id="search_block"><input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}"></div>
+  <div calss="we-cell-row">
+    <Table class="w3-cell" id="CollectionPointID">
+      <tbody>
+        {% for col in col_list  %}
+        <tr id="{{col.pk}}">
+          <td>
+            <div class="w3-border w3-round w3-container w3-mobile w3-half" id="CollectionCart">
+              {% include "blocks/col_card_fields.html" with col=col no_icon='yes' %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </Table>
+    <div id="map" class="w3-cell w3-rest"></div>
+  </div>
 </div>
 
 
-<div class="w3-cell w3-container w3-mobile">
-    <div class="w3-quarter w3-red">
+<br/>
+{% endblock %}
 
-    </div>
-</div>
+{% block script%}
+
+<script>
+  let locations={{col_str_json|safe}}
+</script>
+<script src="{% static 'js/map.js' %}"></script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLyUK5D-laS8iQsSDWwOhehl-Gvhz8xfA&libraries=places&callback=initAutocomplete">
+</script>
+<!-- <script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
+</script> -->
 {% endblock %}

@@ -1,168 +1,171 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
 
-{% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
-{% endblock%}
-
-{% block messages %}
-    {% if messages %}
-    <ul class="messagelist">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if form.errors %}
-    <ul class="messagelist">
-        {% for message in form.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if webformset.errors %}
-    <ul class="messagelist">
-        {% for message in webformset.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if profileform.errors %}
-    <ul class="messagelist">
-        {% for message in profileform.errors%}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-{% endblock messages %}
-
-
-
-{% block content %}
-<div class="w3-container">
-	{% if user.is_authenticated %}
-			<h1>Page not found!</h1>
-	{% else %}
-			<br/><h2> Create My Qycs Account</h2>
-
-			<form method = "post">
-			{% csrf_token %}
-		  <!-- One "tab" for each step in the form: -->
-			  <div id = "userform" class="tab">
-						<div class = "w3-row w3-container">
-							Username: {{form.username}}
-							Password1: {{form.password1}}
-							Password2:{{form.password2}}
-							Country:{{profileform.country}}
-						</div>
-						<h4>In order to provide the best service to you and other customers, please enter 3 of your favorite websites below!</h4>
-						<div class='w3-row'>
-								{{ webformset.management_form }}
-								{% for subform in webformset%}
-								<div class='w3-third w3-container'>
-									Website Type:
-									{{subform.web_type}}
-								</div>
-								<div class='w3-rest w3-container'>
-									Website Name:
-									{{subform.web_name}}
-								</div>
-								{% endfor %}
-
-						</div>
-						<button> id = "nextform" Next</button>
-				</div>
-		  <div id ="profileform" class="tab w3-row">
-				<div class='w3-row'>
-					<div class='w3-half w3-container'>
-						First name(optional):{{form.first_name}}
-					</div>
-					<div class='w3-half w3-container'>
-						Last name(optional):{{form.last_name}}
-					</div>
-				</div>
-				<div class='w3-row'>
-				 	<div class='w3-half w3-container'>
-						Date of Birth(optional):<br/>{{profileform.birthday}}
-					</div>
-					<div class='w3-half w3-container'>
-						Language(optional):{{profileform.language}}
-					</div>
-				</div>
-				<div class='w3-row'>
-				 	<div class='w3-half w3-container'>
-						Email(optional):{{form.email}}
-					</div>
-					<div class='w3-half w3-container'>
-						Phone Number(optional):{{profileform.phone}}
-					</div>
-				</div>
-				<input type = "submit" value ="Register">
-        <button type="button" onclick="window.location.href = '{% url 'home'%}'" >Cancel</button>
-				<button type="submit" name="colregister" value="colregister" >Register as Collector</button>
-        <button type="button" class="cleanBtn">Clear Form</button>
-
-      </div>
-
-		</form>
-
-
-
-
-	{% endif %}
-{% block col_form%}{% endblock %}
-</div>
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}" />
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
 {% endblock %}
 
 
+{% block title%}
+{% trans 'Sign Up' %}
+{% endblock%}
 
-{% block script %}
-<script>
+{% block bodyclass %}{{ block.super }} login{% endblock %}
 
-function validateUserForm() {
-// This function deals with validation of the form fields
-var x, y, i, valid = true;
-x = document.getElementsByid("userform");
-y = x.getElementsByTagName("input");
-// A loop that checks every input field in the current tab:
-for (i = 0; i < y.length; i++) {
-	// If a field is empty...
-	if (y[i].value == "") {
-		// add an "invalid" class to the field:
-		y[i].className += " invalid";
-		// and set the current valid status to false
-		valid = false;
-	}
-	if (i==2){
-		if (y[i].value != y[i-1].value){
-			valid = false;
-			alert("Passwords are not match!");
-		}
-	}
-}
-return valid;
-}
+{% block usertools %}{% endblock %}
 
-$(document).ready(function(){
-		$("input").focus(function(){
-			$(this).val('');
-		});
-    $(".cleanBtn").click(function(){
-      $(this).closest('form').find("input[type=text], textarea").val("");
-    });
+{% block branding %}{% endblock %}
 
-		$("#nextform").click(function(){
-			// if(validateUserForm()){
-				$("#profileform").show();
-				$("#userform").hide();
-			// }
-		});
-	})
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+    <div class="w3-padding-32 w3-center">
+      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" class="large_image"/></a>
+    </div>
+
+    <div id="content-main" class="w3-container">
+        {% if user.is_authenticated %}
+          <p class="errornote">
+            {{user.username}},&nbsp;
+            {% blocktrans trimmed %}
+                you are not authorized to access this page. Would you like to create a new account?
+            {% endblocktrans %}
+          </p>
+        {% endif %}
+        {% if form.errors and not form.non_field_errors %}
+            <p class="errornote">
+                {% if form.errors.items|length == 1 %}
+                    {% trans "Please correct the error below." %}
+                {% else %}
+                    {% trans "Please correct the errors below." %}
+                {% endif %}
+            </p>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <p class="errornote">
+                {{ error }}
+            </p>
+            {% endfor %}
+        {% endif %}
+
+        <!-- <div class="socmed-login">
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
+            <i class="fa fa-google"></i>
+            <span>Sign Up with Google</span>
+            </a>
+            <br class="clear"/>
+        </div>
+        <div class="w3-center">OR</div> -->
+
+        <form id="regForm" method="post">
+            {% csrf_token %}
+            <div class="text-large">{% trans "Create My Qycs Account" %}</div>
+
+            <!-- One "tab" for each step in the form: -->
+            <div class="tab">
+              <div class="form-row">
+                {{ form.username.errors }}
+                {{ form.username.label_tag }} {{ form.username }}
+                <input type="hidden" name="next" value="{{ next }}" />
+              </div>
+              <div class="form-row">
+                {{ form.password1.errors }}
+                {{ form.password1.label_tag }} {{ form.password1 }}
+              </div>
+              {% if form.password1.help_text %}
+                  <div class="help">{{ form.new_password1.help_text|safe }}</div>
+              {% endif %}
+              <div class="form-row">
+                {{ form.password2.errors }}
+                {{ form.password2.label_tag }} {{ form.password2 }}
+              </div>
+              <div class="form-row">
+                {{ form.email.errors }}
+                {{ form.email.label_tag }} {{ form.email }}
+              </div>
+              <div class="form-row">
+                {{ form.country.errors }}
+                {{ form.country.label_tag }} {{ form.country }}
+              </div>
+            </div>
+            <div class="tab">
+              <div class="form-row">
+                {{ form.first_name.errors }}
+                {{ form.first_name.label_tag }} {{ form.first_name }}
+              </div>
+              <div class="form-row">
+                {{ form.last_name.errors }}
+                {{ form.last_name.label_tag }} {{ form.last_name }}
+              </div>
+              <div class="form-row">
+                {{ form.birthday.errors }}
+                {{ form.birthday.label_tag }}
+                <div class="w3-row">{{ form.birthday }}</div>
+              </div>
+              <div class="form-row">
+                {{ form.phone.errors }}
+                {{ form.phone.label_tag }} {{ form.phone }}
+              </div>
+            </div>
+            <div class="tab WebFormSet">
+              <p class="w3-text-blue">
+                {% blocktrans %}
+                    In order to provide the best service to you and other customers,
+                    please enter 3 of your favorite shopping websites below!
+                {% endblocktrans %}
+              </p>
+              {{ webformset.management_form }}
+              {% for subform in webformset%}
+                  <div class="form-row w3-row">
+                    <div class="w3-third">
+                      {{ subform.web_type.errors }}
+                      {{ subform.web_type.label_tag }}
+                      {{ subform.web_type }}
+                    </div>
+                    <div class="w3-rest">
+                      {{ subform.web_name.errors }}
+                      {{ subform.web_name.label_tag }} {{ subform.web_name }}
+                    </div>
+                  </div>
+              {% endfor %}
+              <div class="text-regular-bold">{% trans 'Terms and Conditions' %}</div>
+                  <div class="text-small">
+                      {{form.privacy_policy_agree}}
+                      {% blocktrans %}
+                          I have read, understood and agreed to be bound by myqycs.com Terms of Use. I also understood how MYQYCS intends to use my information.
+                      {% endblocktrans %}
+                      <a href="{% url 'information' 'policy'%}">{% trans 'Privacy Policy' %}</a>
+                </div>
+            </div>
 
 
-</script>
+            <div class="w3-row w3-center">
+                <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
+                <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
+                <span id="submit_block">
+                  <button class="logo-blue" type = "submit" name="register" value ="Register">{% trans "Register" %}</button>
+                  <button class="logo-red" type="submit" name="colregister" value="colregister">{% trans "Register as Collector" %}</button>
+                </span>
+            </div>
+
+            <!-- Circles which indicates the steps of the form: -->
+            <div class="w3-panel" style="text-align:center;">
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+            </div>
+
+
+        </form>
+    </div>
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock%}

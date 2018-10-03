@@ -1,0 +1,58 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Customer Service' %}
+{% endblock%}
+{% block coltype %}tracking_page{% endblock %}
+{% block content %}
+<div class="w3-center w3-padding-32 w3-margin-top" style="height:200px;" id="customer_service_block">
+
+<img src="{% static 'image/logo_circle_big.png' %}" alt="logo" style="width:200px; margin:auto;"/>
+<div class="text-regular-bold w3-text-white w3-padding-16">{% trans 'Express - Modern Transport & Logistics' %}</div>
+
+</div>
+<div class="w3-panel content_center">
+<table id="customer_service_table">
+  <tr class="w3-row">
+    <th class="w3-quarter">
+      <img src="{% static 'image/global-shop.png' %}" alt="global shop"/>
+    <a href="{% url 'shopping' %}">  <div class="text-regular-bold w3-text-black">{% trans 'Global Shop' %}</div></a>
+    </th>
+    <th class="w3-quarter">
+      <img src="{% static 'image/collection-points.png' %}" alt="collection points" />
+    <a href="{% url 'information' 'collection_points' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Collection Points' %}</div></a>
+    </th>
+    <th class="w3-quarter">
+      <img src="{% static 'image/shipping.png' %}" alt="shipping" />
+      <a href="{% url 'information' 'coshipping_guide' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Co-Shipping' %}</div></a>
+    </th>
+    <th class="w3-quarter">
+      <img src="{% static 'image/users-collectors.png' %}" alt="users-collectors"/>
+      <a href="{% url 'information' 'use_guide' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Users and Collectors' %}</div></a>
+    </th>
+  </tr>
+  <tr class="w3-row">
+    <th class="w3-quarter">
+      <img src="{% static 'image/reward-points.png' %}" alt="reward points" />
+        <a href="{% url 'information' 'reward_points' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Reward Points' %}</div></a>
+    </th>
+    <th class="w3-quarter">
+      <img src="{% static 'image/return-policy.png' %}" alt="return policy" />
+      <a href="{% url 'information' 'return_policy' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Return Policy' %}</div></a>
+    </th>
+    <th class="w3-quarter">
+      <img src="{% static 'image/contact-us.png' %}" alt="contact us"/>
+      <a href="{% url 'information' 'contact' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'Contact Us' %}</div></a>
+    </th>
+    <th class="w3-quarter">
+      <img src="{% static 'image/faqs.png' %}" alt="FAQs"/>
+      <a href="{% url 'information' 'faqs' %}">   <div class="text-regular-bold  w3-text-black">{% trans 'FAQs' %}</div></a>
+    </th>
+  </tr>
+</table>
+
+
+
+</div>
+{% endblock %}

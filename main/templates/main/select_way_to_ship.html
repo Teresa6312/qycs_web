@@ -1,0 +1,33 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Shipping ways' %}
+{% endblock%}
+
+{% block content %}
+    <div class="w3-panel">
+      <div class="w3-twothird w3-center w3-padding-small ">
+          <div class="text-xxxlarge-bold">
+            <div>{% trans '99% ON TIME' %}</div>
+            <div>{% trans '99.99% SAFETY' %}</div>
+            <div>{% trans 'INSTANT CONSOLIDATION' %}</div>
+          </div>
+          <img class="w3-padding-16" alt="shipping icons" src="{% static 'image/shipping_icons.png' %}" style="height:100px;"><br/>
+          <div class="text-xlarge-bold w3-text-blue"><i>{% trans 'OUR HEART NEVER ENDS' %}</i></div>
+          <div class="w3-padding-16 w3-margin-top">
+              <button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Direct shipping' %}</button>
+              <button class="logo-red" type="button"  onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Co-shipping' %}</button>
+              <button class="logo-blue" type="button"  onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Help me choose' %}</button>
+          </div>
+      </div>
+      <div class="w3-third circle">
+          <div id="shipping_full_circle" class="w3-right">
+            <a href="javascript:history.back()">
+              {% trans 'SHIPPING' %}&emsp;<i class="fa fa-angle-double-right"></i>
+            </a>
+          </div>
+      </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load i18n static %}
+<!-- id-{{element}}-modal start here -->
+<div id="id-{{element}}-modal" class="w3-modal">
+  <div class="w3-modal-content" style="width:50%;">
+    <div class="w3-container">
+        <button type="button" class="w3-right close-modal">&times;</button>
+        <div class="w3-center text-medium w3-padding-small">{{title}}</div>
+        <hr/>
+    </div>
+    <div id="id-{{element}}-content" class="modal-content" style="overflow:auto;max-height:95%;">
+        {% if block == 'wechat_qrcode_block' %}
+            {% include "blocks/wechat_qrcode_block.html"%}
+        {% elif block == 'email_block'%}
+            {% include "blocks/email_block.html"%}
+        {% elif block == 'select_address_block'%}
+            {% include "blocks/select_address_block.html"%}
+        {% elif block == 'new_address_block'%}
+        <!-- error messages -->
+              {% if addform.errors %}
+              <div class="messagelist">
+                  {% for field in addform%}
+                  {% if field.errors%}
+                      <div class="w3-row w3-container addform-errors"><div class="w3-quarter">{{ field.label_tag }}</div> <div class="w3-rest">{{field.errors}}</div></div>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+              {% endif %}
+
+        {% endif %}
+    </div>
+  </div>
+</div>
+<!-- id-{{element}}-modal end here -->

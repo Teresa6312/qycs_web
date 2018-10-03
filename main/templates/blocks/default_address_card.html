@@ -1,24 +1,10 @@
-<div id="default_address_card" class="w3-card-2 w3-round w3-container w3-mobile" style="width:400px">
+{% load i18n static %}
 
-<input type="hidden" name="selected_add" value="{{add.id}}" />
+<div id="default_address_card" class="w3-border w3-round w3-container w3-mobile" style="max-width: 300px;">
 
-<h5 id="ln_fn">{{add.last_name}}, {{add.first_name}}</h5>
-<div id="ph_em">
-{% if add.phone and add.email%}
-    {{add.phone}} | {{add.email}}
-{% elif add.phone or add.email%}
-    {{add.phone}}{{add.email}}
-{% endif %}
-</div>
-<div  id="ad">
-{{add.address}}
-</div>
-<div  id="ap">
-{% if add.apt %}
-    {{add.apt}}<br/>
-{% endif %}
-</div>
-
-<div id="ct_st_zp">{{add.city}}, {{add.state}} {{add.zipcode}}</div>
+    {% if add_field_name %}<input type="hidden" id="id_{{add_field_name}}" name="{{add_field_name}}" value="{{add.pk}}" />{% endif %}
+    <div id="default_address_card_fields">
+        {% include "blocks/address_card_fields.html"%}
+    </div>
 
 </div>

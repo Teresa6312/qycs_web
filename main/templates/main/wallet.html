@@ -2,58 +2,21 @@
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{{user.username}}{% trans "'s Wallet" %}
 {% endblock%}
 
-{% block account_content %}
-	<div class="w3-cell w3-container w3-mobile">
-		<div class="w3-threequarter">
-		{% if messages %}
-			<ul class="messages">
-			    {% for message in messages %}
-			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-			    {% endfor %}
-			</ul>
-		{% endif%}
+{% block content %}
+<div class="content_center">
+  <br>
+<h2><img src="{% static 'image/reward-points.png' %}" alt="reward_points" height="50px" width="50px"/>{% trans " Reward Points" %}: {{user.reward}}</h2>
 
+<br>
+<br>
+<br>
 
+  <p>You begin getting points for qualifying shipping and shopping as soon as you sign up as Qycs users.
+    <br>Your Qycs reward points become usable 15 days from payment completed (except the first three months from openning).</p>
+    <p><i>If you want to know more about our reward points, please visit our FAQs or contact our customer service.</i></p>
 
-		{% if cards %}
-			<h3>Cards:</h3>
-			<ul>
-				{% for c in cards %}
-				    <li>{{ c }}</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-
-		{% if alipays %}
-			<h3>Alipay:</h3>
-			<ul>
-				{% for ap in alipays %}
-				    <li>{{ ap }}</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-
-		{% if wechats %}
-			<h3>WeChat:</h3>
-			<ul>
-			{% for wc in wechats %}
-			    <li>{{ wc }}</li>
-			{% endfor %}
-			</ul>
-		{% endif %}
-
-		{% if paypals %}
-			<h3>Paypal:</h3>
-			<ul>
-			{% for pp in paypals %}
-			    <li>{{ pp }}</li>
-			{% endfor %}
-			</ul>
-		{% endif %}
-	</div>
-	</div>
-
+</div>
 {% endblock %}

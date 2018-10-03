@@ -1,0 +1,101 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+
+{% block title%}
+{% trans 'Tracking' %}
+{% endblock%}
+
+
+{% block messages %}
+{% endblock messages %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/timeline.css'%}"/>
+<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600,700' rel='stylesheet' type='text/css'>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="text-xxlarge-bold content_center">
+  {% trans 'Tracked' %}
+</div>
+
+<div id="message_block">
+  {% if messages %}
+  <ul class="messagelist">{% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+  {% endfor %}</ul>
+  {% endif %}
+</div>
+
+<hr/>
+<div class="content_center">
+      {% for package in packages %}
+      <div class="text-medium-bold logo-red w3-text-white">&emsp;{{package.cust_tracking_num}}({{package.get_cust_carrier_display}})</div>
+      <div class="w3-panel">
+        <ul class="timeline">
+          <li class="li {% if package.created_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.created_date %}{{package.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Package Marked' %}</h4>
+            </div>
+          </li>
+          <li class="li {% if package.wh_received_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.wh_received_date %}{{package.wh_received_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Warehouse Received' %}</h4>
+            </div>
+          </li>
+
+          <li class="li {% if package.ready_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Ready to Pay' %}</h4>
+            </div>
+          </li>
+
+          <li class="li {% if package.paid_amount and package.order_set.created_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Paid' %}</h4>
+            </div>
+          </li>
+          <li class="li {% if package.parent_package.shipped_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.parent_package.shipped_date %}{{package.parent_package.shipped_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'Shipped' %}</h4>
+            </div>
+          </li>
+          <li class="li {% if package.delieved_date %}complete{% endif %}">
+            <div class="timestamp">
+              <span class="date">{% if package.delieved_date %}{{package.delieved_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+            </div>
+            <div class="status">
+              <h4>{% trans 'delivered' %}</h4>
+            </div>
+          </li>
+         </ul>
+         <button type="button" class="w3-right logo-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'view more detail' %}</button>
+      </div>
+      {% endfor %}
+</div>
+<script>
+    var completes = document.querySelectorAll(".complete");
+    function toggleComplete(){
+     var lastComplete = completes[completes.length - 1];
+     lastComplete.classList.toggle('complete');
+    }
+</script>
+
+{% endblock %}

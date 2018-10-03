@@ -4,249 +4,192 @@
 
 
 {% block title%}
-    Update Profile | Qycs Global Shipping Inc. | English Official Website
+    {% trans 'Add Package' %}
 {% endblock%}
 
-
 {% block messages %}
-    {% if messages %}
-    <ul class="messagelist">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if receiverform.errors %}
-    <ul class="messagelist">
-        {% for message in receiverform.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if addform.errors %}
-    <ul class="messagelist">
-        {% for message in addform.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if form.errors %}
-    <ul class="messagelist">
-        {% for message in form.errors%}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if itemset.errors %}
-    <ul class="messagelist">
-        {% for message in itemset.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if imageset.errors %}
-    <ul class="messagelist">
-        {% for message in imageset.errors %}
-        <li class="error" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
 {% endblock messages %}
 
 
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
+{% endblock %}
+
 
 {% block content %}
-<div class="w3-cell w3-container w3-mobile" style="width:70%">
-    <div class="w3-card-2 w3-round w3-container">
-          <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                {% block shippingset %} {% endblock%}
 
-                <div class="w3-container">
-                    <h2>Add Package:</h2>
-                        <h4>From China:</h4>
-                        <div class="w3-row">
-                            <div class="w3-half w3-container">
-                                Mailing Carriers: {{ form.cust_carrier }}
-                            </div>
-                            <div class="w3-half w3-container">
-                                Tracking Number: {{form.cust_tracking_num}}
-                            </div>
-                        </div>
-                        <div class="w3-container">
-                        Package Note:<br/>{{ form.memo }}
 
-                    {{form.low_volume_request}} Minimize your package&#39;s volume<br/>
-                    {{form.no_rush_request}} No Rush Shipping (Double Points)
+<div class="w3-cell-row w3-mobile content_center">
+  {% if form.ship_carrier %}
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Direct Shipping' %}</div>
+  {% else %}
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Co-shipping' %}</div>
+  {% endif %}
+
+
+  <div id="message_block">
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
+
+    {% if form.errors or receiverform.errors or itemset.errors %}
+        <p class="errornote">
+        {% trans "Please correct the error(s) below." %}
+        </p>
+    {% endif %}
+  </div>
+
+</div>
+
+
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="tab">
+        <div class="w3-col-row w3-mobile">
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_left">
+                      <div class="text-medium">{% trans 'Ship to' %}</div>
                     </div>
-                </div>
+                    <hr/>
+                    <div class="w3-container w3-mobile content_left">
+                          {% if form.ship_carrier %}
+                            <div class="w3-row">
 
-                <div class="centerBtn w3-panel">
-                  <button type="button" id="add_snapshot_btn">Add Snapshot</button> &emsp;Or&emsp;
-                  <button id="add_item_btn" >Add Items Detail</button>
-                </div>
+                                {{ form.ship_carrier.label_tag }}{{ form.ship_carrier.errors }}{{ form.ship_carrier }}
+                            </div>
+                            <div class="w3-row">
+                                {{ form.no_rush_request.errors }}
+                                {{ form.no_rush_request }}&emsp;{% trans 'No Rush Shipping (Double Points)' %}
+                            </div>
+                          {% endif %}
+                          <div class="w3-row">
+                                {{ form.low_volume_request.errors }}
+                                {{ form.low_volume_request }}&emsp;{% trans "Minimize this package's volume" %}
+                          </div>
+                          {% block shippingset %} {% endblock%}
+                    </div>
+              </div>
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_right">
+                      <div class="text-medium">{% trans 'Ship from' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-container w3-mobile content_right">
+                        <div class="w3-row">
+                          {{ form.wh_received.label_tag }} {{ form.wh_received.errors }} {{ form.wh_received }}
+                        </div>
+                        <div class="w3-row">
+                          {{ form.cust_carrier.label_tag }}  {{ form.cust_carrier.errors }} {{ form.cust_carrier }}
+                        </div>
+                        <div class="w3-row">
+                          {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num.errors }} {{ form.cust_tracking_num }}
+                        </div>
 
+                        <div class="w3-row">
+                          {{ form.memo.label_tag }} {{ form.memo.errors }} {{ form.memo }}
+                        </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+      <div class="tab">
+          <div class="content_center">
+              <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
+          </div>
+          <hr/>
+          <div class="content_center" id="item_information_block">
 
-                <div id = "add_item_form" class="w3-container">
-                    <h3>Add details of each item in the package:</h3>
+              <div class="w3-panel w3-container" id="add_snapshot_form">
+                    <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
+                    <input name="image" class="w3-input w3-border" id="id_image" type="file" multiple="">
+              </div>
+              <div class="w3-panel w3-center text-medium-bold">{% trans 'OR' %}</div>
+              <div id = "add_item_form" class="w3-container" style="margin:auto;">
+                  <div class="text-medium">{% trans 'Add details of each item in the package' %}</div>
+                  <hr/>
+                  {{ itemset.management_form }}
+                  {% if itemset.forms %}
+                      {% for subform in itemset.forms %}
+                          <table style="width:95%; margin:auto;" id="item_table">
+                                    <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">0</span></th>
+                                      <td class="w3-cell w3-rest">
+                                          <div class="w3-container">
+                                            {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
+                                          </div>
+                                          <div class="w3-col-row">
+                                              <div class="w3-col w3-container" style="width:100px;">
+                                                {{ subform.item_quantity.label_tag }} {{ subform.item_quantity.errors }} {{ subform.item_quantity }}
+                                              </div>
+                                              <div class="w3-third w3-container">
+                                                {{ subform.item_detail.label_tag }} {{ subform.item_detail.errors }} {{ subform.item_detail }}
+                                              </div>
+                                              <div class="w3-rest w3-container">
+                                                {{ subform.item_url.label_tag }} {{ subform.item_url.errors }} {{ subform.item_url }}
+                                              </div>
+                                          </div>
+                                          <div class="w3-container">
+                                            {{ subform.low_volume_request.errors }}
+                                            {{ subform.low_volume_request }}{% trans "Minimize this item's volume" %}
+                                          </div>
+                                          <div class="w3-container">
+                                            {{ subform.memo.label_tag }}{{ subform.memo.errors }}{{subform.memo}}
+                                          </div>
+                                      </td>
+                                  </tr>
+                          </table>
+                      {% endfor %}
+                  {% endif %}
+          </div>
 
-                    {{ itemset.management_form }}
+        </div>
 
-                    {% if itemset.forms %}
-                        {% for subform in itemset.forms %}
-                            <table  style="width:90%">
-                                    <tr class="{% cycle 'row1' 'row2' %} itemset_row">
-
-
-                                        <td class="content-background-color">
-                                            <div class="w3-container">
-                                                Item Name: {{subform.item_name}}
-                                            </div>
-                                            <div class="w3-row">
-                                                <div class="w3-half w3-container">
-                                                    Item Detail: {{subform.item_detail}}
-                                                </div>
-                                                <div class="w3-half w3-container">
-                                                    Quantity: {{subform.item_quantity}}
-                                                </div>
-                                            </div>
-                                            <div class="w3-container">
-                                                Item URL:{{subform.item_url}}
-                                            </div>
-                                            <div class="w3-container">
-                                                {{subform.low_volume_request}} Minimize this item&#39;s volume
-                                            </div>
-                                            <div class="w3-container">
-                                                Note:<br/> {{subform.memo}}
-                                            </div>
-                                        </td>
-
-                                    </tr>
-
-
-                            </table>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-                <button class="cancelBtn" type="button">Back to Collection Points</button>
-
-                <input type="submit" value="Save and add new package" />
-
-                <button>Save</button>
-                <button class="cleanBtn">Clear Form</button>
-            </form>
     </div>
-</div>
+    <div class="w3-row content_center">
+      <div class="w3-center">
 
+        <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
+        <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
+        <span id="submit_block">
+          <input class="logo-blue" type="submit" name="next" value="{% trans 'Save and add new package' %}" />
+          <input class="logo-red" type="submit" name="finish" value="{% trans 'Submit' %}"/>
+        </span>
+      </div>
+    </div>
+
+</form>
+
+<script src="{% static 'js/packageset.js' %}"></script>
 {% endblock %}
 
-{% block sidebar %}
-<div class="w3-container w3-cell w3-mobile" style="width:400px">
-    <div class="w3-card-2 w3-round w3-container aside-bar-background-color">
-        <h3>Packages</h3>
-            {% if package_list %}
-                {% for package in package_list %}
-                <div class="w3-panel">
-                    <h4>{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
-                    {% if package.co_shipping %}
-                        {{package.receiver}}<br/>
-                        {{package.ship_to_col}}
-                    {% elif not package.co_shipping %}
-                        {{package.ship_to_add}}
-                    {% endif %}
-                </div>
-                {% endfor %}
-            {% else %}
-                <p>No package.</p>
-            {% endif %}
-    </div>
-</div>
-{% endblock %}
+
 
 
 {% block script%}
-
-
 <script src="{% static 'js/jquery.formset.js' %}"></script>
-
-<script type="text/javascript">
-
-function AddSnapshotBlock(imageSet){
-  let content =
-    '<div class="w3-container" id = "add_snapshot_form">'+
-    "<h3>Add Order Snapshot of the Package:</h3>"+
-    imageSet+
-    "How to display the images'names after selected the images!"+
-    '</div>';
-
-    if($('#add_snapshot_form').length==0){
-      $('#add_item_form').before(content);
-      $('#add_snapshot_form').hide().slideDown(500);
-      $('#add_snapshot_btn').text("Delete Snapshot");
-    }//end if #add_snapshot_form exists
-    else{
-
-      $('#add_snapshot_form').slideUp(500, function(){
-        $('#add_snapshot_form').remove();
+<script>
+$(document).ready(function(){
+  $('.itemset_row').formset({
+    addText: 'add Item',
+    deleteText: 'remove',
+    prefix: 'item_set'
+  });
+  $("#follow_user_infor").click(function(){
+       $('#id_first_name').val('{{user.first_name}}');
+			 $('#id_last_name').val('{{user.last_name}}');
+			 $('#id_phone').val('{{user.phone}}');
+  });
+	$("#use_last_infor").click(function(){
+			 $('#id_first_name').val('{{user.service_set.first.receiver.first_name}}');
+			 $('#id_last_name').val('{{user.service_set.first.receiver.last_name}}');
+			 $('#id_phone').val('{{user.service_set.first.receiver.phone}}');
+	});
+  	$(".add-row").click(function(){
+      $('table').find('.item_num').each(function(){
+        $(this).text($(this).parents('tr').find('.item_name').prop('id').split('-')[1]);
       });
-
-      $('#add_snapshot_btn').text("Add Snapshot");
-    }//end of DOES NOT #add_snapshot_form exists
-
-}//end of AddSnapshotBlock
-
-  $(document).ready(function(){
-    $('.imageset_row').formset({
-        addText: 'add Image',
-        deleteText: 'remove',
-        prefix: 'packageimage_set'
     });
-
-    $('.itemset_row').formset({
-        addText: 'add Item',
-        deleteText: 'remove',
-        prefix: 'item_set'
-    });
-
-    $("#add_snapshot_btn").click(function(){
-        AddSnapshotBlock('{{imageset}}');
-    });//end of click event
-
-    $("#add_item_btn").click(function(){
-        $("#add_item_form").show();
-        $('#add_item_form').hide().slideDown(500);
-    });
-
-    $(".cancelBtn").click(function(){
-        window.location="{% url 'collection_points' %}";
-    });
-
-    $(".cleanBtn").click(function(){
-      $(this).closest('form').find("input[type=text], textarea").val("");
-    });
-
-
-
-    // $("#col_change_btn").click(function(){
-    //      window.location="{% url 'collection_points' %}";
-    //
-    // });
-    // $("#change_col_btn").click(function(){
-    //      $("#collection_points_list").show();
-    //      $("#change_col_btn").remove();
-    //      $("#default_col_card").remove();
-    //
-    // });
-
-  })//end of ready
+});
 </script>
-
-
-
 {% endblock%}

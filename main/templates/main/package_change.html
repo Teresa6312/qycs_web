@@ -1,0 +1,39 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans "Change Package" %}
+{% endblock%}
+
+
+{% block messages %}
+{% endblock messages %}
+
+{% block content %}
+
+<div class="w3-cell-row w3-mobile content_center">
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Change Package' %}</div>
+
+
+  <div id="message_block">
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
+
+    {% if form.errors or receiverform.errors or itemset.errors %}
+        <p class="errornote">
+        {% trans "Please correct the error(s) below." %}
+        </p>
+    {% endif %}
+  </div>
+
+</div>
+
+
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+</form>
+{% endblock %}

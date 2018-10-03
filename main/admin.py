@@ -1,65 +1,71 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
-from .models import *
+from django.contrib.auth.admin import UserAdmin
+
+from .forms import NewUserCreationForm, NewUserChangeForm
+from .models import (
+	User, Employee, Address, CollectionPoint, Service,
+	Warehouse, PackageSnapshot, ParentPackage, Item,
+	Coupon, FavoriteWebsite, Resource, PriceRate
+)
 from django.utils.html import mark_safe
 
 
 
-admin.site.unregister(User)
+# admin.site.unregister(User)
+
 
 class EmployeeInline(admin.StackedInline):
 	model = Employee
 	can_delete = False
-	verbose_name_plural = 'employee'
 
 class AddressInline(admin.StackedInline):
 	model = Address
+	can_delete = False
 	extra = 1
 	can_delete = False
-	fields = ['first_name', 'last_name','email', 'location_name', 'phone', 'address', 'city', 'state','country', 'zipcode','memo', ]
+	fields = ['first_name', 'last_name', 'phone', 'address', 'city', 'state','country', 'zipcode','memo', ]
 	verbose_name_plural = 'address list'
 
-class UserProfileInline(admin.StackedInline):
-	model = UserProfile
-	can_delete = False
-	verbose_name_plural = 'other information'
 
 # Define a new User admin
-class UserAdmin(BaseUserAdmin):
-	inlines = (EmployeeInline, UserProfileInline, AddressInline, )
-	search_fields = ['username', 'first_name', 'last_name']
+class NewUserAdmin(UserAdmin):
+	model = User
+	add_form = NewUserCreationForm
+	form = NewUserChangeForm
 
-
-
-# Re-register UserAdmin
-admin.site.register(User, UserAdmin,)
-
-
-
-
-
-
-class UserProfileAdmin(admin.ModelAdmin):
-	list_display = ('pk', 'user', 'bound_email', 'phone', 'country', 'reward', )
+	inlines = (EmployeeInline, AddressInline, )
 	list_filter = ['country']
+	list_display = ['username', 'first_name', 'last_name','email','email_confirmed', 'phone', 'country', 'reward']
+	search_fields = ['username','first_name', 'last_name', 'email', 'phone']
+
+	fieldsets = [
+		(None, 		{'fields': ('username', 'password')}),
+		('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phone', 'country', 'language', 'default_address', 'default_col', 'reward',)}),
+		('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+		('Important dates', {'fields': ('last_login', 'date_joined')}),
+	]
 
 
-admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(User, NewUserAdmin)
 
 
-
+# class PaymentAdmin(admin.ModelAdmin):
+# 	list_display = ['transaction_id', 'pay_date', 'coupon','deposit','amount', 'currency',]
+#
+# admin.site.register(Payment, PaymentAdmin)
 
 
 
 class AddressAdmin(admin.ModelAdmin):
-	list_display = ('id','follow_user_infor', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
-	list_filter = ['follow_user_infor', 'country', 'state','city']
+	list_display = ('id', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
+	list_editable = ('first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
+	list_filter = ['country', 'state','city']
 	search_fields = ['first_name', 'last_name', ]
 
 	fieldsets = [
-		('User', 				{'fields': ['user','follow_user_infor']}),
-		('Address',               {'fields': ['first_name', 'last_name','email', 'phone', 'address', 'city', 'state','country', 'zipcode','memo', 'location_name']}),
+		('User', 				{'fields': ['user',]}),
+		('Address',             {'fields': ['first_name', 'last_name', 'phone', 'address', 'city', 'state','country', 'zipcode']}),
+		('Memo', 				{'fields': ['memo',]}),
 	]
 
 admin.site.register(Address, AddressAdmin,)
@@ -67,39 +73,52 @@ admin.site.register(Address, AddressAdmin,)
 
 
 
-
-class CoReceiverAdmin(admin.ModelAdmin):
-	list_display = ('id', 'user', 'first_name', 'last_name', 'phone')
-	search_fields = ['first_name', 'last_name','phone']
-
-
-admin.site.register(CoReceiver, CoReceiverAdmin)
-
-
-
-
-
-
 class CollectionPointAdmin(admin.ModelAdmin):
-	list_display = ('collector', 'name', 'address', 'city', 'state','country', 'zipcode', 'status')
-	list_filter = ['country', 'state','city', 'status', 'store']
+	list_display = ('collector', 'name', 'address', 'city', 'state','country', 'zipcode', "status", 'absent_start', 'absent_end')
+	list_filter = ['country', 'state','city', "status", 'store']
 	search_fields = ['name']
-	readonly_fields = [ "collector_image"]
+	readonly_fields = [ "collector_icon_display", "license_image_display", "id_image_display", "status_all_display"]
 
-	def collector_image(self, obj):
-		return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-			url = obj.location_image.url,
-			width=obj.location_image.width,
-			height=obj.location_image.height,
+	def collector_icon_display(self, obj):
+		return mark_safe('<img src="{url}" width="500px"/>'.format(
+			url = obj.collector_icon.url,
+			width=obj.collector_icon.width,
+			height=obj.collector_icon.height,
 			)
 		)
+	def license_image_display(self, obj):
+		return mark_safe('<img src="{url}" width="500px"/>'.format(
+			url = obj.license_image.url,
+			width=obj.license_image.width,
+			height=obj.license_image.height,
+			)
+		)
+	def id_image_display(self, obj):
+		return mark_safe('<img src="{url}" width="500px"/>'.format(
+			url = obj.id_image.url,
+			width=obj.id_image.width,
+			height=obj.id_image.height,
+			)
+		)
+	def status_all_display(self, obj):
+		return obj.status_all()
 
-	fieldsets = [
-		('Collector', 				{'fields': ['collector', 'store', 'status']}),
-		('Address',               	{'fields': ['address', 'city', 'state','country', 'zipcode','memo','name']}),
-		('License',					{'fields': ['license', 'license_type']}),
-		('Image',					{'fields': ['location_image', 'collector_image']}),
-	]
+	fieldsets = (
+	('Collector', 				{'fields': ['collector', 'status',"status_all_display",]}),
+	('location',               	{'fields': ['name','collector_icon', 'collector_icon_display', 'store', 'store_name', 'address', 'city', 'state','country', 'zipcode','memo',]}),
+	('License',					{'fields': ['license_image', 'license_image_display', 'id_image','id_image_display',]}),
+	('Document',				{'fields': ['wechat', 'wechat_qrcode', 'referrer', 'apply_reason', 'info_source',]}),
+	('Package',                 {'fields': ['food', 'regular', 'beauty',]}),
+	('Schedule',                {'fields': ['absent_start', 'absent_end',
+											'mon_start', 'mon_end',
+											'tue_start', 'tue_end',
+											'wed_start', 'wed_end',
+											'thu_start', 'thu_end',
+											'fri_start', 'fri_end',
+											'sat_start', 'sat_end',
+											'sun_start', 'sun_end',]}),
+
+	)
 
 
 admin.site.register(CollectionPoint, CollectionPointAdmin)
@@ -108,12 +127,12 @@ admin.site.register(CollectionPoint, CollectionPointAdmin)
 
 
 
-
+# how to add search for user
 class CouponAdmin(admin.ModelAdmin):
 	list_display = ('code','discount', 'user', 'package','order', 'one_time_only', 'used_times')
 	list_filter = ['package', 'order', 'one_time_only']
 	search_fields = ['code']
-	# how to add search for user
+
 
 	fieldsets = [
 		('Coupon', 				{'fields': ['code', 'discount', 'start_date', 'end_date', 'memo']}),
@@ -128,33 +147,35 @@ admin.site.register(Coupon, CouponAdmin,)
 
 class ServiceInline(admin.TabularInline):
 	model = Service
-	fields = ('id', 'user', 'receiver',)
-	verbose_name_plural = "Packages/Orders"
-	extra = 1
+	fields = ('id', 'user', 'receiver', 'ship_to_add', 'ship_to_col')
+	can_delete = False
 
 class ParentPackageAdmin(admin.ModelAdmin):
 	inlines = (ServiceInline,)
 	list_display = ('created_date','packed_date', 'shipped_date', 'tracking_num')
 	list_filter = ['created_date', 'packed_date', 'shipped_date']
+	readonly_fields = [ "ship_to", ]
+
+	def ship_to(self, obj):
+		if obj.sevice_set.first().ship_to_add:
+			return obj.sevice_set.first().ship_to_add
+		elif obj.sevice_set.first().ship_to_col:
+			return obj.sevice_set.first().ship_to_col
+		elif obj.sevice_set.first().ship_to_wh:
+			return obj.sevice_set.first().ship_to_wh
+		else:
+			return None
+
+
 	fieldsets = [
 		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'memo']}),
-		('Shipment',               	{'fields': ['shipped_date', 'tracking_num', 'carrier','received_date', 'status']}),  # how to add the ship to infor from service
-		('Shipped to Warehouse',    {'fields': ['emp_split'], 'classes': ['collapse']}),
-		('Accident', {'fields': ['issue']}),
+		('Shipment',               	{'fields': ['ship_to', 'shipped_date', 'tracking_num', 'carrier','received_date']}),
+		('Shipped to Warehouse from Warehouse',    {'fields': ['emp_split'], 'classes': ['collapse']}),
+		('Issue',                   {'fields': ['issue']}),
 	]
 
-# How to add the service fields here
+
 admin.site.register(ParentPackage, ParentPackageAdmin,)
-
-
-
-
-
-admin.site.register(Card)
-
-admin.site.register(OtherPayMethod)
-
-
 
 
 
@@ -165,9 +186,9 @@ class WarehouseAdmin(admin.ModelAdmin):
 
 
 	fieldsets = [
-		('Name', 				{'fields': ['name', 'status']}),
+		('Name', 				  {'fields': ['name', 'status']}),
 		('Address',               {'fields': ['address', 'city', 'state','country', 'zipcode']}),
-		('Memo', {'fields': ['memo']}),
+		('Memo',                  {'fields': ['memo']}),
 	]
 
 
@@ -178,67 +199,63 @@ admin.site.register(Warehouse, WarehouseAdmin,)
 
 class ItemInline(admin.StackedInline):
 	model = Item
+	can_delete = False
+
+
+class PackageSnapshotInline(admin.StackedInline):
+	model = PackageSnapshot
 	extra = 1
+	readonly_fields = [ "snapshot_display"]
+	fields = ('snapshot','snapshot_display', )
+	can_delete = False
 
-
-
-
-class PackageImageInline(admin.StackedInline):
-	model = PackageImage
-	extra = 1
-	readonly_fields = [ "package_image"]
-	fields = ('image', 'package_image', )
-
-	def package_image(self, obj):
-		return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-			url = obj.image.url,
-			width=obj.image.width,
-			height=obj.image.height,
+	def snapshot_display(self, obj):
+		return mark_safe('<img src="{url}" width="500px" />'.format(
+			url = obj.snapshot.url,
+			width=obj.snapshot.width,
+			height=obj.snapshot.height,
 			)
 		)
 
 
+
 class ServiceAdmin(admin.ModelAdmin):
-
-
-	# Check this if it can fix the search for user issue
-	# def get_queryset(self, request):
-	# 	queryset = super().get_queryset(request)
-	# 	queryset = queryset.annotate(
-	# 	_hero_count=Count("hero", distinct=True),
-	# 	_villain_count=Count("villain", distinct=True),
-	# 	)
-	# 	return queryset
-
-
-	inlines = (ItemInline, PackageImageInline, )
-	list_display = ('user', 'storage', 'order', 'co_shipping','cust_tracking_num', 'wh_received', 'created_date','status')
+	inlines = (ItemInline, PackageSnapshotInline, )
+	list_display = ('user', 'storage', 'order', 'co_shipping','cust_tracking_num', 'wh_received', 'created_date')
 	search_fields = ['cust_tracking_num']
 	list_filter = ['storage', 'order','co_shipping', 'wh_received']
+	readonly_fields = [ "status_all_display", "total_amount", ]
+
+	def status_all_display(self, obj):
+		return obj.status_all()
+
+	def total_amount(self, obj):
+		total = 0.0
+		if obj.storage_fee:
+			total = total +  float (obj.storage_fee)
+		if obj.shipping_fee:
+			total = total + float (obj.shipping_fee)
+		if obj.order_amount:
+			total = total + float (obj.order_amount)
+		return total
 
 	fieldsets = [
 		('Order or Customer package', 		{'fields': ['order', 'emp_created']}),
 		('To storage',               		{'fields': ['storage', 'request_ship_date'], 'classes': ['collapse']}),
 		('Shipping Type', 					{'fields': ['co_shipping']}),
 		('Creation', 						{'fields': [ 'user', 'cust_tracking_num','cust_carrier', 'low_volume_request', 'no_rush_request', 'memo']}),
+		('Status', 							{'fields': ['status_all_display']}),
 		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight', 'ready_date']}),
 		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'currency']}),
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount', 'currency']}),
 		('Shipment', 						{'fields': ['ship_to_add', 'ship_to_col', 'ship_to_wh', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
 		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']})
 
 	]
 
-	# how to search user!!!!!!!!!!!!
 admin.site.register(Service, ServiceAdmin, )
 
-
-class PackageImageAdmin(admin.ModelAdmin):
-	list_display = ('package', 'image')
-	search_fields = ['package']
-
-admin.site.register(PackageImage, PackageImageAdmin, )
 
 
 
@@ -247,3 +264,16 @@ class FavoriteWebsiteAdmin(admin.ModelAdmin):
 	search_fields = ['web_name']
 
 admin.site.register(FavoriteWebsite, FavoriteWebsiteAdmin)
+
+class ResourceAdmin(admin.ModelAdmin):
+	list_display = ('title','english_header', 'chinese_header')
+	search_fields = ['title', 'english_header', 'chinese_header']
+
+admin.site.register(Resource, ResourceAdmin)
+
+
+class PriceRateAdmin(admin.ModelAdmin):
+	list_display = ('category','from_country', 'to_country', 'package_type', 'first_weight_price', 'next_weight_price', 'avg_weight_price', 'carrier', 'shipping_currency', 'rate')
+	search_fields = ['from_country', 'to_country',]
+
+admin.site.register(PriceRate, PriceRateAdmin)

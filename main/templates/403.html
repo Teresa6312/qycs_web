@@ -1,0 +1,15 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+403
+{% endblock%}
+
+{% block content %}
+<div class="w3-panel">
+    <div class="w3-center w3-panel">
+      <h3>{% trans 'Permission Denied' %}!</h3>
+      <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" height="200" class="w3-panel w3-center"/>
+    </div>
+</div>
+{% endblock %}

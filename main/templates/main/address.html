@@ -1,78 +1,197 @@
-{% extends "main/account.html" %}
+{% extends "main/base_site.html" %}
 {% load i18n static %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{{user.username}}{% trans "'s Address Book" %}
 {% endblock%}
 
 
-{% block account_content %}
+{% block content %}
+<div class="w3-panel w3-margin-top content_center">
+    <div class="text-xxlarge-bold">{% trans 'Address Book' %}</div>
+</div>
+<hr/>
+<div class="w3-panel content_center">
 
-<div class="w3-cell w3-container w3-mobile">
-    <h2>Address Book:</h2>
-      Use get_absolute_url would be better inseat of using address.id but how?<br/>
-      Identify error to load this page in cmd?
-<!-- display default address -->
-    <div class="w3-card-2 w3-round w3-container ">
-        {% if user.userprofile.default_address %}
-            {% if user.userprofile.default_address.location_name %}<h4>{{user.userprofile.default_address.location_name}}</h4>{% endif %}
-            {% if not user.userprofile.default_address.follow_user_infor %}
-                <h5>{{user.userprofile.default_address.last_name}}, {{user.userprofile.default_address.first_name}}(Default)</h5>
+      {% if user.address_set.all %}
+            <div id="address_book_block" class="w3-col w3-mobile m5 l4">
 
-                    {% if user.userprofile.default_address.phone and user.userprofile.default_address.email %}
-                        {{user.userprofile.default_address.phone}} |
-                        {{user.userprofile.default_address.email}}<br/>
-                    {% elif user.userprofile.default_address.phone or user.userprofile.default_address.email%}
-                        {{user.userprofile.default_address.phone}} {{user.userprofile.default_address.email}}<br/>
-                    {% endif %}
+                <div class="addresses_block w3-mobile" style="overflow:auto; max-height:500px;">
+                <!-- display default address -->
+                      {% if user.default_address %}
+                        <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width:300px;">
+                            {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
+                            <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">{% trans 'Edit' %}</button>
+                            <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">{% trans 'Delete' %}</button>
+                        </div>
+                      {% endif %}
 
+                <!-- display other addresses -->
+                {% for address in user.address_set.all %}
+                {% if address != user.default_address%}
+                    <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width: 300px;">
+                        {% include "blocks/address_card_fields.html" with add=address %}
+                        <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">{% trans 'Edit' %}</button>
+                        <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">{% trans 'Delete' %}</button>
+                        <button type="button" class="default_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">{% trans 'Set as Default' %}</button>
+                    </div>
+                {% endif %}{% endfor %}
 
-
-            {% else %}
-                (Default)<br/>
-            {% endif %}
-            {{user.userprofile.default_address.address}}<br/>
-            {% if user.userprofile.default_address.apt %}{{user.userprofile.default_address.apt}}<br/>{% endif %}
-            {{user.userprofile.default_address.city}}<br/>
-            {{user.userprofile.default_address.state}}<br/>
-            {{user.userprofile.default_address.zipcode}}<br/>
-            {{user.userprofile.default_address.country}}<br/>
-
-            <button type="button" class="edit_btn" onclick="window.location.href='{{user.userprofile.default_address.get_absolute_url.edit}}'">Edit</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{user.userprofile.default_address.get_absolute_url.delete}}'">Delete</button>
-        {% endif %}
+                </div>
+            </div>
+      {% endif %}
+<div class="w3-col w3-container w3-mobile w3-card-4 m6 l5" id="main_address_form">
+  <div class="text-medium w3-margin-top">{% trans 'Address Form' %}</div>
+  <form method = "post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% if addform.errors %}
+      <p class="errornote">
+          {% if addform.errors.items|length == 1 %}
+              {% trans "Please correct the error below." %}
+          {% else %}
+              {% trans "Please correct the errors below." %}
+          {% endif %}
+      </p>
+  {% endif %}
+  <div class="w3-mobile">
+    <div class="w3-row"><button class="logo-blue" type="button" id="id_follow_user_infor">{% trans 'Follow User Information' %}</button></div>
+      <div class="w3-half">
+        {{ addform.first_name.label_tag }} {{ addform.first_name.errors }} {{ addform.first_name }}
+      </div>
+      <div class="w3-half">
+        {{ addform.last_name.label_tag }} {{ addform.last_name.errors }} {{ addform.last_name }}
+      </div>
+      <div class="w3-half">
+        {{ addform.phone.label_tag }} {{ addform.phone.errors }} {{ addform.phone }}
+      </div>
+      <div class="w3-row">
+        <div class="w3-third">
+          {{ addform.country.label_tag }} {{ addform.country.errors }} {{ addform.country }}
+        </div>
+        <div class="w3-third">
+          {{ addform.state.label_tag }} {{ addform.state.errors }} {{ addform.state }}
+        </div>
+        <div class="w3-third">
+          {{ addform.city.label_tag }} {{ addform.city.errors }} {{ addform.city }}
+        </div>
+      </div>
+      <div class="w3-row" style="width:98.5%;">
+        {{ addform.address.label_tag }} {{ addform.address.errors }} {{ addform.address }}
+      </div>
+      <div class="w3-row" style="width:98.5%;">
+        {{ addform.apt.errors }}
+        {{ addform.apt }}
+      </div>
+      <div class="w3-row">
+          <div class="w3-quarter w3-right">
+            {{ addform.zipcode.label_tag }} {{ addform.zipcode.errors }} {{ addform.zipcode }}
+          </div>
+      </div>
+      <div class="w3-row" id="button_row">
+        <div class="w3-right">
+          <button type="button" class="cleanBtn logo-red">{% trans 'Cancel' %}</button>
+          <input class="cleanBtn logo-blue" type = "submit" value = "{% trans 'Save' %}"/>
+        </div>
+      </div>
   </div>
-
-
-<!-- display other addresses -->
-{% if user.address_set.all %}{% for address in user.address_set.all %}
-{% if address != user.userprofile.default_address%}
-    <div class="w3-card-2 w3-round w3-container">
-        {% if address.location_name %}<h4>{{address.location_name}}</h4>{% endif %}
-        {% if not address.follow_user_infor %}
-            <h5>{{address.last_name}}, {{address.first_name}}</h5>
-
-                {% if address.phone and address.email%}
-                    {{address.phone}} | {{address.email}}<br/>
-                {% elif address.phone or address.email%}
-                    {{address.phone}}{{address.email}}<br/>
-                {% endif %}
-
-
-        {% endif %}
-            {{address.address}}<br/>
-            {% if address.apt %}{{address.apt}}<br/>{% endif %}
-            {{address.city}}, {{address.state}} {{address.zipcode}}<br/>
-            {{address.country}}<br/>
-            <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">Edit</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">Delete</button>
-            <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.set_default}}'">Set as Default Address</button>
-    </div>
-
-{% endif %}{% endfor %}{% endif %}
-
+</form>
 </div>
-<div class="w3-cell w3-container w3-mobile">
-    {% include "blocks/new_address_form.html"%}
 </div>
+<script>
+  function isThere(param,id){
+    if(param!=""){
+      $("#"+id).attr('value', param);
+    }
+  }//end of isThere
+
+
+  function populateData(list,id,comp){
+    if($('#'+id).length!=0){
+      $('#'+id).remove()
+    }
+    if(list.length>50){
+      return
+    }
+    let content='<datalist clas="ui-autocomplete" id="'+id+'">';
+    let c;
+    for(c=0; c<list.length; c++){
+      content+='<option value="'+list[c]+'">';
+    }
+    content+='</datalist>';
+    $('body').append(content);
+    $('#'+comp).attr('list',id);
+  }
+
+  function getLocations(field,value,id) {
+    let dt={'csrfmiddlewaretoken': "{{ csrf_token }}",
+    'field':field,'value':value};
+    $.ajax({
+      type: "POST",
+      url: "{% url 'location' %}",
+      data: dt,
+      success: function(data){
+          if(field=="id_country"){
+            populateData(data.data,id,field)
+            populateData(data.state,'stateListID','id_state')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_state"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.city,'cityListID','id_city')
+          }
+          else if(field=="id_city"){
+            populateData(data.data,id,field)
+            populateData(data.country,'countryListID','id_country')
+            populateData(data.state,'stateListID','id_state')
+          }
+      },
+      failure: function(data){
+
+      },
+    });
+  }//end of getLocations
+
+
+
+
+
+  $(document).ready(function(){
+    $('#id_follow_user_infor').click(function(){
+        isThere("{{user.first_name}}","id_first_name");
+        isThere("{{user.last_name}}","id_last_name");
+        isThere("{{user.phone}}","id_phone");
+    })
+
+    var xhr;
+    $("#id_country").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_country",$(this).val(),'countryListID')
+        }
+    });
+
+    $("#id_state").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_state",$(this).val(),'stateListID')
+        }
+    });
+
+    $("#id_city").keyup(function() {
+        if (!xhr || xhr.readyState === 4) {
+          getLocations("id_city",$(this).val(),'cityListID');
+        }
+    });
+
+  })//end of ready method
+</script>
+
+<style>
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;   /* prevent horizontal scrollbar */
+    overflow-x: hidden; /* add padding to account for vertical scrollbar */
+    z-index:1000 !important;
+}
+</style>
+
 {% endblock %}

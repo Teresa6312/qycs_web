@@ -1,9 +1,12 @@
 from . import views
-from django.urls import path, re_path
+from django.urls import path
 from django.contrib.auth.decorators import login_required
+
+# , permission_required
+
 
 
 urlpatterns = [
-    path('<int:col_pk>/view', views.CollectionPointView.as_view(), name='collection_point_view'),
-
+    path('register/',  login_required(views.ColRegisterView.as_view()), name = 'colregister'),
+    path('profile/update', login_required(views.CollectorUpdateView.as_view()), name='collector_update'),
 ]

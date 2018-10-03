@@ -3,6 +3,8 @@ qycs_web/local.py
 db.sqlite3
 .py[cod]
 
+media/collector_id/
+
 .DS_Store
 bin/
 include/

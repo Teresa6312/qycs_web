@@ -1,205 +1,104 @@
 from django import forms
 from .models import (
-	User, UserProfile, Address, Service, Warehouse, CollectionPoint,
-	Item, PackageImage, CoReceiver, FavoriteWebsite
+	User, Address, Service, CollectionPoint, Warehouse,
+	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
+	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY, SHIPPING_CARRIER_CHOICE
 	)
-from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
+# from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
 
-from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext as _
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms.models import inlineformset_factory
-from .code import checkAddress, boundEmail
 from django.forms import formset_factory
-# import datetime
-# datetime.datetime.now().year
 
-years = [i for i in range(1900,2010)]
+import datetime
 
- # fields = '__all__'
- # exclude = ['title']
-	 # class Meta:
-	 #    model = Author
-	 #    fields = ('name', 'title', 'birth_date')
-	 #    widgets = {
-	 #        'name': Textarea(attrs={'cols': 80, 'rows': 20}),
-	 #    }
-	 #     labels = {
-	 #        'name': _('Writer'),
-	 #    }
-	 #    help_texts = {
-	 #        'name': _('Some useful help text.'),
-	 #    }
-	 #    error_messages = {
-	 #        'name': {
-	 #            'max_length': _("This writer's name is too long."),
-	 #        },
-	 #    }
-	 #
-	# self.fields['sku'].widget.attrs['readonly'] = True
-#-----------------------------------------------------------------------------------------
-'''
-Create User
-'''
-#-----------------------------------------------------------------------------------------
-class RegisterForm(UserCreationForm):
-	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	username = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	password1 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={"class":"w3-input w3-border"
-									}))
-	password2 = forms.CharField(required = True, widget=forms.PasswordInput(attrs={"class":"w3-input w3-border"
-									}))
+year = datetime.datetime.now().year
+birthday_years = [i for i in range(year-100,year)]
+schedule_years = [year, year+1]
 
+class NewUserCreationForm(UserCreationForm):
+	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
+					empty_label=("Year", "Month", "Day"),
+					years = birthday_years))
+	privacy_policy_agree = forms.BooleanField(required = True)
 	class Meta(UserCreationForm.Meta):
-		fields = ['username', 'email', 'first_name','last_name', 'password1', 'password2']
-		# error_messages = {
-		#     NON_FIELD_ERRORS: {
-		#         'unique': "%(model_name)s's %(field_labels)s is not unique.",
-		#     }
-		# }
+		model = User
+		fields = ('username', 'email', 'first_name', 'last_name',
+					'phone', 'country', 'language', 'birthday', 'password1', 'password2', 'privacy_policy_agree')
 
-	def save(self, commit = True, *args, **kwargs):
-		user = super().save(commit = False)
+	def save(self, commit=True, *args, **kwargs):
+		user = super(NewUserCreationForm, self).save(commit=False, *args, **kwargs)
+		user.first_name = user.first_name.title()
+		user.last_name = user.last_name.title()
+		user.email = user.email.lower()
+		user.country = user.country.upper()
 		if commit:
-			user.first_name = self.cleaned_data['first_name'].title()
-			user.last_name = self.cleaned_data['last_name'].title()
-			user.email = self.cleaned_data['email'].lower()
-			user.username = self.cleaned_data['username']
 			user.save()
 		return user
 
-	def clean_email(self):
-		username = self.cleaned_data.get('username')
-		email = self.cleaned_data.get('email')
-		if email and User.objects.filter(email=email).exclude(username=username).exists():
-			raise forms.ValidationError(u'Email addresses must be unique.')
-		return email
-
-
-class ColResigterForm(forms.ModelForm):
-	address = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	city = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	state = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	country = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	license = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	license_type = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	store = forms.BooleanField(required = False, widget=forms.CheckboxInput(attrs={"class":"w3-check"
-									}))
-	store_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	license_image = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class":"w3-input w3-border"
-									}))
-	id_image = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class":"w3-input w3-border"
-									}))
-	location_image = forms.ImageField(required=False, widget=forms.FileInput(attrs={"class":"w3-input w3-border"
-									}))
-	class Meta:
-		model = CollectionPoint
-		fields = ['address','apt','city','state','country','zipcode','license','license_type',
-					'store','store_name','store_name','license_image','id_image','location_image']
-
-class FavoriteWebsiteForm(forms.ModelForm):
-
-	TYPE_CHOICE = (
-		('---', '---'),
-		('Clothing', 'Clothing'),
-		('Bag', 'Bag'),
-		('Jewelry', 'Jewelry'),
-		('Sport', 'Sport'),
-		('Beauty', 'Beauty'),
-		('Baby', 'Baby'),
-		('Other', 'Other'),
-	)
-
-	web_type = forms.ChoiceField(required = True, choices = TYPE_CHOICE, widget=forms.Select(attrs={"class":"w3-select w3-border"
-				}))
-	web_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-				}))
-	class Meta:
-		model = FavoriteWebsite
-		fields = ['web_type', 'web_name']
-
-WebFormSet = formset_factory(FavoriteWebsiteForm, extra = 3, max_num = 3)
-
-class UserProfileForm(forms.ModelForm):
-	country = forms.CharField(required = True, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+class NewUserChangeForm(UserChangeForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
-					empty_label=("Year", "Month", "Day"),
-					years = years,
-					attrs={"class":"w3-input w3-border w3-third",
-									}))
-	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	language = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+				empty_label=("Year", "Month", "Day"),
+				years = birthday_years,
+				attrs={"class":"w3-quarter w3-border"}))
 
-	class Meta:
-		model = UserProfile
-		fields = ['country', 'birthday', 'phone', 'language']
-
-
-
-#-----------------------------------------------------------------------------------------
-'''
-Use in Update User Profile or Register as Collector
-'''
-#-----------------------------------------------------------------------------------------
-class ProfileForm(forms.Form):
 	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	email = forms.EmailField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('+1-234-567-8900'),"class":"w3-input w3-border"
 									}))
 	country = forms.CharField(required = False, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	language = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+	language = forms.ChoiceField(required = False, choices = LANGUAGE_CATEGORY,
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
+	username = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 
-	def save(self, user, commit = True):
-		profile = UserProfile.objects.get(user = user)
+	class Meta:
+		model = User
+		fields = ('username', 'email', 'first_name', 'last_name',
+					'phone', 'country', 'language', 'birthday',
+					'default_address', 'default_col', 'password',)
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		if self.instance:
+			try:
+				user = User.objects.get(id = self.instance.id)
+				if user.collectionpoint:
+					self.fields['first_name'].widget.attrs['readonly'] = True
+					self.fields['last_name'].widget.attrs['readonly'] = True
+					self.fields['email'].widget.attrs['readonly'] = True
+				elif user.email_confirmed:
+					self.fields['email'].widget.attrs['readonly'] = True
+				if user.birthday:
+					self.fields['birthday'].widget.attrs['readonly'] = True
+			except:
+				pass
+
+	def save(self, commit=True, *args, **kwargs):
+		user = super(NewUserChangeForm, self).save(commit=False, *args, **kwargs)
+		user.first_name = user.first_name.title()
+		user.last_name = user.last_name.title()
+		user.email = user.email.lower()
+		user.country = user.country.upper()
 		if commit:
-# disable tag make the field as '', need to asign the first_name and last_name when it is ''
-			if user.first_name != self.cleaned_data['first_name'].title() and user.last_name != self.cleaned_data['last_name'].title():
-				user.first_name = self.cleaned_data['first_name'].title() or user.first_name
-				user.last_name = self.cleaned_data['last_name'].title() or user.last_name
-
-			if self.cleaned_data['email'] !='' and self.cleaned_data['email'] != None:
-				user.email = self.cleaned_data['email'].lower()
-# send email to bound this email
 			user.save()
-
-# -------------------------------------------------------------------------------------------
-# '''
-# Update the UserProfile
-# '''
-# ------------------------------------------------------------------------------------------
-			profile.country = self.cleaned_data['country'] or profile.birthday
-			profile.country = self.cleaned_data['language'] or profile.language
-			profile.birthday = self.cleaned_data['birthday'] or profile.birthday
-			profile.phone = self.cleaned_data['phone'] or profile.phone
-			profile.save()
 		return user
+
+class FavoriteWebsiteForm(forms.ModelForm):
+
+	class Meta:
+		model = FavoriteWebsite
+		fields = ('web_type', 'web_name',)
+
+WebFormSet = formset_factory(FavoriteWebsiteForm, extra = 3, max_num = 3)
 
 
 #-----------------------------------------------------------------------------------------
@@ -214,12 +113,14 @@ class AddressForm(forms.ModelForm):
 									}))
 	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	phone = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	address = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('+1-234-567-8900'),"class":"w3-input w3-border"
+																									}))
+	address = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder':  _("Street Address"),
+																		"class":"w3-input w3-border"
+																		}))
+	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={'placeholder':  _("Apartment/Suit/Unit"),
+																		"class":"w3-input w3-border"
+																		}))
 	city = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	state = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
@@ -230,64 +131,23 @@ class AddressForm(forms.ModelForm):
 									}))
 	location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
+
 	class Meta:
 		model = Address
-		exclude = ['meno']
+		exclude = ('meno',)
 
 	def save(self, commit=True, *args, **kwargs):
 		add = super(AddressForm, self).save(commit=False, *args, **kwargs)
 		add.first_name = add.first_name.title()
 		add.last_name = add.last_name.title()
-		add.email = add.email.lower()
-		add.address = add.address.upper()
-		add.apt = add.apt.upper()
-		add.city = add.city.upper()
-		add.state = add.state.upper()
+		add.address = add.address.title()
+		add.apt = add.apt.title()
+		add.city = add.city.title()
+		add.state = add.state.title()
 		add.country = add.country.upper()
 		if commit:
 			add.save()
 		return add
-#-----------------------------------------------------------------------------------------
-'''
-Package Common Form (abstract)
-'''
-#-----------------------------------------------------------------------------------------
-class PackageCommonForm(forms.ModelForm):
-	# TYPE_CHOICE = (
-	# 	('Food', 'Food'),
-	# 	('Regular', 'Regular'),
-	# 	('Luxury', 'Luxury'),
-	# 	('Mix', 'Mix'),
-	# # )
-	# COUNTRY_CHOICE = (
-	# 	('China', 'China'),
-	# )
-
-	CARRIER_CHOICE = (
-		('ZhongTong', 'ZhongTong'),
-	)
-
-	# package_type = forms.ChoiceField(choices = TYPE_CHOICE)
-	# # wh_received = forms.ModelChoiceField(queryset = Warehouse.objects.all(), label = "From Warehouse")
-
-	# shoule be related to the wh_received
-	cust_carrier = forms.ChoiceField(label = "Mailing Carriers", choices = CARRIER_CHOICE,
-									widget=forms.Select(attrs={"class":"w3-select w3-border"
-									}))
-	cust_tracking_num = forms.CharField(label = "Tracking Number",
-									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-
-	low_volume_request = forms.BooleanField(label = "Minimize your package's volume", required=False)
-	no_rush_request = forms.BooleanField(label = "No Rush Shipping (Double Points)", required=False)
-	memo = forms.CharField(label = 'Note', required=False,
-							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this package',
-												"class":"w3-input w3-border"
-												}))
-
-	class Meta:
-		abstract = True
-
 
 
 #-----------------------------------------------------------------------------------------
@@ -295,13 +155,33 @@ class PackageCommonForm(forms.ModelForm):
 Create new Package
 '''
 #-----------------------------------------------------------------------------------------
-class PackageForm(PackageCommonForm):
 
+class PackageCommonForm(forms.ModelForm):
+	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True),
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
+	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE,
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
+	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True,
+									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
+	memo = forms.CharField(label = 'Note', required=False,
+							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs about this package"),
+												"class":"w3-input w3-border",
+												"rows":5
+												}))
+	low_volume_request = forms.BooleanField(label = _("Minimize your package's volume"), required=False)
+
+	class Meta:
+		abstract = True
+
+class PackageCreationForm(PackageCommonForm):
 
 	class Meta:
 		model = Service
 		fields = (
-			# 'wh_received',
+			'wh_received',
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
@@ -314,16 +194,18 @@ class PackageForm(PackageCommonForm):
 Create new Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class CoShippingForm(PackageCommonForm):
-
+class CoShippingCreationForm(PackageCommonForm):
+	no_rush_request = forms.BooleanField(label = _("No Rush Shipping (Double Points)"), required=False)
 	class Meta:
 		model = Service
-		fields = ('cust_carrier',
+		fields = (
+			'wh_received',
+			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
-			'no_rush_request',
+			'receiver',
+			'ship_to_col',
 			'memo',
-			'ship_to_add',
 			)
 
 
@@ -333,18 +215,34 @@ class CoShippingForm(PackageCommonForm):
 Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class DirectShippingForm(PackageCommonForm):
-
+class DirectShippingCreationForm(PackageCommonForm):
+	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = SHIPPING_CARRIER_CHOICE,
+									widget=forms.Select(attrs={"class":"w3-select w3-border"
+									}))
 	class Meta:
 		model = Service
 		fields = (
+			'wh_received',
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
 			'no_rush_request',
+			'ship_carrier',
+			'ship_to_add',
 			'memo',
 			)
 
+class PackageChangeForm(forms.ModelForm):
+		class Meta:
+			model = Service
+			fields = (
+				'no_rush_request',
+				'ship_carrier',
+				'ship_to_add',
+				'ship_to_col',
+				'receiver',
+				'memo',
+				)
 #-----------------------------------------------------------------------------------------
 '''
 Create new Item in Package
@@ -354,7 +252,7 @@ class ItemForm(forms.ModelForm):
 	item_name = forms.CharField(label = 'Item Name',
 								widget=forms.TextInput(attrs={
 									'placeholder': 'Please enter your items name as detailed as possible',
-									"class":"w3-input w3-border"
+									"class":"w3-input w3-border item_name"
 									}))
 
 	item_detail = forms.CharField( label = 'Item Detail', required=False,
@@ -370,11 +268,12 @@ class ItemForm(forms.ModelForm):
 																"class":"w3-input w3-border"
 																}))
 
-	low_volume_request = forms.BooleanField(required=False, label = "Minimize this item's volume")
+	low_volume_request = forms.BooleanField(required=False)
 
 	memo = forms.CharField( label = 'Note', required=False,
 							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this item',
-												"class":"w3-input w3-border"}))
+												"class":"w3-input w3-border",
+												"rows": 3 }))
 
 	class Meta:
 		model = Item
@@ -401,25 +300,11 @@ ItemFormset = inlineformset_factory(Service,
 
 
 
-#-----------------------------------------------------------------------------------------
-'''
-Image form and formset in Package
-'''
-#-----------------------------------------------------------------------------------------
-class PackageImageForm(forms.ModelForm):
-	package = forms.ModelChoiceField(queryset=Service.objects.all())
-	image = forms.ImageField(required=False, widget=forms.FileInput(attrs={"class":"w3-input w3-border"}))
-	class Meta:
-		model = PackageImage
-		fields = ('image','package')
+class SnapshotForm(forms.Form):
+	Snapshot = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True,}))
 
-ImageFormset = inlineformset_factory(Service,
-									PackageImage,
-									form=PackageImageForm,
-									extra=1)
-
-class ImageForm(forms.Form):
-	image = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True, "class":"w3-input w3-border"}))
+class TrackingForm(forms.Form):
+	cust_tracking_num = forms.CharField(required = True)
 
 
 
@@ -428,62 +313,57 @@ class ImageForm(forms.Form):
 CoReceiver form in Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class CoReceiverForm(forms.ModelForm):
+class CoReceiverForm(forms.Form):
+	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder': _('First Name'),"class":"w3-input w3-border"}))
+	last_name = forms.CharField(required = True,  widget=forms.TextInput(attrs={'placeholder': _('Last Name'),"class":"w3-input w3-border"}))
+	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('Phone Number (+1-234-567-8900)'),"class":"w3-input w3-border"}))
 
-	def save(self, user, commit = True):
-		newreceiver = super(CoReceiverForm, self).save(commit = False)
-		newreceiver.first_name = newreceiver.first_name.title()
-		newreceiver.last_name = newreceiver.last_name.title()
-		if commit:
-			receivers = CoReceiver.objects.filter(
-				first_name = newreceiver.first_name,
-				last_name = newreceiver.last_name,
-				phone = newreceiver.phone,
-				)
-			if receivers.count()>=1:
-				return receivers.first()
-			elif newreceiver.first_name==user.first_name and newreceiver.last_name==user.last_name and user.userprofile.phone==newreceiver.phone:
-				return CoReceiver.objects.get(user=user)
-			else:
-				newreceiver.user = None
-				newreceiver.save()
-				return newreceiver
+	def __init__(self, receiver=None, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		if receiver:
+			self.fields['first_name'].initial = receiver.first_name
+			self.fields['last_name'].initial = receiver.last_name
+			self.fields['phone'].initial = receiver.phone
+
+
+
+class CoReceiverCheckForm(forms.Form):
+	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder': _('First Name'),"class":"w3-input w3-border"}))
+	last_name = forms.CharField(required = True,  widget=forms.TextInput(attrs={'placeholder': _('Last Name'),"class":"w3-input w3-border"}))
+	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('Phone Number (+1-234-567-8900)'),"class":"w3-input w3-border"}))
+
+	def check(self):
+		self.first_name = self.cleaned_data['first_name'].title()
+		self.last_name = self.cleaned_data['last_name'].title()
+		receivers = CoReceiver.objects.filter(
+			first_name = self.first_name,
+			last_name = self.last_name,
+			phone = self.cleaned_data['phone']
+		)
+		if receivers.count()>=1:
+			return receivers.first()
+		else:
+			 new = CoReceiver(first_name = self.first_name,
+								 last_name = self.last_name,
+								 phone = self.cleaned_data['phone'])
+			 new.save()
+			 return new
+
+
+class EmailForm(forms.Form):
+	email = forms.EmailField(required = True)
+	cc = forms.BooleanField(required = False)
+	subject = forms.CharField(required = True)
+	content = forms.CharField(required = True)
+
+class CartForm(forms.Form):
+	package_set = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
+
+	def __init__(self, user, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['package_set'].queryset = Service.objects.filter(user = user, paid_amount = None).order_by('-created_date')
+
+class OrderSetForm(forms.ModelForm):
 	class Meta:
-		model = CoReceiver
-		fields = ('first_name', 'last_name', 'phone')
-
-
-
-
-
-# class ContactForm(forms.ModelForm):
-
-#     def __init__(self, *args, **kwargs):
-#         assigned_users = kwargs.pop('assigned_to', [])
-#         contact_account = kwargs.pop('account', [])
-#         super(ContactForm, self).__init__(*args, **kwargs)
-#         for field in self.fields.values():
-#             field.widget.attrs = {"class": "form-control"}
-#         self.fields['description'].widget.attrs.update({
-#             'rows': '6'})
-#         self.fields['assigned_to'].queryset = assigned_users
-#         self.fields['account'].queryset = contact_account
-#         self.fields['assigned_to'].required = False
-#         self.fields['teams'].required = False
-
-#     class Meta:
-#         model = Contact
-#         fields = (
-#             'assigned_to', 'teams', 'first_name', 'last_name', 'account', 'email', 'phone', 'address', 'description'
-#         )
-
-#     def clean_phone(self):
-#         client_phone = self.cleaned_data.get('phone', None)
-#         try:
-#             if int(client_phone) and not client_phone.isalpha():
-#                 ph_length = str(client_phone)
-#                 if len(ph_length) < 10 or len(ph_length) > 13:
-#                     raise forms.ValidationError('Phone number must be minimum 10 Digits and maximum of 13 Digits')
-#         except (ValueError):
-#             raise forms.ValidationError('Phone Number should contain only Numbers')
-#         return client_phone
+		model = OrderSet
+		fields = '__all__'

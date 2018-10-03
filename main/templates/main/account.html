@@ -1,60 +1,62 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
+{% load cloudinary %}
 
 {% block title%}
-Update Profile | Qycs Global Shipping Inc. | English Official Website
+{{user.username}}{% trans "'s Profile" %}
 {% endblock%}
 
 
 
 {% block content %}
-	<div class="w3-cell aside-bar-background-color w3-mobile" style="width:300px">
-		<div class="w3-bar-block">
-
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userprofile' %}">User Information</a>
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'useraddress' %}">Address List</a>
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userpackage' %}">Packages History</a>
-		    <a class="w3-bar-item w3-hover-purple" href="{% url 'userwallet' %}">Wallet</a>
-		    <a class="w3-bar-item w3-hover-purple" href="/accounts/logout/">Logout</a>
-		</div>
-	</div>
-
-	{% block account_content%}
-	<div class="w3-cell w3-container w3-mobile">
-
-			<h2>{{user.username}}
+<div class="w3-panel w3-margin-top content_center">
+			<div class="text-xxlarge-bold">{{user.username}}{% trans "'s Profile" %}
 			{% if user.collectionpoint %}
-			(Collector)
-			{% endif %}</h2>
+			({% trans 'Collector' %})
+			{% endif %}</div>
+</div>
+<hr/>
+<div class="w3-panel content_center">
 				{% if not user.collectionpoint %}
-				<button><a href="{% url 'colregister'%}"> Register as Collector</a></button><br/>
+						<button type="button" class="logo-red" onclick="window.location.href = '{% url 'colregister'%}'"> {% trans 'Register as Collector' %}</button><br/>
 				{% endif%}
 				<div class = "w3-container">
-						First Name: {{user.first_name}}<br/>
-						Last Name: {{user.last_name}}<br/>
-						Email address:{{user.email}}
-						{% if not user.bound_email%}
-							<a>To Bound my Email (this will send a request to the user's email)</a>
-						{% endif %}<br/>
-						Phone Number: {{user.userprofile.phone}}<br/>
-						Birthday: {{user.userprofile.birthday|date:"M d, Y" }}<br/>
-						<h4>Default Address</h4>
-							{% if user.userprofile.default_address %}
-										{% include "blocks/default_address_card.html" with add=user.userprofile.default_address%}
+						{% trans 'First Name' %}: {{user.first_name}}<br/>
+						{% trans 'Last Name' %}: {{user.last_name}}<br/>
+						{% trans 'Email address' %}: {{user.email}}
+
+						{% if not user.email_confirmed %}
+							<br/><a class="w3-text-blue" href="{% url 'send_confirmation_email' %}">
+								{% trans "You havn't confirmed your email yet. Please click here to send a Confirmation link to your email." %}
+							</a></br/>
+						{% else %}
+						<span>({% trans 'email confirmed' %})</span><br/>
+						{% endif %}
+
+						{% trans 'Phone Number' %}: {{user.phone}}<br/>
+						{% trans 'Birthday' %}: {{user.birthday|date:"M d, Y" }}<br/>
+						{% trans 'Country' %}: {{user.country }}<br/>
+
+						{% trans 'Preferred language' %}:{{ user.get_language_display }}<br/>
+						<div class="text-regular-bold w3-padding-16">{% trans 'Default Address' %}</div>
+
+							{% if user.default_address %}
+										{% include "blocks/default_address_card.html" with add=user.default_address%}
 							{% else %}
-									No default address!
+									{% trans 'No default address!' %}
 							{% endif %}
-
-							<h4>Default Collection Point</h4>
-								{% if user.userprofile.default_col%}
-										{% include "blocks/default_col_card.html"%}
+            <div class="w3-row">
+							<div class="text-regular-bold  w3-padding-16">{% trans 'Default Collection Point' %}</div>
+								{% if user.default_col%}
+										{% include "blocks/default_col_card.html" with col=user.default_col %}
 								{% else %}
-										No default Collection Point!
+										{% trans 'No default Collection Point!' %}
                 {% endif %}
+					</div>
 			</div>
-			<button type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">Update Profile</button>
-			<button type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">Change Password</button>
-
-		</div>
-	{% endblock %}
+			<div class="w3-row">
+				<button class="logo-red" type = "button" onclick="window.location.href = '{% url 'updateprofile'%}'">{% trans 'Update Profile' %}</button>
+				<button class="logo-blue" type = "button" onclick="window.location.href = '{% url 'changepassword'%}'">{% trans 'Change Password' %}</button>
+			</div>
+</div>
 {% endblock %}
