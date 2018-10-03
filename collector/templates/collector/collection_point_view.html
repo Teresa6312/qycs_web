@@ -12,7 +12,7 @@
     <div class="w3-panel w3-col-row w3-mobile">
         <div class = "w3-card-4 w3-third w3-mobile" style="max-width:300px;">
           {% if collector.collector_icon%}
-              {% cloudinary collector.collector_icon format="jpg" width=120 height=80 crop="fill" %}
+              <img alt="collection point icon" src="{{collector.collector_icon.url}}" style="width:100%; margin:auto;">
           {% else %}
               <img alt="user icon" src="{% static 'image/user_icon.png' %}" style="width:100%; margin:auto;">
           {% endif %}
@@ -83,7 +83,7 @@
       <div class="w3-row w3-margin-left">
           {% trans 'Email' %}: {{collector.collector.email}}<br/>
           {% if collector.wechat_qrcode %}
-            {% trans 'Wechat' %}: <img alt="collection point icon" src="{{collector.wechat_qrcode.url}}" style="width:300px; margin:auto;">
+            {% trans 'Wechat' %}: <img alt="collection point wechat qrcode" src="{{collector.wechat_qrcode.url}}" style="width:300px; margin:auto;">
           {% elif collector.wechat %}
             {% trans 'Wechat ID' %}: {{collector.wechat}}
           {% endif %}

@@ -158,9 +158,11 @@
             {% if package.packagesnapshot_set.all %}
                 <h5>{% trans 'Package Snapshot' %}:</h5>
                 {% for snapshot in package.packagesnapshot_set.all %}
-                    <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
-                      {% cloudinary snapshot.snapshot format="jpg" width=120 height=80 crop="fill" %}
-                    </div>
+                    {% if snapshot.snapshot %}
+                      <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+                        <img alt="package snapshot" src="{{snapshot.snapshot.url}}" style="width:100%; margin:auto;">
+                      </div>
+                    {% endif %}
                 {% endfor %}
             {% else %}
                 <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
