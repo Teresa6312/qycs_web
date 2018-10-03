@@ -7,124 +7,174 @@
     {% trans 'Add Package' %}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
-
-
 {% block messages %}
 {% endblock messages %}
 
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
+{% endblock %}
+
+
 {% block content %}
-<div class="w3-cell w3-container w3-mobile" style="max-width:500px; width:81%;">
-
-    <div class="w3-container w3-round w3-border w3-mobile">
 
 
-      {% if messages %}
-      <ul class="messagelist">{% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-      {% endfor %}</ul>
-      {% endif %}
-      {% if form.errors or receiverform.errors %}
-          <p class="errornote">
-          {% trans "Please correct the error(s) below." %}
-          </p>
-      {% endif %}
+<div class="w3-cell-row w3-mobile content_center">
+  {% if form.ship_carrier %}
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Direct Shipping' %}</div>
+  {% else %}
+  <div class="text-xxlarge-bold w3-panel">{% trans 'Co-shipping' %}</div>
+  {% endif %}
 
-          <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                {% block shippingset %} {% endblock%}
 
-                <fieldset class="module w3-mobile">
-                      <h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Add Package' %}</h2>
-                      <div class="form-row">
-                        {{ form.wh_received.errors }}
-                        {{ form.wh_received.label_tag }} {{ form.wh_received }}
-                      </div>
-                      <div class="form-row">
-                        {{ form.cust_carrier.errors }}
-                        {{ form.cust_carrier.label_tag }} {{ form.cust_carrier }}
-                      </div>
-                      <div class="form-row">
-                        {{ form.cust_tracking_num.errors }}
-                        {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num }}
-                      </div>
+  <div id="message_block">
+    {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+    {% endfor %}</ul>
+    {% endif %}
 
-                      <div class="form-row">
-                        {{ form.memo.errors }}
-                        {{ form.memo.label_tag }} {{ form.memo }}
-                      </div>
-                      <div class="form-row">
-                          <div class="checkbox-row">
-                            {{ form.low_volume_request.errors }}
-                            {{ form.low_volume_request.label_tag }}{{ form.low_volume_request }}
+    {% if form.errors or receiverform.errors or itemset.errors %}
+        <p class="errornote">
+        {% trans "Please correct the error(s) below." %}
+        </p>
+    {% endif %}
+  </div>
+
+</div>
+
+
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="tab">
+        <div class="w3-col-row w3-mobile">
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_left">
+                      <div class="text-medium">{% trans 'Ship to' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-container w3-mobile content_left">
+                          {% if form.ship_carrier %}
+                            <div class="w3-row">
+
+                                {{ form.ship_carrier.label_tag }}{{ form.ship_carrier.errors }}{{ form.ship_carrier }}
+                            </div>
+                            <div class="w3-row">
+                                {{ form.no_rush_request.errors }}
+                                {{ form.no_rush_request }}&emsp;{% trans 'No Rush Shipping (Double Points)' %}
+                            </div>
+                          {% endif %}
+                          <div class="w3-row">
+                                {{ form.low_volume_request.errors }}
+                                {{ form.low_volume_request }}&emsp;{% trans "Minimize this package's volume" %}
                           </div>
-                      </div>
-                      {% if form.no_rush_request %}
-                        <div class="form-row">
-                          <div class="checkbox-row">
-                            {{ form.no_rush_request.errors }}
-                            {{ form.no_rush_request.label_tag }}{{ form.no_rush_request }}
-                          </div>
+                          {% block shippingset %} {% endblock%}
+                    </div>
+              </div>
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_right">
+                      <div class="text-medium">{% trans 'Ship from' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-container w3-mobile content_right">
+                        <div class="w3-row">
+                          {{ form.wh_received.label_tag }} {{ form.wh_received.errors }} {{ form.wh_received }}
                         </div>
-                      {% endif %}
-                </fieldset>
-                {{ itemset.management_form }}
-                <!-- {% include "blocks/fieldset.html" with fieldset=itemset title='Item Deatil' %} -->
+                        <div class="w3-row">
+                          {{ form.cust_carrier.label_tag }}  {{ form.cust_carrier.errors }} {{ form.cust_carrier }}
+                        </div>
+                        <div class="w3-row">
+                          {{ form.cust_tracking_num.label_tag }} {{ form.cust_tracking_num.errors }} {{ form.cust_tracking_num }}
+                        </div>
 
-                <div id="add_item_btn_row" class="w3-center w3-panel w3-mobile">
-                  <button type="button" class="w3-third" id="add_snapshot_btn" onclick="AddSnapshotBlock()">{% trans 'Add Snapshot' %}</button>
-                    <div  class="w3-quarter">Or</div>
-                  <button type="button" class="w3-third" id="add_item_btn" onclick="createItemsetBlock()">{% trans "Add Items' Detail" %}</button>
-                </div>
+                        <div class="w3-row">
+                          {{ form.memo.label_tag }} {{ form.memo.errors }} {{ form.memo }}
+                        </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+      <div class="tab">
+          <div class="content_center">
+              <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
+          </div>
+          <hr/>
+          <div class="content_center" id="item_information_block">
 
-                <div id="sub_btn_block" class="submit-row">
-                    {% block extrabtn %}
-                    {% endblock %}
-                    <button type="button" onclick="clearForm(this)">{% trans 'Clear Form' %}</button>
-                    <input type="submit" name="next" value="{% trans 'Save and add new package' %}" />
-                    <input type="submit" name="finish" value="{% trans 'Submit' %}"/>
+              <div class="w3-panel w3-container" id="add_snapshot_form">
+                    <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
+                    <input name="image" class="w3-input w3-border" id="id_image" type="file" multiple="">
+              </div>
+              <div class="w3-panel w3-center text-medium-bold">{% trans 'OR' %}</div>
+              <div id = "add_item_form" class="w3-container" style="margin:auto;">
+                  <div class="text-medium">{% trans 'Add details of each item in the package' %}</div>
+                  <hr/>
+                  {{ itemset.management_form }}
+                  {% if itemset.forms %}
+                      {% for subform in itemset.forms %}
+                          <table style="width:95%; margin:auto;" id="item_table">
+                                    <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">0</span></th>
+                                      <td class="w3-cell w3-rest">
+                                          <div class="w3-container">
+                                            {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
+                                          </div>
+                                          <div class="w3-col-row">
+                                              <div class="w3-col w3-container" style="width:100px;">
+                                                {{ subform.item_quantity.label_tag }} {{ subform.item_quantity.errors }} {{ subform.item_quantity }}
+                                              </div>
+                                              <div class="w3-third w3-container">
+                                                {{ subform.item_detail.label_tag }} {{ subform.item_detail.errors }} {{ subform.item_detail }}
+                                              </div>
+                                              <div class="w3-rest w3-container">
+                                                {{ subform.item_url.label_tag }} {{ subform.item_url.errors }} {{ subform.item_url }}
+                                              </div>
+                                          </div>
+                                          <div class="w3-container">
+                                            {{ subform.low_volume_request.errors }}
+                                            {{ subform.low_volume_request }}{% trans "Minimize this item's volume" %}
+                                          </div>
+                                          <div class="w3-container">
+                                            {{ subform.memo.label_tag }}{{ subform.memo.errors }}{{subform.memo}}
+                                          </div>
+                                      </td>
+                                  </tr>
+                          </table>
+                      {% endfor %}
+                  {% endif %}
+          </div>
 
-                </div>
-            </form>
+        </div>
+
     </div>
-</div>
+    <div class="w3-row content_center">
+      <div class="w3-center">
 
+        <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
+        <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
+        <span id="submit_block">
+          <input class="logo-blue" type="submit" name="next" value="{% trans 'Save and add new package' %}" />
+          <input class="logo-red" type="submit" name="finish" value="{% trans 'Submit' %}"/>
+        </span>
+      </div>
+    </div>
+
+</form>
+
+<script src="{% static 'js/packageset.js' %}"></script>
 {% endblock %}
 
-{% block sidebar %}
-<div class="w3-container w3-cell w3-mobile w3-rest sidebar" style="min-width:400px;">
-    <div class="w3-card-2 w3-round w3-container aside-bar-background-color" style="overflow:auto; max-height:1000px;">
-        <h3>{% trans 'Packages' %}</h3>
-            {% if package_list %}
-                {% for package in package_list %}
-                <div class="w3-panel">
-                    <h4 onclick="window.location.href='{{package.get_absolute_url}}'">{{ package.cust_tracking_num }} ({{ package.cust_carrier }})</h4>
-                    {% if package.co_shipping %}
-                        {% trans 'Co-shipping to' %}: {{package.ship_to_col.name}}<br/>
-                        {{package.receiver.last_name}},{{package.receiver.first_name}}({{package.receiver.phone}})<br/>
-                    {% elif not package.co_shipping %}
-                        Direct Shipping to: {{package.ship_to_add}}<br/>
-                    {% endif %}
-                    {% if package.packagesnapshot_set.all %}{% trans 'Inserted' %} {{ package.packagesnapshot_set.count}} {% trans 'package snapshots' %}<br/>{% endif %}
-                    {% if package.item_set.all %}{% trans 'Entered' %} {{ package.item_set.count}} {% trans "Items' detail" %}<br/>{% endif %}
-                </div>
-                {% endfor %}
-            {% else %}
-                <p>{% if package.co_shipping %}{% trans 'No co-shipping packages in cart.' %}
-                  {% else %}{% trans 'No direct shipping packages in cart.' %}{% endif %}
-                </p>
-            {% endif %}
-    </div>
-</div>
-{% endblock %}
+
 
 
 {% block script%}
 <script src="{% static 'js/jquery.formset.js' %}"></script>
-<script src="{% static 'js/packageset.js' %}"></script>
 <script>
 $(document).ready(function(){
+  $('.itemset_row').formset({
+    addText: 'add Item',
+    deleteText: 'remove',
+    prefix: 'item_set'
+  });
   $("#follow_user_infor").click(function(){
        $('#id_first_name').val('{{user.first_name}}');
 			 $('#id_last_name').val('{{user.last_name}}');
@@ -135,6 +185,11 @@ $(document).ready(function(){
 			 $('#id_last_name').val('{{user.service_set.first.receiver.last_name}}');
 			 $('#id_phone').val('{{user.service_set.first.receiver.phone}}');
 	});
+  	$(".add-row").click(function(){
+      $('table').find('.item_num').each(function(){
+        $(this).text($(this).parents('tr').find('.item_name').prop('id').split('-')[1]);
+      });
+    });
 });
 </script>
 {% endblock%}

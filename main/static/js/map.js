@@ -3,22 +3,34 @@
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
 
+
+function updateCollectionPointsTable(pointsArray){
+  $('#CollectionPointID').find('tr').each(function(){
+    $(this).css('display','none')
+  })
+  for(var pt in pointsArray){
+    let tableRow=$('#CollectionPointID').find('#'+pointsArray[pt].id)
+    tableRow.css('display','table-row')
+  }
+}//end of updateCollectionPointsTable
+
+
     var map, infoWindow;
-    let locations = [];
+
 
     let positions = [];
 
     function initAutocomplete() {
-// creste map
+// create map
         map = new google.maps.Map(document.getElementById('map'), {
             center: new google.maps.LatLng(40.597509,-73.981832),
             zoom: 6,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
-        var input = document.getElementById('pac-input');
+        var input = document.getElementById('search_block');
         var searchBox = new google.maps.places.SearchBox(input);
-        // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); note: it will shift position of side list
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //note: it will shift position of side list
 
 // Bias the SearchBox results towards current map's viewport.
         map.addListener('bounds_changed', function() {
@@ -30,7 +42,7 @@
                     result_points.push(locations.find(obj => obj.id === positions[i].id));
                 }
             }
-            // console.log(result_points);
+            updateCollectionPointsTable(result_points);
         });
 
 
@@ -76,11 +88,12 @@
 //marker.setMap(map);
 
       infoWindow = new google.maps.InfoWindow;
-
+      // console.log(navigator.geolocation);
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
             map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -106,8 +119,9 @@
              google.maps.event.addListener(marker, 'mouseover', (function(marker) {
                 return function() {
                  infoWindow.setPosition(marker.position);
-                 infoWindow.setContent(location.address);
+                 infoWindow.setContent(location.address+'<a href="/packages/'+location.id+'/add" class="w3-text-blue"><i>add package</i></a>');
                  infoWindow.open(resultsMap,marker);
+
                 }
              })(marker));
            } else {
@@ -132,7 +146,7 @@
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
+                              'Error: We cannot load your location.' :
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
       }//end of handleLocationError

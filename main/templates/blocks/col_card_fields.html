@@ -1,11 +1,15 @@
 {% load i18n static %}
+{% load cloudinary %}
 
 
 
 {% if col.collector_icon and not no_icon %}
-    <img alt="collection point icon" src = "{{col.collector_icon.url}}" style="width:100%; max-width:280px; margin:auto;">
+<div style="max-width:200px; height:400px; margin:auto;" class="w3-padding-16">
+  {% cloudinary col.collector_icon format="jpg" width=120 height=80 crop="fill" %}
+
+</div>
 {% endif %}
-<h5>{{col.name}}
+<div class="text-regular-bold">{{col.name}}
   {% if not col.status %}
     <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/>
   {% else %}
@@ -16,19 +20,22 @@
   {% else %}
       ({% trans 'Personal Place' %})
   {% endif %}
-</h5>
-{% if col.absent_start %}
+  {% if col == user.default_col %}
+   - {% trans 'Default' %}
+  {% endif %}
+</div>
+{% if col.absent_start and not col.absent_ended %}
 <div class="w3-row w3-text-red">
   <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:15px;"/>
-  Not avaliable from {{col.absent_start|date:"M d, Y"}} to {{col.absent_end|date:"M d, Y"}}.
+  {% trans 'Not available from' %} {{col.absent_start|date:"M d, Y"}} - {{col.absent_end|date:"M d, Y"}}.
 </div>
 {% endif %}
+<a class="w3-text-blue" href="{% url 'add_co_shipping' col.pk %}">{% trans "Add package" %}</a> |
 <a class="w3-text-blue" href="{{col.get_absolute_url}}">{% trans 'visit collection point' %}</a><br/>
 {% trans 'Food' %}: {% if col.food %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %} |
 {% trans 'Regular' %}: {% if col.regular %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %} |
 {% trans 'Skincare' %}: {% if col.skincare %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %}<br/>
 {{col.country}} | {{col.state}} | {{col.city}}<br/>
-{{col.address}}<br/>
-{% if add.apt %}{{col.apt}}<br/>{% endif %}
+{{col.address}}{% if add.apt %} --{{col.apt}}{% endif %}<br/>
 {% if col.store_name %}{{col.store_name}}<br/>{% endif %}
 {{col.zipcode}}<br/>

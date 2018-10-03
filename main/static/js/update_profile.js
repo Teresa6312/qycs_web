@@ -24,13 +24,17 @@ function submitForm(csrf, submit_url, add_field_name){
           if($(data).find('#main_address_form').length == 0){
               $('#newAddressForm_js').remove();
               $('#default_address_card').remove();
-              $('#remove_default_add_btn').parent('div').before($(data).find('#default_address_card'));
+              if($('#remove_default_add_btn').length > 0){
+                  $('#remove_default_add_btn').parent('div').before($(data).find('#default_address_card'));
+              }else{
+                $('#default_address_block').append($(data).find('#default_address_card'));
+              }
               $('#id-new-address-modal').hide();
           }else{
             $('#id-new-address-content').before($(data).find('.messagelist'));
             $('.messagelist').hide().slideDown(500);
             $(data).find('.errorlist').each(function(){
-                var input = $(this ).parent('.form-row').find('input');
+                var input = $(this ).parent('div').find('input');
                 $('#id-new-address-content').find('#'+input.prop("id")).before($(this));
             });
             $('.errorlist').hide().slideDown(500);
@@ -45,18 +49,81 @@ function submitForm(csrf, submit_url, add_field_name){
     }
 }//end of submitForm
 
+function getAddForm(user,csrf, submit_url, add_field_name){
+  $.ajax({
+    url: submit_url,
+    success: function(data){
+      if($(data).find('#main_address_form').length > 0){
+          $(data).find('#button_row').remove();
+          $('#id-new-address-content').addClass('w3-container');
+          if($('#id-new-address-content').find('form').length == 0){
+            $('#id-new-address-content').append($(data).find('#main_address_form form'));
+            $('#id-new-address-content form').prop('id', 'newAddressForm_js');
+
+            $('#id-new-address-content #button_row').remove();
+
+
+            if($('#id-new-address-content').find('#button_block').length == 0){
+              var btblock = document.createElement("div");
+              btblock.setAttribute("class", "w3-right");
+              btblock.setAttribute("id", "button_block");
+
+              var ca = document.createElement("button");
+              ca.setAttribute("type", "button");
+              ca.setAttribute("class", "logo-red");
+              ca.innerHTML = 'Cancel';
+              ca.onclick = function(){
+               $('#id-new-address-modal').hide();
+               $('#id-new-address-content #form').remove();
+               $('#id-new-address-content script').remove();
+              };
+              btblock.appendChild(ca);
+
+              var sv = document.createElement("button");
+              sv.setAttribute("type", "button");
+              sv.setAttribute("class", "logo-blue");
+              sv.setAttribute("id", "newAddressSubmitBtn");
+              sv.innerHTML = 'Save';
+              sv.onclick = function(){
+                if($('.addform-errors').length>0){
+                  $('.addform-errors').remove();
+                }
+                submitForm(csrf, submit_url, add_field_name);
+              };
+              btblock.appendChild(sv);
+              $('#id-new-address-content').append(btblock);
+            }
+            $("#id-new-address-content input[required]").before('<span class="required_stick">*</span>');
+
+            $('#id-new-address-content').append($(data).find('script'));
+
+          }
+          $('#id-new-address-modal').show();
+      }
+      else{
+        createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
+      }
+    },
+    failure: function(data){
+        createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
+    },
+  });
+
+
+}
+
 function createAddForm(user,csrf, submit_url, add_field_name) {
     var addform = document.createElement("FORM");
     addform.setAttribute("id", "newAddressForm_js");
 
 
-    var formblock = document.createElement("fieldset");
-    formblock.setAttribute("class", "module aligned w3-mobile");
+    var formblock = document.createElement("div");
 
     var fuiblock = document.createElement("div");
     fuiblock.setAttribute("id", "id_follow_user_infor_block");
 
     var fui = document.createElement("button");
+    fui.setAttribute("class", "logo-blue");
     fui.setAttribute("type", "button");
     fui.setAttribute("id", "id_follow_user_infor");
     fui.append("Follow User Information");
@@ -65,13 +132,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
       fn.value = user.first_name;
       ln.value = user.last_name;
       ph.value = user.phone;
+      co.value = user.country;
     };
 
     fuiblock.appendChild(fui);
     formblock.appendChild(fuiblock);
 
     var fnblock = document.createElement("div");
-    fnblock.setAttribute("class", "form-row");
+    fnblock.setAttribute("class", "w3-half w3-container");
 
     var fn_l = document.createElement("label");
     fn_l.setAttribute('for', 'id_first_name')
@@ -83,12 +151,13 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     fn.setAttribute("id", "id_first_name");
     fn.setAttribute("type", "text");
     fn.setAttribute("name", "first_name");
+    fn.setAttribute("class", "w3-input w3-border");
     fn.required = true;
     fnblock.appendChild(fn);
 
 
     var lnblock = document.createElement("div");
-    lnblock.setAttribute("class", "form-row");
+    lnblock.setAttribute("class", "w3-half w3-container");
 
     var ln_l = document.createElement("label");
     ln_l.setAttribute('for', 'id_last_name')
@@ -100,12 +169,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ln.setAttribute("id", "id_last_name");
     ln.setAttribute("type", "text");
     ln.setAttribute("name", "last_name");
+    ln.setAttribute("class", "w3-input w3-border");
     ln.required = true;
+
     lnblock.appendChild(ln);
 
+    var phrow = document.createElement("div");
+    phrow.setAttribute("class", "w3-row");
 
     var phblock = document.createElement("div");
-    phblock.setAttribute("class", "form-row");
+    phblock.setAttribute("class", "w3-half w3-container");
 
     var ph_l = document.createElement("label");
     ph_l.setAttribute('for', 'id_phone')
@@ -117,12 +190,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ph.setAttribute("id", "id_phone");
     ph.setAttribute("type", "text");
     ph.setAttribute("name", "phone");
+    ph.setAttribute("class", "w3-input w3-border");
+
     ph.required = true;
     phblock.appendChild(ph);
+    phrow.appendChild(phblock);
 
 
     var coblock = document.createElement("div");
-    coblock.setAttribute("class", "form-row");
+    coblock.setAttribute("class", "w3-third w3-container");
+
 
     var co_l = document.createElement("label");
     co_l.setAttribute('for', 'id_country')
@@ -134,12 +211,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     co.setAttribute("id", "id_country");
     co.setAttribute("type", "text");
     co.setAttribute("name", "country");
+    co.setAttribute("class", "w3-input w3-border");
+
     co.required = true;
     coblock.appendChild(co);
 
 
     var stblock = document.createElement("div");
-    stblock.setAttribute("class", "form-row");
+    stblock.setAttribute("class", "w3-third w3-container");
 
     var st_l = document.createElement("label");
     st_l.setAttribute('for', 'id_state')
@@ -151,13 +230,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     st.setAttribute("id", "id_state");
     st.setAttribute("type", "text");
     st.setAttribute("name", "state");
-    st.setAttribute("class", "form-row");
+    st.setAttribute("class", "w3-input w3-border");
+
     st.required = true;
     stblock.appendChild(st);
 
 
     var ctblock = document.createElement("div");
-    ctblock.setAttribute("class", "form-row");
+    ctblock.setAttribute("class", "w3-third w3-container");
 
     var ct_l = document.createElement("label");
     ct_l.setAttribute('for', 'id_city')
@@ -169,11 +249,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ct.setAttribute("id", "id_city");
     ct.setAttribute("type", "text");
     ct.setAttribute("name", "city");
+    ct.setAttribute("class", "w3-input w3-border");
     ct.required = true;
     ctblock.appendChild(ct);
 
+    var zprow = document.createElement("div");
+    zprow.setAttribute("class", "w3-row w3-container");
+
     var zpblock = document.createElement("div");
-    zpblock.setAttribute("class", "form-row");
+    zpblock.setAttribute("class", "w3-quarter w3-right");
+
 
     var zp_l = document.createElement("label");
     zp_l.setAttribute('for', 'id_zipcode')
@@ -186,12 +271,13 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     zp.setAttribute("id", "id_zipcode");
     zp.setAttribute("type", "text");
     zp.setAttribute("name", "zipcode");
+    zp.setAttribute("class", "w3-input w3-border");
     zp.required = true;
     zpblock.appendChild(zp);
-
+    zprow.appendChild(zpblock);
 
     var adblock = document.createElement("div");
-    adblock.setAttribute("class", "form-row");
+    adblock.setAttribute("class", "w3-container");
 
     var ad_l = document.createElement("label");
     ad_l.setAttribute('for', 'id_address')
@@ -203,13 +289,14 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ad.setAttribute("id", "id_address");
     ad.setAttribute("type", "text");
     ad.setAttribute("name", "address");
+    ad.setAttribute("class", "w3-input w3-border");
     ad.required = true;
     adblock.appendChild(ad);
 
 
 
     var apblock = document.createElement("div");
-    apblock.setAttribute("class", "form-row");
+    apblock.setAttribute("class", "w3-container");
 
     var ap_l = document.createElement("label");
     ap_l.setAttribute('for', 'id_apt')
@@ -221,34 +308,36 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     ap.setAttribute("id", "id_apt");
     ap.setAttribute("type", "text");
     ap.setAttribute("name", "apt");
+    ap.setAttribute("class", "w3-input w3-border");
     apblock.appendChild(ap);
 
     formblock.appendChild(fnblock);
     formblock.appendChild(lnblock);
-    formblock.appendChild(phblock);
+    formblock.appendChild(phrow);
     formblock.appendChild(coblock);
     formblock.appendChild(stblock);
     formblock.appendChild(ctblock);
     formblock.appendChild(adblock);
     formblock.appendChild(apblock);
-    formblock.appendChild(zpblock);
+    formblock.appendChild(zprow);
 
     var btblock = document.createElement("div");
     btblock.setAttribute("class", "w3-right");
 
     var ca = document.createElement("button");
     ca.setAttribute("type", "button");
-    ca.setAttribute("class", "cancel-modal");
+    ca.setAttribute("class", "logo-red");
     ca.innerHTML = 'Cancel';
     ca.onclick = function(){
      $('#id-new-address-modal').hide();
+     addform.remove();
     };
     btblock.appendChild(ca);
 
     var sv = document.createElement("button");
     sv.setAttribute("type", "button");
+    sv.setAttribute("class", "logo-blue");
     sv.setAttribute("id", "newAddressSubmitBtn");
-    sv.setAttribute("onclick", "submitForm()");
     sv.innerHTML = 'Save';
     sv.onclick = function(){
       if($('.addform-errors').length>0){
@@ -265,12 +354,16 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     if($('#newAddressForm_js').length==0){
         $('#id-new-address-content').append(addform);
    }
+   $("input[required]").before('<span class="required_stick">*</span>');
    $('#id-new-address-modal').show();
-
 }//end of create address form
 
 
 $(document).ready(function(){
+
+  $('#id-new-address-modal .close-modal').click(function(){
+    $('#newAddressForm_js').remove();
+  });
 
   $("#select_address_btn").click(function(){
        $('#id-select-address-modal').show();
@@ -297,7 +390,7 @@ $(document).ready(function(){
         var add_card = document.createElement('div');
         add_card.setAttribute('id', 'default_address_card');
         add_card.setAttribute('class', 'w3-card-2 w3-round w3-container w3-mobile w3-half');
-        add_card.style.maxWidth = "300px";
+        add_card.style.maxWidth = "30vw";
         var add_fields = document.createElement('div');
         add_fields.setAttribute('id', 'default_address_card_fields');
         add_card.append(add_fields);
@@ -312,8 +405,8 @@ $(document).ready(function(){
           add_id.setAttribute('id', 'id_ship_to_add');
           add_id.setAttribute('name', 'ship_to_add');
         }
-        add_card.append(add_id)
-        $('#remove_default_add_btn').parent('div').before(add_card);
+        add_card.append(add_id);
+        $('#select_address_btn').parent('div').after(add_card);
       }
 
       $( "#default_address_card_fields").find('.add_fields').remove();
@@ -340,11 +433,12 @@ $(document).ready(function(){
         $('#id-select-col-modal').hide();
 
         let element=$(this).clone();
-        element.addClass("w3-half")
+        let id = element.attr("id");
         element.removeClass("colchoice")
+        element.attr('id','default_col_card');
+
         $('#remove_default_col_btn').parent('div').before(element);
-        $('#default_col_block').find('.w3-card-2').attr('id','default_col_card');
-        $('#default_col_card').append('<input type="hidden" id="id_default_col" name="default_col" value='+$(this).attr("id")+' />');
+        $('#default_col_card').append('<input type="hidden" id="id_default_col" name="default_col" value='+id+' />');
         $('#remove_default_col_btn').show();
         $(this).addClass("w3-pale-green");
     });// END OF select collection point

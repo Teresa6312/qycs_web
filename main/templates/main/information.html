@@ -2,17 +2,54 @@
 {% load i18n static %}
 
 {% block title%}
-{{empty}}{{information.header}}
+{{empty}}
+{% if LANGUAGE_CODE == "en-us" %}
+    {{information.english_header|title}}
+{% elif LANGUAGE_CODE == "zh-hans" %}
+    {{information.chinese_header|title}}
+{% endif %}
 {% endblock%}
 
 {% block content %}
-<div class="w3-panel" style="max-width:800px; margin:auto;" >
+<div class="w3-panel content_center" id="content_block">
 {% if information %}
-  <h2>{{information.header}}</h2>
-  <p>{{information.english_content|linebreaks|safe}}</p>
+    {% if LANGUAGE_CODE == "en-us" %}
+        <div class="text-xxlarge">{{information.english_header|title|safe}}</div>
+          <p>{{information.english_content|linebreaks|safe}}</p>
+    {% elif LANGUAGE_CODE == "zh-hans" %}
+      <div class="text-xxlarge">{{information.chinese_header|safe}}</div>
+          <p>{{information.chinese_content|linebreaks|safe}}</p>
+    {% endif %}
 {% else %}
-  <h2>{{empty}}</h2>
-    <h3>{% trans 'Thank your for visiting our websit. The information will be post soon!' %}</h3>
+  <div class="text-xxlarge">{{empty}}</div>
+    <div class="text-medium">{% trans 'Thank your for visiting our website. The information will be post soon!' %}</div>
 {% endif %}
+
 </div>
+
+
+<script>
+function loadDoc(url) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("content_block").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+}
+$(document).ready(function(){
+  var url = '';
+  if ('{{LANGUAGE_CODE}}'=="en-us"){
+    url = '/static/information/'+'{{information.title}}'+"_en.txt";
+  }else if('{{LANGUAGE_CODE}}'=="zh-hans"){
+    url = '/static/information/'+'{{information.title}}'+"_cn.txt";
+  }
+  if(url!=''){
+    loadDoc(url)
+  }
+});
+</script>
+
 {% endblock %}

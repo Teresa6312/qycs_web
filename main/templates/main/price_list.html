@@ -1,0 +1,70 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans "Price List" %}
+{% endblock%}
+
+{% block content %}
+<div class="content_center">
+{% if price_list %}
+<div class="text-xxlarge-bold">
+ {%trans 'Price List' %}
+</div>
+<h2><i>{{price_list.first.get_from_country_display}} - {{price_list.first.get_to_country_display}}</i></h2>
+
+<h3>{% trans 'Co-shipping Fee' %}</h3>
+<table border="1" width="450px">
+  <tr border="1">
+    <th>{% trans 'Category' %}</th>
+    <th>{% trans 'Period' %}</th>
+    <th>{% trans 'Price' %}</th>
+  </tr>
+
+    {% for price in price_list %}
+        {% if not price.carrier %}
+            <tr border="1" class="w3-center">
+              <td>{{price.get_package_type_display}}</td>
+              <td>{{price.period}}</td>
+              <td>{{price.shipping_currency}}{{price.avg_weight_price}}/100g</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+
+
+<h3>{% trans 'Direct Shipping Fee' %}</h3>
+<table border="1" width="700px">
+    <tr border="1">
+      <th>{% trans 'Category' %}</th>
+      <th>{% trans 'Carrier' %}</th>
+      <th>{% trans 'Period' %}</th>
+      <th>{% trans 'First Weight/500g' %}</th>
+      <th>{% trans 'Continuous Weight/500g' %}</th>
+    </tr>
+    {% for price in price_list %}
+        {% if price.carrier %}
+        <tr border="1" class="w3-center">
+          <td>{{price.get_package_type_display}}</td>
+          <td>{{price.get_carrier_display}}</td>
+          <td>{{price.period}}</td>
+          <td>{{price.shipping_currency}} {{price.first_weight_price}}</td>
+          <td>{{price.shipping_currency}} {{price.next_weight_price}}</td>
+        </tr>
+
+
+        {% endif %}
+    {% endfor %}
+</table>
+{% endif %}
+<br>
+
+<p><i>If the package's volume weight is greater than the regular weight, carriers will use the volume weight as the final weight.</i></p>
+<p><b>Volume Weight(kg) Formula: Length(cm) x Width(cm) x Height(cm) / 5000</b></p>
+<br>
+
+<p>{% trans 'Note: Qycs guarantees for Co-Shipping Custom clearance and tax;' %}
+<br>{% trans  "Qycs does not guarantee for Direct Shipping tax, if a user's package is taxed by the Custom, user shall duties to pay." %}</p>
+</div>
+{% endblock %}

@@ -2,10 +2,8 @@
 {% load i18n static %}
 
 {% block extrastyle %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
-{{ form.media }}
-    <link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}" />
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
 {% endblock %}
 
 
@@ -28,16 +26,16 @@
 {% block footer %}{% endblock %}
 
 {% block content %}
-    <div class="w3-panel w3-center">
-        <img src="{% static 'image/qycs.ico'%}" width="100" height="100">
+    <div class="w3-padding-32 w3-center">
+      <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" class="large_image"/></a>
     </div>
 
     <div id="content-main" class="w3-container">
         {% if user.is_authenticated %}
           <p class="errornote">
+            {{user.username}},&nbsp;
             {% blocktrans trimmed %}
-                You are authenticated as {{ username }}, but are not authorized to
-                access this page. Would you like to login to a different account?
+                you are not authorized to access this page. Would you like to create a new account?
             {% endblocktrans %}
           </p>
         {% endif %}
@@ -59,9 +57,18 @@
             {% endfor %}
         {% endif %}
 
+        <!-- <div class="socmed-login">
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
+            <i class="fa fa-google"></i>
+            <span>Sign Up with Google</span>
+            </a>
+            <br class="clear"/>
+        </div>
+        <div class="w3-center">OR</div> -->
+
         <form id="regForm" method="post">
             {% csrf_token %}
-            <h3>{% trans "Create My Qycs Account" %}</h3>
+            <div class="text-large">{% trans "Create My Qycs Account" %}</div>
 
             <!-- One "tab" for each step in the form: -->
             <div class="tab">
@@ -74,6 +81,9 @@
                 {{ form.password1.errors }}
                 {{ form.password1.label_tag }} {{ form.password1 }}
               </div>
+              {% if form.password1.help_text %}
+                  <div class="help">{{ form.new_password1.help_text|safe }}</div>
+              {% endif %}
               <div class="form-row">
                 {{ form.password2.errors }}
                 {{ form.password2.label_tag }} {{ form.password2 }}
@@ -107,7 +117,7 @@
               </div>
             </div>
             <div class="tab WebFormSet">
-              <p>
+              <p class="w3-text-blue">
                 {% blocktrans %}
                     In order to provide the best service to you and other customers,
                     please enter 3 of your favorite shopping websites below!
@@ -115,25 +125,35 @@
               </p>
               {{ webformset.management_form }}
               {% for subform in webformset%}
-                  <div class="form-row">
-                    {{ subform.web_type.errors }}
-                    {{ subform.web_type.label_tag }}
-                    <div class="w3-row">{{ subform.web_type }}</div>
-                  </div>
-                  <div class="form-row">
-                    {{ subform.web_name.errors }}
-                    {{ subform.web_name.label_tag }} {{ subform.web_name }}
+                  <div class="form-row w3-row">
+                    <div class="w3-third">
+                      {{ subform.web_type.errors }}
+                      {{ subform.web_type.label_tag }}
+                      {{ subform.web_type }}
+                    </div>
+                    <div class="w3-rest">
+                      {{ subform.web_name.errors }}
+                      {{ subform.web_name.label_tag }} {{ subform.web_name }}
+                    </div>
                   </div>
               {% endfor %}
+              <div class="text-regular-bold">{% trans 'Terms and Conditions' %}</div>
+                  <div class="text-small">
+                      {{form.privacy_policy_agree}}
+                      {% blocktrans %}
+                          I have read, understood and agreed to be bound by myqycs.com Terms of Use. I also understood how MYQYCS intends to use my information.
+                      {% endblocktrans %}
+                      <a href="{% url 'information' 'policy'%}">{% trans 'Privacy Policy' %}</a>
+                </div>
             </div>
 
 
-            <div class="w3-row w3-right">
-                <button type="button" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
+            <div class="w3-row w3-center">
+                <button type="button" class="logo-blue" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">{% trans "Previous" %}</button>
+                <button type="button" class="logo-red" id="nextBtn" onclick="nextPrev(1)" style="display:none;">{% trans "Next" %}</button>
                 <span id="submit_block">
-                  <button type = "submit" name="register" value ="Register">{% trans "Register" %}</button>
-                  <button type="submit" name="colregister" value="colregister">{% trans "Register as Collector" %}</button>
+                  <button class="logo-blue" type = "submit" name="register" value ="Register">{% trans "Register" %}</button>
+                  <button class="logo-red" type="submit" name="colregister" value="colregister">{% trans "Register as Collector" %}</button>
                 </span>
             </div>
 
@@ -147,5 +167,5 @@
 
         </form>
     </div>
-<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock%}

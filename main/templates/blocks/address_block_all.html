@@ -7,9 +7,9 @@
 
 <div id="default_address_block">
 		<div class="w3-row">
-			<button type="button" id="add_new_address_btn">{% trans 'Add new address' %}</button>
+			<button type="button" class="logo-red" id="add_new_address_btn">{% trans 'New address' %}</button>
 			{% if user.address_set.all %}
-			    <button type="button" id="select_address_btn">{% trans 'Select from address book' %}</button>
+			    <button type="button" class="logo-blue" id="select_address_btn">{% trans 'Address book' %}</button>
 			{% endif %}
 		</div>
 
@@ -18,7 +18,9 @@
 		{% elif user.default_address %}
 				{% include "blocks/default_address_card.html" with add=user.default_address %}
 		{% endif%}
-		<div class="w3-row"><button type="button" id="remove_default_add_btn" style="display:none;">{% trans 'Remove Default Address' %}</button></div>
+		{% if add_field_name == 'default_address' %}
+				<div class="w3-row"><button type="button" class="logo-red" id="remove_default_add_btn" style="display:none;">{% trans 'Remove Default Address' %}</button></div>
+		{% endif %}
 </div>
 
 
@@ -30,8 +32,9 @@
 		                'first_name': '{{user.first_name}}',
 		                'last_name': '{{user.last_name}}',
 		                'phone': '{{user.phone}}',
+										'country': '{{user.country}}'
 		              };
-		      createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
+					getAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');							
 		  });
 		});//end of ready function
 </script>

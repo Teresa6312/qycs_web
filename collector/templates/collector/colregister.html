@@ -1,0 +1,262 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% load cloudinary %}
+
+
+{% block title%}
+{% trans 'Register Collection Point' %}
+{% endblock%}
+
+
+{% block messages %}
+{% endblock messages %}
+
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/multistepform.css'%}"/>
+{% endblock %}
+
+
+{% block content %}
+  <div class="w3-cell-row w3-mobile content_center">
+    <div class="text-xxlarge-bold w3-panel">{% trans 'Register my location as a Package Collection Point' %}</div>
+
+    <div id="message_block">
+      {% if messages %}
+      <ul class="messagelist">{% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+      {% endfor %}</ul>
+      {% endif %}
+
+      {% if form.errors %}
+          <p class="errornote">
+          {% trans "Please correct the error(s) below." %}
+          </p>
+      {% endif %}
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="tab">
+        <div class="w3-col-row w3-mobile">
+              <div class="w3-col w3-container m6 l6">
+                    <div class="w3-container w3-mobile content_left">
+                      <div class="text-medium">{% trans 'My Profile' %}</div>
+                    </div>
+                    <hr/>
+                    <div class="w3-container w3-mobile content_left">
+                          <div class="w3-row">
+                            {{ userform.username.label_tag }} {{ userform.username.errors }}{{ userform.username }}
+                            <input type="hidden" name="next" value="{{ next }}" />
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.first_name.label_tag }}{{ userform.first_name.errors }} {{ userform.first_name }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.last_name.label_tag }} {{ userform.last_name.errors }}{{ userform.last_name }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.birthday.label_tag }}{{ userform.birthday.errors }}<br/>{{ userform.birthday }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.email.label_tag }} {{ userform.email.errors }}{{ userform.email }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ userform.phone.label_tag }}   {{ userform.phone.errors }}{{ userform.phone }}
+                          </div>
+                          <div class="w3-half">
+                            {{ userform.language.label_tag }} {{ userform.language.errors }} {{ userform.language }}
+                          </div>
+                    </div>
+                </div>
+                <div class="w3-col w3-container m6 l6">
+                      <div class="w3-container w3-mobile content_right">
+                        <div class="text-medium">{% trans 'My Location' %}</div>
+                      </div>
+                      <hr/>
+                      <div class="w3-container w3-mobile content_right">
+                          <div class="w3-row">
+                            {{ colform.name.label_tag }}{{ colform.name.errors }} {{ colform.name }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.collector_icon.label_tag }} {{ colform.collector_icon.errors }} {{ colform.collector_icon }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.store.label_tag }} {{ colform.store.errors }}{{ colform.store }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.store_name.label_tag }} {{ colform.store_name.errors }}{{ colform.store_name }}
+                          </div>
+                          <div class="w3-row">
+                              <div class="w3-third">
+                                {{ colform.country.label_tag }}   {{ colform.country.errors }}{{ colform.country }}
+                              </div>
+                            <div class="w3-third">
+                              {{ colform.state.label_tag }} {{ colform.state.errors }}{{ colform.state }}
+                            </div>
+                            <div class="w3-third">
+                              {{ colform.city.label_tag }} {{ colform.city.errors }}{{ colform.city }}
+                            </div>
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.address.label_tag }} {{ colform.address.errors }}{{ colform.address }}
+                            {{ colform.apt.errors }}{{ colform.apt }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.zipcode.label_tag }} {{ colform.zipcode.errors }}{{ colform.zipcode }}
+                          </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab">
+            <div class="w3-col-row w3-mobile">
+                  <div class="w3-col w3-container m6 l6">
+                        <div class="w3-container w3-mobile content_left">
+                          <div class="text-medium">{% trans 'Document' %}</div>
+                        </div>
+                        <hr/>
+                        <div class="w3-container w3-mobile content_left">
+                            <div class="w3-row">
+                              {{ colform.license_type.label_tag }} {{ colform.license_type.errors }}{{ colform.license_type }}
+                            </div>
+                            <div class="w3-row">
+
+                              {{ colform.license_image.label_tag }} {{ colform.license_image.errors }}{{ colform.license_image }}
+                            </div>
+                            <div class="w3-row">
+
+                              {{ colform.id_image.label_tag }} {{ colform.id_image.errors }}{{ colform.id_image }}
+                            </div>
+                            <div class="w3-row">
+
+                              {{ colform.wechat.label_tag }} {{ colform.wechat.errors }}{{ colform.wechat }}
+                            </div>
+                            <div class="w3-row">
+
+                              {{ colform.wechat_qrcode.label_tag }}  {{ colform.wechat_qrcode.errors }} {{ colform.wechat_qrcode }}
+                            </div>
+                      </div>
+                  </div>
+
+                  <div class="w3-col w3-container m6 l6">
+                        <div class="w3-container w3-mobile content_right">
+                          <div class="text-medium">{% trans 'Other Information' %}</div>
+                        </div>
+                        <hr/>
+                        <div class="w3-container w3-mobile content_right">
+                          <div class="w3-row">
+
+                            {{ colform.referrer.label_tag }}   {{ colform.referrer.errors }}{{ colform.referrer }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.apply_reason.label_tag }} {{ colform.apply_reason.errors }}{{ colform.apply_reason }}
+                          </div>
+                          <div class="w3-row">
+
+                            {{ colform.info_source.label_tag }}{{ colform.info_source.errors }} {{ colform.info_source }}
+                          </div>
+
+                        </div>
+
+                  </div>
+
+              </div>
+              <div class="w3-mobile content_center">
+                  <div class="text-medium w3-center w3-panel">{% trans 'Collection Point Registration Terms' %}</div>
+                  <div class="w3-card-2 w3-container w3-margin-top content_center" style="height:300px; overflow:auto;" id="term_block">{{term|linebreaks}}</div>
+                  <div class="w3-center content_center">{{colform.agreement}}
+                    {% blocktrans %}
+                      I have read, understood and agreed to be bound by myqycs.com Collection Points' Registration terms. I also understood how MYQYCS intends to use my information.
+                    {% endblocktrans %}
+                  </div>
+              </div>
+        </div>
+
+
+        <div class="w3-row content_center">
+          <div class="w3-center">
+
+            <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
+            <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
+            <span id="submit_block">
+              <button  type="button" class="logo-red" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
+              <input class="logo-red" type="submit" name="finish" value="{% trans 'Register' %}"/>
+            </span>
+          </div>
+        </div>
+
+  </form>
+  <script src="{% static 'js/packageset.js' %}"></script>
+{% endblock %}
+
+
+{% block script%}
+<script>
+  $(function() {
+    if($.fn.cloudinary_fileupload !== undefined) {
+      $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+    }
+  });
+
+  $('#id_store').change( function(){
+          if (!$(this).is(':checked')) {
+            $('#id_store_name').closest('.w3-row').slideUp(300, function(){
+                $('#id_store_name').closest('.w3-row').hide();
+            });
+            $('#id_license_type').closest('.w3-row').slideUp(300, function(){
+                $('#id_license_type').closest('.w3-row').hide();
+            });
+            $('#id_license_image').closest('.w3-row').slideUp(300, function(){
+                $('#id_license_image').closest('.w3-row').hide();
+            });
+          }else{
+            $('#id_store_name').closest('.w3-row').hide().slideDown(300);
+            $('#id_license_image').closest('.w3-row').hide().slideDown(300);
+            $('#id_license_type').closest('.w3-row').hide().slideDown(300);
+          }
+      });
+
+      function loadDoc(url) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("term_block").innerHTML = this.responseText;
+          }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+      }
+      $(document).ready(function(){
+        var url = '';
+        if ('{{LANGUAGE_CODE}}'=="en-us"){
+          url = "/static/information/collection_point_terms_en.txt";
+        }else if('{{LANGUAGE_CODE}}'=="zh-Hans"){
+          url = "/static/information/collection_point_terms_cn.txt";
+        }
+        if(url!=''){
+          loadDoc(url)
+        }
+      });
+  </script>
+{% endblock%}

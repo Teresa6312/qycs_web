@@ -1,0 +1,37 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Tracking' %}
+{% endblock%}
+
+{% block coltype %}tracking_page{% endblock %}
+
+{% block content %}
+
+<div class="w3-row w3-panel">
+  <div class="w3-third circle w3-center">
+      <div id="tracking_full_circle">
+        <a href="javascript:history.back()">
+          <i class="fa fa-angle-double-left"></i>&emsp;{% trans 'TRACKING' %}
+        </a>
+      </div>
+  </div>
+
+  <div class="w3-twothird tracking">
+    <div class="w3-padding-64">
+        <div class="text-xxxlarge-bold">{% trans 'TRACK PACKAGE(S)' %}</div>
+        <form method="post">
+            {% csrf_token %}
+            <div id="tracking_block">
+              <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" placeholder="{% trans 'Enter one or more tracking numbers' %}" title="{% trans 'YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR SEMICOLON.' %'}">
+                <input type="submit" value="{% trans 'TRACK'%}" id="track_btn">
+            </div>
+        </form>
+        <div class="text-regular-bold"><a class="w3-text-black" href="{% url 'customer_service' %}" >{% trans 'NEED HELP?' %}</a></div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

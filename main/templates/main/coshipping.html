@@ -7,38 +7,29 @@
 {% endblock%}
 
 {% block shippingset %}
-	<h2>{% trans 'Co-shipping' %}</h2>
-	<fieldset class="module aligned w3-mobile">
-		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Confirm the Receiver Information' %}</h2>
-		<button type="button" id="follow_user_infor">{% trans 'Follow User Information' %}</button>
-		<button type="button" id="use_last_infor">{% trans 'Use the last Receiver Information' %}</button>
-		<div class="form-row">
-			{{ receiverform.first_name.errors }}
-			{{ receiverform.first_name.label_tag }} {{ receiverform.first_name }}
-		</div>
-		<div class="form-row">
-			{{ receiverform.last_name.errors }}
-			{{ receiverform.last_name.label_tag }} {{ receiverform.last_name }}
-		</div>
-		<div class="form-row">
-			{{ receiverform.phone.errors }}
-			{{ receiverform.phone.label_tag }} {{ receiverform.phone }}
-		</div>
-	</fieldset>
-	<fieldset class="module w3-mobile">
-		<h2 class="w3-sand w3-text-indigo w3-large">{% trans 'Selected Collection Point' %}</h2>
-		<div class="w3-container">
-			<button type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button><br/>
-			{{ form.ship_to_col.errors }}
+	<div class="w3-mobile">
+		<div class="w3-row">{% trans 'Receiver Information' %}</div>
+		<div class="">
+				<div class="w3-third">
+					{{ receiverform.first_name }}
+				</div>
+				<div class="w3-third">
+				 {{ receiverform.last_name }}
+				</div>
+				<div class="w3-third">
+					{{ receiverform.phone }}
+					{{ receiverform.phone.errors }}
+				</div>
+			</div>
+	</div>
+	<div class="w3-mobile">
+		<div class="w3-row">{% trans 'Selected Collection Point' %}</div>
+		{{ form.ship_to_col.errors }}
+		<div class="w3-container w3-border w3-round">
 			<input type="hidden" id="id_ship_to_col" name="ship_to_col" value="{{selected_col.pk}}">
-			{% include "blocks/col_card_fields.html" with col=selected_col %}
-
+			{% include "blocks/col_card_fields.html" with col=selected_col no_icon='yes' %}
 	  </div>
-	</fieldset>
+		<button class="w3-right logo-red" type="button" onclick="window.location.href='{% url 'collection_points' %}'">{% trans 'Change' %}</button><br/>
+	</div>
 
-{% endblock %}
-
-
-{% block extrabtn %}
-<button class="cancelBtn" onclick=" window.location.href='{% url 'collection_points' %}'" type="button">Back to Collection Points</button>
 {% endblock %}

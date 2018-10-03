@@ -5,39 +5,36 @@
 {% trans 'Upcoming Packages' %}
 {% endblock%}
 
-{% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-{% endblock %}
-
 {% block content %}
-<form method = "post">
+<form method = "post" class="w3-margin-top">
 {% csrf_token %}
-<div class="w3-cell w3-container w3-mobile" style="width:80%;">
-    <div class="w3-card-2 w3-round w3-container">
+<div class="w3-cell w3-container w3-mobile">
+    <div class="w3-container">
 
 
-		<h2>Packages Cart</h2>
+		<div class="text-xxlarge">{% trans 'Packages Cart' %}</div>
 
-		<button type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
-		<button type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
+		<button class="logo-red" type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
+		<button class="logo-blue" type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
 
     <table class="w3-mobile">
         <thead>
-            <tr><th class="w3-col w3-text-blue select_column">
+            <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
               <input type="checkbox" id="select_all">&nbsp;{% trans 'Select All' %}
-            </th><th style="width:100%;">{% trans 'Package' %}</th></tr>
+            </th><th class="text-regular-bold content_right">{% trans 'Package(s) / Order(s)' %}</th></tr>
         </thead>
         <tbody>
       {% if package_list %}
           {% for package in package_list %}
-              <tr class="w3-cell-row"><td  class="w3-cell select_column">
+            {% if not package.order %}
+              <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
                 <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
               </td><td class="w3-cell w3-rest">
-                <div class="w3-card-2 w3-round w3-panel package">
+                <div class="w3-card-2 w3-round w3-panel package w3-padding-16">
                       <div class="w3-third w3-container">
-                        <h5 class="cust_tracking_num">{{package.cust_tracking_num}}</h5>
+                        <div class="cust_tracking_num text-regular-bold">{{package.cust_tracking_num}}</div>
 
-                          {{package.cust_carrier}} ({{package.wh_received.country}})<br/>
+                          {{package.get_cust_carrier_display}} ({{package.wh_received.country}})<br/>
                           {% if package.created_date %}
                           {% trans 'Created on' %}: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
                           {% if package.weight %}
@@ -46,21 +43,20 @@
                   <div class="w3-third w3-container">
 
                     {% if package.ship_to_add %}
-                    <h5>{% trans 'Direct Shipping to' %}:</h5>
+                    <div class="text-regular-bold">{% trans 'Direct Shipping to' %}:</div>
 
                           {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
-                            {{package.ship_to_add.address}}<br/>
-                            {% if package.ship_to_add.apt %}{{package.ship_to_add.apt}}<br/>{% endif %}
+                            {{package.ship_to_add.address}}{% if package.ship_to_add.apt %} | {{package.ship_to_add.apt}}{% endif %}<br/>
                             {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
                             {{package.ship_to_add.country}}<br/>
 
 
 
                     {% elif package.ship_to_col %}
-                    <h5>{% trans 'Co-shipping to' %}:</h5>
-                          {{package.ship_to_col.name}}<br/>
-                              {{package.ship_to_col.address}}<br/>
-                              {% if package.ship_to_col.apt %}{{package.ship_to_col.apt}}<br/>{% endif %}
+                    <div class="text-regular-bold">{% trans 'Co-shipping to' %}:</div>
+                    <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
+                    <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
+                              {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
                               {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
                               {{package.ship_to_col.country}}<br/>
 
@@ -69,7 +65,7 @@
                   </div>
 
                   <div class="w3-third w3-container">
-                        <h5>Price:</h5>
+                        <div class="text-regular-bold">{% trans 'Price' %}</div>
                         {% if package.order_amount %}
                           {% trans 'Order Amount' %}: {{package.currency}} <span id="order_amount_{{ forloop.counter0 }}" class="order_amount">{{package.order_amount}}</span><br/>
                         {% endif %}
@@ -82,13 +78,74 @@
                         {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
 
                   {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
-                  <button type="button" class="w3-right" onclick="window.location.href='{{package.get_absolute_url}}'">detail</button>
+                  <button type="button" class="w3-right w3-light-grey w3-text-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'detail' %}</button>
                   </div>
                   </div>
               </td></tr>
+              {% else %}
+
+              <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
+                <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
+              </td><td class="w3-cell w3-rest">
+                <div class="w3-card-4 w3-border-red w3-round w3-panel package w3-border w3-padding-16">
+                      <div class="w3-third w3-container">
+                          <div class="cust_tracking_num text-regular-bold">{% trans 'Order'%} ({{package.created_date|date:"m/d/Y" }})</div>
+
+                          {% if package.ship_to_add %}
+                          <div>{% trans 'Direct Shipping to' %}:</div>
+
+                                {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
+                                  {{package.ship_to_add.address}}{% if package.ship_to_add.apt %} | {{package.ship_to_add.apt}}{% endif %}<br/>
+                                  {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
+                                  {{package.ship_to_add.country}}<br/>
+
+                          {% elif package.ship_to_col %}
+                          <div>{% trans 'Co-shipping to' %}:</div>
+                          <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
+                          <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
+                                    {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
+                                    {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
+                                    {{package.ship_to_col.country}}<br/>
+
+                          {% endif %}
+
+
+                    </div>
+                    <div class="w3-third w3-container">
+                      <div class="text-regular-bold">Items:</div>
+                        {% if package.item_set.all %}
+                          <ul>
+                            {% for item in package.item_set.all %}
+                            <li>{{item.item_name}} - {{item.currency}}{{item.item_value}}</li>
+                            {% endfor %}
+                          </ul>
+                        {% else %}
+                            {% trans 'No information at this time.' %}
+                        {% endif %}
+                    </div>
+                    <div class="w3-third w3-container">
+                      <div class="text-regular-bold">{% trans 'Price' %}</div>
+                          {% if package.order_amount %}
+                            {% trans 'Order Amount' %}: {{package.currency}} <span id="order_amount_{{ forloop.counter0 }}" class="order_amount">{{package.order_amount}}</span><br/>
+                          {% endif %}
+                          {% if package.storage_fee %}
+                            {% trans 'Storage fee' %}: {{package.currency}} <span id="storage_fee_{{ forloop.counter0 }}" class="storage_fee">{{package.storage_fee}}</span><br/>
+                          {% endif %}
+                          {% if package.shipping_fee %}
+                            {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ forloop.counter0 }}" class="shipping_fee">{{package.shipping_fee}}</span><br/>
+                          {% endif %}
+                          {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
+
+                        {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
+                        <button type="button" class="w3-right w3-light-grey w3-text-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'detail' %}</button>
+                    </div>
+                  </div>
+
+              </td></tr>
+              {% endif %}
           {% endfor %}
       {% endif %}
-      <tbody>
+      </tbody>
     </table>
 	</div>
 </div>
@@ -96,18 +153,17 @@
 {% endblock %}
 
 {% block sidebar %}
-<div class="w3-container w3-cell w3-mobile" style="width:300px">
-    <div class="w3-card-2 w3-round w3-container aside-bar-background-color">
-        <h3>{% trans 'Place Packages' %}:</h3>
+<div class="w3-container w3-cell w3-mobile w3-margin-top" style="width:300px;">
+    <div class="w3-card-2 w3-round w3-container w3-padding-16" id="payment_sidebar">
+        <div class="text-medium">{% trans 'Place Packages' %}:</div>
         <div id="selected_list">
         </div>
         <hr class="w3-border-grey"/>
-          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
-          <div class="w3-center">OR</div>
-          <div class="w3-row" id="reward_block">{% trans 'Reward Points' %}:<input type="hidden" name="reward_point_used" id="id_reward_point_used"><span class="w3-text-blue w3-right" onclick="apply_reward({{user.reward}})">{% trans 'Apply' %}</span></div>
-        <hr class="w3-border-black"/>
+          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon" class="w3-input w3-border"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
+          <hr class="w3-border-black"/>
         <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
-        <input type="submit" value="{% trans 'Submit' %}" class="w3-right">
+        <div class="w3-row">{{order.insurance.label_tag}}<span class="w3-right" id="id_total_amount">{{order.insurance}}</span></div>
+        <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
     </div>
 </div>
 </form>

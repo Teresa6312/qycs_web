@@ -5,7 +5,7 @@ from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
 	Warehouse, PackageSnapshot, ParentPackage, Item,
-	Coupon, FavoriteWebsite, Resource
+	Coupon, FavoriteWebsite, Resource, PriceRate
 )
 from django.utils.html import mark_safe
 
@@ -103,21 +103,22 @@ class CollectionPointAdmin(admin.ModelAdmin):
 	def status_all_display(self, obj):
 		return obj.status_all()
 
-	fieldsets = [
-		('Collector', 				{'fields': ['collector', 'store', 'status',"status_all_display",]}),
-		('location',               	{'fields': ['name','collector_icon', 'collector_icon_display', 'store', 'store_name', 'address', 'city', 'state','country', 'zipcode','memo',]}),
-		('License',					{'fields': ['license_image', 'license_image_display', 'id_image','id_image_display',]}),
-		('Document',				{'fields': ['wechat', 'wechat_qrcode', 'referrer', 'apply_reason', 'info_source',]}),
-		('Package',                 {'fields': ['food', 'regular', 'skincare',]}),
-		('Schedule',                {'fields': ['absent_start', 'absent_end',
-												'mon_start', 'mon_end',
-												'tue_start', 'tue_end',
-												'wed_start', 'wed_end',
-												'thu_start', 'thu_end',
-												'fri_start', 'fri_end',
-												'sat_start', 'sat_end',
-												'sun_start', 'sun_end',]}),
-	]
+	fieldsets = (
+	('Collector', 				{'fields': ['collector', 'status',"status_all_display",]}),
+	('location',               	{'fields': ['name','collector_icon', 'collector_icon_display', 'store', 'store_name', 'address', 'city', 'state','country', 'zipcode','memo',]}),
+	('License',					{'fields': ['license_image', 'license_image_display', 'id_image','id_image_display',]}),
+	('Document',				{'fields': ['wechat', 'wechat_qrcode', 'referrer', 'apply_reason', 'info_source',]}),
+	('Package',                 {'fields': ['food', 'regular', 'beauty',]}),
+	('Schedule',                {'fields': ['absent_start', 'absent_end',
+											'mon_start', 'mon_end',
+											'tue_start', 'tue_end',
+											'wed_start', 'wed_end',
+											'thu_start', 'thu_end',
+											'fri_start', 'fri_end',
+											'sat_start', 'sat_end',
+											'sun_start', 'sun_end',]}),
+
+	)
 
 
 admin.site.register(CollectionPoint, CollectionPointAdmin)
@@ -265,7 +266,14 @@ class FavoriteWebsiteAdmin(admin.ModelAdmin):
 admin.site.register(FavoriteWebsite, FavoriteWebsiteAdmin)
 
 class ResourceAdmin(admin.ModelAdmin):
-	list_display = ('id', 'title','header',)
-	search_fields = ['title', 'header',]
+	list_display = ('title','english_header', 'chinese_header')
+	search_fields = ['title', 'english_header', 'chinese_header']
 
 admin.site.register(Resource, ResourceAdmin)
+
+
+class PriceRateAdmin(admin.ModelAdmin):
+	list_display = ('category','from_country', 'to_country', 'package_type', 'first_weight_price', 'next_weight_price', 'avg_weight_price', 'carrier', 'shipping_currency', 'rate')
+	search_fields = ['from_country', 'to_country',]
+
+admin.site.register(PriceRate, PriceRateAdmin)

@@ -51,6 +51,7 @@ DEBUG = False
 # paypal
 PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
 PAYPAL_TEST = False
+PAYPAL_PDT_TOKEN = os.environ.get('PAYPAL_PDT_TOKEN', '')
 
 # email
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', '')
@@ -62,7 +63,8 @@ EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 EMAIL_USE_TLS = True
 
-
+# to storage the images
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '')
 
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
