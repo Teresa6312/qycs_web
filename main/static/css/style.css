@@ -760,15 +760,12 @@ input:checked + .slider:before {
       color: #ba2121;
       border: 1px solid #ba2121;
       border-radius: 4px;
-      background-color: #fff;
-      background-position: 5px 12px;
   }
 
   ul.errorlist {
       margin: 0 0 4px;
       padding: 0;
       color: #ba2121;
-      background: #fff;
   }
 
   ul.errorlist li {

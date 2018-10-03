@@ -408,7 +408,7 @@ $(document).ready(function(){
           add_id.setAttribute('name', 'ship_to_add');
         }
         add_card.append(add_id);
-        $('#remove_default_add_btn').parent('div').before(add_card);
+        $('#select_address_btn').parent('div').after(add_card);
       }
 
       $( "#default_address_card_fields").find('.add_fields').remove();

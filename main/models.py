@@ -223,7 +223,7 @@ class CollectionPoint(Address_Common_Info):
 	store.boolean = True
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
-	wechat = models.CharField(max_length = 100, unique = True, blank=False, null=True, verbose_name= _('WeChat ID'))
+	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
 	# wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
