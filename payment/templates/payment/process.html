@@ -10,7 +10,7 @@
 <div style="width:60%; margin:auto;">
   <div class="w3-panel">
     <div class="w3-right">
-      {{form.render}}
+
         {% if orderSet.coupon %}
           <div id="discount_block">{{orderSet.coupon.code}}(5% OFF):<span class="w3-right" id="discount_amount">
             - {{orderSet.currency}}{{orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"}}
@@ -26,6 +26,7 @@
             {{orderSet.total_amount|mul:100|sub:orderSet.reward_point_used|div:100|floatformat:"2"}}
           {% endif %}
         </span></div>
+          {{form.render}}
         <br/>
       </div>
     </div>

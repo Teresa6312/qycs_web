@@ -34,7 +34,7 @@ function submitForm(csrf, submit_url, add_field_name){
             $('#id-new-address-content').before($(data).find('.messagelist'));
             $('.messagelist').hide().slideDown(500);
             $(data).find('.errorlist').each(function(){
-                var input = $(this ).parent('.form-row').find('input');
+                var input = $(this ).parent('div').find('input');
                 $('#id-new-address-content').find('#'+input.prop("id")).before($(this));
             });
             $('.errorlist').hide().slideDown(500);
@@ -48,6 +48,69 @@ function submitForm(csrf, submit_url, add_field_name){
       });
     }
 }//end of submitForm
+
+function getAddForm(user,csrf, submit_url, add_field_name){
+  $.ajax({
+    url: submit_url,
+    success: function(data){
+      if($(data).find('#main_address_form').length > 0){
+          $(data).find('#button_row').remove();
+          $('#id-new-address-content').addClass('w3-container');
+          if($('#id-new-address-content').find('form').length == 0){
+            $('#id-new-address-content').append($(data).find('#main_address_form form'));
+            $('#id-new-address-content form').prop('id', 'newAddressForm_js');
+
+            $('#id-new-address-content #button_row').remove();
+
+
+            if($('#id-new-address-content').find('#button_block').length == 0){
+              var btblock = document.createElement("div");
+              btblock.setAttribute("class", "w3-right");
+              btblock.setAttribute("id", "button_block");
+
+              var ca = document.createElement("button");
+              ca.setAttribute("type", "button");
+              ca.setAttribute("class", "logo-red");
+              ca.innerHTML = 'Cancel';
+              ca.onclick = function(){
+               $('#id-new-address-modal').hide();
+               $('#id-new-address-content #form').remove();
+               $('#id-new-address-content script').remove();
+              };
+              btblock.appendChild(ca);
+
+              var sv = document.createElement("button");
+              sv.setAttribute("type", "button");
+              sv.setAttribute("class", "logo-blue");
+              sv.setAttribute("id", "newAddressSubmitBtn");
+              sv.innerHTML = 'Save';
+              sv.onclick = function(){
+                if($('.addform-errors').length>0){
+                  $('.addform-errors').remove();
+                }
+                submitForm(csrf, submit_url, add_field_name);
+              };
+              btblock.appendChild(sv);
+              $('#id-new-address-content').append(btblock);
+            }
+            $("#id-new-address-content input[required]").before('<span class="required_stick">*</span>');
+
+            $('#id-new-address-content').append($(data).find('script'));
+
+          }
+          $('#id-new-address-modal').show();
+      }
+      else{
+        createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
+      }
+    },
+    failure: function(data){
+        createAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
+    },
+  });
+
+
+}
 
 function createAddForm(user,csrf, submit_url, add_field_name) {
     var addform = document.createElement("FORM");
@@ -275,7 +338,6 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     sv.setAttribute("type", "button");
     sv.setAttribute("class", "logo-blue");
     sv.setAttribute("id", "newAddressSubmitBtn");
-    sv.setAttribute("onclick", "submitForm()");
     sv.innerHTML = 'Save';
     sv.onclick = function(){
       if($('.addform-errors').length>0){
@@ -344,7 +406,7 @@ $(document).ready(function(){
           add_id.setAttribute('name', 'ship_to_add');
         }
         add_card.append(add_id);
-        $('#remove_default_add_btn').parent('div').before(add_card);
+        $('#select_address_btn').parent('div').after(add_card);
       }
 
       $( "#default_address_card_fields").find('.add_fields').remove();

@@ -81,6 +81,9 @@
                 {{ form.password1.errors }}
                 {{ form.password1.label_tag }} {{ form.password1 }}
               </div>
+              {% if form.password1.help_text %}
+                  <div class="help">{{ form.new_password1.help_text|safe }}</div>
+              {% endif %}
               <div class="form-row">
                 {{ form.password2.errors }}
                 {{ form.password2.label_tag }} {{ form.password2 }}
@@ -134,6 +137,14 @@
                     </div>
                   </div>
               {% endfor %}
+              <div class="text-regular-bold">{% trans 'Terms and Conditions' %}</div>
+                  <div class="text-small">
+                      {{form.privacy_policy_agree}}
+                      {% blocktrans %}
+                          I have read, understood and agreed to be bound by myqycs.com Terms of Use. I also understood how MYQYCS intends to use my information.
+                      {% endblocktrans %}
+                      <a href="{% url 'information' 'policy'%}">{% trans 'Privacy Policy' %}</a>
+                </div>
             </div>
 
 
@@ -156,5 +167,5 @@
 
         </form>
     </div>
-<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock%}

@@ -29,7 +29,7 @@
 			<input type="hidden" id="id_ship_to_col" name="ship_to_col" value="{{selected_col.pk}}">
 			{% include "blocks/col_card_fields.html" with col=selected_col no_icon='yes' %}
 	  </div>
-		<button class="w3-right logo-red" type="button" onclick="window.location.href='{% url 'collection_points' %}'">Change</button><br/>
+		<button class="w3-right logo-red" type="button" onclick="window.location.href='{% url 'collection_points' %}'">{% trans 'Change' %}</button><br/>
 	</div>
 
 {% endblock %}

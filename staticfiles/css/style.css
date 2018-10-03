@@ -1,13 +1,19 @@
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  position: relative;
-  margin: 0;
-  overflow: auto;
-  background-size: 100%;
-  background-image: url("/static/image/home_background.png");
+html{
+    height: 100%;
 }
-.contentCSS{
-  min-height: 32vw;
+
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: auto;
+    background-size: 100%;
+    background-image: url("/static/image/home_background.png");
+}
+
+#container{
+  flex: 1 0 auto;
 }
 .logo-red{
   background-color: #E73229;
@@ -27,53 +33,54 @@ body {
 .yellow-text{
   color: #ffcc00;
 }
-.text-xxxlarge{
-  font-size: 3vw;
+.text-xxxlarge, .home-xxxlarge{
+  font-size: 35px;
 }
-.text-xxxlarge-bold{
-  font-size: 3vw;
+.text-xxxlarge-bold, .home-xxxlarge-bold{
+  font-size: 35px;
   font-weight: bold;
 }
-.text-xxlarge{
-  font-size: 2.5vw;
+.text-xxlarge, .home-xxlarge{
+  font-size: 30px;
+  font-family: Georgia;
 }
-.text-xxlarge-bold{
-  font-size: 2.5vw;
+.text-xxlarge-bold, .home-xxlarge-bold{
+  font-size: 30px;
   font-weight: bold;
 }
-.text-xlarge{
-  font-size: 2vw;
+.text-xlarge, .home-xlarge{
+  font-size: 25px;
 }
-.text-xlarge-bold{
-  font-size: 2vw;
+.text-xlarge-bold, .home-xlarge-bold{
+  font-size: 25px;
   font-weight: bold;
 }
-.text-large{
-  font-size: 1.7vw;
+.text-large, .home-large{
+  font-size: 20px;
 }
-.text-large-bold{
-  font-size: 1.7vw;
+.text-large-bold, .home-large-bold{
+  font-size: 20px;
   font-weight: bold;
 }
 .text-medium{
-  font-size: 1.5vw;
+  font-size: 18px;
 }
 .text-medium-bold{
-  font-size: 1.5vw;
+  font-size: 18px;
   font-weight: bold;
 }
 .text-regular{
-  font-size: 1vw;
+  font-size: 15px;
 }
 .text-regular-bold{
-  font-size: 1vw;
+  font-size: 15px;
   font-weight: bold;
 }
 .text-small{
-  font-size: 1vw;
+  font-size: 12px;
 }
 .text-small-bold{
-  font-size: 1vw;
+  font-size: 12px;
   font-weight: bold;
 }
 text-italic-bold{
@@ -94,6 +101,11 @@ a:hover{
 /*----------------- header and bar ---------------------------*/
 .topnav{
   margin-top: 0.2vw;
+}
+.topnav select{
+  border: none;
+  color: black;
+  background-color: Transparent;
 }
 .topnav a {
   float: left;
@@ -160,17 +172,7 @@ a:hover{
 }
 
 /*------------------------------------ content --------------------------------------*/
-.w3-card-2, .w3-card-4, .w3-border{
-  background-color: white;
-}
 
-#customer_service_block{
-  background-color:#161d57;
-}
-.large_image{
-  max-width: 45%;
-  height: auto;
-}
 
 #shop-content {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/image/brand_red.png");
@@ -180,18 +182,52 @@ a:hover{
   min-height: 40vw;
   background-position: center;
 }
-.home_loged{
+
+.home_logged{
   background-size: 100%;
   background-repeat: no-repeat;
   background-image: url("/static/image/car_background.png");
-  background-position: right 0 bottom 0;
+  background-position: right 0 bottom 0vw;
   padding-bottom: 10vw;
+}
+.content_left{
+  width:80%;
+  margin-left:20%;
+}
+.content_right{
+  width:80%;
+}
+.content_center{
+  width:80%;
+  margin: auto;
 }
 
 .wechat, .email{
   cursor:pointer;
 }
+.w3-card-2, .w3-card-4, .w3-border{
+  background-color: white;
+}
 
+#customer_service_block{
+  background-color:rgb(22,29,87);
+}
+
+
+#customer_service_table img{
+  width:60px;
+  margin:20px 20px;
+}
+
+.large_image{
+  max-width: 45%;
+  height: auto;
+}
+
+#main_address_form{
+  margin-left: 25px;
+  margin-top: 15px;
+}
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
   margin-top: 8vw;
@@ -199,6 +235,7 @@ a:hover{
   position: relative;
   height: 100%;
   float:left;
+  width: 16vw;
 }
 
 /* animation block  */
@@ -259,6 +296,7 @@ a:hover{
   position: relative;
   height: 100%;
   float:right;
+  width: 16vw;
 }
 
 .circle{
@@ -276,27 +314,30 @@ a:hover{
 
 
 #shipping_half_circle{
+  width:28vw;
+  height:28vw;
   border-radius:50%;
-  padding:12.5vw 2vw;
+  padding-top:13vw;
   background-color: #E73229;
-  font-size: 1.2vw;
-  padding-left: 15vw;
-  margin: 0.2vw 0vw;
+  font-size: 1.5vw;
+  text-align: right;
+  padding-right: 3vw;
   position: relative;
   left: -12vw;
-  width:28vw;
   animation-name: hoverShippingOUT;
   animation-duration: .5s;
 }
 
 #tracking_half_circle{
-  border-radius:50%;
-  padding:12.7vw 5vw;
-  background-color: #121A50;
-  font-size: 1.2vw;
-  padding-right: 11vw;
-  position: relative;
   width:28vw;
+  height:28vw;
+  border-radius:50%;
+  padding-top:13vw;
+  background-color: #121A50;
+  text-align: left;
+  font-size: 1.5vw;
+  padding-left: 3vw;
+  position: relative;
   animation-name: hoverOUT;
   animation-duration: .5s;
 }
@@ -380,20 +421,18 @@ a:hover{
   background-color: Transparent;
 }
 #search_block{
-  position: absolute;
-  z-index: 1;
-  margin-left: 600px;
-  margin-top: 10px;
-  height: 40px;
+  font-size: 20px;
   border-color: black;
   background-color: #fff;
-  padding: 0.2vw 1vw;
+  padding: 0 3px;
+  margin-top: 0.5vw;
 }
 hr{
   margin-top: 0;
   margin-bottom: 0.5vw;
 }
 /* ---------------------------------------- for the table ----------------------------------- */
+
 thead {
     display: block;
     width: 100%;
@@ -406,14 +445,35 @@ thead th{
   text-align: center;
   border: none;
   background-color: Transparent;
-  font-size: 1vw;
+  font-size: 15px;
   vertical-align: middle;
 }
 
+table {
+  max-height:450px;
+  overflow:auto;
+}
 tbody td {
   vertical-align: middle;
   border: none;
   position: relative;
+}
+tr th{
+  text-align: center;
+  vertical-align: top;
+}
+
+#customer_service_table{
+  background-color: lightgrey;
+  width: 100%;
+  margin: 30px;
+}
+
+#customer_service_table th{
+  width: 23%;
+  height: 140px;
+  background-color: white;
+  margin: 2px 1%;
 }
 /* ----------------------------------- for checkbox switch------------------------------------------- */
 .switch {
@@ -475,16 +535,16 @@ input:checked + .slider:before {
 /*---------------------------------------for footer only----------------------------------------*/
 
 #footer{
+  flex: 0 0 auto;
   width:100%;
   bottom:0;
-  margin-top: 1vw;
-  margin-bottom: 0.7vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 #footer h5{
   font-weight: bold;
   color: #121A50;
-
-
 }
 #footer a{
   color: black;
@@ -502,9 +562,86 @@ input:checked + .slider:before {
     padding: 0.5vw;
     color: #fff;
   }
-
+#footer .footer-copyright a{
+  color: #2196f3;
+}
 /*----------------------------------------for small screem ----------------------------------*/
   @media screen and (max-width: 600px) {
+    .home-xxxlarge{
+      font-size: 28px;
+    }
+    .home-xxxlarge-bold{
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .home-xxlarge{
+      font-size: 25px;
+      font-family: Georgia;
+    }
+  .home-xxlarge-bold{
+      font-size: 25px;
+      font-weight: bold;
+    }
+  .home-xlarge{
+      font-size: 22px;
+    }
+    .home-xlarge-bold{
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .home-large{
+      font-size: 20px;
+    }
+    .home-large-bold{
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .home_logged{
+      background-position: right 0 bottom 0;
+    }
+    .content_left{
+      width:95%;
+      margin:auto;
+    }
+    .content_right{
+      width:95%;
+      margin:auto;
+      margin-top: 10px;
+    }
+    .content_center{
+      width:95%;
+      margin: auto;
+    }
+    #main_address_form{
+      margin: 20px auto;
+    }
+    #footer{
+      position:relative;
+      height:auto;
+      text-align: center;
+    }
+  .footer_links{
+      display: none;
+    }
+    #footer h5{
+      margin: 0;
+      cursor:pointer;
+    }
+    #customer_service_table img{
+      width:40px;
+      margin:10px 10px;
+    }
+    #customer_service_table{
+      background-color: lightgrey;
+      width: 100%;
+      margin: 10px;
+    }
+    #customer_service_table th{
+      width: 23%;
+      height: 140px;
+      background-color: white;
+      margin: 2px 1%;
+    }
     .dropdown .dropdown-content{
       display: block;
       background-color: Transparent;
@@ -516,7 +653,7 @@ input:checked + .slider:before {
       margin: 0;
       z-index: 1;
     }
-    .topnav a, .dropdown .dropbtn {
+    .topnav a, .dropdown .dropbtn, .topnav form {
       display: none;
     }
     .topnav a:hover {
@@ -527,15 +664,17 @@ input:checked + .slider:before {
     .topnav a.icon {
       float: right;
       display: block;
+      padding: 5px 10px;
     }
     #account_nav{
       float: left;
       display: block;
     }
-    #account_aside_bar{
+    #CollectionPointID{
       display: none;
     }
     #map{
+      display: block;
       width:100%;
     }
     .sidebar{
@@ -549,6 +688,10 @@ input:checked + .slider:before {
     }
     .select_column{
       width:50px;
+    }
+
+    #shipping_half_circle, #tracking_half_circle{
+      font-size: 2.2vw;
     }
   }
 
@@ -566,6 +709,13 @@ input:checked + .slider:before {
     }
     .topnav.responsive .dropdown {float: none;}
     .topnav.responsive .dropdown-content {position: relative;}
+    .topnav.responsive form {
+          display: block;
+          background-color: Transparent;
+          box-shadow: none;
+          padding-left: 10px;
+        }
+
     .topnav.responsive .dropdown .dropbtn {
       display: block;
       width: 100%;
@@ -610,15 +760,12 @@ input:checked + .slider:before {
       color: #ba2121;
       border: 1px solid #ba2121;
       border-radius: 4px;
-      background-color: #fff;
-      background-position: 5px 12px;
   }
 
   ul.errorlist {
       margin: 0 0 4px;
       padding: 0;
       color: #ba2121;
-      background: #fff;
   }
 
   ul.errorlist li {
@@ -682,6 +829,9 @@ input:checked + .slider:before {
 
 
 /* ---------------------------------------------*  buttons *------------------------------------------------------------ */
+#login_btn{
+  margin: 0.5vw 0;
+}
 
 .w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
   color: #fff;
@@ -707,7 +857,7 @@ input:checked + .slider:before {
   text-align:center;
 }
 .w3-modal .close-modal{
-  font-size: 2.5vw;
+  font-size: 30px;
   color: black;
   padding: 0;
   border: none;
@@ -736,9 +886,10 @@ input:checked + .slider:before {
 
 /* ------------------------------------- for tracking and tracked page ------------------------------------------------------- */
 #tracking_block{
-  width:40vw;
+  width:400px;
   border: 1px solid #eee;
   background-color: #fafafa;
+  display: inline-block;
 }
 #track_btn{
   color: red;
@@ -747,9 +898,10 @@ input:checked + .slider:before {
   margin: 0;
   font-weight: bold;
   background-color: Transparent;
-  font-size: 1.5vw;
-  display:inline-block;
-  margin-left: 1.5vw;
+  font-size: 25px;
+  display:inline;
+  text-align:right;
+  width: 20%;
 }
 .tracking{
   margin-top: 4vw;
@@ -757,7 +909,7 @@ input:checked + .slider:before {
 .tracking #id_cust_tracking_num{
   border: none;
   margin: 0;
-  height: 4vw;
-  width: 30vw;
-  font-size: 1.5vw;
+  height: 30px;
+  width: 75%;
+  font-size: 25px;
 }

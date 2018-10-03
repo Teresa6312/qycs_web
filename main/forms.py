@@ -2,7 +2,7 @@ from django import forms
 from .models import (
 	User, Address, Service, CollectionPoint, Warehouse,
 	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
-	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY
+	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY, SHIPPING_CARRIER_CHOICE
 	)
 # from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 #used to catch errors related to populating the form fields from a related Project
@@ -22,10 +22,11 @@ class NewUserCreationForm(UserCreationForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
 					empty_label=("Year", "Month", "Day"),
 					years = birthday_years))
+	privacy_policy_agree = forms.BooleanField(required = True)
 	class Meta(UserCreationForm.Meta):
 		model = User
 		fields = ('username', 'email', 'first_name', 'last_name',
-					'phone', 'country', 'language', 'birthday', 'password1', 'password2',)
+					'phone', 'country', 'language', 'birthday', 'password1', 'password2', 'privacy_policy_agree')
 
 	def save(self, commit=True, *args, **kwargs):
 		user = super(NewUserCreationForm, self).save(commit=False, *args, **kwargs)
@@ -148,68 +149,6 @@ class AddressForm(forms.ModelForm):
 			add.save()
 		return add
 
-class ColCreationForm(forms.ModelForm):
-	agreement = forms.BooleanField(required = True, label = _("Agree"))
-	class Meta:
-		model = CollectionPoint
-		fields = ('store','store_name','license_type', 'license_image','id_image',
-					'address','apt','city','state','country','zipcode',
-					'collector_icon', 'name', 'wechat', 'wechat_qrcode',
-					'referrer', 'apply_reason', 'info_source','agreement')
-
-class ColChangeForm(forms.ModelForm):
-	absent_start = forms.DateField(required = False, widget=forms.SelectDateWidget(
-					empty_label=("Year", "Month", "Day"),
-					years = schedule_years,
-					attrs={"class":"w3-quarter w3-border"}))
-	absent_end = forms.DateField(required = False, widget=forms.SelectDateWidget(
-					empty_label=("Year", "Month", "Day"),
-					years = schedule_years,
-					attrs={"class":"w3-quarter w3-border"}))
-
-	mon_start = forms.TimeField(required = False, label= _('Monday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	mon_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	tue_start = forms.TimeField(required = False, label= _('Tuesday'), widget=forms.TextInput(attrs={'placeholder': _('From:  00:00:00'),"class":"w3-input w3-border"
-																									}))
-	tue_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	wed_start = forms.TimeField(required = False, label= _('Wednesday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	wed_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	thu_start = forms.TimeField(required = False, label= _('Thursday'), widget=forms.TextInput(attrs={'placeholder': _('From:  00:00:00'),"class":"w3-input w3-border"
-																									}))
-	thu_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	fri_start = forms.TimeField(required = False, label= _('Friday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	fri_end = forms.TimeField(required = False,  widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	sat_start = forms.TimeField(required = False, label= _('Saturday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	sat_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	sun_start = forms.TimeField(required = False, label= _('Sunday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	sun_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
-																									}))
-	description = forms.CharField(label = 'Introduction', required=False,
-							widget=forms.Textarea(attrs={'placeholder':  _("Introduce yourself. This will show up in the website."),
-												"class":"w3-input w3-border",
-												"rows":5
-												}))
-	wechat = forms.CharField(label = _("Wechat ID"), required = False,
-									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	class Meta:
-		model = CollectionPoint
-		fields = ('collector_icon', 'wechat', 'wechat_qrcode','description','show_contact',
-					'mon_start', 'mon_end', 'tue_start', 'tue_end',
-					'wed_start','wed_end','thu_start','thu_end',
-					'fri_start','fri_end','sat_start','sat_end',
-					'sun_start','sun_end','absent_start', 'absent_end',)
 
 #-----------------------------------------------------------------------------------------
 '''
@@ -228,7 +167,7 @@ class PackageCommonForm(forms.ModelForm):
 									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	memo = forms.CharField(label = 'Note', required=False,
-							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs with this package"),
+							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs about this package"),
 												"class":"w3-input w3-border",
 												"rows":5
 												}))
@@ -277,7 +216,7 @@ Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class DirectShippingCreationForm(PackageCommonForm):
-	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = CARRIER_CHOICE,
+	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = SHIPPING_CARRIER_CHOICE,
 									widget=forms.Select(attrs={"class":"w3-select w3-border"
 									}))
 	class Meta:
@@ -293,6 +232,17 @@ class DirectShippingCreationForm(PackageCommonForm):
 			'memo',
 			)
 
+class PackageChangeForm(forms.ModelForm):
+		class Meta:
+			model = Service
+			fields = (
+				'no_rush_request',
+				'ship_carrier',
+				'ship_to_add',
+				'ship_to_col',
+				'receiver',
+				'memo',
+				)
 #-----------------------------------------------------------------------------------------
 '''
 Create new Item in Package
@@ -302,7 +252,7 @@ class ItemForm(forms.ModelForm):
 	item_name = forms.CharField(label = 'Item Name',
 								widget=forms.TextInput(attrs={
 									'placeholder': 'Please enter your items name as detailed as possible',
-									"class":"w3-input w3-border"
+									"class":"w3-input w3-border item_name"
 									}))
 
 	item_detail = forms.CharField( label = 'Item Detail', required=False,

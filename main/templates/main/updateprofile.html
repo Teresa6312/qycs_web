@@ -14,8 +14,7 @@
 
 {% block content %}
 
-
-<div class="w3-cell-row w3-mobile" style="width:80%; margin:auto;">
+<div class="w3-cell-row w3-mobile content_center">
 
   <div class="text-xxlarge-bold w3-panel">{% trans 'Update Profile' %}</div>
 
@@ -40,14 +39,13 @@
 
 
 <form method="post" enctype="multipart/form-data" >{% csrf_token %}
-
-        <div class="w3-cell-row w3-mobile"  style="width:100%; margin:auto;">
-            <div class="w3-cell" style="width:50%;">
-                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%; margin-left:20%;">
+      <div class="w3-col-row w3-mobile">
+            <div class="w3-col w3-container m6 l6">
+                  <div class="w3-container w3-mobile content_left">
                     <div class="text-medium">{% trans 'Personal information' %}</div>
                   </div>
                   <hr/>
-                  <div class="w3-cell-row w3-container w3-mobile w3-right" style="width:80%;">
+                  <div class="w3-container w3-mobile content_left">
                         <div class="w3-row" style="width:97.5%;">
                           {{ form.username.errors }}
                           {{ form.username.label_tag }} {{ form.username }}
@@ -91,14 +89,12 @@
             </div>
 
 
-
-
-            <div class="w3-cell" style="width:50%;">
-                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+            <div class="w3-col w3-container m6 l6">
+                  <div class="w3-container w3-mobile content_right">
                     <div class="text-medium">{% trans 'Shipping Information' %}</div>
                   </div>
                   <hr/>
-                  <div class="w3-cell-row w3-container w3-mobile" style="width:80%;">
+                  <div class="w3-container w3-mobile content_right">
                         <div class="text-regular-bold">{{ form.default_address.label_tag }}</div>
                         {% include "blocks/address_block_all.html" with add_field_name='default_address' %}
 
@@ -119,7 +115,7 @@
 
             </div>
       </div>
-      <div class="w3-panel" style="width:80%; margin:auto;">
+      <div class="w3-panel content_center">
           <div class="w3-center">
               <button class="logo-red" type="button" onclick="window.location.href = document.referrer">{% trans "Cancel" %}</button>
               <input class="logo-blue" type="submit" value="Update">

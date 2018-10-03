@@ -8,20 +8,20 @@
 {% block content %}
 <form method = "post" class="w3-margin-top">
 {% csrf_token %}
-<div class="w3-cell w3-container w3-mobile" style="width:80%;">
+<div class="w3-cell w3-container w3-mobile">
     <div class="w3-container">
 
 
-		<div class="text-large">{% trans 'Packages Cart' %}</div>
+		<div class="text-xxlarge">{% trans 'Packages Cart' %}</div>
 
 		<button class="logo-red" type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
 		<button class="logo-blue" type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
 
     <table class="w3-mobile">
         <thead>
-            <tr><th class="w3-col w3-text-blue select_column text-regular-bold">
+            <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
               <input type="checkbox" id="select_all">&nbsp;{% trans 'Select All' %}
-            </th><th class="text-regular-bold" style="width:80%;">{% trans 'Package(s) / Order(s)' %}</th></tr>
+            </th><th class="text-regular-bold content_right">{% trans 'Package(s) / Order(s)' %}</th></tr>
         </thead>
         <tbody>
       {% if package_list %}
@@ -55,7 +55,7 @@
                     {% elif package.ship_to_col %}
                     <div class="text-regular-bold">{% trans 'Co-shipping to' %}:</div>
                     <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
-                    <div class="logo-text-red">{{package.ship_to_col.name}}</div>
+                    <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
                               {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
                               {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
                               {{package.ship_to_col.country}}<br/>
@@ -102,7 +102,7 @@
                           {% elif package.ship_to_col %}
                           <div>{% trans 'Co-shipping to' %}:</div>
                           <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
-                          <div class="logo-text-red">{{package.ship_to_col.name}}</div>
+                          <div><a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a></div>
                                     {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
                                     {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
                                     {{package.ship_to_col.country}}<br/>
@@ -153,7 +153,7 @@
 {% endblock %}
 
 {% block sidebar %}
-<div class="w3-container w3-cell w3-mobile" style="width:25vw;">
+<div class="w3-container w3-cell w3-mobile w3-margin-top" style="width:300px;">
     <div class="w3-card-2 w3-round w3-container w3-padding-16" id="payment_sidebar">
         <div class="text-medium">{% trans 'Place Packages' %}:</div>
         <div id="selected_list">
@@ -162,7 +162,7 @@
           <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon" class="w3-input w3-border"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
           <hr class="w3-border-black"/>
         <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
-        {{order.insurance.label_tag}}<br/>{{order.insurance}}
+        <div class="w3-row">{{order.insurance.label_tag}}<span class="w3-right" id="id_total_amount">{{order.insurance}}</span></div>
         <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
     </div>
 </div>

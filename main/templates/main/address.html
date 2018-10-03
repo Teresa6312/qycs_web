@@ -2,24 +2,24 @@
 {% load i18n static %}
 
 {% block title%}
-{{user.username}}{% trans "'s Address Book'" %}
+{{user.username}}{% trans "'s Address Book" %}
 {% endblock%}
 
 
 {% block content %}
-<div class="w3-panel w3-margin-top" style="width:80%; margin:auto;">
+<div class="w3-panel w3-margin-top content_center">
     <div class="text-xxlarge-bold">{% trans 'Address Book' %}</div>
 </div>
 <hr/>
-<div class="w3-panel" style="width:80%; margin:auto;">
+<div class="w3-panel content_center">
 
       {% if user.address_set.all %}
-            <div id="address_book_block" class="w3-col w3-mobile" style="width: 30vw;">
+            <div id="address_book_block" class="w3-col w3-mobile m5 l4">
 
-                <div class="addresses_block w3-mobile" style="overflow:auto; min-height:30vw; max-height:70vw;">
+                <div class="addresses_block w3-mobile" style="overflow:auto; max-height:500px;">
                 <!-- display default address -->
                       {% if user.default_address %}
-                        <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width:25vw;">
+                        <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width:300px;">
                             {% include "blocks/address_card_fields.html" with add=user.default_address default='(default)' %}
                             <button type="button" class="edit_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.edit}}'">{% trans 'Edit' %}</button>
                             <button type="button" class="delete_btn" onclick="window.location.href='{{user.default_address.get_absolute_url.delete}}'">{% trans 'Delete' %}</button>
@@ -29,7 +29,7 @@
                 <!-- display other addresses -->
                 {% for address in user.address_set.all %}
                 {% if address != user.default_address%}
-                    <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width: 25vw;">
+                    <div class="w3-card-4 w3-round w3-panel w3-mobile w3-white" style="max-width: 300px;">
                         {% include "blocks/address_card_fields.html" with add=address %}
                         <button type="button" class="edit_btn" onclick="window.location.href='{{address.get_absolute_url.edit}}'">{% trans 'Edit' %}</button>
                         <button type="button" class="delete_btn" onclick="window.location.href='{{address.get_absolute_url.delete}}'">{% trans 'Delete' %}</button>
@@ -40,8 +40,9 @@
                 </div>
             </div>
       {% endif %}
-<div class="w3-col w3-container w3-mobile w3-card-4 w3-white w3-margin-top w3-margin-left" style="width:35vw;">
-  <form method = "post" enctype="multipart/form-data" id="main_address_form">
+<div class="w3-col w3-container w3-mobile w3-card-4 m6 l5" id="main_address_form">
+  <div class="text-medium w3-margin-top">{% trans 'Address Form' %}</div>
+  <form method = "post" enctype="multipart/form-data">
   {% csrf_token %}
   {% if addform.errors %}
       <p class="errornote">
@@ -53,37 +54,29 @@
       </p>
   {% endif %}
   <div class="w3-mobile">
-    <div class="text-medium w3-margin-top">{% trans 'Address Form' %}</div>
     <div class="w3-row"><button class="logo-blue" type="button" id="id_follow_user_infor">{% trans 'Follow User Information' %}</button></div>
       <div class="w3-half">
-        {{ addform.first_name.errors }}
-        {{ addform.first_name.label_tag }} {{ addform.first_name }}
+        {{ addform.first_name.label_tag }} {{ addform.first_name.errors }} {{ addform.first_name }}
       </div>
       <div class="w3-half">
-        {{ addform.last_name.errors }}
-        {{ addform.last_name.label_tag }} {{ addform.last_name }}
+        {{ addform.last_name.label_tag }} {{ addform.last_name.errors }} {{ addform.last_name }}
       </div>
       <div class="w3-half">
-        {{ addform.phone.errors }}
-        {{ addform.phone.label_tag }} {{ addform.phone }}
+        {{ addform.phone.label_tag }} {{ addform.phone.errors }} {{ addform.phone }}
       </div>
       <div class="w3-row">
         <div class="w3-third">
-          {{ addform.country.errors }}
-          {{ addform.country.label_tag }} {{ addform.country }}
+          {{ addform.country.label_tag }} {{ addform.country.errors }} {{ addform.country }}
         </div>
         <div class="w3-third">
-          {{ addform.state.errors }}
-          {{ addform.state.label_tag }} {{ addform.state }}
+          {{ addform.state.label_tag }} {{ addform.state.errors }} {{ addform.state }}
         </div>
         <div class="w3-third">
-          {{ addform.city.errors }}
-          {{ addform.city.label_tag }} {{ addform.city }}
+          {{ addform.city.label_tag }} {{ addform.city.errors }} {{ addform.city }}
         </div>
       </div>
       <div class="w3-row" style="width:98.5%;">
-        {{ addform.address.errors }}
-        {{ addform.address.label_tag }} {{ addform.address }}
+        {{ addform.address.label_tag }} {{ addform.address.errors }} {{ addform.address }}
       </div>
       <div class="w3-row" style="width:98.5%;">
         {{ addform.apt.errors }}
@@ -91,11 +84,10 @@
       </div>
       <div class="w3-row">
           <div class="w3-quarter w3-right">
-            {{ addform.zipcode.errors }}
-            {{ addform.zipcode.label_tag }} {{ addform.zipcode }}
+            {{ addform.zipcode.label_tag }} {{ addform.zipcode.errors }} {{ addform.zipcode }}
           </div>
       </div>
-      <div class="w3-row">
+      <div class="w3-row" id="button_row">
         <div class="w3-right">
           <button type="button" class="cleanBtn logo-red">{% trans 'Cancel' %}</button>
           <input class="cleanBtn logo-blue" type = "submit" value = "{% trans 'Save' %}"/>
@@ -104,8 +96,8 @@
   </div>
 </form>
 </div>
+</div>
 <script>
-
   function isThere(param,id){
     if(param!=""){
       $("#"+id).attr('value', param);
@@ -202,5 +194,4 @@
 }
 </style>
 
-</div></div>
 {% endblock %}

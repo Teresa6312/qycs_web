@@ -10,11 +10,12 @@
 
 <div class="w3-panel w3-mobile">
     <div class="text-xxlarge-bold w3-panel">{% trans 'Our Collection Points' %}</div>
+    <div class="logo-text-blue"><i>{% trans 'if you cannot find any collection points in the map, you can use our direct shipping service.' %}</i><button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Direct shipping' %}</button></div>
+
 </div>
 
-
 <div class="w3-container">
-  <div id="search_block"><input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}"><i class="fa fa-search"></i></div>
+  <div id="search_block"><input id="pac-input" class="controls" type="text" placeholder="{% trans 'Search Box' %}"></div>
   <div calss="we-cell-row">
     <Table class="w3-cell" id="CollectionPointID">
       <tbody>
@@ -46,5 +47,7 @@
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLyUK5D-laS8iQsSDWwOhehl-Gvhz8xfA&libraries=places&callback=initAutocomplete">
 </script>
-
+<!-- <script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
+</script> -->
 {% endblock %}

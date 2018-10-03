@@ -19,8 +19,6 @@ urlpatterns = [
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             views.activate, name='activate'),
-    path('accounts/colregister/', views.ColRegisterView.as_view(), name = 'colregister'),
-
     path('accounts/login/', auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
 
     path('myaccount/location/', views.locationView, name='location'),
@@ -29,15 +27,13 @@ urlpatterns = [
 
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
-
     path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
+    path('price-list/', views.PriceListView.as_view(), name='price_list'),
 
 
-    # path('image/', views.AddImageView.as_view(), name='image'),
 
 
 # login_required
-
     path('myaccount/logout/', login_required(views.logout_view), name = 'logout'),
 
     path('myaccount/', login_required(views.AccountView.as_view()), name='account'),
@@ -52,15 +48,12 @@ urlpatterns = [
     path('myaccount/address/<int:add_id>/set_dedault_address', login_required(views.SetDefaultAddressView.as_view()), name='set_dedault_address'),
 
 
-    path('myaccount/collection-point/update', login_required(views.CollectorUpdateView.as_view()), name='collector_update'),
-
     path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 
     path('myaccount/wallet', login_required(views.WalletView.as_view()), name='userwallet'),
 
     path('myaccount/packages', login_required(pk_views.PackagesView.as_view()), name='userpackage'),
 
-    # path('packages/add/', login_required(pk_views.AddPackageView.as_view()), name='add_package'),
     path('packages/<int:selected_col>/add', login_required(pk_views.AddCoShipping.as_view()), name='add_co_shipping'),
     path('packages/direct-shipping/add', login_required(pk_views.AddDirectShipping.as_view()), name='add_direct_shipping'),
     path('packages/', login_required(pk_views.PackagesView.as_view()), name='packages'),

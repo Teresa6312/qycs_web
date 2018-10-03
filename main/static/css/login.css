@@ -1,11 +1,14 @@
 #container {
     background: #fff;
-    border: 1px solid #eaeaea;
+    border: 1px solid red;
     border-radius: 4px;
     overflow: hidden;
     width: 30vw;
     margin: 5vw auto;
     font-size: 1.2vw;
+}
+.contentCSS{
+  padding-bottom: 10px;
 }
 
 /* Style the input fields */

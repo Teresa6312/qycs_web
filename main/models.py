@@ -19,41 +19,74 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 
 zip_regex = RegexValidator(regex=r'^[0-9]{2,6}(?:-[0-9]{4})?$|^$', message=_("Plese Enter a valid zip code."))
 
+SHIPPING_CARRIER_CHOICE = (
+('DHL', _('DHL')),
+('EMS', _('EMS')),
+('FEDEX', _('FEDEX')),
+('SF EXPRESS', _('SF EXPRESS')),
+('UPS', _('UPS')),
+('Cheapest', _('The cheapest one')),
+('Fastest', _('The fastest one')),
+)
+
 CARRIER_CHOICE = (
-	('ZT', _('Zhong Tong')),
-	('YT', _('Yuan Tong')),
-	('UPS', _('UPS')),
-	('DHL', _('DHL')),
+ ('SF', _('ShunFeng／顺丰速运')),
+ ('ChinaPost', _('YouZheng／中国邮政')),
+ ('ZTO', _('ZhongTong／中通速递')),
+ ('YTO', _('YuanTong／圆通速递')),
+ ('STO', _('ShenTong／申通速递')),
+ ('ZJS', _('ZhaiJiSong／宅急送')),
+ ('YD', _('YunDa／韵达快递')),
+ ('JD', _('JingDong／京东物流')),
+ ('BS', _('BaiShi／百世快递')),
+ ('TTK', _('Tiantian／天天快递')),
+ ('EYB', _('EyouBao／E邮宝')),
+ ('AAE', _('AAE／AAE快递')),
+ ('ADA', _('AnDa／安达速递')),
+ ('DP', _('DeBang／德邦快递')),
+ ('DD', _('DangDang／当当网')),
+ ('UCE', _('YouSu／优速快递')),
+ ('QF', _('QuanFeng／全峰快递')),
+ ('QY', _('QuanYi／全一快递')),
+ ('DHL', _('DHL')),
+ ('EMS', _('EMS')),
+ ('FEDEX', _('FedEx／联邦快递')),
+ ('SF EXPRESS', _('SF EXPRESS／顺丰速运')),
+ ('UPS', _('UPS/联合国际快递')),
+ ('OTHERS', _('Others／其他')),
 )
 INSURANCE_CHOICE = (
 	(0, _('NO insurance')),
 	(3, _('$3 insurance')),
 	(5, _('$5 insurance')),
 	(10, _('$10 insurance')),
+	(15, _('$15 insurance')),
 )
 CURRENCY_CHOICE = (
 	('CNY', _('China Yuan')),
 	('USD', _('US Dollar')),
 )
 WEB_CATEGORY = (
-	('Clothing', _('Clothing')),
-	('Bag', _('Bag')),
-	('Jewelry', _('Jewelry')),
-	('Sport', _('Sport')),
-	('Beauty', _('Beauty')),
-	('Baby', _('Baby')),
-	('Other', _('Other')),
+ ('Clothing', _('Clothing')),
+ ('Bag', _('Bag')),
+ ('Jewelry', _('Jewelry')),
+ ('Sport', _('Sport')),
+ ('Beauty', _('Beauty')),
+ ('Baby', _('Baby')),
+ ('Other', _('Other')),
 )
+
 PACKAGE_CATEGORY = (
-	('F', _('Food')),
-	('R', _('Regular')),
-	('S', _('Skincare')),
-	('L', _('Luxury')),
-	('M', _('Mix')),
+ ('F', _('Food/Grocery')),
+ ('R', _('Regular Goods')),
+ ('B', _('Beauty')),
+ ('L', _('Luxury')),
+ ('M', _('Mix')),
 )
+
 INFORMATION_SOURCES = (
 	('WC', _('WeChat')),
-	('DN', _('Dealmoon')),
+	('DM', _('Dealmoon')),
 )
 
 LANGUAGE_CATEGORY = (
@@ -61,6 +94,27 @@ LANGUAGE_CATEGORY = (
 	('CN', _('Chinese')),
 )
 
+COUNTRY_CHOICE = (
+	('cn', _('China')),
+	('us', _('United States'))
+)
+
+PRICERATE_CATEGORY = (
+	('ship', _('Shipping Price')),
+	('currency', _('Currency Rate')),
+)
+PRICE_CARRIER_CHOICE = (
+('DHL', _('DHL')),
+('EMS', _('EMS')),
+('FEDEX', _('FEDEX')),
+('SF EXPRESS', _('SF EXPRESS')),
+('UPS', _('UPS')),
+('DHL+', _('DHL 21kg+')),
+('EMS+', _('EMS 21kg+')),
+('FEDEX+', _('FEDEX 21kg+')),
+('SF EXPRESS+', _('SF EXPRESS 21kg+')),
+('UPS+', _('UPS 21kg+')),
+)
 class User(AbstractUser):
 	email = models.EmailField(blank=False, default='', unique=True, verbose_name = _("Email"))
 	email_confirmed = models.BooleanField(default =False, verbose_name= _('Email Confirmed'))
@@ -75,6 +129,7 @@ class User(AbstractUser):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name=_('Profile Updated Date'))
 	country = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Country'))
 	language = models.CharField(max_length=100, choices=LANGUAGE_CATEGORY,  blank=True, default='',verbose_name= _('Preferred Language'))
+	privacy_policy_agree = models.BooleanField(default =False, verbose_name= _('Privacy Policy Agreement'))
 	memo = models.TextField(blank = True, default='', verbose_name= _('Memo'))
 
 
@@ -161,6 +216,7 @@ class CollectionPoint(Address_Common_Info):
 	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
 	license_image = CloudinaryField('collector_license', blank=True, null=True)
 	id_image = CloudinaryField('collector_id')
+	wechat_qrcode = CloudinaryField('collector_wechat', blank=True, null=True)
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))
 	store = models.BooleanField(default = True, verbose_name= _('Store'))
@@ -168,7 +224,7 @@ class CollectionPoint(Address_Common_Info):
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
 	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
-	wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
+	# wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
 	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information Source'))
@@ -186,7 +242,7 @@ class CollectionPoint(Address_Common_Info):
 	skincare.boolean = True
 
 # the following field can be updated by collector
-	status = models.BooleanField(default = False, verbose_name= _('Avaliable'))
+	status = models.BooleanField(default = False, verbose_name= _('Available'))
 	status.boolean = True
 	# collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))
@@ -398,7 +454,7 @@ class Service(models.Model):
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
-	ship_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
+	ship_carrier = models.CharField(max_length = 100, choices=SHIPPING_CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
 
 
 
@@ -547,11 +603,15 @@ class FavoriteWebsite(models.Model):
 
 class Resource(models.Model):
 	title = models.CharField(max_length=100, default='', unique=True, verbose_name= _('Title'))
-	header = models.CharField(max_length=100, default='', unique=True, verbose_name= _('Header'))
+	english_header = models.CharField(max_length=100, default='', verbose_name= _('English Header'))
+	chinese_header = models.CharField(max_length=100, default='', verbose_name= _('Chinese Header'))
 	english_content = models.TextField(blank=True, default='',  verbose_name= _('English Version Content'))
 	chinese_content = models.TextField(blank=True, default='', verbose_name= _('Chinese Version Content'))
 	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
 	chinese_file = models.FileField(upload_to = 'resource/chinese', blank=True, verbose_name= _('Chinese Version File'))
+
+	def __str__(self):
+		return self.title
 
 	def get_absolute_url(self):
 		return reverse('information', args=[str(self.title)])
@@ -562,3 +622,18 @@ class Location(models.Model):
 	state = models.CharField(max_length=100, blank=True, default='',verbose_name= _('State/Province'))
 	country = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country'))
 	country_shortname = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country Shortname'))
+
+
+class PriceRate(models.Model):
+	category = models.CharField(max_length = 50, choices = PRICERATE_CATEGORY, blank=True, default='', verbose_name = _('Category'))
+	from_country = models.CharField(max_length=50, choices = COUNTRY_CHOICE, blank=True, default='', verbose_name= _('From Country'))
+	to_country = models.CharField(max_length=50, choices = COUNTRY_CHOICE, blank=True, default='', verbose_name= _('To_Country'))
+	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
+	carrier = models.CharField(max_length = 100, choices=PRICE_CARRIER_CHOICE, blank=True, default='', verbose_name= _('Shipping Carrier'))
+	period = models.CharField(max_length = 100, default='',  blank=True, verbose_name= _('Shipping Period'))
+	shipping_currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency for Shipping Price'))
+	first_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('First Weight Price'))
+	next_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Next Weight Price'))
+	avg_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Average Weight Price'))
+
+	rate = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Currency Rate'))
