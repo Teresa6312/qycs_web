@@ -73,31 +73,31 @@ class ColChangeForm(forms.ModelForm):
 
 	mon_start = forms.TimeField(required = False, label= _('Monday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
 																									}))
-	mon_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	mon_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	tue_start = forms.TimeField(required = False, label= _('Tuesday'), widget=forms.TextInput(attrs={'placeholder': _('From:  00:00:00'),"class":"w3-input w3-border"
 																									}))
-	tue_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	tue_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	wed_start = forms.TimeField(required = False, label= _('Wednesday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
 																									}))
-	wed_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	wed_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	thu_start = forms.TimeField(required = False, label= _('Thursday'), widget=forms.TextInput(attrs={'placeholder': _('From:  00:00:00'),"class":"w3-input w3-border"
 																									}))
-	thu_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	thu_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	fri_start = forms.TimeField(required = False, label= _('Friday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
 																									}))
-	fri_end = forms.TimeField(required = False,  widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	fri_end = forms.TimeField(required = False,  widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	sat_start = forms.TimeField(required = False, label= _('Saturday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
 																									}))
-	sat_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	sat_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	sun_start = forms.TimeField(required = False, label= _('Sunday'), widget=forms.TextInput(attrs={'placeholder': _('From: 00:00:00'),"class":"w3-input w3-border"
 																									}))
-	sun_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Unitl: 00:00:00'),"class":"w3-input w3-border"
+	sun_end = forms.TimeField(required = False, widget=forms.TextInput(attrs={'placeholder': _('Until: 00:00:00'),"class":"w3-input w3-border"
 																									}))
 	description = forms.CharField(label = 'Introduction', required=False,
 							widget=forms.Textarea(attrs={'placeholder':  _("Introduce yourself. This will show up in the website."),

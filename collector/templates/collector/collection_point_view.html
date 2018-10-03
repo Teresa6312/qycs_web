@@ -50,7 +50,7 @@
               {% if collector.absent_start %}
               <div class="w3-row w3-text-red">
                 <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:20px;"/>
-                {% trans 'Not avaliable from' %} {{collector.absent_start|date:"M d, Y"}} - {{collector.absent_end|date:"M d, Y"}}.
+                {% trans 'Not available from' %} {{collector.absent_start|date:"M d, Y"}} - {{collector.absent_end|date:"M d, Y"}}.
               </div>
               {% endif %}
 

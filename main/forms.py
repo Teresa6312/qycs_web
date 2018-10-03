@@ -167,7 +167,7 @@ class PackageCommonForm(forms.ModelForm):
 									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	memo = forms.CharField(label = 'Note', required=False,
-							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs with this package"),
+							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs about this package"),
 												"class":"w3-input w3-border",
 												"rows":5
 												}))

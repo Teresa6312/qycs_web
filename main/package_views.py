@@ -174,7 +174,7 @@ class AddCoShipping(TemplateView):
 					'itemset':itemset,
 					})
 			else:
-				messages.error(request,_('The Collection Point you selected is not avaliable right now! Please choose another one.'))
+				messages.error(request,_('The Collection Point you selected is not available right now! Please choose another one.'))
 				return redirect(reverse('collection_points'))
 		except:
 			return redirect(reverse('collection_points'))

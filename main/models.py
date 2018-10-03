@@ -242,7 +242,7 @@ class CollectionPoint(Address_Common_Info):
 	skincare.boolean = True
 
 # the following field can be updated by collector
-	status = models.BooleanField(default = False, verbose_name= _('Avaliable'))
+	status = models.BooleanField(default = False, verbose_name= _('Available'))
 	status.boolean = True
 	# collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))

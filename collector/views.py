@@ -31,7 +31,7 @@ class ColRegisterView(TemplateView):
 				text = Resource.objects.get(title='collection_point_term')
 				term = text.english_content
 			except:
-				term = _('Term is not avaliable Right now.')
+				term = _('Term is not available Right now.')
 			return render(request, self.template_name, {'colform': colform,
 														'userform': userform,
 														"term": term,
@@ -78,7 +78,7 @@ class CollectorUpdateView(TemplateView):
 						if update.absent_start< date.today() or not update.absent_end or update.absent_start>update.absent_end:
 							if not update.absent_end:
 								errors = form._errors.setdefault("absent_end", ErrorList())
-								errors.append(_("This field is required after you entered the Unavaliable Start Date."))
+								errors.append(_("This field is required after you entered the Unavailable Start Date."))
 							if update.absent_start>update.absent_end:
 								errors = form._errors.setdefault("absent_end", ErrorList())
 								errors.append(_("Enter a valid date."))
@@ -89,7 +89,7 @@ class CollectorUpdateView(TemplateView):
 					elif update.absent_end:
 						if not update.absent_start:
 							errors = form._errors.setdefault("absent_start", ErrorList())
-							errors.append(_("This field is required after you entered the Unavaliable End Date."))
+							errors.append(_("This field is required after you entered the Unavailable End Date."))
 							return render(request, self.template_name, {'form': form,})
 
 				update.save()
