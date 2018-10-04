@@ -116,6 +116,7 @@ a:hover{
   color: #939393;
   font-weight: bold;
   text-transform: uppercase;
+  padding-bottom: 0;
 }
 
 
@@ -140,6 +141,7 @@ a:hover{
     outline: none;
     padding: 1vw;
     text-transform: uppercase;
+    padding-bottom: 0;
 }
 
 .dropdown-content {
@@ -169,6 +171,7 @@ a:hover{
 }
 .dropdown:hover .dropdown-content {
     display: block;
+    margin: 0;
 }
 
 /*------------------------------------ content --------------------------------------*/
@@ -228,6 +231,23 @@ a:hover{
   margin-left: 25px;
   margin-top: 15px;
 }
+
+
+.h2{
+	font-weight:bold;
+	position: center;
+	color:darkblue;
+}
+
+.i{
+	color: red;
+}
+
+.h3{
+	color:#B18904;
+}
+
+
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
   margin-top: 8vw;
@@ -344,22 +364,26 @@ a:hover{
 
 
 #shipping_full_circle{
-  border-radius:50%;
-  padding:12.5vw 5vw;
-  background-color: #E73229;
-  font-size: 1.2vw;
-  padding-right: 11vw;
   width:28vw;
+  height:28vw;
+  border-radius:50%;
+  padding-top:13vw;
+  background-color: #E73229;
+  font-size: 1.5vw;
+  padding-left: 3vw;
+  text-align: left;
 }
 
 
 #tracking_full_circle{
-  border-radius:50%;
-  padding:12.7vw 5vw;
-  background-color: #121A50;
-  font-size: 1.2vw;
-  padding-left: 11vw;
   width:28vw;
+  height:28vw;
+  border-radius:50%;
+  padding-top:13vw;
+  background-color: #121A50;
+  font-size: 1.5vw;
+  padding-right: 3vw;
+  text-align: right;
 }
 
 .mini_full_circle{
@@ -690,7 +714,7 @@ input:checked + .slider:before {
       width:50px;
     }
 
-    #shipping_half_circle, #tracking_half_circle{
+    #shipping_half_circle, #tracking_half_circle, #shipping_full_circle,  #tracking_full_circle{
       font-size: 2.2vw;
     }
   }

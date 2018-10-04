@@ -1,0 +1,8 @@
+<h2>联系我们 </h2>
+<p><i>请随时联系我们， Qycs欢迎您提出问题和评价：</i></p>
+<h3>Qycs Global Shipping Inc. <br>纽约</h3>
+<p><b>*邮箱地址: </b>
+Myqycs@gmail.com</p>
+<p><b>电话号码: </b>（稍后更新）</p>
+<p><b>二维码</b></p>
+<img src="/static/image/qrcode.jpg"  alt="qr code" width="250"/>
