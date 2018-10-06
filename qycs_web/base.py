@@ -276,7 +276,6 @@ ugettext = lambda s: s
 LANGUAGES = (
     ('en-us', _('English')),
     ('zh-Hans', _('Simplified Chinese')),
-    ('cn', _('Chinese')),
 )
 
 LOCALE_PATHS = [
