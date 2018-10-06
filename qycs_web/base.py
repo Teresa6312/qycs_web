@@ -234,7 +234,7 @@ AUTH_PASSWORD_VALIDATORS = [
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
@@ -276,6 +276,7 @@ ugettext = lambda s: s
 LANGUAGES = (
     ('en-us', _('English')),
     ('zh-Hans', _('Simplified Chinese')),
+    ('cn', _('Chinese')),
 )
 
 LOCALE_PATHS = [

@@ -4,13 +4,13 @@
 	</h2>
 
 	<p>
-		<p><b>Qycs Global Shipping Inc.</b> is a global shipping company that provides international shipping and shopping services while developing other e-commerce services to benefit people around the world.</p>
-		
+		<p><b>QYCS Global Shipping Inc.</b> is a global shipping company that provides international shipping and shopping services while developing other e-commerce services to benefit people around the world.</p>
+
 		<p>Chinese people from abroad are blessed! Whether you want to ship something, or buy something, we do everything we can to help you.</p>
-		
-		<p>Qycs mainly establishes user groups and collection points on the official website through users. Through the development of users and collection points, we provide better international co-shipping, direct shipping, item storage, merchandising and Haitao(global shop) services. We strive to expand our Qycs shipping and shopping web platform globally.</p>
-	
-		<p>Online, <b>Qycs technical team</b> independently developed the myqycs.com platform, in addition to <b>user-friendly web features</b>, we also have a very <b>secure database</b> developed by ourselves. Offline, our <b>shipping and shopping team</b>'s exploration and experience in global shipping and shopping has made the Qycs technical team more aware of the needs of users. They have to do a lot, including <b>setting up domestic warehouses, cooperating with transporters, striving for the lowest price, expanding the collection points, publicity marketing, etc.</b> In addition, our customer service is professional and patient, Qycs's writer is <b>interesting and creative</b>, our designers are <b>soul masters</b>. Our team is not only <b>united and helping each other</b>, but also <b>innovating and motivating</b>.</p>
+
+		<p>QYCS mainly establishes user groups and collection points on the official website through users. Through the development of users and collection points, we provide better international co-shipping, direct shipping, item storage, merchandising and Haitao(global shop) services. We strive to expand our QYCS shipping and shopping web platform globally.</p>
+
+		<p>Online, <b>QYCS technical team</b> independently developed the myqycs.com platform, in addition to <b>user-friendly web features</b>, we also have a very <b>secure database</b> developed by ourselves. Offline, our <b>shipping and shopping team</b>'s exploration and experience in global shipping and shopping has made the QYCS technical team more aware of the needs of users. They have to do a lot, including <b>setting up domestic warehouses, cooperating with transporters, striving for the lowest price, expanding the collection points, publicity marketing, etc.</b> In addition, our customer service is professional and patient, QYCS's writer is <b>interesting and creative</b>, our designers are <b>soul masters</b>. Our team is not only <b>united and helping each other</b>, but also <b>innovating and motivating</b>.</p>
 
 	</p>
 
@@ -20,7 +20,7 @@
 		We are a startup company. I wonder if we are like-minded?
 	</h2>
 	<h4>
-		Qycs technical team 
+		QYCS technical team
 
 	</h4>
 	<p><i>Do you want to work and study with our pretty programmers? If you happen to be in a related computer major, if you are interested in the work I mentioned above, you can join us. We need 2 interns who are still in college or just graduated, your location can be in New York, USA, or you can be in Guangzhou, China, our team is unrestrained, and the working hours are flexible.
@@ -33,14 +33,14 @@
 	<h3 class="h3">We need a manager of the China domestic company! Requirements:
 
 	</h3>
-	
+
 	<li>	Men's priority
 	<li>	Good at communication and entertainment, good at drinking!
 	<li>	Basic computer operation and English writing ability
 	<li>	Have knowledge or experience in warehouse management
-	
+
 	<h4>
-		Qycs Shipping and Shopping Team<br><br>
+		QYCS Shipping and Shopping Team<br><br>
 		"professional and patient" "interesting and creative"<br>
 		"united and helpful" "innovating and motivating"
 
@@ -56,7 +56,7 @@
 	<li>full time! ! ! <i><u>(Working location: Guangzhou, China)</u></i>
 	<li>Experience preferred
 
-	</div>	
-	
+	</div>
+
 		<center><p><i>To join us, please send your resume and questions you want to ask to myqycs@gmail.com
 		</i></p></center>

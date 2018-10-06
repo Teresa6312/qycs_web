@@ -1,24 +1,24 @@
 <h2>FAQs</h2>
-<h3>How can I join Qycs?</h3>
-<p>You can join now on Myqycs.com by creating an account. You can also join My Qycs Official Account in Wechat following by Wechat ID <i>QYCS4U</i> and <i>Qycs4You</i>.</p>
+<h3>How can I join QYCS?</h3>
+<p>You can join now on myqycs.com by creating an account. You can also join My QYCS Official Account in Wechat following by Wechat ID <i>QYCS4U</i> and <i>QYCS4You</i>.</p>
 
-<h3>Does it cost to be a Qycs user?</h3>
-<p>My Qycs is free to join and there's no ongoing membership fee.</p>
+<h3>Does it cost to be a QYCS user?</h3>
+<p>My QYCS is free to join and there's no ongoing membership fee.</p>
 
-<h3>Does it cost to be a Qycs collection point?</h3>
-<p>My Qycs collection point is free to join and there's no ongoing fee.</p>
+<h3>Does it cost to be a QYCS collection point?</h3>
+<p>My QYCS collection point is free to join and there's no ongoing fee.</p>
 
-<h3>Who can join My Qycs?</h3>
-<p>My Qycs is open to every people at least 13 years of age who provide and maintain a valid e-mail address globally. If you are between 13 years of age and the age of majority (18 or 19 years old, depending on your state) you must obtain permission from your parent or legal guardian before signing up.</p>
+<h3>Who can join My QYCS?</h3>
+<p>My QYCS is open to every people at least 13 years of age who provide and maintain a valid e-mail address globally. If you are between 13 years of age and the age of majority (18 or 19 years old, depending on your state) you must obtain permission from your parent or legal guardian before signing up.</p>
 
 <h3>What kind of service we mainly provide?</h3>
-<p>Qycs provides shipping and shopping service so far. We have co-shipping and direct shipping, and we also provide global shop for you.</p>
+<p>QYCS provides shipping and shopping service so far. We have co-shipping and direct shipping, and we also provide global shop for you.</p>
 
 <h3>Grand Openning Offers:</h3>
 <p>Everyone will get special offer 10% off every shipping.</p>
 
 <h3>New customer offers:</h3>
-<p>New registered customers get three months 10% off from Qycs's openning. </p>
+<p>New registered customers get three months 10% off from QYCS's openning. </p>
 
 <h3>How can I make a co-shipping?</h3>
 <p><i>We will update presentation demo about this later.</i></p>
@@ -26,29 +26,29 @@
 <h3>How can I make a direct shipping?</h3>
 <p><i>We will update presentation demo about this later.</i></p>
 
-<h3>How can I buy something globally from Qycs?</h3>
+<h3>How can I buy something globally from QYCS?</h3>
 <p>Visit our website, there is Global Shop over there. The global shop will update soonly, if you want to buy something from globally now, especially China and the USA, you can contact us by email or directly add us on Wechat by Wechat ID <i>QYCS4U</i> and <i>Qycs4You</i>.</p>
 
 <h3>How to make a payment?</h3>
 <p>We will update our payment methods for you later, please contact us if you have further information.</p>
 
 <h3>When can I begin getting points?</h3>
-<p>You begin getting points for qualifying shipping and shopping as soon as you sign up as Qycs users. Your Qycs reward points become usable 15 days from payment completed (except the first three months from openning).</p>
+<p>You begin getting points for qualifying shipping and shopping as soon as you sign up as QYCS users. Your QYCS reward points become usable 15 days from payment completed (except the first three months from openning).</p>
 
 <h3>Ways to get reward points:</h3>
 <p>Users can get reward points by any shipping or shopping. Become a collector of my collection points can get double reward points. You all can get more points when you ship and shop during our special events.</p>
 
 <h3>What can I use my reward points for?</h3>
-<p>Qycs cooperation with the designers, reward points can exchange different designer products, such as: exquisite small objects, pen, book, clothes and so on. Our designer's products definitely surprise users. (All bonus points are valid after three months of trial activity.)</p>
+<p>QYCS cooperation with the designers, reward points can exchange different designer products, such as: exquisite small objects, pen, book, clothes and so on. Our designer's products definitely surprise users. (All bonus points are valid after three months of trial activity.)</p>
 
 <h3>Why your completed personal information is so important for us?</h3>
-<p>Because Qycs needs your perfect personal information to facilitate us and you, if we can't contact you, the perfect information can give us one more choice to contact you. Your birthday information is very important to us, because we will give you a Happy Birthday bonus point on your birthday.</p>
+<p>Because QYCS needs your perfect personal information to facilitate us and you, if we can't contact you, the perfect information can give us one more choice to contact you. Your birthday information is very important to us, because we will give you a Happy Birthday bonus point on your birthday.</p>
 
 <h3>How to calculate the volume weight?</h3>
 <p>length(cm) x width(cm) x height(cm) / 5000</p>
 
-<h3>How can I find out about how Qycs will use and protect my personal information?</h3>
-<p>For more information on Qycs's privacy policy, please review the Qycs Privacy Policy.</p>
+<h3>How can I find out about how QYCS will use and protect my personal information?</h3>
+<p>For more information on QYCS's privacy policy, please review the QYCS Privacy Policy.</p>
 
 <h3>Customer Service</h3>
 <p>Please contact us by </p>
