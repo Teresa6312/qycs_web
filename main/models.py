@@ -20,11 +20,9 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 zip_regex = RegexValidator(regex=r'^[0-9]{2,6}(?:-[0-9]{4})?$|^$', message=_("Plese Enter a valid zip code."))
 
 SHIPPING_CARRIER_CHOICE = (
-('DHL', _('DHL')),
-('EMS', _('EMS')),
-('FEDEX', _('FEDEX')),
-('SF EXPRESS', _('SF EXPRESS')),
-('UPS', _('UPS')),
+('DHL', _('DHL - Regular items')),
+('EMS', _('EMS - All kind of items')),
+('SF EXPRESS', _('SF EXPRESS - Regular items')),
 ('Cheapest', _('The cheapest one')),
 ('Fastest', _('The fastest one')),
 )
@@ -77,11 +75,11 @@ WEB_CATEGORY = (
 )
 
 PACKAGE_CATEGORY = (
- ('F', _('Food/Grocery')),
- ('R', _('Regular Goods')),
- ('B', _('Beauty')),
- ('L', _('Luxury')),
- ('M', _('Mix')),
+ ('B-F', _('Food/Grocery')),
+ ('A-R', _('Regular Goods')),
+ ('C-B', _('Beauty')),
+ ('D-L', _('Luxury')),
+ ('E-M', _('Mix')),
 )
 
 INFORMATION_SOURCES = (

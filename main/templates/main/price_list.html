@@ -60,11 +60,17 @@
 {% endif %}
 <br>
 
-<p><i>If the package's volume weight is greater than the regular weight, carriers will use the volume weight as the final weight.</i></p>
-<p><b>Volume Weight(kg) Formula: Length(cm) x Width(cm) x Height(cm) / 5000</b></p>
+<p><i>{% trans "If the package's volume weight is greater than the regular weight, carriers will use the volume weight as the final weight." %}</i></p>
+<p><b>{% trans "Volume Weight(kg) Formula: Length(cm) x Width(cm) x Height(cm) / 5000" %}</b></p>
 <br>
 
 <p>{% trans 'Note: QYCS guarantees for Co-Shipping Custom clearance and tax;' %}
 <br>{% trans  "QYCS does not guarantee for Direct Shipping tax, if a user's package is taxed by the Custom, user shall duties to pay." %}</p>
+</div>
+<div class="content_center">
+  <h3>{% trans 'Shipping Limitation (temporary)' %}</h3>
+  <p>
+  {% trans 'All dangerous and illegal goods are forbidden, such as inflammable and fragile items, excessively valuable jewelry, drugs, drugs, CDs, liquids, powders, etc., are prohibited and will be refused once found. If the goods are spiteful, users will be fined 50-5000 yuan, and those with serious circumstances will be dealt with by the judiciary. If you want to mail products but not sure if they are sensitive products, please contact our customer service. ' %}
+  </p>
 </div>
 {% endblock %}

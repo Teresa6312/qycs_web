@@ -10,8 +10,9 @@
 
 <div class="w3-panel w3-mobile">
     <div class="text-xxlarge-bold w3-panel">{% trans 'Our Collection Points' %}</div>
-    <div class="logo-text-blue"><i>{% trans 'if you cannot find any collection points in the map, you can use our direct shipping service.' %}</i><button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Direct shipping' %}</button></div>
-
+    <div class="logo-text-blue">
+      <i>{% trans 'If you cannot find any collection points in the map, you can use our direct shipping service.' %}</i>
+      <button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Direct shipping' %}</button>
 </div>
 
 <div class="w3-container">
@@ -32,6 +33,9 @@
     </Table>
     <div id="map" class="w3-cell w3-rest"></div>
   </div>
+  <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:20px;"/>
+  {% trans "If you didn't see the map in this page and want to use our co-shipping service to ship your package to United States, please" %}
+  <a href="{% url 'information' 'contact' %}">   <span class="w3-text-blue"><i>{% trans 'contact us' %}</i></span></a>
 </div>
 
 

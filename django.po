@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 11:14-0400\n"
+"POT-Creation-Date: 2018-10-06 05:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
 
 #: .\collector\forms.py:15
 msgid "Agree"
@@ -1620,7 +1621,7 @@ msgstr "快速直邮"
 
 #: .\main\templates\main\base_site.html:37
 msgid "Profile"
-msgstr "简介"
+msgstr "账户"
 
 #: .\main\templates\main\base_site.html:39
 #: .\main\templates\main\package_history.html:12
@@ -1639,7 +1640,7 @@ msgstr "登出"
 #: .\main\templates\main\login.html:9 .\main\templates\main\login.html:68
 #: .\main\templates\password\password_reset_complete.html:14
 msgid "Log in"
-msgstr "登入"
+msgstr "登录"
 
 #: .\main\templates\main\base_site.html:46
 #: .\main\templates\main\register.html:11
@@ -1689,8 +1690,8 @@ msgid "Service Guide"
 msgstr "服务指南"
 
 #: .\main\templates\main\base_site.html:133
-msgid "QYCS Shipping Insurance"
-msgstr "QYCS运费险"
+msgid "Shipping Insurance"
+msgstr "运费险"
 
 #: .\main\templates\main\base_site.html:134
 #: .\main\templates\main\customer_service.html:24
@@ -1703,8 +1704,8 @@ msgid "Users and Collectors"
 msgstr "用户和站长"
 
 #: .\main\templates\main\base_site.html:159
-msgid "QYCS Global Shipping Inc."
-msgstr "QYCS国际邮购服务公司"
+msgid "Global Shipping Inc."
+msgstr "国际邮购服务公司"
 
 #: .\main\templates\main\base_site.html:159
 msgid "All Rights Reserved"
@@ -1753,7 +1754,7 @@ msgstr "直邮"
 
 #: .\main\templates\main\collectionpoints.html:18
 msgid "Search Box"
-msgstr "搜索框"
+msgstr "搜一搜"
 
 #: .\main\templates\main\coshipping.html:6
 msgid "Add Co-shipping"
@@ -1996,7 +1997,7 @@ msgstr "拼邮包裹"
 #: .\main\templates\main\package_detail.html:31
 #: .\main\templates\main\tracked.html:43
 msgid "Package Marked"
-msgstr "包裹标记"
+msgstr "包裹已标记"
 
 #: .\main\templates\main\package_detail.html:48
 #: .\main\templates\main\tracked.html:60
@@ -2157,7 +2158,7 @@ msgstr ""
 
 #: .\main\templates\main\register.html:152
 msgid "Previous"
-msgstr "以前的"
+msgstr "上一页"
 
 #: .\main\templates\main\select_way_to_ship.html:5
 msgid "Shipping ways"
@@ -2179,7 +2180,7 @@ msgstr "及时整合"
 
 #: .\main\templates\main\select_way_to_ship.html:17
 msgid "OUR HEART NEVER ENDS"
-msgstr "我们的心永不休止"
+msgstr "服务之心，永无休止！"
 
 #: .\main\templates\main\select_way_to_ship.html:21
 msgid "Help me choose"

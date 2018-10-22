@@ -24,7 +24,7 @@
         <form method="post">
             {% csrf_token %}
             <div id="tracking_block">
-              <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" placeholder="{% trans 'Enter one or more tracking numbers' %}" title="{% trans 'YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR SEMICOLON.' %'}">
+              <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" placeholder="{% trans 'Enter one or more tracking numbers' %}" title="{% trans 'YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR SEMICOLON.' %}">
                 <input type="submit" value="{% trans 'TRACK'%}" id="track_btn">
             </div>
         </form>

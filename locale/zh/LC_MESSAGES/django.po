@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-06 05:25-0400\n"
+"POT-Creation-Date: 2018-10-22 12:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
 
 #: .\collector\forms.py:15
 msgid "Agree"
@@ -30,7 +29,7 @@ msgstr "街道地址"
 msgid "Apartment/Suit/Unit"
 msgstr "单元"
 
-#: .\collector\forms.py:48 .\main\models.py:230
+#: .\collector\forms.py:48 .\main\models.py:228
 msgid "Information Source"
 msgstr "信息资源"
 
@@ -100,7 +99,7 @@ msgid "Wechat ID"
 msgstr "微信账号"
 
 #: .\collector\templates\collector\collection_point_view.html:22
-#: .\main\models.py:221
+#: .\main\models.py:219
 msgid "Store Name"
 msgstr "店名"
 
@@ -168,7 +167,7 @@ msgid "Contact Information"
 msgstr "联系信息"
 
 #: .\collector\templates\collector\collection_point_view.html:84
-#: .\main\models.py:119
+#: .\main\models.py:117
 msgid "Email"
 msgstr "邮箱"
 
@@ -240,7 +239,7 @@ msgid "Currently Icon"
 msgstr "目前的图标"
 
 #: .\collector\templates\collector\collector_update.html:81
-#: .\main\models.py:249
+#: .\main\models.py:247
 msgid "Show Contact Information"
 msgstr "显示联系信息"
 
@@ -315,12 +314,12 @@ msgstr "返回"
 
 #: .\collector\templates\collector\colregister.html:201
 #: .\main\templates\main\addpackage.html:153
-#: .\main\templates\main\register.html:153
+#: .\main\templates\main\register.html:146
 msgid "Next"
 msgstr "下页"
 
 #: .\collector\templates\collector\colregister.html:204
-#: .\main\templates\main\register.html:155
+#: .\main\templates\main\register.html:148
 msgid "Register"
 msgstr "注册"
 
@@ -349,7 +348,9 @@ msgid "This field is required after you entered the Unavailable End Date."
 msgstr "你输入了无效的结束日期，然而这里是要求的。"
 
 #: .\main\code.py:11
-msgid "Activate your QYCS Website account."
+#, fuzzy
+#| msgid "Activate your QYCS Website account."
+msgid "Activate your Qycs Website account."
 msgstr "激活你的QYCS网上用户"
 
 #: .\main\forms.py:53 .\main\forms.py:116
@@ -360,14 +361,18 @@ msgstr "+1-234-567-8900"
 msgid "From Warehouse"
 msgstr "从仓库"
 
-#: .\main\forms.py:163 .\main\models.py:395
+#: .\main\forms.py:163 .\main\models.py:393
 #: .\main\templates\main\price_list.html:41
 msgid "Carrier"
 msgstr "运输公司"
 
-#: .\main\forms.py:166 .\main\models.py:394
+#: .\main\forms.py:166 .\main\models.py:392
 msgid "Tracking Number"
 msgstr "追踪单号"
+
+#: .\main\forms.py:169 .\main\forms.py:273
+msgid "Note"
+msgstr "备注"
 
 #: .\main\forms.py:170
 msgid "Please enter your needs about this package"
@@ -381,21 +386,59 @@ msgstr "减小你的包裹体积"
 msgid "No Rush Shipping (Double Points)"
 msgstr "非急件（双倍积分）"
 
-#: .\main\forms.py:219 .\main\models.py:457
+#: .\main\forms.py:219 .\main\models.py:455
 msgid "Select a Carrier"
 msgstr "选择运输公司"
 
-#: .\main\forms.py:317 .\main\forms.py:331 .\main\models.py:184
-#: .\main\models.py:302 .\main\templates\main\account.html:24
+#: .\main\forms.py:252 .\main\models.py:557
+msgid "Item Name"
+msgstr "物品名称"
+
+#: .\main\forms.py:254
+#, fuzzy
+#| msgid "Please enter your needs about this package"
+msgid "Please enter your items name as detailed as possible"
+msgstr "请输入有关此包裹的需求"
+
+#: .\main\forms.py:258
+#, fuzzy
+#| msgid "Item Details"
+msgid "Item Detail"
+msgstr "物品细节"
+
+#: .\main\forms.py:259
+msgid "color/size.etc"
+msgstr "颜色/尺寸.etc"
+
+#: .\main\forms.py:263 .\main\models.py:559
+msgid "quantity"
+msgstr "数量"
+
+#: .\main\forms.py:266 .\main\models.py:562
+msgid "Item URL"
+msgstr "物品链接"
+
+#: .\main\forms.py:267
+msgid "https://..."
+msgstr "https://..."
+
+#: .\main\forms.py:274
+#, fuzzy
+#| msgid "Please enter your needs about this package"
+msgid "Please enter your needs with this item"
+msgstr "请输入有关此包裹的需求"
+
+#: .\main\forms.py:307 .\main\forms.py:321 .\main\models.py:182
+#: .\main\models.py:300 .\main\templates\main\account.html:24
 msgid "First Name"
 msgstr "名"
 
-#: .\main\forms.py:318 .\main\forms.py:332 .\main\models.py:185
-#: .\main\models.py:303 .\main\templates\main\account.html:25
+#: .\main\forms.py:308 .\main\forms.py:322 .\main\models.py:183
+#: .\main\models.py:301 .\main\templates\main\account.html:25
 msgid "Last Name"
 msgstr "姓"
 
-#: .\main\forms.py:319 .\main\forms.py:333
+#: .\main\forms.py:309 .\main\forms.py:323
 msgid "Phone Number (+1-234-567-8900)"
 msgstr "电话号码 (+1-234-567-8900)"
 
@@ -407,736 +450,748 @@ msgstr "无效的电话号码格式，请输入格式为1-123-456-7890."
 msgid "Plese Enter a valid zip code."
 msgstr "请输入有效的邮区编码"
 
-#: .\main\models.py:23 .\main\models.py:51 .\main\models.py:107
-msgid "DHL"
-msgstr "DHL"
+#: .\main\models.py:23
+msgid "DHL - Regular items"
+msgstr "DHL - 普货"
 
-#: .\main\models.py:24 .\main\models.py:52 .\main\models.py:108
-msgid "EMS"
-msgstr "EMS"
+#: .\main\models.py:24
+msgid "EMS - All kind of items"
+msgstr "EMS - 所有非敏感类商品"
 
-#: .\main\models.py:25 .\main\models.py:109
-msgid "FEDEX"
-msgstr "FEDEX"
+#: .\main\models.py:25
+msgid "SF EXPRESS - Regular items"
+msgstr "顺丰速运 - 普货"
 
-#: .\main\models.py:26 .\main\models.py:110
-msgid "SF EXPRESS"
-msgstr "顺丰速运"
-
-#: .\main\models.py:27 .\main\models.py:111
-msgid "UPS"
-msgstr "UPS"
-
-#: .\main\models.py:28
+#: .\main\models.py:26
 msgid "The cheapest one"
-msgstr "最便宜的一种"
+msgstr "最便宜的"
 
-#: .\main\models.py:29
+#: .\main\models.py:27
 msgid "The fastest one"
-msgstr "最快的一种"
+msgstr "最快的"
 
-#: .\main\models.py:33
+#: .\main\models.py:31
 msgid "ShunFeng／顺丰速运"
-msgstr ""
+msgstr "ShunFeng／顺丰速运"
 
-#: .\main\models.py:34
+#: .\main\models.py:32
 msgid "YouZheng／中国邮政"
 msgstr "YouZheng／中国邮政"
 
-#: .\main\models.py:35
+#: .\main\models.py:33
 msgid "ZhongTong／中通速递"
 msgstr "ZhongTong／中通速递"
 
-#: .\main\models.py:36
+#: .\main\models.py:34
 msgid "YuanTong／圆通速递"
 msgstr "YuanTong／圆通速递"
 
-#: .\main\models.py:37
+#: .\main\models.py:35
 msgid "ShenTong／申通速递"
 msgstr "ShenTong／申通速递"
 
-#: .\main\models.py:38
+#: .\main\models.py:36
 msgid "ZhaiJiSong／宅急送"
 msgstr "ZhaiJiSong／宅急送"
 
-#: .\main\models.py:39
+#: .\main\models.py:37
 msgid "YunDa／韵达快递"
 msgstr "YunDa／韵达快递"
 
-#: .\main\models.py:40
+#: .\main\models.py:38
 msgid "JingDong／京东物流"
 msgstr "JingDong／京东物流"
 
-#: .\main\models.py:41
+#: .\main\models.py:39
 msgid "BaiShi／百世快递"
 msgstr "BaiShi／百世快递"
 
-#: .\main\models.py:42
+#: .\main\models.py:40
 msgid "Tiantian／天天快递"
 msgstr "Tiantian／天天快递"
 
-#: .\main\models.py:43
+#: .\main\models.py:41
 msgid "EyouBao／E邮宝"
 msgstr "EyouBao／E邮宝"
 
-#: .\main\models.py:44
+#: .\main\models.py:42
 msgid "AAE／AAE快递"
 msgstr "AAE／AAE快递"
 
-#: .\main\models.py:45
+#: .\main\models.py:43
 msgid "AnDa／安达速递"
 msgstr "AnDa／安达速递"
 
-#: .\main\models.py:46
+#: .\main\models.py:44
 msgid "DeBang／德邦快递"
 msgstr "DeBang／德邦快递"
 
-#: .\main\models.py:47
+#: .\main\models.py:45
 msgid "DangDang／当当网"
 msgstr "DangDang／当当网"
 
-#: .\main\models.py:48
+#: .\main\models.py:46
 msgid "YouSu／优速快递"
 msgstr "YouSu／优速快递"
 
-#: .\main\models.py:49
+#: .\main\models.py:47
 msgid "QuanFeng／全峰快递"
 msgstr "QuanFeng／全峰快递"
 
-#: .\main\models.py:50
+#: .\main\models.py:48
 msgid "QuanYi／全一快递"
 msgstr "QuanYi／全一快递"
 
-#: .\main\models.py:53
+#: .\main\models.py:49 .\main\models.py:105
+msgid "DHL"
+msgstr "DHL"
+
+#: .\main\models.py:50 .\main\models.py:106
+msgid "EMS"
+msgstr "EMS"
+
+#: .\main\models.py:51
 msgid "FedEx／联邦快递"
 msgstr "FedEx／联邦快递"
 
-#: .\main\models.py:54
+#: .\main\models.py:52
 msgid "SF EXPRESS／顺丰速运"
 msgstr "SF EXPRESS／顺丰速运"
 
-#: .\main\models.py:55
+#: .\main\models.py:53
 msgid "UPS/联合国际快递"
 msgstr "UPS/联合国际快递"
 
-#: .\main\models.py:56
+#: .\main\models.py:54
 msgid "Others／其他"
 msgstr "Others／其他"
 
-#: .\main\models.py:59
+#: .\main\models.py:57
 msgid "NO insurance"
 msgstr "无保险"
 
-#: .\main\models.py:60
+#: .\main\models.py:58
 msgid "$3 insurance"
 msgstr "$3保险"
 
-#: .\main\models.py:61
+#: .\main\models.py:59
 msgid "$5 insurance"
 msgstr "$5保险"
 
-#: .\main\models.py:62
+#: .\main\models.py:60
 msgid "$10 insurance"
 msgstr "$10保险"
 
-#: .\main\models.py:63
+#: .\main\models.py:61
 #, fuzzy
 #| msgid "$5 insurance"
 msgid "$15 insurance"
 msgstr "$5保险"
 
-#: .\main\models.py:66
+#: .\main\models.py:64
 msgid "China Yuan"
 msgstr "中国（元）"
 
-#: .\main\models.py:67
+#: .\main\models.py:65
 msgid "US Dollar"
 msgstr "美国（刀）"
 
-#: .\main\models.py:70
+#: .\main\models.py:68
 msgid "Clothing"
 msgstr "衣裤鞋帽"
 
-#: .\main\models.py:71
+#: .\main\models.py:69
 msgid "Bag"
 msgstr "包包"
 
-#: .\main\models.py:72
+#: .\main\models.py:70
 msgid "Jewelry"
 msgstr "首饰"
 
-#: .\main\models.py:73
+#: .\main\models.py:71
 msgid "Sport"
 msgstr "运动类"
 
-#: .\main\models.py:74 .\main\models.py:82 .\main\models.py:239
+#: .\main\models.py:72 .\main\models.py:80 .\main\models.py:237
 msgid "Beauty"
 msgstr "美妆"
 
-#: .\main\models.py:75
+#: .\main\models.py:73
 msgid "Baby"
 msgstr "婴儿类"
 
-#: .\main\models.py:76
+#: .\main\models.py:74
 msgid "Other"
 msgstr "其他"
 
-#: .\main\models.py:80
+#: .\main\models.py:78
 msgid "Food/Grocery"
 msgstr "食品类"
 
-#: .\main\models.py:81
+#: .\main\models.py:79
 msgid "Regular Goods"
 msgstr "普货类"
 
-#: .\main\models.py:83
+#: .\main\models.py:81
 msgid "Luxury"
 msgstr "奢侈品类"
 
-#: .\main\models.py:84
+#: .\main\models.py:82
 msgid "Mix"
 msgstr "混合类"
 
-#: .\main\models.py:88
+#: .\main\models.py:86
 msgid "WeChat"
 msgstr "微信"
 
-#: .\main\models.py:89
+#: .\main\models.py:87
 msgid "Dealmoon"
 msgstr "北美论坛"
 
-#: .\main\models.py:93 .\qycs_web\base.py:276
+#: .\main\models.py:91 .\qycs_web\base.py:277
 msgid "English"
 msgstr "英语"
 
-#: .\main\models.py:94
+#: .\main\models.py:92
 msgid "Chinese"
 msgstr "中文"
 
-#: .\main\models.py:98
+#: .\main\models.py:96
 msgid "China"
 msgstr "中国"
 
-#: .\main\models.py:99
+#: .\main\models.py:97
 msgid "United States"
 msgstr "美国"
 
-#: .\main\models.py:103
+#: .\main\models.py:101
 msgid "Shipping Price"
 msgstr "运费"
 
-#: .\main\models.py:104 .\main\models.py:639
+#: .\main\models.py:102 .\main\models.py:637
 msgid "Currency Rate"
 msgstr "汇率"
 
-#: .\main\models.py:112
+#: .\main\models.py:107
+msgid "FEDEX"
+msgstr "FEDEX"
+
+#: .\main\models.py:108
+msgid "SF EXPRESS"
+msgstr "顺丰速运"
+
+#: .\main\models.py:109
+msgid "UPS"
+msgstr "UPS"
+
+#: .\main\models.py:110
 msgid "DHL 21kg+"
 msgstr "DHL 21公斤以上"
 
-#: .\main\models.py:113
+#: .\main\models.py:111
 msgid "EMS 21kg+"
 msgstr "EMS 21公斤以上"
 
-#: .\main\models.py:114
+#: .\main\models.py:112
 msgid "FEDEX 21kg+"
 msgstr "联邦 21公斤以上"
 
-#: .\main\models.py:115
+#: .\main\models.py:113
 msgid "SF EXPRESS 21kg+"
 msgstr "顺丰速运 21公斤以上"
 
-#: .\main\models.py:116
+#: .\main\models.py:114
 msgid "UPS 21kg+"
 msgstr "UPS 21公斤以上"
 
-#: .\main\models.py:120
+#: .\main\models.py:118
 msgid "Email Confirmed"
 msgstr "邮箱已确认"
 
-#: .\main\models.py:123 .\main\models.py:186 .\main\models.py:304
+#: .\main\models.py:121 .\main\models.py:184 .\main\models.py:302
 #: .\main\templates\main\account.html:36
 msgid "Phone Number"
 msgstr "电话号码"
 
-#: .\main\models.py:124
+#: .\main\models.py:122
 msgid "Default Shipping Address"
 msgstr "默认邮寄地址"
 
-#: .\main\models.py:125 .\main\templates\main\account.html:49
+#: .\main\models.py:123 .\main\templates\main\account.html:49
 msgid "Default Collection Point"
 msgstr "默认收件站"
 
-#: .\main\models.py:127 .\main\templates\main\customer_service.html:38
+#: .\main\models.py:125 .\main\templates\main\customer_service.html:38
 msgid "Reward Points"
 msgstr "奖励积分"
 
-#: .\main\models.py:128 .\main\templates\main\account.html:37
+#: .\main\models.py:126 .\main\templates\main\account.html:37
 msgid "Birthday"
 msgstr "生日"
 
-#: .\main\models.py:129
+#: .\main\models.py:127
 msgid "Profile Updated Date"
 msgstr "简介更新日期"
 
-#: .\main\models.py:130 .\main\models.py:174 .\main\models.py:594
-#: .\main\models.py:623 .\main\templates\main\account.html:38
+#: .\main\models.py:128 .\main\models.py:172 .\main\models.py:592
+#: .\main\models.py:621 .\main\templates\main\account.html:38
 msgid "Country"
 msgstr "国家"
 
-#: .\main\models.py:131
+#: .\main\models.py:129
 msgid "Preferred Language"
 msgstr "优先语言"
 
-#: .\main\models.py:132
+#: .\main\models.py:130
 msgid "Privacy Policy Agreement"
 msgstr "隐私政策协议"
 
-#: .\main\models.py:133 .\main\models.py:176 .\main\models.py:319
-#: .\main\models.py:351 .\main\models.py:390 .\main\models.py:441
-#: .\main\models.py:565
+#: .\main\models.py:131 .\main\models.py:174 .\main\models.py:317
+#: .\main\models.py:349 .\main\models.py:388 .\main\models.py:439
+#: .\main\models.py:563
 msgid "Memo"
 msgstr "备注"
 
-#: .\main\models.py:144
+#: .\main\models.py:142
 msgid "Users"
 msgstr "用户"
 
-#: .\main\models.py:150
+#: .\main\models.py:148
 msgid "Employee"
 msgstr "员工"
 
-#: .\main\models.py:151
+#: .\main\models.py:149
 msgid "Employee Position"
 msgstr "员工职位"
 
-#: .\main\models.py:152
+#: .\main\models.py:150
 msgid "Recruitment Date"
 msgstr "入职日期"
 
-#: .\main\models.py:153
+#: .\main\models.py:151
 msgid "Resignation Date"
 msgstr "注册日期"
 
-#: .\main\models.py:154 .\main\models.py:168 .\main\models.py:332
-#: .\main\models.py:361 .\main\models.py:387 .\main\models.py:434
+#: .\main\models.py:152 .\main\models.py:166 .\main\models.py:330
+#: .\main\models.py:359 .\main\models.py:385 .\main\models.py:432
 msgid "Creation Date"
 msgstr "创建日期"
 
-#: .\main\models.py:155
+#: .\main\models.py:153
 msgid "Employee Profile Updated Date"
 msgstr "员工档案更新日期"
 
-#: .\main\models.py:163
+#: .\main\models.py:161
 msgid "Employees"
 msgstr "员工"
 
-#: .\main\models.py:170
+#: .\main\models.py:168
 msgid "address"
 msgstr "地址"
 
-#: .\main\models.py:171
+#: .\main\models.py:169
 msgid "Address2/Apartment"
 msgstr "地址2/单元号"
 
-#: .\main\models.py:172 .\main\models.py:621
+#: .\main\models.py:170 .\main\models.py:619
 msgid "City"
 msgstr "城市"
 
-#: .\main\models.py:173 .\main\models.py:622
+#: .\main\models.py:171 .\main\models.py:620
 msgid "State/Province"
 msgstr "州／省"
 
-#: .\main\models.py:175
+#: .\main\models.py:173
 msgid "Zip Code"
 msgstr "邮区"
 
-#: .\main\models.py:182
+#: .\main\models.py:180
 msgid "Address Updated Date"
 msgstr "地址更新日期"
 
-#: .\main\models.py:183 .\main\models.py:330 .\main\models.py:423
+#: .\main\models.py:181 .\main\models.py:328 .\main\models.py:421
 msgid "User"
 msgstr "用户"
 
-#: .\main\models.py:197
+#: .\main\models.py:195
 msgid "Addresses"
 msgstr "地址"
 
-#: .\main\models.py:210
+#: .\main\models.py:208
 msgid "Collection Point Updated Date"
 msgstr "收件站更新日期"
 
-#: .\main\models.py:211 .\main\templates\main\account.html:15
+#: .\main\models.py:209 .\main\templates\main\account.html:15
 msgid "Collector"
 msgstr "站长"
 
-#: .\main\models.py:212
+#: .\main\models.py:210
 msgid "License Type"
 msgstr "证件类型"
 
-#: .\main\models.py:222 .\main\templates\blocks\col_card_fields.html:19
+#: .\main\models.py:220 .\main\templates\blocks\col_card_fields.html:19
 msgid "Store"
 msgstr "店铺"
 
-#: .\main\models.py:225
+#: .\main\models.py:223
 msgid "Collection Point Name"
 msgstr "收件站名字"
 
-#: .\main\models.py:226
+#: .\main\models.py:224
 msgid "WeChat ID"
 msgstr "微信账号"
 
-#: .\main\models.py:228
+#: .\main\models.py:226
 msgid "Referrer"
 msgstr "推荐人"
 
-#: .\main\models.py:229
+#: .\main\models.py:227
 msgid "Apply Reason"
 msgstr "申请原因"
 
-#: .\main\models.py:231
+#: .\main\models.py:229
 msgid "Agreement"
 msgstr "同意"
 
-#: .\main\models.py:235 .\main\templates\blocks\col_card_fields.html:35
+#: .\main\models.py:233 .\main\templates\blocks\col_card_fields.html:35
 msgid "Food"
 msgstr "食品"
 
-#: .\main\models.py:237 .\main\templates\blocks\col_card_fields.html:36
+#: .\main\models.py:235 .\main\templates\blocks\col_card_fields.html:36
 msgid "Regular"
 msgstr "普货"
 
-#: .\main\models.py:241 .\main\templates\blocks\col_card_fields.html:37
+#: .\main\models.py:239 .\main\templates\blocks\col_card_fields.html:37
 msgid "Skincare"
 msgstr "护肤品"
 
-#: .\main\models.py:245 .\main\models.py:317
+#: .\main\models.py:243 .\main\models.py:315
 msgid "Available"
 msgstr "运行中"
 
-#: .\main\models.py:248
+#: .\main\models.py:246
 msgid "Instruction"
 msgstr "指示"
 
-#: .\main\models.py:253
+#: .\main\models.py:251
 msgid "Monday Start"
 msgstr "星期一，开始于"
 
-#: .\main\models.py:254
+#: .\main\models.py:252
 msgid "Monday End"
 msgstr "星期一，结束于"
 
-#: .\main\models.py:255
+#: .\main\models.py:253
 msgid "Tuesday Start"
 msgstr "星期二，开始于"
 
-#: .\main\models.py:256
+#: .\main\models.py:254
 msgid "Tuesday End"
 msgstr "星期二，结束于"
 
-#: .\main\models.py:257
+#: .\main\models.py:255
 msgid "Wednesday Start"
 msgstr "星期三，开始于"
 
-#: .\main\models.py:258
+#: .\main\models.py:256
 msgid "Wednesday End"
 msgstr "星期三，结束于"
 
-#: .\main\models.py:259
+#: .\main\models.py:257
 msgid "Thursday Start"
 msgstr "星期四，开始于"
 
-#: .\main\models.py:260
+#: .\main\models.py:258
 msgid "Thursday End"
 msgstr "星期四，结束于"
 
-#: .\main\models.py:261
+#: .\main\models.py:259
 msgid "Friday Start"
 msgstr "星期五，开始于"
 
-#: .\main\models.py:262
+#: .\main\models.py:260
 msgid "Friday End"
 msgstr "星期五，结束于"
 
-#: .\main\models.py:263
+#: .\main\models.py:261
 msgid "Saturday Start"
 msgstr "星期六，开始于"
 
-#: .\main\models.py:264
+#: .\main\models.py:262
 msgid "Saturday End"
 msgstr "星期六，结束于"
 
-#: .\main\models.py:265
+#: .\main\models.py:263
 msgid "Sunday Start"
 msgstr "星期日，开始于"
 
-#: .\main\models.py:266
+#: .\main\models.py:264
 msgid "Sunday End"
 msgstr "星期日，结束于"
 
-#: .\main\models.py:267
+#: .\main\models.py:265
 msgid "Absent Start"
 msgstr "外出开始于"
 
-#: .\main\models.py:268
+#: .\main\models.py:266
 msgid "Absent End"
 msgstr "外出结束于"
 
-#: .\main\models.py:298 .\main\templates\main\base_site.html:36
+#: .\main\models.py:296 .\main\templates\main\base_site.html:36
 msgid "Collection Point"
 msgstr "收件站"
 
-#: .\main\models.py:310
+#: .\main\models.py:308
 msgid "Co-receiver"
 msgstr "拼邮客户"
 
-#: .\main\models.py:315
+#: .\main\models.py:313
 msgid "Warehouse Updated Date"
 msgstr "仓库更新日期"
 
-#: .\main\models.py:316
+#: .\main\models.py:314
 msgid "Warehouse Name"
 msgstr "仓库名字"
 
-#: .\main\models.py:326
+#: .\main\models.py:324
 msgid "Warehouse"
 msgstr "仓库"
 
-#: .\main\models.py:333
+#: .\main\models.py:331
 msgid "Coupon Updated Date"
 msgstr "优惠码更新日期"
 
-#: .\main\models.py:335
+#: .\main\models.py:333
 msgid "Coupon Code"
 msgstr "优惠码"
 
-#: .\main\models.py:336
+#: .\main\models.py:334
 msgid "Discount"
 msgstr "折扣"
 
-#: .\main\models.py:337
+#: .\main\models.py:335
 msgid "Amount Limit"
 msgstr "价钱限制"
 
-#: .\main\models.py:339
+#: .\main\models.py:337
 msgid "Start Date"
 msgstr "开始日期"
 
-#: .\main\models.py:340
+#: .\main\models.py:338
 msgid "End Date"
 msgstr "结束日期"
 
-#: .\main\models.py:342
+#: .\main\models.py:340
 msgid "Good For Package"
 msgstr "可用于包裹"
 
-#: .\main\models.py:345
+#: .\main\models.py:343
 msgid "Good For Order"
 msgstr "可用于购物订单"
 
-#: .\main\models.py:348
+#: .\main\models.py:346
 msgid "One Time Use Only"
 msgstr "仅限单次使用"
 
-#: .\main\models.py:350
+#: .\main\models.py:348
 msgid "Coupon Used Times"
 msgstr "优惠码使用次数"
 
-#: .\main\models.py:357 .\main\models.py:362
+#: .\main\models.py:355 .\main\models.py:360
 #: .\main\templates\main\package_cart.html:162
 msgid "Coupon"
 msgstr "优惠码"
 
-#: .\main\models.py:363
+#: .\main\models.py:361
 msgid "Reward Point Used"
 msgstr "奖励积分已使用了"
 
-#: .\main\models.py:364 .\main\templates\main\package_cart.html:78
+#: .\main\models.py:362 .\main\templates\main\package_cart.html:78
 #: .\main\templates\main\package_cart.html:137
 #: .\main\templates\main\package_cart.html:164
 #: .\main\templates\main\package_history.html:79
 #: .\main\templates\main\package_history.html:142
-#: .\payment\templates\payment\process.html:21
-#: .\payment\templates\payment\process.html:86
-#: .\payment\templates\payment\process.html:142
+#: .\payment\templates\payment\process.html:24
+#: .\payment\templates\payment\process.html:89
+#: .\payment\templates\payment\process.html:145
 msgid "Total Amount"
 msgstr "总额"
 
-#: .\main\models.py:365 .\main\models.py:470 .\main\models.py:563
+#: .\main\models.py:363 .\main\models.py:468 .\main\models.py:561
 msgid "Currency"
 msgstr "货币"
 
-#: .\main\models.py:366
+#: .\main\models.py:364
 msgid "Insurance Plan"
 msgstr "保险计划"
 
-#: .\main\models.py:388 .\main\models.py:454
+#: .\main\models.py:386 .\main\models.py:452
 msgid "Packed by Employee"
 msgstr "包装员工"
 
-#: .\main\models.py:389
+#: .\main\models.py:387
 msgid "Packed Date"
 msgstr "包装日期"
 
-#: .\main\models.py:392 .\main\models.py:455
+#: .\main\models.py:390 .\main\models.py:453
 msgid "Weight(kg)"
 msgstr "重量（千克）"
 
-#: .\main\models.py:396
+#: .\main\models.py:394
 msgid "Shipped Date"
 msgstr "寄出日期"
 
-#: .\main\models.py:399
+#: .\main\models.py:397
 msgid "Received Date"
 msgstr "接收日期"
 
-#: .\main\models.py:400
+#: .\main\models.py:398
 msgid "Splitted by Employee"
 msgstr "分装员工"
 
-#: .\main\models.py:403 .\main\models.py:494
+#: .\main\models.py:401 .\main\models.py:492
 msgid "Package Issue"
 msgstr "包裹问题"
 
-#: .\main\models.py:419 .\main\models.py:432
+#: .\main\models.py:417 .\main\models.py:430
 msgid "Parent Package"
 msgstr "主包裹"
 
-#: .\main\models.py:424
+#: .\main\models.py:422
 msgid "Order Set"
 msgstr "付款订单"
 
-#: .\main\models.py:426 .\main\templates\main\package_cart.html:92
+#: .\main\models.py:424 .\main\templates\main\package_cart.html:92
 #: .\main\templates\main\package_detail.html:19
 #: .\main\templates\main\package_history.html:91
-#: .\payment\templates\payment\process.html:97
+#: .\payment\templates\payment\process.html:100
 msgid "Order"
 msgstr "购物单"
 
-#: .\main\models.py:428
+#: .\main\models.py:426
 msgid "Storage"
 msgstr "储存"
 
-#: .\main\models.py:430 .\main\templates\main\customer_service.html:28
+#: .\main\models.py:428 .\main\templates\main\customer_service.html:28
 msgid "Co-Shipping"
 msgstr "拼邮"
 
-#: .\main\models.py:435 .\main\models.py:631
+#: .\main\models.py:433 .\main\models.py:629
 msgid "Package Type"
 msgstr "包裹类型"
 
-#: .\main\models.py:438
+#: .\main\models.py:436
 msgid "Created by Employee"
 msgstr "创建员工"
 
-#: .\main\models.py:440
+#: .\main\models.py:438
 msgid "Date Requested to Ship"
 msgstr "要求邮寄的日期"
 
-#: .\main\models.py:442
+#: .\main\models.py:440
 msgid "Customer's Package's Tracking Number"
 msgstr "客户包裹单号"
 
-#: .\main\models.py:443
+#: .\main\models.py:441
 msgid "Customer's Package's Carrier"
 msgstr "客户包裹运输公司"
 
-#: .\main\models.py:444 .\main\models.py:566
+#: .\main\models.py:442 .\main\models.py:564
 msgid "Low Volume Request"
 msgstr "要求减小体积"
 
-#: .\main\models.py:448
+#: .\main\models.py:446
 msgid "No Rush Request"
 msgstr "非急件"
 
-#: .\main\models.py:451 .\main\templates\main\package_detail.html:39
+#: .\main\models.py:449 .\main\templates\main\package_detail.html:39
 #: .\main\templates\main\tracked.html:51
 msgid "Warehouse Received"
 msgstr "仓库已接收"
 
-#: .\main\models.py:452
+#: .\main\models.py:450
 msgid "Warehouse Received Date"
 msgstr "仓库接收日期"
 
-#: .\main\models.py:453
+#: .\main\models.py:451
 msgid "Package Ready Date"
 msgstr "包裹准备日期"
 
-#: .\main\models.py:456
+#: .\main\models.py:454
 msgid "Volume Weight(kg)"
 msgstr "体积重（kg）"
 
-#: .\main\models.py:461
+#: .\main\models.py:459
 msgid "Deposit Amount"
 msgstr "定金金额"
 
-#: .\main\models.py:464
+#: .\main\models.py:462
 msgid "Storage Fee"
 msgstr "储存费用"
 
-#: .\main\models.py:465
+#: .\main\models.py:463
 msgid "Shipping Fee"
 msgstr "运费"
 
-#: .\main\models.py:467 .\main\templates\main\package_cart.html:70
+#: .\main\models.py:465 .\main\templates\main\package_cart.html:70
 #: .\main\templates\main\package_cart.html:129
 #: .\main\templates\main\package_detail.html:147
 #: .\main\templates\main\package_history.html:71
 #: .\main\templates\main\package_history.html:134
-#: .\payment\templates\payment\process.html:78
-#: .\payment\templates\payment\process.html:134
+#: .\payment\templates\payment\process.html:81
+#: .\payment\templates\payment\process.html:137
 msgid "Order Amount"
 msgstr "订单金额"
 
-#: .\main\models.py:469
+#: .\main\models.py:467
 msgid "Paid Amount"
 msgstr "已付金额"
 
-#: .\main\models.py:474
+#: .\main\models.py:472
 msgid "Shipping Address"
 msgstr "邮寄地址"
 
-#: .\main\models.py:477
+#: .\main\models.py:475
 msgid "Shipping Collection Point location"
 msgstr "邮寄收件站地址"
 
-#: .\main\models.py:478
+#: .\main\models.py:476
 msgid "Receiver"
 msgstr "拼邮客户"
 
-#: .\main\models.py:481
+#: .\main\models.py:479
 msgid "Ship to Warehouse"
 msgstr "寄去仓库"
 
-#: .\main\models.py:484
+#: .\main\models.py:482
 msgid "Receiver Picked Up"
 msgstr "拼邮客户取件"
 
-#: .\main\models.py:487
+#: .\main\models.py:485
 msgid "Picked Up Date"
 msgstr "取件日期"
 
-#: .\main\models.py:489
+#: .\main\models.py:487
 msgid "Final Shipping Date"
 msgstr "最终邮寄日期"
 
-#: .\main\models.py:490
+#: .\main\models.py:488
 msgid "Final Shipping Tracking Number"
 msgstr "最终邮寄单号"
 
-#: .\main\models.py:491
+#: .\main\models.py:489
 msgid "Final Shipping Carrier"
 msgstr "最终邮寄运输公司"
 
-#: .\main\models.py:496
+#: .\main\models.py:494
 msgid "Refund Amount"
 msgstr "退款金额"
 
-#: .\main\models.py:534
+#: .\main\models.py:532
 msgid "The receiver has picked up the package."
 msgstr "拼邮客户已取件"
 
-#: .\main\models.py:537
+#: .\main\models.py:535
 msgid ""
 "Package is being holded on the way to your selected location.\n"
 "Please view the detail for more information."
@@ -1144,15 +1199,15 @@ msgstr ""
 "你的包裹在路上等待中\n"
 "请查看细节获得更多信息"
 
-#: .\main\models.py:539
+#: .\main\models.py:537
 msgid "Package have been shipped out from Warehouse."
 msgstr "包裹已从仓库发出"
 
-#: .\main\models.py:541
+#: .\main\models.py:539
 msgid "Package is ready to ship out from Warehouse."
 msgstr "包裹即将从仓库发货"
 
-#: .\main\models.py:543
+#: .\main\models.py:541
 msgid ""
 "There is some problem with your package.\n"
 "Please view the detail for more information."
@@ -1160,150 +1215,138 @@ msgstr ""
 "你的包裹有些问题哦。\n"
 "请查看细节获得更多信息"
 
-#: .\main\models.py:545
+#: .\main\models.py:543
 msgid ""
 "Package has been paid, and it is being prepared to ship out from Warehouse"
 msgstr "你的包裹已付款，请耐心等待包裹从仓库发货"
 
-#: .\main\models.py:547
+#: .\main\models.py:545
 msgid "Package is ready to pay."
 msgstr "你的包裹好了哦，可以付款了亲"
 
-#: .\main\models.py:549
+#: .\main\models.py:547
 msgid "Package arrived the Warehouse."
 msgstr "包裹已到达仓库"
 
-#: .\main\models.py:551
+#: .\main\models.py:549
 msgid "N/A"
 msgstr "未有信息"
 
-#: .\main\models.py:554 .\main\models.py:558
+#: .\main\models.py:552 .\main\models.py:556
 msgid "Package/Order"
 msgstr "包裹/订单"
 
-#: .\main\models.py:559
-msgid "Item Name"
-msgstr "物品名称"
-
-#: .\main\models.py:560
+#: .\main\models.py:558
 msgid "Item Details"
 msgstr "物品细节"
 
-#: .\main\models.py:561
-msgid "quantity"
-msgstr "数量"
-
-#: .\main\models.py:562
+#: .\main\models.py:560
 msgid "Item Value"
 msgstr "物品价值"
 
-#: .\main\models.py:564
-msgid "Item URL"
-msgstr "物品链接"
-
-#: .\main\models.py:570
+#: .\main\models.py:568
 msgid "Included Tax"
 msgstr "已含税"
 
-#: .\main\models.py:573
+#: .\main\models.py:571
 msgid "Order by Employee"
 msgstr "下单员工"
 
-#: .\main\models.py:579 .\main\templates\main\addpackage.html:116
+#: .\main\models.py:577 .\main\templates\main\addpackage.html:116
 msgid "Item"
 msgstr "物品"
 
-#: .\main\models.py:584
+#: .\main\models.py:582
 msgid "Package"
 msgstr "包裹"
 
-#: .\main\models.py:589 .\main\templates\main\package_detail.html:159
+#: .\main\models.py:587 .\main\templates\main\package_detail.html:159
 msgid "Package Snapshot"
 msgstr "包裹细节截图"
 
-#: .\main\models.py:595 .\main\models.py:628
+#: .\main\models.py:593 .\main\models.py:626
 #: .\main\templates\main\price_list.html:19
 #: .\main\templates\main\price_list.html:40
 msgid "Category"
 msgstr "类别"
 
-#: .\main\models.py:596
+#: .\main\models.py:594
 msgid "Website Name"
 msgstr "网站名"
 
-#: .\main\models.py:597
+#: .\main\models.py:595
 msgid "Website url"
 msgstr "网站链接"
 
-#: .\main\models.py:598
+#: .\main\models.py:596
 msgid "Rating"
 msgstr "排行"
 
-#: .\main\models.py:601
+#: .\main\models.py:599
 msgid "Favorite Website"
 msgstr "最喜欢的网站"
 
-#: .\main\models.py:605
+#: .\main\models.py:603
 msgid "Title"
 msgstr "标题"
 
-#: .\main\models.py:606
+#: .\main\models.py:604
 msgid "English Header"
 msgstr "英文标题"
 
-#: .\main\models.py:607
+#: .\main\models.py:605
 msgid "Chinese Header"
 msgstr "中文标题"
 
-#: .\main\models.py:608
+#: .\main\models.py:606
 msgid "English Version Content"
 msgstr "英语版文字"
 
-#: .\main\models.py:609
+#: .\main\models.py:607
 msgid "Chinese Version Content"
 msgstr "中文版文字"
 
-#: .\main\models.py:610
+#: .\main\models.py:608
 msgid "English Version File"
 msgstr "英语版文件"
 
-#: .\main\models.py:611
+#: .\main\models.py:609
 msgid "Chinese Version File"
 msgstr "中文版文件"
 
-#: .\main\models.py:624
+#: .\main\models.py:622
 msgid "Country Shortname"
 msgstr "国家短称"
 
-#: .\main\models.py:629
+#: .\main\models.py:627
 msgid "From Country"
 msgstr "从国家"
 
-#: .\main\models.py:630
+#: .\main\models.py:628
 msgid "To_Country"
 msgstr "到国家"
 
-#: .\main\models.py:632
+#: .\main\models.py:630
 msgid "Shipping Carrier"
 msgstr "邮寄公司"
 
-#: .\main\models.py:633
+#: .\main\models.py:631
 msgid "Shipping Period"
 msgstr "运输周期"
 
-#: .\main\models.py:634
+#: .\main\models.py:632
 msgid "Currency for Shipping Price"
 msgstr "运费货币"
 
-#: .\main\models.py:635
+#: .\main\models.py:633
 msgid "First Weight Price"
 msgstr "首重价格"
 
-#: .\main\models.py:636
+#: .\main\models.py:634
 msgid "Next Weight Price"
 msgstr "续重价格"
 
-#: .\main\models.py:637
+#: .\main\models.py:635
 msgid "Average Weight Price"
 msgstr "平均重价格"
 
@@ -1402,7 +1445,7 @@ msgstr "在微信上关注我们哦"
 
 #: .\main\templates\email\acc_active_email.html:5
 msgid "Please click on the link to confirm your registration,"
-msgstr ""
+msgstr "请点击下面的链接确认你的注册，"
 
 #: .\main\templates\email\password_reset_email.html:4
 #, python-format
@@ -1433,10 +1476,15 @@ msgid "The %(site_name)s team"
 msgstr "The %(site_name)s 团队"
 
 #: .\main\templates\email\resetpassword_email.html:3
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "Thank your for using Qycs!\n"
+#| "You're receiving this email because you requested a password reset for "
+#| "your user account at %(site_name)s."
 msgid ""
 "\n"
-"Thank your for using Qycs!\n"
+"Thank your for using QYCS!\n"
 "You're receiving this email because you requested a password reset for your "
 "user account at %(site_name)s."
 msgstr ""
@@ -1449,7 +1497,7 @@ msgid "'s Profile"
 msgstr "的介绍"
 
 #: .\main\templates\main\account.html:21
-#: .\main\templates\main\register.html:156
+#: .\main\templates\main\register.html:149
 msgid "Register as Collector"
 msgstr "注册成为收件站"
 
@@ -1621,7 +1669,7 @@ msgstr "快速直邮"
 
 #: .\main\templates\main\base_site.html:37
 msgid "Profile"
-msgstr "简介"
+msgstr "账户"
 
 #: .\main\templates\main\base_site.html:39
 #: .\main\templates\main\package_history.html:12
@@ -1640,7 +1688,7 @@ msgstr "登出"
 #: .\main\templates\main\login.html:9 .\main\templates\main\login.html:68
 #: .\main\templates\password\password_reset_complete.html:14
 msgid "Log in"
-msgstr "登入"
+msgstr "登录"
 
 #: .\main\templates\main\base_site.html:46
 #: .\main\templates\main\register.html:11
@@ -1712,7 +1760,7 @@ msgid "All Rights Reserved"
 msgstr "版权所有"
 
 #: .\main\templates\main\base_site.html:166
-#: .\main\templates\main\register.html:146
+#: .\main\templates\main\register.html:139
 msgid "Privacy Policy"
 msgstr "隐私权政策"
 
@@ -1726,7 +1774,7 @@ msgid ""
 "password twice so we can verify you typed it in correctly."
 msgstr ""
 "请输入你的旧密码，出于安全目的，然后请输入你新的密码两次，为了让我们能确认你"
-"的输入正确。"
+"的新密码输入正确。"
 
 #: .\main\templates\main\changepassword.html:50
 #: .\main\templates\password\password_reset_confirm.html:27
@@ -1741,20 +1789,36 @@ msgstr "QYCS的收件站"
 msgid "Our Collection Points"
 msgstr "我们的收件站"
 
-#: .\main\templates\main\collectionpoints.html:13
+#: .\main\templates\main\collectionpoints.html:14
+#, fuzzy
+#| msgid ""
+#| "if you cannot find any collection points in the map, you can use our "
+#| "direct shipping service."
 msgid ""
-"if you cannot find any collection points in the map, you can use our direct "
+"If you cannot find any collection points in the map, you can use our direct "
 "shipping service."
 msgstr "如果你不能在地图中找到任何收件站，你可以使用我们的直邮服务。"
 
-#: .\main\templates\main\collectionpoints.html:13
+#: .\main\templates\main\collectionpoints.html:15
 #: .\main\templates\main\select_way_to_ship.html:19
 msgid "Direct shipping"
 msgstr "直邮"
 
-#: .\main\templates\main\collectionpoints.html:18
+#: .\main\templates\main\collectionpoints.html:19
 msgid "Search Box"
-msgstr "搜索框"
+msgstr "搜一搜"
+
+#: .\main\templates\main\collectionpoints.html:37
+msgid ""
+"If you didn't see the map in this page and want to use our co-shipping "
+"service to ship your package to United States, please"
+msgstr "如果你没有在页面看到地图，但想使用我们的拼邮服务邮寄到美国，请"
+
+#: .\main\templates\main\collectionpoints.html:38
+#, fuzzy
+#| msgid "Contact Us"
+msgid "contact us"
+msgstr "联系我们"
 
 #: .\main\templates\main\coshipping.html:6
 msgid "Add Co-shipping"
@@ -1790,8 +1854,8 @@ msgid "Do you like to shop globally?"
 msgstr "你喜欢全球购物吗？"
 
 #: .\main\templates\main\global_shop.html:13
-msgid "Contact me now!"
-msgstr "立刻联系我！"
+msgid "If you do, contact me now!"
+msgstr "如果你喜欢，立刻联系我！"
 
 #: .\main\templates\main\global_shop.html:14
 msgid "And you can shop in QYCS Website later!"
@@ -1897,7 +1961,7 @@ msgstr "包裹／订单"
 
 #: .\main\templates\main\package_cart.html:39
 #: .\main\templates\main\package_history.html:36
-#: .\payment\templates\payment\process.html:47
+#: .\payment\templates\payment\process.html:50
 msgid "Created on"
 msgstr "创建于"
 
@@ -1906,8 +1970,8 @@ msgstr "创建于"
 #: .\main\templates\main\package_detail.html:93
 #: .\main\templates\main\package_history.html:43
 #: .\main\templates\main\package_history.html:94
-#: .\payment\templates\payment\process.html:54
-#: .\payment\templates\payment\process.html:100
+#: .\payment\templates\payment\process.html:57
+#: .\payment\templates\payment\process.html:103
 msgid "Direct Shipping to"
 msgstr "直邮到"
 
@@ -1916,8 +1980,8 @@ msgstr "直邮到"
 #: .\main\templates\main\package_detail.html:101
 #: .\main\templates\main\package_history.html:53
 #: .\main\templates\main\package_history.html:102
-#: .\payment\templates\payment\process.html:64
-#: .\payment\templates\payment\process.html:108
+#: .\payment\templates\payment\process.html:67
+#: .\payment\templates\payment\process.html:111
 msgid "Co-shipping to"
 msgstr "拼邮到"
 
@@ -1926,8 +1990,8 @@ msgstr "拼邮到"
 #: .\main\templates\main\package_history.html:69
 #: .\main\templates\main\package_history.html:132
 #: .\main\templates\main\price_list.html:21
-#: .\payment\templates\payment\process.html:76
-#: .\payment\templates\payment\process.html:132
+#: .\payment\templates\payment\process.html:79
+#: .\payment\templates\payment\process.html:135
 msgid "Price"
 msgstr "价格"
 
@@ -1936,8 +2000,8 @@ msgstr "价格"
 #: .\main\templates\main\package_detail.html:150
 #: .\main\templates\main\package_history.html:74
 #: .\main\templates\main\package_history.html:137
-#: .\payment\templates\payment\process.html:81
-#: .\payment\templates\payment\process.html:137
+#: .\payment\templates\payment\process.html:84
+#: .\payment\templates\payment\process.html:140
 msgid "Storage fee"
 msgstr "储存费"
 
@@ -1946,8 +2010,8 @@ msgstr "储存费"
 #: .\main\templates\main\package_detail.html:153
 #: .\main\templates\main\package_history.html:77
 #: .\main\templates\main\package_history.html:140
-#: .\payment\templates\payment\process.html:84
-#: .\payment\templates\payment\process.html:140
+#: .\payment\templates\payment\process.html:87
+#: .\payment\templates\payment\process.html:143
 msgid "Shipping fee"
 msgstr "运费"
 
@@ -1955,8 +2019,8 @@ msgstr "运费"
 #: .\main\templates\main\package_cart.html:139
 #: .\main\templates\main\package_history.html:81
 #: .\main\templates\main\package_history.html:144
-#: .\payment\templates\payment\process.html:88
-#: .\payment\templates\payment\process.html:144
+#: .\payment\templates\payment\process.html:91
+#: .\payment\templates\payment\process.html:147
 msgid "There are some issue with your packages. Please check package detail."
 msgstr "你的包裹有些问题，麻烦检查你的包裹细节。"
 
@@ -1969,7 +2033,7 @@ msgstr "细节"
 
 #: .\main\templates\main\package_cart.html:123
 #: .\main\templates\main\package_history.html:122
-#: .\payment\templates\payment\process.html:128
+#: .\payment\templates\payment\process.html:131
 msgid "No information at this time."
 msgstr "暂无信息"
 
@@ -1997,7 +2061,7 @@ msgstr "拼邮包裹"
 #: .\main\templates\main\package_detail.html:31
 #: .\main\templates\main\tracked.html:43
 msgid "Package Marked"
-msgstr "包裹标记"
+msgstr "包裹已标记"
 
 #: .\main\templates\main\package_detail.html:48
 #: .\main\templates\main\tracked.html:60
@@ -2106,6 +2170,16 @@ msgstr "首重／500g"
 msgid "Continuous Weight/500g"
 msgstr "续重／500g"
 
+#: .\main\templates\main\price_list.html:63
+msgid ""
+"If the package's volume weight is greater than the regular weight, carriers "
+"will use the volume weight as the final weight."
+msgstr "如果你的包裹的体积重大于实际重量，运输商将会计算体积重作为最终重量。"
+
+#: .\main\templates\main\price_list.html:64
+msgid "Volume Weight(kg) Formula: Length(cm) x Width(cm) x Height(cm) / 5000"
+msgstr "体积重（kg）公式：长度（cm）x 宽度（cm）x 高度（cm）/5000"
+
 #: .\main\templates\main\price_list.html:67
 msgid "Note: QYCS guarantees for Co-Shipping Custom clearance and tax;"
 msgstr "注意：QYCS保障拼邮包裹的海关清关和税；"
@@ -2116,17 +2190,48 @@ msgid ""
 "taxed by the Custom, user shall duties to pay."
 msgstr "QYCS不保障直邮的税收，如果用户的包裹在海关被税，用户有义务缴税。"
 
+#: .\main\templates\main\price_list.html:71
+msgid "Shipping Limitation (temporary)"
+msgstr "邮寄限制 (目前)"
+
+#: .\main\templates\main\price_list.html:73
+msgid ""
+"All dangerous and illegal goods are forbidden, such as inflammable and "
+"fragile items, excessively valuable jewelry, drugs, drugs, CDs, liquids, "
+"powders, etc., are prohibited and will be refused once found. If the goods "
+"are spiteful, users will be fined 50-5000 yuan, and those with serious "
+"circumstances will be dealt with by the judiciary. If you want to mail "
+"products but not sure if they are sensitive products, please contact our "
+"customer service. "
+msgstr "禁止一切危险和非法物品，如易燃易碎物品、贵重首饰、药品、药品、光盘、液体、粉末等，发现后予以拒绝。如果货物有恶意，将处以50-5000元罚款，情节严重的将由司法部门处理。如果你想邮寄产品，但不确定他们是否是敏感产品，请联系我们的客户服务。"
+
 #: .\main\templates\main\register.html:37
 msgid ""
 "you are not authorized to access this page. Would you like to create a new "
 "account?"
 msgstr "你没有得到允许进入此页面。你是否想要登入另外一个账号呢？"
 
-#: .\main\templates\main\register.html:71
+#: .\main\templates\main\register.html:63
 msgid "Create My QYCS Account"
 msgstr "创建我的QYCS用户"
 
-#: .\main\templates\main\register.html:121
+#: .\main\templates\main\register.html:81
+msgid "Your password can't be too similar to your other personal information."
+msgstr "你的密码不能和你的其他信息过于相似。"
+
+#: .\main\templates\main\register.html:82
+msgid "Your password must contain at least 8 characters."
+msgstr "你的密码必须含有至少8个字符。"
+
+#: .\main\templates\main\register.html:83
+msgid "Your password can't be a commonly used password."
+msgstr "你的密码不能是过去用过的密码。"
+
+#: .\main\templates\main\register.html:84
+msgid "Your password can't be entirely numeric."
+msgstr "你的密码不能全是数字。"
+
+#: .\main\templates\main\register.html:114
 msgid ""
 "\n"
 "                    In order to provide the best service to you and other "
@@ -2140,11 +2245,11 @@ msgstr ""
 "                    请在下面提供3个你最喜欢的购物网站！\n"
 "                "
 
-#: .\main\templates\main\register.html:140
+#: .\main\templates\main\register.html:133
 msgid "Terms and Conditions"
 msgstr "条款和条件"
 
-#: .\main\templates\main\register.html:143
+#: .\main\templates\main\register.html:136
 msgid ""
 "\n"
 "                          I have read, understood and agreed to be bound by "
@@ -2156,9 +2261,9 @@ msgstr ""
 "                      我已经阅读，理解并同意myqycs.com的注册条例。我也理解"
 "QYCS想要试用我提供的信息。                    "
 
-#: .\main\templates\main\register.html:152
+#: .\main\templates\main\register.html:145
 msgid "Previous"
-msgstr "以前的"
+msgstr "上一页"
 
 #: .\main\templates\main\select_way_to_ship.html:5
 msgid "Shipping ways"
@@ -2180,7 +2285,7 @@ msgstr "及时整合"
 
 #: .\main\templates\main\select_way_to_ship.html:17
 msgid "OUR HEART NEVER ENDS"
-msgstr "我们的心永不休止"
+msgstr "服务之心，永无休止！"
 
 #: .\main\templates\main\select_way_to_ship.html:21
 msgid "Help me choose"
@@ -2205,6 +2310,12 @@ msgstr "追踪包裹"
 #: .\main\templates\main\tracking.html:27
 msgid "Enter one or more tracking numbers"
 msgstr "请输入一个或多个单号"
+
+#: .\main\templates\main\tracking.html:27
+msgid ""
+"YOU CAN ENTER MULTIPLE TRACKING NUMBERS. SEPARATE WITH SPACE, COMMA OR "
+"SEMICOLON."
+msgstr "你可以输入多个追踪单号。用空格号，逗号或者分号分开。"
 
 #: .\main\templates\main\tracking.html:28
 msgid "TRACK"
@@ -2332,11 +2443,17 @@ msgstr "待定信息"
 msgid "Payment Process"
 msgstr "付款过程"
 
-#: .\payment\templates\payment\process.html:34
+#: .\payment\templates\payment\process.html:11
+#, fuzzy
+#| msgid "Our Payments"
+msgid "My Payment"
+msgstr "我们的付款"
+
+#: .\payment\templates\payment\process.html:37
 msgid "Packages"
 msgstr "包裹"
 
-#: .\qycs_web\base.py:277
+#: .\qycs_web\base.py:278
 msgid "Simplified Chinese"
 msgstr "简体中文"
 

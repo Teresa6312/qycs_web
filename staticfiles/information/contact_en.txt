@@ -1,8 +1,0 @@
-<h2>Contact Us </h2>
-<p><i>Feel free to contact us, QYCS welcomes your questions or comments:</i></p>
-<h3>QYCS Global Shipping Inc. <br> New York</h3>
-<p><b>*Email Address: </b>
-myqycs@gmail.com</p>
-<p><b>Telephone number: </b>(Update Later)</p>
-<p><b>QR Code</b></p>
-<img src="/static/image/qrcode.jpg"  alt="qr code" width="250"/>

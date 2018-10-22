@@ -40,9 +40,8 @@ body{
   font-size: 35px;
   font-weight: bold;
 }
-.text-xxlarge, .home-xxlarge{
+.text-xxlarge{
   font-size: 30px;
-  font-family: Georgia;
 }
 .text-xxlarge-bold, .home-xxlarge-bold{
   font-size: 30px;
@@ -125,6 +124,7 @@ a:hover{
 }
 .topnav .icon {
   display: none;
+  font-size: 25px;
 }
 
 .dropdown {
@@ -639,6 +639,9 @@ input:checked + .slider:before {
     #main_address_form{
       margin: 20px auto;
     }
+    #container{
+      flex: 0 0 auto;
+    }
     #footer{
       position:relative;
       height:auto;
@@ -676,6 +679,13 @@ input:checked + .slider:before {
       padding: 0;
       margin: 0;
       z-index: 1;
+      padding-top: 10px;
+      padding-right: 10px;
+    }
+    .topnav .icon {
+      position: absolute;
+      right: 0;
+      top: 0;
     }
     .topnav a, .dropdown .dropbtn, .topnav form {
       display: none;
@@ -690,7 +700,7 @@ input:checked + .slider:before {
       display: block;
       padding: 5px 10px;
     }
-    #account_nav{
+    .topnav    #account_nav{
       float: left;
       display: block;
     }
@@ -721,11 +731,6 @@ input:checked + .slider:before {
 
   @media screen and (max-width: 600px) {
     .topnav.responsive {position: relative;}
-    .topnav.responsive .icon {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
     .topnav.responsive a {
       float: none;
       display: block;
@@ -744,6 +749,9 @@ input:checked + .slider:before {
       display: block;
       width: 100%;
       text-align: left;
+    }
+    .topnav select{
+      display: relative;
     }
   }
 
@@ -910,10 +918,10 @@ input:checked + .slider:before {
 
 /* ------------------------------------- for tracking and tracked page ------------------------------------------------------- */
 #tracking_block{
-  width:400px;
   border: 1px solid #eee;
   background-color: #fafafa;
   display: inline-block;
+  margin-bottom: 10px;
 }
 #track_btn{
   color: red;
@@ -933,7 +941,7 @@ input:checked + .slider:before {
 .tracking #id_cust_tracking_num{
   border: none;
   margin: 0;
-  height: 30px;
+  height: 100%;
   width: 75%;
   font-size: 25px;
 }
