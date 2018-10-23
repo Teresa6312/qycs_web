@@ -355,7 +355,7 @@ msgstr "你输入了无效的结束日期，然而这里是要求的。"
 #, fuzzy
 #| msgid "Activate your QYCS Website account."
 msgid "Activate your Qycs Website account."
-msgstr "激活你的QYCS网上用户"
+msgstr "激活你的QYCS账户"
 
 #: .\main\forms.py:53 .\main\forms.py:116
 msgid "+1-234-567-8900"
@@ -1487,7 +1487,7 @@ msgstr "请点击下面的链接确认你的注册，"
 msgid ""
 "You're receiving this email because you requested a password reset for your "
 "user account at %(site_name)s."
-msgstr "你收到此邮件是因为你要求重新修改密码，对你的用户 %(site_name)s."
+msgstr "你收到此邮件是因为你要求重新修改密码，对你的账户 %(site_name)s."
 
 #: .\main\templates\email\password_reset_email.html:6
 #: .\main\templates\email\resetpassword_email.html:7
@@ -1525,7 +1525,7 @@ msgid ""
 msgstr ""
 "\n"
 "谢谢使用 QYCS!\n"
-"你收到此邮件是因为你要求重新修改密码，对你的用户 %(site_name)s."
+"你收到此邮件是因为你要求重新修改密码，对你的账户 %(site_name)s."
 
 #: .\main\templates\main\account.html:6 .\main\templates\main\account.html:13
 msgid "'s Profile"
@@ -2280,7 +2280,7 @@ msgstr "你没有得到允许进入此页面。你是否想要登入另外一个
 
 #: .\main\templates\main\register.html:63
 msgid "Create My QYCS Account"
-msgstr "创建我的QYCS用户"
+msgstr "创建我的QYCS账户"
 
 #: .\main\templates\main\register.html:81
 msgid "Your password can't be too similar to your other personal information."
@@ -2427,7 +2427,13 @@ msgid ""
 "(except the first three months from openning).</p>\n"
 "    <p><i>If you want to know more about our reward points, please visit our "
 "FAQs or contact our customer service.</i></p>\n"
-msgstr ""
+msgstr""
+"\n"
+"一旦您注册为QYCS用户，您就开始通过合资格的邮寄和购物来获得相应的积分。\n"
+"    <br>您的Qycs奖励积分可在付款完成后15天内使用。 "
+"（开业前三个月除外）</p>\n"
+"    <p><i>如果你想知道更多有关我们的积分奖励，请浏览我们的FAQs "
+"或者联系我们的客服。</i></p>\n"
 
 #: .\main\templates\password\password_reset_complete.html:14
 msgid "Your password has been set.  You may go ahead and log in now."
