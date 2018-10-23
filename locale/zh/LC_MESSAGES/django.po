@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-23 09:50-0400\n"
+"POT-Creation-Date: 2018-10-23 11:29-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -808,7 +808,7 @@ msgstr "州／省"
 
 #: .\main\models.py:173 .\main\templates\main\base_site.html:121
 msgid "Zip Code"
-msgstr "邮区"
+msgstr "邮编"
 
 #: .\main\models.py:180
 msgid "Address Updated Date"
@@ -1607,7 +1607,6 @@ msgid "Add Order Snapshot of the Package"
 msgstr "添加包裹的订单截图"
 
 #: .\main\templates\main\addpackage.html:108
-#: .\main\templates\main\login.html:71
 msgid "OR"
 msgstr "或"
 
@@ -1720,37 +1719,29 @@ msgid "Log Out"
 msgstr "登出"
 
 #: .\main\templates\main\base_site.html:45 .\main\templates\main\home.html:42
-#: .\main\templates\main\login.html:9 .\main\templates\main\login.html:68
+#: .\main\templates\main\login.html:9 .\main\templates\main\login.html:70
 #: .\main\templates\password\password_reset_complete.html:16
 msgid "Log in"
 msgstr "登录"
 
-#: .\main\templates\main\base_site.html:46
+#: .\main\templates\main\base_site.html:46 .\main\templates\main\login.html:64
 #: .\main\templates\main\register.html:11
 msgid "Sign Up"
 msgstr "注册"
 
 #: .\main\templates\main\base_site.html:115
-#, fuzzy
-#| msgid "Ship to Warehouse"
 msgid "China Warehouse"
 msgstr "中国仓"
 
 #: .\main\templates\main\base_site.html:118
-#, fuzzy
-#| msgid "Item Name"
 msgid "Name"
 msgstr "名字"
 
 #: .\main\templates\main\base_site.html:118
-#, fuzzy
-#| msgid "Store Name"
 msgid "Your Name"
 msgstr "你的名字"
 
 #: .\main\templates\main\base_site.html:120
-#, fuzzy
-#| msgid "Addresses"
 msgid "Address"
 msgstr "地址"
 
@@ -1984,13 +1975,9 @@ msgid ""
 "different account?"
 msgstr "你没有得到允许进入此页面。你是否想要登入另外一个账号呢？"
 
-#: .\main\templates\main\login.html:64
+#: .\main\templates\main\login.html:66
 msgid "Forgot Password?"
 msgstr "忘记密码？"
-
-#: .\main\templates\main\login.html:73
-msgid "Login with Google"
-msgstr "谷歌账号登入"
 
 #: .\main\templates\main\package_cart.html:5
 msgid "Upcoming Packages"
@@ -2427,13 +2414,12 @@ msgid ""
 "(except the first three months from openning).</p>\n"
 "    <p><i>If you want to know more about our reward points, please visit our "
 "FAQs or contact our customer service.</i></p>\n"
-msgstr""
+msgstr ""
 "\n"
 "一旦您注册为QYCS用户，您就开始通过合资格的邮寄和购物来获得相应的积分。\n"
-"    <br>您的Qycs奖励积分可在付款完成后15天内使用。 "
-"（开业前三个月除外）</p>\n"
-"    <p><i>如果你想知道更多有关我们的积分奖励，请浏览我们的FAQs "
-"或者联系我们的客服。</i></p>\n"
+"    <br>您的Qycs奖励积分可在付款完成后15天内使用。 （开业前三个月除外）</p>\n"
+"    <p><i>如果你想知道更多有关我们的积分奖励，请浏览我们的FAQs 或者联系我们的"
+"客服。</i></p>\n"
 
 #: .\main\templates\password\password_reset_complete.html:14
 msgid "Your password has been set.  You may go ahead and log in now."
@@ -2546,6 +2532,9 @@ msgid ""
 "You already have an account with this email. Please use the below username "
 "and password fields to log in."
 msgstr "你已经有一个用户连接此邮箱。请使用以下的用户名和密码来登录。"
+
+#~ msgid "Login with Google"
+#~ msgstr "谷歌账号登入"
 
 #~ msgid "'s Profile'"
 #~ msgstr "的介绍"
