@@ -109,50 +109,71 @@
   {% block footer_line %}
   <hr/>
   {% endblock%}
-  <div class="w3-row w3-padding-small content_center">
-    <div class="w3-col w3-container m4 l3" id="myqycs_block">
-        <h5>{% trans "My QYCS" %}</h5>
-        <div class="footer_links">
-          <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
-          <a href="{% url 'information' 'join_us'%}">{% trans "Join Us" %}</a><br/>
-          <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
-          <a href="{% url 'information' 'faqs'%}">{% trans "FAQs" %}</a><br/>
+  <div class="w3-row w3-padding-small">
+    <div class="w3-third w3-container">
+
+        <h5>{% trans "China Warehouse" %}</h5>
+        <div>
+
+          <p><b>{% trans 'Name' %}:</b>QYCS-{% trans 'Your Name' %}<br>
+          <b>{% trans 'Phone Number' %}:</b>15994868603<br>
+          <b>{% trans 'Address' %}:</b>广东省广州市花都区新华街花港大道83号<br>
+          <b>{% trans 'Zip Code' %}:</b>510800</p>
+
         </div>
-    </div>
-    <div class="w3-col w3-container m4 l3" id="consumer_block">
-      <h5>{% trans "Consumer Guide" %}</h5>
-      <div class="footer_links">
-          <a href="{% url 'information' 'coshipping_guide'%}">{% trans "Co-shipping Guide" %}</a><br/>
-          <a href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
-          <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
-      </div>
-    </div>
-    <div class="w3-col w3-container m4 l3" id="service_block">
-      <h5>{% trans "Service Guide" %}</h5>
-      <div class="footer_links">
-        <a  href="{% url 'information' 'insurance'%}">QYCS {% trans "Shipping Insurance" %}</a><br/>
-        <a href="{% url 'information' 'collection_points'%}">{% trans "Collection Points" %}</a><br/>
-        <a href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
-      </div>
-    </div>
 
-    <div class="w3-col w3-container m5 l3" id="contact_block">
-      <div class="w3-row w3-center">
-          <img src="{% static 'image/brand.png' %}" alt="logo" style="width:70px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
-      </div>
-
-      <div class="w3-padding-16 w3-center">
-        <a class="w3-text-black" href="{% url 'customer_service' %}" ><img alt="customer service icon" src="{% static 'image/customer_service.svg' %}" style="height:35px;"></a>
-        <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="height:35px;">
-        <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="height:35px;">
-      </div>
-      <div class="w3-padding-small w3-center">
-        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:180px;">
     </div>
-    </div>
+    <div class="w3-twothird">
+      <div class="w3-row">
 
+        <div class="w3-col m3 l2" id="myqycs_block">
+            <h5>{% trans "My QYCS" %}</h5>
+            <div class="footer_links">
+              <a href="{% url 'information' 'about_us'%}">{% trans "About Us" %}</a><br/>
+              <a href="{% url 'information' 'join_us'%}">{% trans "Join Us" %}</a><br/>
+              <a href="{% url 'information' 'return_policy'%}">{% trans "Return Policy" %}</a><br/>
+              <a href="{% url 'information' 'faqs'%}">{% trans "FAQs" %}</a><br/>
+            </div>
+        </div>
+        <div class="w3-col m3 l3" id="consumer_block">
+          <h5>{% trans "Consumer Guide" %}</h5>
+          <div class="footer_links">
+              <a href="{% url 'information' 'coshipping_guide'%}">{% trans "Co-shipping Guide" %}</a><br/>
+              <a href="{% url 'information' 'shopping_guide'%}">{% trans "Shopping Guide" %}</a><br/>
+              <a href="{% url 'information' 'payment_guide'%}">{% trans "Our Payments" %}</a><br/>
+          </div>
+        </div>
+        <div class="w3-col m3 l3" id="service_block">
+          <h5>{% trans "Service Guide" %}</h5>
+          <div class="footer_links">
+            <a  href="{% url 'information' 'insurance'%}">QYCS {% trans "Shipping Insurance" %}</a><br/>
+            <a href="{% url 'information' 'collection_points'%}">{% trans "Collection Points" %}</a><br/>
+            <a href="{% url 'information' 'use_guide'%}">{% trans "Users and Collectors" %}</a>
+          </div>
+        </div>
+
+        <div class="w3-col m6 l4" id="contact_block">
+            <div class="w3-row w3-center">
+                <img src="{% static 'image/brand.png' %}" alt="logo" style="width:70px; margin:auto;">&nbsp;<i>Global Shipping Inc.</i>
+            </div>
+
+            <div class="w3-padding-16 w3-center">
+              <a class="w3-text-black" href="{% url 'customer_service' %}" ><img alt="customer service icon" src="{% static 'image/customer_service.svg' %}" style="height:35px;"></a>
+              <img class="wechat" alt="WeChat icon" src="{% static 'image/wechat.ico' %}" style="height:35px;">
+              <img class="email" alt="Emial icon" src="{% static 'image/email.png' %}" style="height:35px;">
+            </div>
+            <div class="w3-padding-small w3-center">
+              <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Credit Card Badges" style="width:180px;">
+            </div>
+        </div>
+
+
+      </div>
+    </div>
 
   </div>
+
+
   <div id="rights" class="footer-copyright w3-row w3-mobile"  style="width:100%; margin:auto;">
         <div class="w3-col m6 l6">
               <div class="w3-container content_left">

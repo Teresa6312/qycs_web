@@ -65,7 +65,7 @@ function apply_coupon(csrf, url){
               success: function(data){
                 console.log(data);
                 if(data === ''){
-                  var errornote = '<p class="errornote">The coupon is not exicted.</p>'
+                  var errornote = '<p class="errornote">The coupon does not exist.</p>'
                   $('#coupon_block').before(errornote)
                 }else{
                   discount = parseFloat(data);

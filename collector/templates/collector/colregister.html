@@ -251,8 +251,8 @@
         var url = '';
         if ('{{LANGUAGE_CODE}}'=="en-us"){
           url = "/static/information/collection_point_terms_en.txt";
-        }else if('{{LANGUAGE_CODE}}'=="zh-Hans"){
-          url = "/static/information/collection_point_terms_cn.txt";
+        }else if('{{LANGUAGE_CODE}}'=="zh-hans"){
+        url = "/static/information/collection_point_terms_cn.txt";
         }
         if(url!=''){
           loadDoc(url)

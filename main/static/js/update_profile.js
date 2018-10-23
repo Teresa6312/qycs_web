@@ -57,45 +57,44 @@ function getAddForm(user,csrf, submit_url, add_field_name){
           $(data).find('#button_row').remove();
           $('#id-new-address-content').addClass('w3-container');
           if($('#id-new-address-content').find('form').length == 0){
-            $('#id-new-address-content').append($(data).find('#main_address_form form'));
-            $('#id-new-address-content form').prop('id', 'newAddressForm_js');
+            if($('#id-new-address-content').find('#button_block').length == 0){
+                $('#id-new-address-content').append($(data).find('#main_address_form form'));
+                var btblock = document.createElement("div");
+                btblock.setAttribute("class", "w3-right");
+                btblock.setAttribute("id", "button_block");
 
+                var ca = document.createElement("button");
+                ca.setAttribute("type", "button");
+                ca.setAttribute("class", "logo-red");
+                ca.innerHTML = 'Cancel';
+                ca.onclick = function(){
+                   $('#id-new-address-modal').hide();
+                   $('#newAddressForm_js').remove();
+                };
+                btblock.appendChild(ca);
+
+                var sv = document.createElement("button");
+                sv.setAttribute("type", "button");
+                sv.setAttribute("class", "logo-blue");
+                sv.setAttribute("id", "newAddressSubmitBtn");
+                sv.innerHTML = 'Save';
+                sv.onclick = function(){
+                  if($('.addform-errors').length>0){
+                    $('.addform-errors').remove();
+                  }
+                  submitForm(csrf, submit_url, add_field_name);
+                };
+                btblock.appendChild(sv);
+                $('#id-new-address-content').append(btblock);
+                $('#id-new-address-content').append($(data).find('script'));
+            }else{
+                $('#id-new-address-content #button_block').before($(data).find('#main_address_form form'));
+            }
+
+            $('#id-new-address-content form').prop('id', 'newAddressForm_js');
             $('#id-new-address-content #button_row').remove();
 
-
-            if($('#id-new-address-content').find('#button_block').length == 0){
-              var btblock = document.createElement("div");
-              btblock.setAttribute("class", "w3-right");
-              btblock.setAttribute("id", "button_block");
-
-              var ca = document.createElement("button");
-              ca.setAttribute("type", "button");
-              ca.setAttribute("class", "logo-red");
-              ca.innerHTML = 'Cancel';
-              ca.onclick = function(){
-               $('#id-new-address-modal').hide();
-               $('#id-new-address-content #form').remove();
-               $('#id-new-address-content script').remove();
-              };
-              btblock.appendChild(ca);
-
-              var sv = document.createElement("button");
-              sv.setAttribute("type", "button");
-              sv.setAttribute("class", "logo-blue");
-              sv.setAttribute("id", "newAddressSubmitBtn");
-              sv.innerHTML = 'Save';
-              sv.onclick = function(){
-                if($('.addform-errors').length>0){
-                  $('.addform-errors').remove();
-                }
-                submitForm(csrf, submit_url, add_field_name);
-              };
-              btblock.appendChild(sv);
-              $('#id-new-address-content').append(btblock);
-            }
             $("#id-new-address-content input[required]").before('<span class="required_stick">*</span>');
-
-            $('#id-new-address-content').append($(data).find('script'));
 
           }
           $('#id-new-address-modal').show();

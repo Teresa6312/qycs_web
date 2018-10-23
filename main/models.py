@@ -207,9 +207,8 @@ class Address(Address_Common_Info):
 class CollectionPoint(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Collection Point Updated Date'))
 	collector = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True,verbose_name= _('Collector'))
-	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License Type'))
-	# license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
-	# id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
+	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License type'))
+
 
 	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
 	license_image = CloudinaryField('collector_license', blank=True, null=True)
@@ -221,11 +220,10 @@ class CollectionPoint(Address_Common_Info):
 	store.boolean = True
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
-	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
-	# wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
+	wechat = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('WeChat ID'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
-	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
-	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information Source'))
+	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply reason'))
+	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information source'))
 	agreement = models.BooleanField(default=False, verbose_name= _('Agreement'))
 
 
@@ -242,7 +240,6 @@ class CollectionPoint(Address_Common_Info):
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Available'))
 	status.boolean = True
-	# collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))
 	show_contact = models.BooleanField(default = False, verbose_name= _('Show Contact Information'))
 	show_contact.boolean = True

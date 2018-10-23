@@ -64,20 +64,14 @@ urlpatterns = [
 
 
 # need to locked for logged in user
-    path('accounts/reset-password/', auth_views.PasswordResetView.as_view(),
-        {'template_name':'password/password_reset_form.html',
-            'email_template_name': 'email/password_reset_email.html',
-        },  name='password_reset'),
+    path('accounts/reset-password/', auth_views.PasswordResetView.as_view(template_name='password/password_reset_form.html', email_template_name='email/password_reset_email.html'), name='password_reset'),
 
-    path('accounts/reset-password/done/', auth_views.PasswordResetDoneView.as_view(),
-        {'template_name':'password/password_reset_done.html'}, name='password_reset_done'),
+    path('accounts/reset-password/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'), name='password_reset_done'),
 
     re_path(r'^accounts/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        auth_views.PasswordResetConfirmView.as_view(), {'template_name':'password/password_reset_confirm.html'},
-        name='password_reset_confirm'),
+        auth_views.PasswordResetConfirmView.as_view(template_name='password/password_reset_confirm.html'),name='password_reset_confirm'),
 
-    path('accounts/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(),
-        {'template_name':'password/password_reset_complete.html'}, name='password_reset_complete'),
+    path('accounts/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='password/password_reset_complete.html'), name='password_reset_complete'),
 
 ]
 

@@ -251,7 +251,7 @@ Create new Item in Package
 class ItemForm(forms.ModelForm):
 	item_name = forms.CharField(label = _('Item Name'),
 								widget=forms.TextInput(attrs={
-									'placeholder': _('Please enter your items name as detailed as possible'),
+									'placeholder': _("Please enter your items' name as detailed as possible"),
 									"class":"w3-input w3-border item_name"
 									}))
 
