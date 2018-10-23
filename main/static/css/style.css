@@ -930,7 +930,7 @@ input:checked + .slider:before {
   margin: 0;
   font-weight: bold;
   background-color: Transparent;
-  font-size: 25px;
+  font-size: 20px;
   display:inline;
   text-align:right;
   width: 20%;
