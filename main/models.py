@@ -220,6 +220,7 @@ class CollectionPoint(Address_Common_Info):
 	store.boolean = True
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
+	paypal = models.EmailField(blank=True, default='', verbose_name = _("Paypal account"))
 	wechat = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('WeChat ID'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
 	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply reason'))

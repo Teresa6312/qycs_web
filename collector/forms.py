@@ -12,6 +12,8 @@ class ResponseForm(forms.Form):
 	response_for = forms.IntegerField(required=True)
 
 class ColCreationForm(forms.ModelForm):
+	paypal = forms.EmailField(label = _("Paypal Account Email"), required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
+									}))
 	agreement = forms.BooleanField(required = True, label = _("Agree"))
 	store_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
@@ -59,7 +61,7 @@ class ColCreationForm(forms.ModelForm):
 		fields = ('store','store_name','license_type', 'license_image','id_image',
 					'address','apt','city','state','country','zipcode',
 					'collector_icon', 'name', 'wechat', 'wechat_qrcode',
-					'referrer', 'apply_reason', 'info_source','agreement')
+					'referrer', 'apply_reason', 'info_source','agreement', 'paypal')
 
 class ColChangeForm(forms.ModelForm):
 	absent_start = forms.DateField(required = False, widget=forms.SelectDateWidget(
