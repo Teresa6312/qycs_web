@@ -59,7 +59,8 @@
 </table>
 {% endif %}
 <br>
-
+<p><img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:20px;"/>
+{% trans 'EMS only uses the regular weight and never uses the volume weight.' %}</p>
 <p><i>{% trans "If the package's volume weight is greater than the regular weight, carriers will use the volume weight as the final weight." %}</i></p>
 <p><b>{% trans "Volume Weight(kg) Formula: Length(cm) x Width(cm) x Height(cm) / 5000" %}</b></p>
 <br>

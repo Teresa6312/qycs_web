@@ -608,6 +608,9 @@ class Resource(models.Model):
 	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
 	chinese_file = models.FileField(upload_to = 'resource/chinese', blank=True, verbose_name= _('Chinese Version File'))
 
+	class Meta:
+		verbose_name_plural = _("Resource")
+
 	def __str__(self):
 		return self.title
 
@@ -621,6 +624,8 @@ class Location(models.Model):
 	country = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country'))
 	country_shortname = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country Shortname'))
 
+	class Meta:
+		verbose_name_plural = _("Location")
 
 class PriceRate(models.Model):
 	category = models.CharField(max_length = 50, choices = PRICERATE_CATEGORY, blank=True, default='', verbose_name = _('Category'))
@@ -635,3 +640,6 @@ class PriceRate(models.Model):
 	avg_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Average Weight Price'))
 
 	rate = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Currency Rate'))
+
+	class Meta:
+		verbose_name_plural = _("Price Rate")

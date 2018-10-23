@@ -433,5 +433,5 @@ class PriceListView(TemplateView):
 	template_name = 'main/price_list.html'
 
 	def get(self, request):
-		price_list = PriceRate.objects.filter(category='ship', from_country='cn', to_country='us').order_by('carrier', 'package_type')
+		price_list = PriceRate.objects.filter(category='ship', from_country='cn', to_country='us').order_by('package_type', 'carrier')
 		return render(request, self.template_name, {'price_list': price_list})

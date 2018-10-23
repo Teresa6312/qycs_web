@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-22 12:21-0400\n"
+"POT-Creation-Date: 2018-10-23 00:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -668,7 +668,7 @@ msgstr "美国"
 msgid "Shipping Price"
 msgstr "运费"
 
-#: .\main\models.py:102 .\main\models.py:637
+#: .\main\models.py:102 .\main\models.py:642
 msgid "Currency Rate"
 msgstr "汇率"
 
@@ -734,7 +734,7 @@ msgid "Profile Updated Date"
 msgstr "简介更新日期"
 
 #: .\main\models.py:128 .\main\models.py:172 .\main\models.py:592
-#: .\main\models.py:621 .\main\templates\main\account.html:38
+#: .\main\models.py:624 .\main\templates\main\account.html:38
 msgid "Country"
 msgstr "国家"
 
@@ -793,11 +793,11 @@ msgstr "地址"
 msgid "Address2/Apartment"
 msgstr "地址2/单元号"
 
-#: .\main\models.py:170 .\main\models.py:619
+#: .\main\models.py:170 .\main\models.py:622
 msgid "City"
 msgstr "城市"
 
-#: .\main\models.py:171 .\main\models.py:620
+#: .\main\models.py:171 .\main\models.py:623
 msgid "State/Province"
 msgstr "州／省"
 
@@ -1076,7 +1076,7 @@ msgstr "储存"
 msgid "Co-Shipping"
 msgstr "拼邮"
 
-#: .\main\models.py:433 .\main\models.py:629
+#: .\main\models.py:433 .\main\models.py:634
 msgid "Package Type"
 msgstr "包裹类型"
 
@@ -1264,7 +1264,7 @@ msgstr "包裹"
 msgid "Package Snapshot"
 msgstr "包裹细节截图"
 
-#: .\main\models.py:593 .\main\models.py:626
+#: .\main\models.py:593 .\main\models.py:631
 #: .\main\templates\main\price_list.html:19
 #: .\main\templates\main\price_list.html:40
 msgid "Category"
@@ -1314,41 +1314,57 @@ msgstr "英语版文件"
 msgid "Chinese Version File"
 msgstr "中文版文件"
 
-#: .\main\models.py:622
+#: .\main\models.py:612
+msgid "Resource"
+msgstr "网站资料"
+
+#: .\main\models.py:625
 msgid "Country Shortname"
 msgstr "国家短称"
 
-#: .\main\models.py:627
+#: .\main\models.py:628
+#, fuzzy
+#| msgid "Location:"
+msgid "Location"
+msgstr "位置"
+
+#: .\main\models.py:632
 msgid "From Country"
 msgstr "从国家"
 
-#: .\main\models.py:628
+#: .\main\models.py:633
 msgid "To_Country"
 msgstr "到国家"
 
-#: .\main\models.py:630
+#: .\main\models.py:635
 msgid "Shipping Carrier"
 msgstr "邮寄公司"
 
-#: .\main\models.py:631
+#: .\main\models.py:636
 msgid "Shipping Period"
 msgstr "运输周期"
 
-#: .\main\models.py:632
+#: .\main\models.py:637
 msgid "Currency for Shipping Price"
 msgstr "运费货币"
 
-#: .\main\models.py:633
+#: .\main\models.py:638
 msgid "First Weight Price"
 msgstr "首重价格"
 
-#: .\main\models.py:634
+#: .\main\models.py:639
 msgid "Next Weight Price"
 msgstr "续重价格"
 
-#: .\main\models.py:635
+#: .\main\models.py:640
 msgid "Average Weight Price"
 msgstr "平均重价格"
+
+#: .\main\models.py:645
+#, fuzzy
+#| msgid "Price List"
+msgid "Price Rate"
+msgstr "价格及汇率"
 
 #: .\main\package_views.py:131 .\main\package_views.py:218
 msgid " is created successfully!"
@@ -2171,30 +2187,34 @@ msgid "Continuous Weight/500g"
 msgstr "续重／500g"
 
 #: .\main\templates\main\price_list.html:63
+msgid "EMS only uses the regular weight and never uses the volume weight."
+msgstr "EMS不计算体积重。"
+
+#: .\main\templates\main\price_list.html:64
 msgid ""
 "If the package's volume weight is greater than the regular weight, carriers "
 "will use the volume weight as the final weight."
 msgstr "如果你的包裹的体积重大于实际重量，运输商将会计算体积重作为最终重量。"
 
-#: .\main\templates\main\price_list.html:64
+#: .\main\templates\main\price_list.html:65
 msgid "Volume Weight(kg) Formula: Length(cm) x Width(cm) x Height(cm) / 5000"
 msgstr "体积重（kg）公式：长度（cm）x 宽度（cm）x 高度（cm）/5000"
 
-#: .\main\templates\main\price_list.html:67
+#: .\main\templates\main\price_list.html:68
 msgid "Note: QYCS guarantees for Co-Shipping Custom clearance and tax;"
 msgstr "注意：QYCS保障拼邮包裹的海关清关和税；"
 
-#: .\main\templates\main\price_list.html:68
+#: .\main\templates\main\price_list.html:69
 msgid ""
 "QYCS does not guarantee for Direct Shipping tax, if a user's package is "
 "taxed by the Custom, user shall duties to pay."
 msgstr "QYCS不保障直邮的税收，如果用户的包裹在海关被税，用户有义务缴税。"
 
-#: .\main\templates\main\price_list.html:71
+#: .\main\templates\main\price_list.html:72
 msgid "Shipping Limitation (temporary)"
 msgstr "邮寄限制 (目前)"
 
-#: .\main\templates\main\price_list.html:73
+#: .\main\templates\main\price_list.html:74
 msgid ""
 "All dangerous and illegal goods are forbidden, such as inflammable and "
 "fragile items, excessively valuable jewelry, drugs, drugs, CDs, liquids, "
@@ -2203,7 +2223,11 @@ msgid ""
 "circumstances will be dealt with by the judiciary. If you want to mail "
 "products but not sure if they are sensitive products, please contact our "
 "customer service. "
-msgstr "禁止一切危险和非法物品，如易燃易碎物品、贵重首饰、药品、药品、光盘、液体、粉末等，发现后予以拒绝。如果货物有恶意，将处以50-5000元罚款，情节严重的将由司法部门处理。如果你想邮寄产品，但不确定他们是否是敏感产品，请联系我们的客户服务。"
+msgstr ""
+"禁止一切危险和非法物品，如易燃易碎物品、贵重首饰、药品、药品、光盘、液体、粉"
+"末等，发现后予以拒绝。如果货物有恶意，将处以50-5000元罚款，情节严重的将由司法"
+"部门处理。如果你想邮寄产品，但不确定他们是否是敏感产品，请联系我们的客户服"
+"务。"
 
 #: .\main\templates\main\register.html:37
 msgid ""
