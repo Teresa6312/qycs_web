@@ -17,15 +17,21 @@ def payment_paid(sender, **kwargs):
         if ipn_obj.mc_gross == order.total_amount and ipn_obj.mc_currency == order.currency:
             print('--------------------2-------------payment--------payment_paid-----------------------------')
             if order.coupon:
-                for pack in order.package_set.all:
+                for pack in order.service_set.all:
                     package = Service.objects.get(id = pack.id)
                     package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
                     package.save()
+                    print('--------------------3-------------payment--------payment_paid-----------------------------')
+
+                    print(package.paid_amount)
             else:
-                for pack in order.package_set.all:
+                for pack in order.service_set.all:
                     package = Service.objects.get(id = pack.id)
                     package.paid_amount = package.get_total()
                     package.save()
+                    print('--------------------4-------------payment--------payment_paid-----------------------------')
+
+                    print(package.paid_amount)
         else:
             return
     else:
