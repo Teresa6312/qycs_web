@@ -50,7 +50,7 @@ DEBUG = False
 
 # paypal
 PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
-PAYPAL_TEST = False
+PAYPAL_TEST = True
 PAYPAL_PDT_TOKEN = os.environ.get('PAYPAL_PDT_TOKEN', '')
 
 # email
