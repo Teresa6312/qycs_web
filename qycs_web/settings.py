@@ -49,7 +49,8 @@ ALLOWED_HOSTS = ['myqycs.com',]
 DEBUG = False
 
 # paypal
-PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
+# PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
+PAYPAL_RECEIVER_EMAIL = "myqycs-facilitator@gmail.com"
 PAYPAL_TEST = True
 PAYPAL_PDT_TOKEN = os.environ.get('PAYPAL_PDT_TOKEN', '')
 
