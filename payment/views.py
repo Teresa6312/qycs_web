@@ -35,6 +35,8 @@ def payment_process(request):
 		}
 	# Create the instance.
 	form = PayPalPaymentsForm(initial=paypal_dict)
+	print('------------------------------reverse()-------------------------')
+	print(reverse('paypal-ipn'))
 	return render(request, 'payment/process.html', {'orderSet': orderSet,
 													'form' : form})
 

@@ -7,8 +7,9 @@ from paypal.standard.ipn.models import PayPalIPN
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
 def payment_paid(sender, **kwargs):
     ipn_obj = sender
-    print('---------------------------------payment-------------------------------------')
+    print('---------------------------------payment--------payment_paid-----------------------------')
     print(ipn_obj)
+    print(ipn_obj.payment_status)
     if ipn_obj.payment_status == ST_PP_COMPLETED:
         order = OrderSet.objects.get(id = ipn_obj.invoice)
         if ipn_obj.receiver_email != settings.PAYPAL_RECEIVER_EMAIL:
@@ -23,6 +24,7 @@ def payment_paid(sender, **kwargs):
                 for pack in order.package_set.all:
                     package = Service.objects.get(id = pack.id)
                     package.paid_amount = package.get_total()
+            order.save()
         else:
             return
     else:
@@ -32,6 +34,6 @@ valid_ipn_received.connect(payment_paid)
 
 def payment_fail(sender, **kwargs):
     ipn_obj = sender
-    print('---------------------------------payment-------------------------------------')
+    print('---------------------------------payment----------payment_fail---------------------------')
     print(ipn_obj)
 invalid_ipn_received.connect(payment_fail)
