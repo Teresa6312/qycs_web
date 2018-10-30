@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from paypal.standard.forms import PayPalPaymentsForm
-from main.models import OrderSet
+from main.models import OrderSet, Service
 from django.views.decorators.csrf import csrf_exempt
 
 def payment_process(request):
@@ -10,6 +10,8 @@ def payment_process(request):
 	orderSet = get_object_or_404(OrderSet, id = order_set_id)
 	host = request.get_host()
 	# What you want the button to do.
+	print('--------------------------order_set_id----------------------------------------------')
+	paypal(order_set_id)
 	if orderSet.coupon:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
@@ -35,8 +37,6 @@ def payment_process(request):
 		}
 	# Create the instance.
 	form = PayPalPaymentsForm(initial=paypal_dict)
-	print('------------------------------reverse()-------------------------')
-	print(reverse('paypal-ipn'))
 	return render(request, 'payment/process.html', {'orderSet': orderSet,
 													'form' : form})
 
