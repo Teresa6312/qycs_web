@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 from django.db.models.signals import pre_save
-from .hooks import payment_paid
-# from .hooks import show_me_the_money
+
 
 class PaymentConfig(AppConfig):
     name = 'payment'
@@ -9,6 +8,6 @@ class PaymentConfig(AppConfig):
     def ready(self):
         # importing model classes
         from paypal.standard.ipn.models import PayPalIPN
+        from .hooks import payment_paid
 
-        # registering signals with the model's string label
-        pre_save.connect(payment_paid, sender='app_label.PayPalIPN')
+        pre_save.connect(payment_paid, sender=PayPalIPN)
