@@ -11,7 +11,7 @@ def payment_process(request):
 	host = request.get_host()
 	# What you want the button to do.
 	print('--------------------------order_set_id----------------------------------------------')
-	paypal(order_set_id)
+	print(order_set_id)
 	if orderSet.coupon:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
