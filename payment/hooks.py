@@ -8,23 +8,24 @@ from paypal.standard.ipn.models import PayPalIPN
 def payment_paid(sender, **kwargs):
     ipn_obj = sender
     print('---------------------------------payment--------payment_paid-----------------------------')
-    print(ipn_obj)
-    print(ipn_obj.payment_status)
     if ipn_obj.payment_status == ST_PP_COMPLETED:
         order = OrderSet.objects.get(id = ipn_obj.invoice)
         if ipn_obj.receiver_email != settings.PAYPAL_RECEIVER_EMAIL:
+            print('--------------------1-------------payment--------payment_paid-----------------------------')
             return
 
         if ipn_obj.mc_gross == order.total_amount and ipn_obj.mc_currency == order.currency:
+            print('--------------------2-------------payment--------payment_paid-----------------------------')
             if order.coupon:
                 for pack in order.package_set.all:
                     package = Service.objects.get(id = pack.id)
                     package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
+                    package.save()
             else:
                 for pack in order.package_set.all:
                     package = Service.objects.get(id = pack.id)
                     package.paid_amount = package.get_total()
-            order.save()
+                    package.save()
         else:
             return
     else:
