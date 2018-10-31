@@ -307,6 +307,7 @@ a:hover{
   animation-name: hoverIN;
   animation-duration: .5s;
   left: 3vw;
+
 }
 
 
@@ -374,7 +375,6 @@ a:hover{
   text-align: left;
 }
 
-
 #tracking_full_circle{
   width:28vw;
   height:28vw;
@@ -404,6 +404,7 @@ a:hover{
   width: 15px;
   height: 15px;
   vertical-align: middle;
+
 }
 .contentCSS input, .contentCSS select, .contentCSS textarea, .w3-modal-content input, .w3-modal-content select, .w3-modal-content textarea{
   padding: 0.2vw;
@@ -473,6 +474,7 @@ thead th{
   vertical-align: middle;
 }
 
+
 table {
   max-height:450px;
   overflow:auto;
@@ -506,6 +508,7 @@ tr th{
   width: 44px;
   height: 26px;
 }
+
 
 .switch input {display:none;}
 
