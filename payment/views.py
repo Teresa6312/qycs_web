@@ -10,9 +10,7 @@ def payment_process(request):
 	order_set_id = request.session.get('order_set_id')
 	orderSet = get_object_or_404(OrderSet, id = order_set_id)
 	host = request.get_host()
-	# What you want the button to do.
-	print('--------------------------order_set_id----------------------------------------------')
-	print(order_set_id)
+
 	if orderSet.coupon:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
@@ -40,7 +38,3 @@ def payment_process(request):
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	return render(request, 'payment/process.html', {'orderSet': orderSet,
 													'form' : form})
-
-def paypal_processed(request):
-	if request.POST:
-		print(request)

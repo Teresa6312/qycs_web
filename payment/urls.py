@@ -7,5 +7,4 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('process/', views.payment_process, name='process'),
-    path('processed/', views.paypal_processed, name='processed'),
 ]

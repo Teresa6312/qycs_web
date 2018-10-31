@@ -69,8 +69,8 @@ INSTALLED_APPS = [
     'social_django',
 
     # paypal
-    # 'paypal.standard.ipn',
-    'paypal.standard.pdt',
+    'paypal.standard.ipn',
+
     # for template calculation
     'mathfilters',
 
