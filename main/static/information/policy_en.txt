@@ -4,9 +4,9 @@
 <p>Effective date: July 27, 2018</p>
 
 
-<p>Qycs Global Shipping Inc. ("us", "we", or "our") operates the www.myqycs.com website (the "Service"). </p>
+<p>QYCS Global Shipping Inc. ("us", "we", or "our") operates the www.myqycs.com website (the "Service"). </p>
 
-<p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. This Privacy Policy for Qycs Global Shipping Inc. is powered by <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator.php">FreePrivacyPolicy.com</a> </p>
+<p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. This Privacy Policy for QYCS Global Shipping Inc. is powered by <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator.php">FreePrivacyPolicy.com</a> </p>
 
 <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from www.myqycs.com</p>
 
@@ -41,8 +41,8 @@
 </ul>
 
 <h2>Use of Data</h2>
-    
-<p>Qycs Global Shipping Inc. uses the collected data for various purposes:</p>    
+
+<p>QYCS Global Shipping Inc. uses the collected data for various purposes:</p>
 <ul>
     <li>To provide and maintain the Service</li>
     <li>To notify you about changes to our Service</li>
@@ -57,15 +57,15 @@
 <p>Your information, including Personal Data, may be transferred to - and maintained on - computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction. </p>
 <p>If you are located outside United States and choose to provide information to us, please note that we transfer the data, including Personal Data, to United States and process it there. </p>
 <p>Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer. </p>
-<p>Qycs Global Shipping Inc. will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this Privacy Policy and no transfer of your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of your data and other personal information. </p>
+<p>QYCS Global Shipping Inc. will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this Privacy Policy and no transfer of your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of your data and other personal information. </p>
 
 <h2>Disclosure of Data</h2>
 
 <h3>Legal Requirements</h3>
-<p>Qycs Global Shipping Inc. may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
+<p>QYCS Global Shipping Inc. may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
 <ul>
     <li>To comply with a legal obligation</li>
-    <li>To protect and defend the rights or property of Qycs Global Shipping Inc.</li>
+    <li>To protect and defend the rights or property of QYCS Global Shipping Inc.</li>
     <li>To prevent or investigate possible wrongdoing in connection with the Service</li>
     <li>To protect the personal safety of users of the Service or the public</li>
     <li>To protect against legal liability</li>
@@ -79,7 +79,7 @@
 <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose. </p>
 
 <h3>Analytics</h3>
-<p>We may use third-party Service Providers to monitor and analyze the use of our Service. </p>    
+<p>We may use third-party Service Providers to monitor and analyze the use of our Service. </p>
 <ul>
         <li>
         <p><strong>Google Analytics</strong></p>
@@ -106,6 +106,6 @@
 <h2>Contact Us</h2>
 <p>If you have any questions about this Privacy Policy, please contact us:</p>
 <ul>
-<li>By email: Myqycs@gmail.com</li>
-<li>By visiting this page on our website: Myqycs.com</li>
-</ul>                          
+<li>By email: myqycs@gmail.com</li>
+<li>By visiting this page on our website: myqycs.com</li>
+</ul>

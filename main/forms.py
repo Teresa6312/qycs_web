@@ -166,7 +166,7 @@ class PackageCommonForm(forms.ModelForm):
 	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True,
 									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
-	memo = forms.CharField(label = 'Note', required=False,
+	memo = forms.CharField(label = _("Note"), required=False,
 							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs about this package"),
 												"class":"w3-input w3-border",
 												"rows":5
@@ -249,29 +249,29 @@ Create new Item in Package
 '''
 #-----------------------------------------------------------------------------------------
 class ItemForm(forms.ModelForm):
-	item_name = forms.CharField(label = 'Item Name',
+	item_name = forms.CharField(label = _('Item Name'),
 								widget=forms.TextInput(attrs={
-									'placeholder': 'Please enter your items name as detailed as possible',
+									'placeholder': _("Please enter your items' name as detailed as possible"),
 									"class":"w3-input w3-border item_name"
 									}))
 
-	item_detail = forms.CharField( label = 'Item Detail', required=False,
-								widget=forms.TextInput(attrs={'placeholder': 'color/size.etc',
+	item_detail = forms.CharField( label = _('Item Detail'), required=False,
+								widget=forms.TextInput(attrs={'placeholder': _('color/size.etc'),
 								"class":"w3-input w3-border"
 								}))
 
-	item_quantity = forms.IntegerField(label = 'quantity',
+	item_quantity = forms.IntegerField(label =_('quantity'),
 								widget=forms.NumberInput(attrs={"class":"w3-input w3-border"}))
 
-	item_url  = forms.URLField(label = 'Item URL', required=False,
-								widget=forms.TextInput(attrs={'placeholder': "https://...",
+	item_url  = forms.URLField(label = _('Item URL'), required=False,
+								widget=forms.TextInput(attrs={'placeholder': _("https://..."),
 																"class":"w3-input w3-border"
 																}))
 
 	low_volume_request = forms.BooleanField(required=False)
 
-	memo = forms.CharField( label = 'Note', required=False,
-							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this item',
+	memo = forms.CharField( label = _('Note'), required=False,
+							widget=forms.Textarea(attrs={'placeholder': _('Please enter your needs with this item'),
 												"class":"w3-input w3-border",
 												"rows": 3 }))
 
@@ -289,16 +289,6 @@ ItemFormset = inlineformset_factory(Service,
 									Item,
 									form=ItemForm,
 									extra=1)
-
-# ItemFormset = inlineformset_factory(Service,
-# 									Item,
-# 									form=ItemForm,
-# 									extra=1,
-# 									widgets={'name': Textarea(attrs={'cols': 80, 'rows': 20})}
-
-
-
-
 
 class SnapshotForm(forms.Form):
 	Snapshot = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True,}))

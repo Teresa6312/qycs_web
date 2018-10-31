@@ -3,6 +3,7 @@ from django.urls import include, path
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+
 from collector import views as col_views
 from main import views as main_views
 
@@ -32,9 +33,6 @@ urlpatterns = [
     path('auth/', include('social_django.urls', namespace='social')),
     path('paypal/', include('paypal.standard.pdt.urls')),
 ]
-
-
-
 
 
 if settings.DEBUG:

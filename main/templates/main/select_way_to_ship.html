@@ -13,7 +13,11 @@
             <div>{% trans '99.99% SAFETY' %}</div>
             <div>{% trans 'INSTANT CONSOLIDATION' %}</div>
           </div>
-          <img class="w3-padding-16" alt="shipping icons" src="{% static 'image/shipping_icons.png' %}" style="height:100px;"><br/>
+          <div class="w3-row w3-padding-16">
+              <img class="w3-margin-right" alt="flight icon" src="{% static 'image/flight.png' %}" style="height:40px;">
+              <img class="w3-margin-right" alt="secure icon" src="{% static 'image/secure.png' %}" style="height:40px;">
+              <img alt="pack icon" src="{% static 'image/pack.png' %}" style="height:40px;">
+          </div>
           <div class="text-xlarge-bold w3-text-blue"><i>{% trans 'OUR HEART NEVER ENDS' %}</i></div>
           <div class="w3-padding-16 w3-margin-top">
               <button  class="logo-blue" type="button"  onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Direct shipping' %}</button>

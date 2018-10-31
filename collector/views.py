@@ -95,7 +95,6 @@ class CollectorUpdateView(TemplateView):
 				update.save()
 				return redirect(update.get_absolute_url())
 			else:
-				print(form.errors)
 				return render(request, self.template_name, {'form': form,
 															})
 		except:

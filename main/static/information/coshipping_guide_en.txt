@@ -15,7 +15,7 @@ The picture demo will be updated later, you can register by filling out your inf
 
 <p>Here I will make a demonstration of filling out the address when you shop in China, for example, if you shop in Taobao, you will fill out the address like this.</p>
 
-<p>5. Add the package information (ex, tracking number and item details) to the Qycs co-shipping page after you purchase something in China.</p>
+<p>5. Add the package information (ex, tracking number and item details) to the QYCS co-shipping page after you purchase something in China.</p>
 
 
 
@@ -25,7 +25,7 @@ The picture demo will be updated later, you can register by filling out your inf
 <li> You can then choose to add multiple items and multiple packages
 <li> Confirm the submission after adding it completely
 <li> You will see your package on your package cart
-<li> Wait patiently for Qycs's China warehouse to receive your package
+<li> Wait patiently for QYCS's China warehouse to receive your package
 <li> Warehouse staff will take 1-3 days to weigh and then notify you of the payment
 <li> You can return to your package cart to checkout
 <p><i>Image demo updated later</i></p>
@@ -34,7 +34,7 @@ The picture demo will be updated later, you can register by filling out your inf
 <i>(So pay attention to the deadline, the users who have not caught up will be shipped in the next round of parcel post)</i>
 </p>
 
-<p>7. If you have any questions about co-shipping, please contact the collector of your chosen collection point or contact us at Qycs Customer Service.</p>
+<p>7. If you have any questions about co-shipping, please contact the collector of your chosen collection point or contact us at QYCS Customer Service.</p>
 
 <p>Customer service information is as follows:</p>
 
