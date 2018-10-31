@@ -50,8 +50,9 @@ DEBUG = False
 
 # paypal
 PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER_EMAIL', '')
+# PAYPAL_RECEIVER_EMAIL = "myqycs-facilitator@gmail.com"
 PAYPAL_TEST = False
-PAYPAL_PDT_TOKEN = os.environ.get('PAYPAL_PDT_TOKEN', '')
+PAYPAL_IDENTITY_TOKEN = os.environ.get('PAYPAL_PDT_TOKEN', '')
 
 # email
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', '')

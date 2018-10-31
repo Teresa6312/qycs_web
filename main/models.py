@@ -20,11 +20,9 @@ phone_regex = RegexValidator(regex=r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(
 zip_regex = RegexValidator(regex=r'^[0-9]{2,6}(?:-[0-9]{4})?$|^$', message=_("Plese Enter a valid zip code."))
 
 SHIPPING_CARRIER_CHOICE = (
-('DHL', _('DHL')),
-('EMS', _('EMS')),
-('FEDEX', _('FEDEX')),
-('SF EXPRESS', _('SF EXPRESS')),
-('UPS', _('UPS')),
+('DHL', _('DHL - Regular items')),
+('EMS', _('EMS - All kind of items')),
+('SF EXPRESS', _('SF EXPRESS - Regular items')),
 ('Cheapest', _('The cheapest one')),
 ('Fastest', _('The fastest one')),
 )
@@ -77,11 +75,11 @@ WEB_CATEGORY = (
 )
 
 PACKAGE_CATEGORY = (
- ('F', _('Food/Grocery')),
- ('R', _('Regular Goods')),
- ('B', _('Beauty')),
- ('L', _('Luxury')),
- ('M', _('Mix')),
+ ('B-F', _('Food/Grocery')),
+ ('A-R', _('Regular Goods')),
+ ('C-B', _('Beauty')),
+ ('D-L', _('Luxury')),
+ ('E-M', _('Mix')),
 )
 
 INFORMATION_SOURCES = (
@@ -209,9 +207,8 @@ class Address(Address_Common_Info):
 class CollectionPoint(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Collection Point Updated Date'))
 	collector = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True,verbose_name= _('Collector'))
-	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License Type'))
-	# license_image = models.ImageField(upload_to = 'collector_license', blank = True, verbose_name= _('License Image'))
-	# id_image = models.ImageField(upload_to = 'collector_id', verbose_name= _('ID Image'))
+	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License type'))
+
 
 	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
 	license_image = CloudinaryField('collector_license', blank=True, null=True)
@@ -223,11 +220,11 @@ class CollectionPoint(Address_Common_Info):
 	store.boolean = True
 
 	name = models.CharField(max_length = 16, unique = True, blank=False, default='', verbose_name= _('Collection Point Name'))
-	wechat = models.CharField(max_length = 100, unique = True, blank=True, null=True, verbose_name= _('WeChat ID'))
-	# wechat_qrcode = models.ImageField(upload_to = 'collector_wechat', blank=True, verbose_name= _('Wechat QRcode'))
+	paypal = models.EmailField(blank=True, default='', verbose_name = _("Paypal account"))
+	wechat = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('WeChat ID'))
 	referrer = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Referrer'))
-	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply Reason'))
-	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information Source'))
+	apply_reason = models.TextField(blank=True, default='', verbose_name= _('Apply reason'))
+	info_source = models.CharField(max_length = 100, choices=INFORMATION_SOURCES, blank=True, default='', verbose_name= _('Information source'))
 	agreement = models.BooleanField(default=False, verbose_name= _('Agreement'))
 
 
@@ -244,7 +241,6 @@ class CollectionPoint(Address_Common_Info):
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Available'))
 	status.boolean = True
-	# collector_icon = models.ImageField(upload_to = 'collector_icon', blank = True, verbose_name= _('Collector Icon'))
 	description = models.TextField(blank = True, default='', verbose_name= _('Instruction'))
 	show_contact = models.BooleanField(default = False, verbose_name= _('Show Contact Information'))
 	show_contact.boolean = True
@@ -610,6 +606,9 @@ class Resource(models.Model):
 	english_file = models.FileField(upload_to = 'resource/english', blank=True,  verbose_name= _('English Version File'))
 	chinese_file = models.FileField(upload_to = 'resource/chinese', blank=True, verbose_name= _('Chinese Version File'))
 
+	class Meta:
+		verbose_name_plural = _("Resource")
+
 	def __str__(self):
 		return self.title
 
@@ -623,6 +622,8 @@ class Location(models.Model):
 	country = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country'))
 	country_shortname = models.CharField(max_length=100, blank=False, default='',verbose_name= _('Country Shortname'))
 
+	class Meta:
+		verbose_name_plural = _("Location")
 
 class PriceRate(models.Model):
 	category = models.CharField(max_length = 50, choices = PRICERATE_CATEGORY, blank=True, default='', verbose_name = _('Category'))
@@ -637,3 +638,6 @@ class PriceRate(models.Model):
 	avg_weight_price = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Average Weight Price'))
 
 	rate = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Currency Rate'))
+
+	class Meta:
+		verbose_name_plural = _("Price Rate")

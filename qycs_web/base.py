@@ -69,8 +69,8 @@ INSTALLED_APPS = [
     'social_django',
 
     # paypal
-    'paypal.standard.ipn',
-
+    # 'paypal.standard.ipn',
+    'paypal.standard.pdt',
     # for template calculation
     'mathfilters',
 
@@ -86,14 +86,15 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # for translation after SessionMiddleware and before CommonMiddleware
+    'django.middleware.locale.LocaleMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # for translation
-    'django.middleware.locale.LocaleMiddleware',
 
     # social media login
     'social_django.middleware.SocialAuthExceptionMiddleware',
@@ -233,7 +234,7 @@ AUTH_PASSWORD_VALIDATORS = [
 TIME_ZONE = 'UTC'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True

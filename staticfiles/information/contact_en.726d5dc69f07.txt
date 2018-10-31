@@ -1,0 +1,9 @@
+<h2>Contact Us </h2>
+<p><i>Feel free to contact us, QYCS welcomes your questions or comments:</i></p>
+<h3>QYCS Global Shipping Inc.</h3>
+<p><b>New York</b></p>
+<p><b>Email Address: </b>
+myqycs@gmail.com</p>
+<p><b>Chinese Telephone Number:</b> +86-15994868603 (working days 10am-6pm)</p>
+<p><b>WeChat Official QR Code</b></p>
+<img src="/static/image/qrcode.jpg"  alt="qr code" width="250"/>

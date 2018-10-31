@@ -57,63 +57,56 @@
             {% endfor %}
         {% endif %}
 
-        <!-- <div class="socmed-login">
-            <a href="{% url 'social:begin' 'google-oauth2' %}" class="socmed-btn google-btn">
-            <i class="fa fa-google"></i>
-            <span>Sign Up with Google</span>
-            </a>
-            <br class="clear"/>
-        </div>
-        <div class="w3-center">OR</div> -->
 
         <form id="regForm" method="post">
             {% csrf_token %}
-            <div class="text-large">{% trans "Create My Qycs Account" %}</div>
+            <div class="text-large">{% trans "Create My QYCS Account" %}</div>
 
             <!-- One "tab" for each step in the form: -->
             <div class="tab">
               <div class="form-row">
-                {{ form.username.errors }}
-                {{ form.username.label_tag }} {{ form.username }}
+
+                {{ form.username.label_tag }} {{ form.username.errors }}{{ form.username }}
                 <input type="hidden" name="next" value="{{ next }}" />
               </div>
               <div class="form-row">
-                {{ form.password1.errors }}
-                {{ form.password1.label_tag }} {{ form.password1 }}
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
               </div>
-              {% if form.password1.help_text %}
-                  <div class="help">{{ form.new_password1.help_text|safe }}</div>
-              {% endif %}
+
               <div class="form-row">
-                {{ form.password2.errors }}
-                {{ form.password2.label_tag }} {{ form.password2 }}
+                {{ form.password2.label_tag }}
+                {% if form.password2.errors %}
+                      <div class="help"><ul>
+                        <li>{% trans "Your password can't be too similar to your other personal information." %}</li>
+                        <li>{% trans 'Your password must contain at least 8 characters.' %}</li>
+                        <li>{% trans "Your password can't be a commonly used password." %}</li>
+                        <li>{% trans "Your password can't be entirely numeric." %}</li></ul>
+                      </div>
+                {% endif %}{{ form.password2 }}
               </div>
               <div class="form-row">
-                {{ form.email.errors }}
-                {{ form.email.label_tag }} {{ form.email }}
+                {{ form.email.label_tag }}{{ form.email.errors }} {{ form.email }}
               </div>
               <div class="form-row">
-                {{ form.country.errors }}
-                {{ form.country.label_tag }} {{ form.country }}
+                {{ form.country.label_tag }} {{ form.country.errors }} {{ form.country }}
               </div>
             </div>
             <div class="tab">
               <div class="form-row">
-                {{ form.first_name.errors }}
-                {{ form.first_name.label_tag }} {{ form.first_name }}
+                {{ form.first_name.label_tag }} {{ form.first_name.errors }}{{ form.first_name }}
               </div>
               <div class="form-row">
-                {{ form.last_name.errors }}
-                {{ form.last_name.label_tag }} {{ form.last_name }}
+
+                {{ form.last_name.label_tag }} {{ form.last_name.errors }} {{ form.last_name }}
               </div>
               <div class="form-row">
-                {{ form.birthday.errors }}
                 {{ form.birthday.label_tag }}
+                {{ form.birthday.errors }}
                 <div class="w3-row">{{ form.birthday }}</div>
               </div>
               <div class="form-row">
-                {{ form.phone.errors }}
-                {{ form.phone.label_tag }} {{ form.phone }}
+                {{ form.phone.label_tag }} {{ form.phone.errors }}{{ form.phone }}
               </div>
             </div>
             <div class="tab WebFormSet">
@@ -127,13 +120,13 @@
               {% for subform in webformset%}
                   <div class="form-row w3-row">
                     <div class="w3-third">
-                      {{ subform.web_type.errors }}
-                      {{ subform.web_type.label_tag }}
+
+                      {{ subform.web_type.label_tag }}{{ subform.web_type.errors }}
                       {{ subform.web_type }}
                     </div>
                     <div class="w3-rest">
-                      {{ subform.web_name.errors }}
-                      {{ subform.web_name.label_tag }} {{ subform.web_name }}
+
+                      {{ subform.web_name.label_tag }} {{ subform.web_name.errors }}{{ subform.web_name }}
                     </div>
                   </div>
               {% endfor %}
@@ -143,7 +136,7 @@
                       {% blocktrans %}
                           I have read, understood and agreed to be bound by myqycs.com Terms of Use. I also understood how MYQYCS intends to use my information.
                       {% endblocktrans %}
-                      <a href="{% url 'information' 'policy'%}">{% trans 'Privacy Policy' %}</a>
+                      <a href="{% url 'information' 'policy'%}"><span class="w3-text-blue">{% trans 'Privacy Policy' %}</span></a>
                 </div>
             </div>
 
@@ -163,8 +156,6 @@
               <span class="step"></span>
               <span class="step"></span>
             </div>
-
-
         </form>
     </div>
 <script src="{% static 'js/register.js' %}"></script>
