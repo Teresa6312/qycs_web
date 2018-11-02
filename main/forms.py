@@ -157,7 +157,7 @@ Create new Package
 #-----------------------------------------------------------------------------------------
 
 class PackageCommonForm(forms.ModelForm):
-	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True),
+	wh_received = forms.ModelChoiceField(label = _("Inter-warehouse"), queryset=Warehouse.objects.filter(status=True),
 									widget=forms.Select(attrs={"class":"w3-select w3-border"
 									}))
 	cust_carrier = forms.ChoiceField(label = _("Original Package Carrier"), required = True, choices = CARRIER_CHOICE,
