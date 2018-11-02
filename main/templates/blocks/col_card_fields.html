@@ -1,14 +1,6 @@
 {% load i18n static %}
-{% load cloudinary %}
 
 
-
-{% if col.collector_icon and not no_icon %}
-<div style="max-width:200px; height:400px; margin:auto;" class="w3-padding-16">
-  {% cloudinary col.collector_icon format="jpg" width=120 height=80 crop="fill" %}
-
-</div>
-{% endif %}
 <div class="text-regular-bold">{{col.name}}
   {% if not col.status %}
     <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/>
@@ -16,7 +8,7 @@
     <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/>
   {% endif %}
   {% if col.store %}
-      ({% trans 'Store' %})
+      ({% if col.store_name %}({% trans 'Store' %}{{col.store_name}}{% endif %})
   {% else %}
       ({% trans 'Personal Place' %})
   {% endif %}
@@ -37,5 +29,4 @@
 {% trans 'Skincare' %}: {% if col.skincare %}<img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/> {% else %} <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:15px;"/> {% endif %}<br/>
 {{col.country}} | {{col.state}} | {{col.city}}<br/>
 {{col.address}}{% if col.apt %} --{{col.apt}}{% endif %}<br/>
-{% if col.store_name %}{{col.store_name}}<br/>{% endif %}
 {{col.zipcode}}<br/>

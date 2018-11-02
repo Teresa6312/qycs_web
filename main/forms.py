@@ -160,10 +160,10 @@ class PackageCommonForm(forms.ModelForm):
 	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True),
 									widget=forms.Select(attrs={"class":"w3-select w3-border"
 									}))
-	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE,
+	cust_carrier = forms.ChoiceField(label = _("Original Package Carrier"), required = True, choices = CARRIER_CHOICE,
 									widget=forms.Select(attrs={"class":"w3-select w3-border"
 									}))
-	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True,
+	cust_tracking_num = forms.CharField(label = _("Original Package Tracking Number"), required = True,
 									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
 									}))
 	memo = forms.CharField(label = _("Note"), required=False,

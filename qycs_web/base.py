@@ -77,6 +77,9 @@ INSTALLED_APPS = [
     # for upload and storage images
     'cloudinary',
 
+    # for js translate
+    'localejs.jscripti18n',
+
     'django.contrib.admindocs',
 ]
 
@@ -268,6 +271,7 @@ STATICFILES_FINDERS = (
     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'

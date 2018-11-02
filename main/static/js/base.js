@@ -95,13 +95,13 @@ function send_email(id,csrf){
           if(cont.val().trim()!==''){
               formpass=true
           }else{
-            alert('Please enter the content');
+            alert(gettext('Please enter the content'));
           }
       }else{
-        alert('Please enter the subject');
+        alert(gettext('Please enter the subject'));
       }
     }else{
-      alert('Please enter a valid Email');
+      alert(gettext('Please enter a valid Email'));
     }
    if(formpass){
      $.ajax({
@@ -109,13 +109,13 @@ function send_email(id,csrf){
        url: '/contact-us/',
        data: email_data,
        success: function(data){
-         alert('The email was sent successfully!');
+         alert(gettext('The email was sent successfully!'));
          form.find("input[type=text], textarea").val("");
          form.parents('.w3-modal').hide();
 
        },
        failure: function(data){
-         alert('Failure, please try again.');
+         alert(gettext('Failure, please try again.'));
      },
    });
    }
