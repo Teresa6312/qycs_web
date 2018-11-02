@@ -66,7 +66,7 @@ function getAddForm(user,csrf, submit_url, add_field_name){
                 var ca = document.createElement("button");
                 ca.setAttribute("type", "button");
                 ca.setAttribute("class", "logo-red");
-                ca.innerHTML = 'Cancel';
+                ca.innerHTML = gettext('Cancel');
                 ca.onclick = function(){
                    $('#id-new-address-modal').hide();
                    $('#newAddressForm_js').remove();
@@ -77,7 +77,7 @@ function getAddForm(user,csrf, submit_url, add_field_name){
                 sv.setAttribute("type", "button");
                 sv.setAttribute("class", "logo-blue");
                 sv.setAttribute("id", "newAddressSubmitBtn");
-                sv.innerHTML = 'Save';
+                sv.innerHTML = gettext('Save');
                 sv.onclick = function(){
                   if($('.addform-errors').length>0){
                     $('.addform-errors').remove();
@@ -125,8 +125,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     fui.setAttribute("class", "logo-blue");
     fui.setAttribute("type", "button");
     fui.setAttribute("id", "id_follow_user_infor");
-    fui.append("Follow User Information");
-    fui.innerHTML = 'Follow User Information';
+    fui.innerHTML = gettext('Follow User Information');
     fui.onclick = function(){
       fn.value = user.first_name;
       ln.value = user.last_name;
@@ -142,7 +141,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var fn_l = document.createElement("label");
     fn_l.setAttribute('for', 'id_first_name')
-    fn_l.append('First Name:');
+    fn_l.append(gettext('First Name:'));
 
     fnblock.append(fn_l);
 
@@ -160,7 +159,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var ln_l = document.createElement("label");
     ln_l.setAttribute('for', 'id_last_name')
-    ln_l.append('Last Name:');
+    ln_l.append(gettext('Last Name:'));
 
     lnblock.append(ln_l);
 
@@ -181,7 +180,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var ph_l = document.createElement("label");
     ph_l.setAttribute('for', 'id_phone')
-    ph_l.append('Phone:');
+    ph_l.append(gettext('Phone:'));
 
     phblock.append(ph_l);
 
@@ -202,7 +201,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var co_l = document.createElement("label");
     co_l.setAttribute('for', 'id_country')
-    co_l.append('Country:');
+    co_l.append(gettext('Country:'));
 
     coblock.append(co_l);
 
@@ -221,7 +220,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var st_l = document.createElement("label");
     st_l.setAttribute('for', 'id_state')
-    st_l.append('State:');
+    st_l.append(gettext('State:'));
 
     stblock.append(st_l);
 
@@ -240,7 +239,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var ct_l = document.createElement("label");
     ct_l.setAttribute('for', 'id_city')
-    ct_l.append('City:');
+    ct_l.append(gettext('City:'));
 
     ctblock.append(ct_l);
 
@@ -261,7 +260,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var zp_l = document.createElement("label");
     zp_l.setAttribute('for', 'id_zipcode')
-    zp_l.append('Zip Code:');
+    zp_l.append(gettext('Zip Code:'));
 
     zpblock.append(zp_l);
 
@@ -280,7 +279,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var ad_l = document.createElement("label");
     ad_l.setAttribute('for', 'id_address')
-    ad_l.append('Address:');
+    ad_l.append(gettext('Address:'));
 
     adblock.append(ad_l);
 
@@ -299,7 +298,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
 
     var ap_l = document.createElement("label");
     ap_l.setAttribute('for', 'id_apt')
-    ap_l.append('Address2/Apartment:');
+    ap_l.append(gettext('Address2/Apartment:'));
 
     apblock.append(ap_l);
 
@@ -326,7 +325,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     var ca = document.createElement("button");
     ca.setAttribute("type", "button");
     ca.setAttribute("class", "logo-red");
-    ca.innerHTML = 'Cancel';
+    ca.innerHTML = gettext('Cancel');
     ca.onclick = function(){
      $('#id-new-address-modal').hide();
      addform.remove();
@@ -337,7 +336,7 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
     sv.setAttribute("type", "button");
     sv.setAttribute("class", "logo-blue");
     sv.setAttribute("id", "newAddressSubmitBtn");
-    sv.innerHTML = 'Save';
+    sv.innerHTML =  gettext('Save');
     sv.onclick = function(){
       if($('.addform-errors').length>0){
         $('.addform-errors').remove();
@@ -345,8 +344,6 @@ function createAddForm(user,csrf, submit_url, add_field_name) {
       submitForm(csrf, submit_url, add_field_name);
     };
     btblock.appendChild(sv);
-
-
     formblock.appendChild(btblock);
 
     addform.appendChild(formblock);
@@ -457,7 +454,7 @@ $(document).ready(function(){
       $('#select_col_btn').text("Change");
       $('#remove_default_col_btn').show();
     }else {
-      $('#select_col_btn').text("Select a Collection Point");
+      $('#select_col_btn').text(gettext("Select a Collection Point"));
       $('#remove_default_col_btn').hide();
     }
 

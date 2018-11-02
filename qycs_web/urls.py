@@ -3,6 +3,7 @@ from django.urls import include, path
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.i18n import JavaScriptCatalog
 
 from collector import views as col_views
 from main import views as main_views
@@ -31,9 +32,15 @@ urlpatterns = [
     path('collection-points/', main_views.CollectionPointView.as_view(), name='collection_points'),
 
     path('auth/', include('social_django.urls', namespace='social')),
-    path('paypal/', include('paypal.standard.pdt.urls')),
+    path('paypal/', include('paypal.standard.ipn.urls')),
 ]
 
+# js files translation
+urlpatterns += (
+    path('jsi18n/',
+         JavaScriptCatalog.as_view(packages=['localejs.jscripti18n']),
+         name='javascript-catalog'),
+)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

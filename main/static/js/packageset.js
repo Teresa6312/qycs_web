@@ -13,7 +13,7 @@ function createItemsetBlock() {
   var itemsetheader = document.createElement("div");
   itemsetheader.setAttribute("class", "text-large");
 
-  itemsetheader.innerHTML="Add details of each item in the package:"
+  itemsetheader.innerHTML=gettext("Add details of each item in the package: ")
   itemsetblock.appendChild(itemsetheader)
 
 
@@ -24,19 +24,19 @@ function createItemsetBlock() {
   var ihblock = document.createElement("div");
   ihblock.setAttribute("class", "text-large");
   ihblock.setAttribute("class", "item_header w3-container");
-  ihblock.innerHTML = 'Item Detail: ';
+  ihblock.innerHTML = gettext('Item Detail: ');
   itemblock.appendChild(ihblock);
 
   var itnblock = document.createElement("div");
   itnblock.setAttribute("class", "w3-container");
-  itnblock.innerHTML = 'Item Name: ';
+  itnblock.innerHTML = gettext('Item Name: ');
 
   var itn = document.createElement("INPUT");
   itn.setAttribute("id", "id_item_set-0-item_name");
   itn.setAttribute("type", "text");
   itn.setAttribute("name", "item_set-0-item_name");
   itn.setAttribute("class", "w3-input w3-border");
-  itn.setAttribute("placeholder", "Please enter your items name as detailed as possible");
+  itn.setAttribute("placeholder", gettext("Please enter your items name as detailed as possible"));
   itn.required = true;
   itnblock.appendChild(itn);
   itemblock.appendChild(itnblock);
@@ -44,20 +44,20 @@ function createItemsetBlock() {
 
   var dtblock = document.createElement("div");
   dtblock.setAttribute("class", "w3-half w3-container");
-  dtblock.innerHTML = 'Item Detail: ';
+  dtblock.innerHTML = gettext('Item Detail: ');
 
   var dt = document.createElement("INPUT");
   dt.setAttribute("id", "id_item_set-0-item_detail");
   dt.setAttribute("type", "text");
   dt.setAttribute("name", "item_set-0-item_detail");
   dt.setAttribute("class", "w3-input w3-border");
-  dt.setAttribute("placeholder", "color/size.etc");
+  dt.setAttribute("placeholder", gettext("color/size.etc"));
   dtblock.appendChild(dt);
   itemblock.appendChild(dtblock);
 
   var qtblock = document.createElement("div");
   qtblock.setAttribute("class", "w3-half w3-container");
-  qtblock.innerHTML = 'Quantity: ';
+  qtblock.innerHTML = gettext('Quantity: ');
 
   var qt = document.createElement("INPUT");
   qt.setAttribute("id", "id_item_set-0-item_quantity");
@@ -72,7 +72,7 @@ function createItemsetBlock() {
 
   var urlblock = document.createElement("div");
   urlblock.setAttribute("class", "w3-container");
-  urlblock.innerHTML = 'Item URL: ';
+  urlblock.innerHTML = gettext('Item URL: ');
 
   var url = document.createElement("INPUT");
   url.setAttribute("id", "id_item_set-0-item_url");
@@ -93,19 +93,19 @@ function createItemsetBlock() {
   lvr.setAttribute("name", "item_set-0-low_volume_request");
   lvr.setAttribute("class", "w3-border");
   lvrblock.appendChild(lvr);
-  lvr.after("Minimize this item's volume");
+  lvr.after(gettext("Minimize this item's volume"));
   itemblock.appendChild(lvrblock);
 
   var notblock = document.createElement("div");
   notblock.setAttribute("class", "w3-container");
-  notblock.innerHTML = 'Note: ';
+  notblock.innerHTML = gettext('Note: ');
 
   var not = document.createElement("INPUT");
   not.setAttribute("id", "id_item_set-0-item_memo");
   not.setAttribute("type", "textarea");
   not.setAttribute("name", "item_set-0-item_memo");
   not.setAttribute("class", "w3-input w3-border");
-  not.setAttribute("placeholder", "tell us your needs");
+  not.setAttribute("placeholder", gettext("tell us your needs"));
   notblock.appendChild(not);
   itemblock.appendChild(notblock);
 
@@ -119,22 +119,22 @@ function createItemsetBlock() {
   if($('#add_item_form').length==0){
       $('#item_information_block').append(itemsetblock);
       $('#add_item_form').hide().slideDown(300);
-      $('#add_item_btn').text("Delect all Items");
+      $('#add_item_btn').text(gettext("Delect all Items"));
   }//end if #add_snapshot_form exists
 
   else{
       $('#add_item_form').slideUp(300, function(){
         $('#add_item_form').remove();
       });
-      $('#add_item_btn').text("Add Items' Detail");
+      $('#add_item_btn').text(gettext("Add Items' Detail"));
     }//end of DOES NOT #add_snapshot_form exists
 
 
 
 
   $('.itemblock').formset({
-      addText: 'add Item',
-      deleteText: 'delete item',
+      addText: gettext('add Item'),
+      deleteText: gettext('delete item'),
       prefix: 'item_set'
   });
 
@@ -147,7 +147,7 @@ function AddSnapshotBlock(){
 
   var hd = document.createElement("div");
   hd.setAttribute("class", "text-large");
-  hd.innerHTML='Add Order Snapshot of the Package:';
+  hd.innerHTML=gettext('Add Order Snapshot of the Package:');
   snblock.appendChild(hd);
 
   var im = document.createElement("input");
@@ -162,14 +162,14 @@ function AddSnapshotBlock(){
   if($('#add_snapshot_form').length==0){
       $('#item_information_block').append(snblock);
       $('#add_snapshot_form').hide().slideDown(300);
-      $('#add_snapshot_btn').text("Delete Snapshot");
+      $('#add_snapshot_btn').text(gettext("Delete Snapshot"));
   }//end if #add_snapshot_form exists
 
   else{
       $('#add_snapshot_form').slideUp(300, function(){
         $('#add_snapshot_form').remove();
       });
-      $('#add_snapshot_btn').text("Add Snapshot");
+      $('#add_snapshot_btn').text(gettext("Add Snapshot"));
     }//end of DOES NOT #add_snapshot_form exists
 
 }//end of AddSnapshotBlock
@@ -209,7 +209,7 @@ function nextPrev(n) {
     if($('.errornote').length==0){
         var p = document.createElement('p');
         p.setAttribute('class','errornote');
-        p.innerHTML = 'Please correct the error(s) below.';
+        p.innerHTML = gettext('Please correct the error(s) below.');
         $('#message_block').append(p);
         $('.errornote').hide().slideDown(200);
     }

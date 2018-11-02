@@ -125,7 +125,7 @@ function updateCollectionPointsTable(pointsArray){
                 }
              })(marker));
            } else {
-             alert('Geocode was not successful for the following reason: ' + status);
+             alert(gettext('Geocode was not successful for the following reason: ') + status);
            }
          });
        }
@@ -146,7 +146,7 @@ function updateCollectionPointsTable(pointsArray){
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
-                              'Error: We cannot load your location.' :
-                              'Error: Your browser doesn\'t support geolocation.');
+                              gettext('Error: We cannot load your location.') :
+                              gettext('Error: Your browser doesn\'t support geolocation.'));
         infoWindow.open(map);
       }//end of handleLocationError

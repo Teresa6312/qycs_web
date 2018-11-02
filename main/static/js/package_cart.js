@@ -21,39 +21,11 @@ $('tbody').find(".package").each(function(){
   }
 });
 
-// for apply rewards
-function apply_reward(reward){
-  if($('#id_reward_point_used').prop('type')==='hidden'){
-    $('#id_reward_point_used').prop('type','number');
-    $('#id_reward_point_used').prop('title','You have '+ reward +' point(s).');
-  }else{
-    if(0<$('#id_reward_point_used').val()<= reward &&  $('#id_reward_point_used').val()/100 < amount && discount===0){
-      amount = amount + reward_used/100;
-      reward_used = $('#id_reward_point_used').val();
-      amount = amount - reward_used/100;
-      $('#id_total_amount').text(amount.toFixed(2));
-      if($('#reward_used_block').length>0){
-        $('#reward_used_block').remove();
-      }
-      var rew = '<div id="reward_used_block">' + reward_used +
-                ' points:<span class="w3-right" id="reward_discount_amount">-'+
-                (reward_used/100).toFixed(2) +
-                '</span></div>'
-      $('#amount_block').before(rew);
-      $('#id_reward_point_used').prop('type','hidden');
-      $('#id_coupon').val('');
-    }else if(discount>0){
-      var errornote = '<p class="errornote">Coupon and Reward ponits can bed used only one.</p>'
-      $('#reward_block').before(errornote);
-    }
-  }
-}// endof apply rewards
 // for apply coupon
 function apply_coupon(csrf, url){
     if($('#id_coupon').prop('type')==='hidden'){
       $('#id_coupon').prop('type','text');
     }else{
-      if(reward_used===0){
             $('.errornote').remove();
             let dt={'csrfmiddlewaretoken': csrf,
                     'coupon':$('#id_coupon').val()
@@ -65,7 +37,9 @@ function apply_coupon(csrf, url){
               success: function(data){
                 console.log(data);
                 if(data === ''){
-                  var errornote = '<p class="errornote">The coupon does not exist.</p>'
+                  var errornote = document.createElement("p");
+                  errornote.setAttribute("class", "errornote");
+                  errornote.innerHTML = gettext('The coupon does not exist.');
                   $('#coupon_block').before(errornote)
                 }else{
                   discount = parseFloat(data);
@@ -86,24 +60,35 @@ function apply_coupon(csrf, url){
                 console.log(failure);
               },
           });
-        }else {
-          var errornote = '<p class="errornote">Coupon and Reward ponits can bed used only one.</p>'
-          $('#coupon_block').before(errornote);
-        }
+
     }
 }// end of apply coupon
+
 $(document).ready(function(){
-  $('input[type=image]').prop('src','https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif');
+
   //  for select all checkbox
-      $('#select_all').change(function(){
+  $('#select_all_coshipping').change(function(){
+    if($(this).prop('checked')){
+      $(this).parents('table').find("input[type=checkbox]").each(function(){
+        if(!$(this).prop('disabled')){
+          $(this).prop('checked', true);
+        }
+      });
+    }else{
+      $(this).parents('table').find("input[type=checkbox]").each(function(){
+        $(this).prop('checked', false);
+      });
+    }
+  });// end of select_all_coshipping
+      $('#select_all_order').change(function(){
         if($(this).prop('checked')){
-          $('tbody').find("input[type=checkbox]").each(function(){
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
             if(!$(this).prop('disabled')){
               $(this).prop('checked', true);
             }
           });
         }else{
-          $('tbody').find("input[type=checkbox]").each(function(){
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
             $(this).prop('checked', false);
           });
         }

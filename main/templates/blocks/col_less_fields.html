@@ -1,0 +1,9 @@
+{% load i18n static %}
+
+
+<div class="text-regular-bold">
+<a href="{{col.get_absolute_url}}"class="logo-text-red">
+  {{col.name}}{% if col.store_name %}({% trans 'Store' %}{{col.store_name}}){% endif %}</a></div>
+{{col.country}} | {{col.state}} | {{col.city}}<br/>
+{{col.address}}{% if col.apt %} --{{col.apt}}{% endif %}<br/>
+{{col.zipcode}}<br/>

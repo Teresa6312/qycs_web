@@ -1,0 +1,9 @@
+<h2>联系我们 </h2>
+<p><i>请随时联系我们， QYCS欢迎您提出问题和评价：</i></p>
+<h3>QYCS Global Shipping Inc. </h3>
+<p><b>纽约</b></p>
+<p><b>邮箱地址: </b>
+myqycs@gmail.com</p>
+<p><b>中国电话号码:</b> +86-15994868603（工作日上午10：00-下午6：00）</p>
+<p><b>微信公众号二维码</b></p>
+<img src="/static/image/qrcode.jpg"  alt="qr code" width="250"/>

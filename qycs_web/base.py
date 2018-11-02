@@ -69,13 +69,16 @@ INSTALLED_APPS = [
     'social_django',
 
     # paypal
-    # 'paypal.standard.ipn',
-    'paypal.standard.pdt',
+    'paypal.standard.ipn',
+
     # for template calculation
     'mathfilters',
 
     # for upload and storage images
     'cloudinary',
+
+    # for js translate
+    'localejs.jscripti18n',
 
     'django.contrib.admindocs',
 ]
@@ -268,6 +271,7 @@ STATICFILES_FINDERS = (
     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'

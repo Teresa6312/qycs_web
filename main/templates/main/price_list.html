@@ -13,7 +13,7 @@
 </div>
 <h2><i>{{price_list.first.get_from_country_display}} - {{price_list.first.get_to_country_display}}</i></h2>
 
-<h3>{% trans 'Co-shipping Fee' %}</h3>
+<h3>{% trans 'Co-shipping Fee <span class="text-regular">(No Service Fee)</span>' %}</h3>
 <table border="1" width="450px">
   <tr border="1">
     <th>{% trans 'Category' %}</th>
@@ -34,7 +34,7 @@
 
 
 
-<h3>{% trans 'Direct Shipping Fee' %}</h3>
+<h3>{% trans 'Direct Shipping Fee <span class="text-regular">(extra 10% Service Fee)</span>' %}</h3>
 <table border="1" width="700px">
     <tr border="1">
       <th>{% trans 'Category' %}</th>

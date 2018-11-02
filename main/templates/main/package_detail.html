@@ -16,9 +16,14 @@
 <div class="w3-panel w3-mobile content_center">
     <h2>{{package.cust_tracking_num}}
      - {{package.cust_carrier}}
-    {% if package.order %}({% trans 'Order' %})
-    {% elif package.coshiping %}({% trans 'Co-shipping Package' %})
-    {% else %}({% trans 'Direct Shipping' %})
+    {% if package.order %}
+        ({% trans 'Order' %})
+    {% else %}
+        {% if package.co_shipping %}
+          ({% trans 'Co-shipping Package' %})
+        {% else %}
+          ({% trans 'Direct Shipping' %})
+        {% endif %}
     {% endif %}
     </h2>
     <div class="w3-panel">
@@ -88,27 +93,24 @@
 
       <div class="w3-panel content_center">
         <div class="w3-half">
-          <div class="w3-panel">
-              {% if package.ship_to_add %}
+          <div class="w3-row">
+              {% if not package.co_shipping %}
               <h6>{% trans 'Direct Shipping to' %}:</h6>
               <div class="w3-margin-left">
-                  {{package.ship_to_add.last_name}}, {{package.ship_to_add.first_name}}<br/>
-                    {{package.ship_to_add.address}}{% if package.ship_to_add.apt %} | {{package.ship_to_add.apt}}{% endif %}<br/>
-                    {{package.ship_to_add.city}}, {{package.ship_to_add.state}} {{package.ship_to_add.zipcode}}<br/>
-                    {{package.ship_to_add.country}}<br/>
+                {% if package.ship_to_add %}
+                            {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
+                {% else %}N/A
+                {% endif %}
               </div>
-              {% elif package.ship_to_col %}
+              {% else %}
               <h6>{% trans 'Co-shipping to' %}:</h6>
               <div class="w3-margin-left">
                   <div class="logo-text-blue">
                       <i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})
                   </div>
-                  <div class="w3-row">
-                      <a href="{{package.ship_to_col.get_absolute_url}}"class="logo-text-red">{{package.ship_to_col.name}}</a>
-                  </div>
-                  {{package.ship_to_col.address}}{% if package.ship_to_col.apt %} | {{package.ship_to_col.apt}}{% endif %}<br/>
-                  {{package.ship_to_col.city}}, {{package.ship_to_col.state}} {{package.ship_to_col.zipcode}}<br/>
-                  {{package.ship_to_col.country}}<br/>
+                  {% if package.ship_to_col %}
+                      {% include "blocks/col_card_fields.html" with col=package.ship_to_col %}{% else %}N/A
+                  {% endif %}
               </div>
               {% endif %}
           </div>
