@@ -362,20 +362,18 @@ msgid "+1-234-567-8900"
 msgstr "+1-234-567-8900"
 
 #: .\main\forms.py:160
-msgid "From Warehouse"
-msgstr "从仓库"
+msgid "Inter-warehouse"
+msgstr "中转仓库"
 
 #: .\main\forms.py:163
-#, fuzzy
-#| msgid "Customer's Package's Carrier"
+
 msgid "Original Package Carrier"
-msgstr "客户包裹运输公司"
+msgstr "客户包裹原运输公司"
 
 #: .\main\forms.py:166
-#, fuzzy
-#| msgid "Customer's Package's Tracking Number"
+
 msgid "Original Package Tracking Number"
-msgstr "客户包裹单号"
+msgstr "客户原包裹单号"
 
 #: .\main\forms.py:169 .\main\forms.py:273
 msgid "Note"
@@ -402,14 +400,11 @@ msgid "Item Name"
 msgstr "物品名称"
 
 #: .\main\forms.py:254
-#, fuzzy
-#| msgid "Please enter your needs about this package"
+
 msgid "Please enter your items' name as detailed as possible"
 msgstr "请输入有关此包裹的需求"
 
 #: .\main\forms.py:258
-#, fuzzy
-#| msgid "Item Details"
 msgid "Item Detail"
 msgstr "物品细节"
 
@@ -430,8 +425,6 @@ msgid "https://..."
 msgstr "https://..."
 
 #: .\main\forms.py:274
-#, fuzzy
-#| msgid "Please enter your needs about this package"
 msgid "Please enter your needs with this item"
 msgstr "请输入有关此包裹的需求"
 
@@ -590,8 +583,6 @@ msgid "$10 insurance"
 msgstr "$10保险"
 
 #: .\main\models.py:61
-#, fuzzy
-#| msgid "$5 insurance"
 msgid "$15 insurance"
 msgstr "$5保险"
 
@@ -834,8 +825,6 @@ msgid "Collector"
 msgstr "站长"
 
 #: .\main\models.py:210
-#, fuzzy
-#| msgid "License Type"
 msgid "License type"
 msgstr "证件类型"
 
@@ -861,14 +850,10 @@ msgid "Referrer"
 msgstr "推荐人"
 
 #: .\main\models.py:226
-#, fuzzy
-#| msgid "Apply Reason"
 msgid "Apply reason"
 msgstr "申请原因"
 
 #: .\main\models.py:227
-#, fuzzy
-#| msgid "Information Source"
 msgid "Information source"
 msgstr "信息资源"
 
@@ -1354,8 +1339,6 @@ msgid "Country Shortname"
 msgstr "国家短称"
 
 #: .\main\models.py:626
-#, fuzzy
-#| msgid "Location:"
 msgid "Location"
 msgstr "位置"
 
@@ -1392,8 +1375,6 @@ msgid "Average Weight Price"
 msgstr "平均重价格"
 
 #: .\main\models.py:643
-#, fuzzy
-#| msgid "Price List"
 msgid "Price Rate"
 msgstr "价格及汇率"
 
@@ -1604,12 +1585,6 @@ msgid "The %(site_name)s team"
 msgstr "The %(site_name)s 团队"
 
 #: .\main\templates\email\resetpassword_email.html:3
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "Thank your for using Qycs!\n"
-#| "You're receiving this email because you requested a password reset for "
-#| "your user account at %(site_name)s."
 msgid ""
 "\n"
 "Thank your for using QYCS!\n"
@@ -1716,8 +1691,6 @@ msgid "Save and add new package"
 msgstr "保存并添加新包裹"
 
 #: .\main\templates\main\address.html:5
-#, fuzzy
-#| msgid "'s Address Book'"
 msgid "'s Address Book"
 msgstr "的地址簿"
 
@@ -1933,10 +1906,6 @@ msgid "Our Collection Points"
 msgstr "我们的收件站"
 
 #: .\main\templates\main\collectionpoints.html:14
-#, fuzzy
-#| msgid ""
-#| "if you cannot find any collection points in the map, you can use our "
-#| "direct shipping service."
 msgid ""
 "If you cannot find any collection points in the map, you can use our direct "
 "shipping service."
@@ -1958,8 +1927,6 @@ msgid ""
 msgstr "如果你没有在页面看到地图，但想使用我们的拼邮服务邮寄到美国，请"
 
 #: .\main\templates\main\collectionpoints.html:38
-#, fuzzy
-#| msgid "Contact Us"
 msgid "contact us"
 msgstr "联系我们"
 
@@ -2077,10 +2044,8 @@ msgid "Upcoming Packages"
 msgstr "待收的包裹"
 
 #: .\main\templates\main\package_cart.html:14
-#, fuzzy
-#| msgid "Global Shipping Inc."
 msgid "Global shopping Cart"
-msgstr "国际邮购服务公司"
+msgstr "国际购物车"
 
 #: .\main\templates\main\package_cart.html:18
 #: .\main\templates\main\package_cart.html:45
@@ -2088,16 +2053,12 @@ msgid "Select All"
 msgstr "全选"
 
 #: .\main\templates\main\package_cart.html:19
-#, fuzzy
-#| msgid "Order"
 msgid "Order(s)"
 msgstr "购物单"
 
 #: .\main\templates\main\package_cart.html:36
-#, fuzzy
-#| msgid "Co-Shipping"
 msgid "Co-Shipping Cart"
-msgstr "拼邮"
+msgstr "拼邮包裹车"
 
 #: .\main\templates\main\package_cart.html:39
 #: .\main\templates\main\package_history.html:17
@@ -2106,16 +2067,12 @@ msgstr "添加拼邮包裹"
 
 #: .\main\templates\main\package_cart.html:46
 #: .\main\templates\main\package_cart.html:68
-#, fuzzy
-#| msgid "Packages"
 msgid "Package(s)"
 msgstr "包裹"
 
 #: .\main\templates\main\package_cart.html:63
-#, fuzzy
-#| msgid "Direct Shipping to"
 msgid "Direct Shipping Cart"
-msgstr "直邮到"
+msgstr "直邮包裹车"
 
 #: .\main\templates\main\package_cart.html:64
 #: .\main\templates\main\package_history.html:19
@@ -2217,8 +2174,6 @@ msgid "Didn't enter any item detail"
 msgstr "没有输入任何物品细节"
 
 #: .\main\templates\main\package_history.html:6
-#, fuzzy
-#| msgid "'s Package History'"
 msgid "'s Package History"
 msgstr "的包裹历史"
 
@@ -2438,8 +2393,6 @@ msgid "You didn't set a default Collection Point."
 msgstr "你并没有设定默认的收件站"
 
 #: .\main\templates\main\wallet.html:5
-#, fuzzy
-#| msgid "'s Wallet'"
 msgid "'s Wallet"
 msgstr "的钱包"
 
@@ -2556,8 +2509,6 @@ msgid "Payment Process"
 msgstr "付款过程"
 
 #: .\payment\templates\payment\process.html:11
-#, fuzzy
-#| msgid "Our Payments"
 msgid "My Payment"
 msgstr "我们的付款"
 
