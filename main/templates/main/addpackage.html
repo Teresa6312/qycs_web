@@ -96,14 +96,17 @@
       </div>
       <div class="tab">
           <div class="content_center">
-              <div class="text-medium w3-container">{% trans 'Package Items Detail' %}</div>
+              <div class="text-medium w3-center">{% trans 'Package Items Detail' %}</div>
           </div>
           <hr/>
           <div class="content_center" id="item_information_block">
 
               <div class="w3-panel w3-container" id="add_snapshot_form">
                     <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
-                    <input name="image" class="w3-input w3-border" id="id_image" type="file" multiple="">
+                    <div class="w3-row">
+                        <label class="ui_button logo-red" for="id_image">{% trans 'Upload Snapshot(s)' %}</label>
+                        <input name="image" class="w3-input w3-border" id="id_image" type="file" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);" multiple="">
+                    </div>
               </div>
               <div class="w3-panel w3-center text-medium-bold">{% trans 'OR' %}</div>
               <div id = "add_item_form" class="w3-container" style="margin:auto;">
@@ -113,7 +116,7 @@
                   {% if itemset.forms %}
                       {% for subform in itemset.forms %}
                           <table style="width:95%; margin:auto;" id="item_table">
-                                    <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">0</span></th>
+                                    <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">1</span></th>
                                       <td class="w3-cell w3-rest">
                                           <div class="w3-container">
                                             {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
@@ -170,8 +173,8 @@
 <script>
 $(document).ready(function(){
   $('.itemset_row').formset({
-    addText: 'add Item',
-    deleteText: 'remove',
+    addText: gettext('add Item'),
+    deleteText: gettext('remove'),
     prefix: 'item_set'
   });
   $("#follow_user_infor").click(function(){
@@ -186,9 +189,43 @@ $(document).ready(function(){
 	});
   	$(".add-row").click(function(){
       $('table').find('.item_num').each(function(){
-        $(this).text($(this).parents('tr').find('.item_name').prop('id').split('-')[1]);
+        $(this).text(parseInt($(this).parents('tr').find('.item_name').prop('id').split('-')[1])+1);
       });
     });
+
+    $('#id_image').change(function(){
+        $('#images_view').remove();
+        var files = $(this).prop('files');
+        if(files.length > 0){
+          var viewblock = document.createElement("div");
+          viewblock.setAttribute("id", "images_view");
+          $(this).after(viewblock);
+
+          for (i = 0; i < files.length; i++) {
+              var type = files[i].type.split('/')[0];
+
+              var size = Math.round(files[i].size / 1024 / 1024);
+              if (type !='image') {
+                  alert(gettext('Images only, please try again.'));
+                  return;
+              }
+              if (size > 3) {
+                  alert(gettext('The maxium size of each image is 3M, please try again.'));
+                  return;
+              };
+              var reader = new FileReader();//creat FileReader for each images
+              reader.readAsDataURL(files[i]);
+              reader.onload=function(e){
+                    var img = document.createElement("img");
+                    img.setAttribute("width", "70");
+                    img.setAttribute("height", "70");
+                    img.setAttribute("src", e.target.result);
+                    viewblock.append(img);
+              }
+          }
+
+          }
+      });
 });
 </script>
 {% endblock%}

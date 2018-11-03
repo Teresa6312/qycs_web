@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-02 10:49-0400\n"
+"POT-Creation-Date: 2018-11-03 08:07-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,8 +54,6 @@ msgstr "从00:00:00"
 #: .\collector\forms.py:78 .\collector\forms.py:82 .\collector\forms.py:86
 #: .\collector\forms.py:90 .\collector\forms.py:94 .\collector\forms.py:98
 #: .\collector\forms.py:102
-#, fuzzy
-#| msgid "Unitl: 00:00:00"
 msgid "Until: 00:00:00"
 msgstr "到00:00:00"
 
@@ -157,8 +155,6 @@ msgstr "时间表"
 
 #: .\collector\templates\collector\collection_point_view.html:53
 #: .\main\templates\blocks\col_card_fields.html:22
-#, fuzzy
-#| msgid "Not avaliable from"
 msgid "Not available from"
 msgstr "外出期间暂不提供服务"
 
@@ -312,12 +308,12 @@ msgstr ""
 "QYCS想要试用我提供的信息。                    "
 
 #: .\collector\templates\collector\colregister.html:200
-#: .\main\templates\main\addpackage.html:152
+#: .\main\templates\main\addpackage.html:155
 msgid "Go Back"
 msgstr "返回"
 
 #: .\collector\templates\collector\colregister.html:201
-#: .\main\templates\main\addpackage.html:153
+#: .\main\templates\main\addpackage.html:156
 #: .\main\templates\main\register.html:146
 msgid "Next"
 msgstr "下页"
@@ -328,8 +324,6 @@ msgid "Register"
 msgstr "注册"
 
 #: .\collector\views.py:34
-#, fuzzy
-#| msgid "Term is not available right now."
 msgid "Term is not available Right now."
 msgstr "条例暂时无效"
 
@@ -352,8 +346,6 @@ msgid "This field is required after you entered the Unavailable End Date."
 msgstr "你输入了无效的结束日期，然而这里是要求的。"
 
 #: .\main\code.py:11
-#, fuzzy
-#| msgid "Activate your QYCS Website account."
 msgid "Activate your Qycs Website account."
 msgstr "激活你的QYCS账户"
 
@@ -366,12 +358,10 @@ msgid "Inter-warehouse"
 msgstr "中转仓库"
 
 #: .\main\forms.py:163
-
 msgid "Original Package Carrier"
 msgstr "客户包裹原运输公司"
 
 #: .\main\forms.py:166
-
 msgid "Original Package Tracking Number"
 msgstr "客户原包裹单号"
 
@@ -397,16 +387,15 @@ msgstr "选择运输公司"
 
 #: .\main\forms.py:252 .\main\models.py:555
 msgid "Item Name"
-msgstr "物品名称"
+msgstr "商品名称"
 
 #: .\main\forms.py:254
-
 msgid "Please enter your items' name as detailed as possible"
-msgstr "请输入有关此包裹的需求"
+msgstr "请尽量详细地填写商品的名称"
 
 #: .\main\forms.py:258
 msgid "Item Detail"
-msgstr "物品细节"
+msgstr "商品细节"
 
 #: .\main\forms.py:259
 msgid "color/size.etc"
@@ -418,7 +407,7 @@ msgstr "数量"
 
 #: .\main\forms.py:266 .\main\models.py:560
 msgid "Item URL"
-msgstr "物品链接"
+msgstr "商品链接"
 
 #: .\main\forms.py:267
 msgid "https://..."
@@ -1254,11 +1243,11 @@ msgstr "包裹/订单"
 
 #: .\main\models.py:556
 msgid "Item Details"
-msgstr "物品细节"
+msgstr "商品细节"
 
 #: .\main\models.py:558
 msgid "Item Value"
-msgstr "物品价值"
+msgstr "商品价值"
 
 #: .\main\models.py:566
 msgid "Included Tax"
@@ -1268,9 +1257,9 @@ msgstr "已含税"
 msgid "Order by Employee"
 msgstr "下单员工"
 
-#: .\main\models.py:575 .\main\templates\main\addpackage.html:116
+#: .\main\models.py:575 .\main\templates\main\addpackage.html:119
 msgid "Item"
-msgstr "物品"
+msgstr "商品"
 
 #: .\main\models.py:580
 msgid "Package"
@@ -1539,7 +1528,7 @@ msgid "Subject"
 msgstr "目的/原因"
 
 #: .\main\templates\blocks\email_block.html:20
-#: .\main\templates\main\addpackage.html:156
+#: .\main\templates\main\addpackage.html:159
 #: .\main\templates\main\package_cart.html:105
 msgid "Submit"
 msgstr "确认"
@@ -1585,6 +1574,7 @@ msgid "The %(site_name)s team"
 msgstr "The %(site_name)s 团队"
 
 #: .\main\templates\email\resetpassword_email.html:3
+#, python-format
 msgid ""
 "\n"
 "Thank your for using QYCS!\n"
@@ -1668,25 +1658,29 @@ msgstr "始发地"
 
 #: .\main\templates\main\addpackage.html:99
 msgid "Package Items Detail"
-msgstr "包裹物品细节"
+msgstr "包裹商品细节"
 
 #: .\main\templates\main\addpackage.html:105
 msgid "Add Order Snapshot of the Package"
 msgstr "添加包裹的订单截图"
 
-#: .\main\templates\main\addpackage.html:108
+#: .\main\templates\main\addpackage.html:107
+msgid "Upload Snapshot(s)"
+msgstr "上传一个或多个截图"
+
+#: .\main\templates\main\addpackage.html:111
 msgid "OR"
 msgstr "或"
 
-#: .\main\templates\main\addpackage.html:110
+#: .\main\templates\main\addpackage.html:113
 msgid "Add details of each item in the package"
 msgstr "添加包裹里每件商品的细节"
 
-#: .\main\templates\main\addpackage.html:134
+#: .\main\templates\main\addpackage.html:137
 msgid "Minimize this item's volume"
 msgstr "减小商品的体积"
 
-#: .\main\templates\main\addpackage.html:155
+#: .\main\templates\main\addpackage.html:158
 msgid "Save and add new package"
 msgstr "保存并添加新包裹"
 
@@ -2155,23 +2149,23 @@ msgstr "没有插入任何截图"
 
 #: .\main\templates\main\package_detail.html:174
 msgid "Package Item details"
-msgstr "包裹物品细节"
+msgstr "包裹商品细节"
 
 #: .\main\templates\main\package_detail.html:177
 msgid "Item name"
-msgstr "物品名称"
+msgstr "商品名称"
 
 #: .\main\templates\main\package_detail.html:178
 msgid "Item detail"
-msgstr "物品细节"
+msgstr "商品细节"
 
 #: .\main\templates\main\package_detail.html:179
 msgid "Item quantity"
-msgstr "物品数量"
+msgstr "商品数量"
 
 #: .\main\templates\main\package_detail.html:183
 msgid "Didn't enter any item detail"
-msgstr "没有输入任何物品细节"
+msgstr "没有输入任何商品细节"
 
 #: .\main\templates\main\package_history.html:6
 msgid "'s Package History"
@@ -2183,7 +2177,7 @@ msgstr "包裹状态"
 
 #: .\main\templates\main\package_history.html:114
 msgid "Items"
-msgstr "物品"
+msgstr "商品"
 
 #: .\main\templates\main\package_history.html:128
 msgid "Order Status"
@@ -2201,9 +2195,9 @@ msgstr "时长"
 #: .\main\templates\main\price_list.html:37
 #, python-format
 msgid ""
-"Direct Shipping Fee <span class=\"text-regular\">(extra 10%% Service Fee)</span>"
-msgstr ""
-"直邮运费 <span class=\"text-regular\">(额外10%%服务费)</span>"
+"Direct Shipping Fee <span class=\"text-regular\">(extra 10%% Service Fee)</"
+"span>"
+msgstr "直邮运费 <span class=\"text-regular\">(额外10%%服务费)</span>"
 
 #: .\main\templates\main\price_list.html:43
 msgid "First Weight/500g"
