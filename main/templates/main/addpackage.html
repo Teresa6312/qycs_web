@@ -96,35 +96,38 @@
       </div>
       <div class="tab">
           <div class="content_center">
-              <div class="text-medium w3-center">{% trans 'Package Items Detail' %}</div>
+              <div class="text-medium-bold w3-center">{% trans 'Package Items Detail' %}</div>
           </div>
           <hr/>
           <div class="content_center" id="item_information_block">
 
               <div class="w3-panel w3-container" id="add_snapshot_form">
                     <div class="text-medium">{% trans 'Add Order Snapshot of the Package' %}</div>
+
                     <div class="w3-row">
                         <label class="ui_button logo-red" for="id_image">{% trans 'Upload Snapshot(s)' %}</label>
                         <input name="image" class="w3-input w3-border" id="id_image" type="file" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);" multiple="">
                     </div>
               </div>
-              <div class="w3-panel w3-center text-medium-bold">{% trans 'OR' %}</div>
+              <div class="w3-panel w3-center text-medium-bold logo-text-red">{% trans 'OR' %}</div>
               <div id = "add_item_form" class="w3-container" style="margin:auto;">
                   <div class="text-medium">{% trans 'Add details of each item in the package' %}</div>
-                  <hr/>
+
                   {{ itemset.management_form }}
                   {% if itemset.forms %}
                       {% for subform in itemset.forms %}
                           <table style="width:95%; margin:auto;" id="item_table">
                                     <tr class="itemset_row w3-cell-row"><th  class="w3-cell" style="width:5%;">{% trans 'Item' %}#<span class="item_num">1</span></th>
                                       <td class="w3-cell w3-rest">
-                                          <div class="w3-container">
-                                            {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
+                                        <div class="w3-row">
+                                            <div class="w3-col w3-container" style="width:100px;">
+                                              {{ subform.item_quantity.label_tag }} {{ subform.item_quantity.errors }} {{ subform.item_quantity }}
+                                            </div>
+                                            <div class="w3-rest w3-container">
+                                              {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
+                                            </div>
                                           </div>
                                           <div class="w3-col-row">
-                                              <div class="w3-col w3-container" style="width:100px;">
-                                                {{ subform.item_quantity.label_tag }} {{ subform.item_quantity.errors }} {{ subform.item_quantity }}
-                                              </div>
                                               <div class="w3-third w3-container">
                                                 {{ subform.item_detail.label_tag }} {{ subform.item_detail.errors }} {{ subform.item_detail }}
                                               </div>
