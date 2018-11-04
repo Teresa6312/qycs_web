@@ -15,7 +15,7 @@ urlpatterns = [
 # cloudinary urls
 
 # open for everyone
-    path('', views.HomeView.as_view(), name='home'),
+
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             views.activate, name='activate'),
@@ -28,7 +28,7 @@ urlpatterns = [
     path('contact-us/', views.SendEmailView.as_view(), name='contact_us'),
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
     path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
-    path('price-list/', views.PriceListView.as_view(), name='price_list'),
+
 
 
 
