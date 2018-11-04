@@ -1047,7 +1047,7 @@ msgid "Date Requested to Ship"
 msgstr "要求邮寄的日期"
 
 #: .\main\models.py:438
-msgid "Original's Package's Tracking Number"
+msgid "Original Package's Tracking Number"
 msgstr "客户原包裹单号"
 
 #: .\main\models.py:439
