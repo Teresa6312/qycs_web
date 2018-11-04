@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-04 01:06-0500\n"
+"POT-Creation-Date: 2018-11-04 06:01-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\collector\forms.py:25 .\main\forms.py:113
+#: .\collector\forms.py:25 .\main\forms.py:111
 msgid "Apartment/Suit/Unit"
 msgstr "单元"
 
-#: .\collector\forms.py:26 .\main\forms.py:116
+#: .\collector\forms.py:26 .\main\forms.py:114
 msgid "Street Address"
 msgstr "街道地址"
 
@@ -90,99 +90,99 @@ msgstr "获取路线"
 msgid "ship package"
 msgstr "寄包裹"
 
-#: .\collector\templates\collector\collection_point_view.html:48
+#: .\collector\templates\collector\collection_point_view.html:54
+msgid "Introduction"
+msgstr "介绍"
+
+#: .\collector\templates\collector\collection_point_view.html:61
 msgid "Schedule"
 msgstr "时间表"
 
-#: .\collector\templates\collector\collection_point_view.html:53
+#: .\collector\templates\collector\collection_point_view.html:66
 #: .\main\templates\blocks\col_card_fields.html:22
 msgid "Not available from"
 msgstr "外出期间暂不提供服务"
 
-#: .\collector\templates\collector\collection_point_view.html:58
+#: .\collector\templates\collector\collection_point_view.html:71
 #: .\main\models.py:249
 msgid "Monday"
 msgstr "星期一"
 
-#: .\collector\templates\collector\collection_point_view.html:59
+#: .\collector\templates\collector\collection_point_view.html:72
 #: .\main\models.py:251
 msgid "Tuesday"
 msgstr "星期二"
 
-#: .\collector\templates\collector\collection_point_view.html:60
+#: .\collector\templates\collector\collection_point_view.html:73
 #: .\main\models.py:253
 msgid "Wednesday"
 msgstr "星期三"
 
-#: .\collector\templates\collector\collection_point_view.html:61
+#: .\collector\templates\collector\collection_point_view.html:74
 #: .\main\models.py:255
 msgid "Thursday"
 msgstr "星期四"
 
-#: .\collector\templates\collector\collection_point_view.html:62
+#: .\collector\templates\collector\collection_point_view.html:75
 #: .\main\models.py:257
 msgid "Friday"
 msgstr "星期五"
 
-#: .\collector\templates\collector\collection_point_view.html:63
+#: .\collector\templates\collector\collection_point_view.html:76
 #: .\main\models.py:259
 msgid "Saturday"
 msgstr "星期六"
 
-#: .\collector\templates\collector\collection_point_view.html:64
+#: .\collector\templates\collector\collection_point_view.html:77
 #: .\main\models.py:261
 msgid "Sunday"
 msgstr "星期日"
 
-#: .\collector\templates\collector\collection_point_view.html:73
-msgid "Introduction"
-msgstr "介绍"
-
-#: .\collector\templates\collector\collection_point_view.html:81
+#: .\collector\templates\collector\collection_point_view.html:84
 msgid "Contact Information"
 msgstr "联系信息"
 
-#: .\collector\templates\collector\collection_point_view.html:84
+#: .\collector\templates\collector\collection_point_view.html:87
 #: .\main\models.py:117
 msgid "Email"
 msgstr "邮箱"
 
-#: .\collector\templates\collector\collection_point_view.html:86
+#: .\collector\templates\collector\collection_point_view.html:89
 msgid "Wechat"
 msgstr "微信"
 
-#: .\collector\templates\collector\collection_point_view.html:88
+#: .\collector\templates\collector\collection_point_view.html:91
 msgid "Wechat ID"
 msgstr "微信账号"
 
-#: .\collector\templates\collector\collection_point_view.html:100
+#: .\collector\templates\collector\collection_point_view.html:103
 msgid "Reviews"
 msgstr "评论"
 
-#: .\collector\templates\collector\collection_point_view.html:103
+#: .\collector\templates\collector\collection_point_view.html:106
 msgid "Questions"
 msgstr "问题"
 
-#: .\collector\templates\collector\collection_point_view.html:112
+#: .\collector\templates\collector\collection_point_view.html:115
 msgid "Save Review"
 msgstr "保存评价"
 
-#: .\collector\templates\collector\collection_point_view.html:127
-#: .\collector\templates\collector\collection_point_view.html:164
+#: .\collector\templates\collector\collection_point_view.html:130
+#: .\collector\templates\collector\collection_point_view.html:167
 msgid "Response By "
 msgstr "回复人："
 
-#: .\collector\templates\collector\collection_point_view.html:127
-#: .\collector\templates\collector\collection_point_view.html:164
+#: .\collector\templates\collector\collection_point_view.html:130
+#: .\collector\templates\collector\collection_point_view.html:167
 msgid "on"
 msgstr "于"
 
-#: .\collector\templates\collector\collection_point_view.html:134
-#: .\collector\templates\collector\collection_point_view.html:171
+#: .\collector\templates\collector\collection_point_view.html:137
+#: .\collector\templates\collector\collection_point_view.html:174
 msgid "response"
 msgstr "回复"
 
-#: .\collector\templates\collector\collection_point_view.html:146
+#: .\collector\templates\collector\collection_point_view.html:149
 msgid "Save Question"
 msgstr "保存问题"
 
@@ -257,6 +257,7 @@ msgid "Cancel"
 msgstr "取消"
 
 #: .\collector\templates\collector\collector_update.html:163
+#: .\main\templates\main\updateprofile.html:121
 msgid "Update"
 msgstr "更新"
 
@@ -360,41 +361,41 @@ msgstr "你输入了无效的结束日期，然而这里是要求的。"
 msgid "Activate your Qycs Website account."
 msgstr "激活你的QYCS账户"
 
-#: .\main\forms.py:32 .\main\forms.py:62 .\main\models.py:126
+#: .\main\forms.py:32 .\main\forms.py:61 .\main\models.py:126
 #: .\main\templates\main\account.html:37
 msgid "Birthday"
 msgstr "生日"
 
-#: .\main\forms.py:36 .\main\forms.py:66 .\main\forms.py:114
+#: .\main\forms.py:36 .\main\forms.py:65 .\main\forms.py:112
 msgid "+1-234-567-8900"
 msgstr "+1-234-567-8900"
 
-#: .\main\forms.py:152 .\main\forms.py:177 .\main\forms.py:206
+#: .\main\forms.py:149 .\main\forms.py:174 .\main\forms.py:203
 msgid "Please enter your needs about this package"
 msgstr "请输入有关此包裹的需求"
 
-#: .\main\forms.py:214 .\main\models.py:453
+#: .\main\forms.py:211 .\main\models.py:453
 msgid "Select a Carrier"
 msgstr "选择运输公司"
 
-#: .\main\forms.py:240
+#: .\main\forms.py:237
 msgid "Please enter your needs with this item"
 msgstr "请输入有关此包裹的需求"
 
-#: .\main\forms.py:243
+#: .\main\forms.py:240
 msgid "color/size.etc"
 msgstr "颜色/尺寸等"
 
-#: .\main\forms.py:244
+#: .\main\forms.py:241
 msgid "Please enter your items' name as detailed as possible"
 msgstr "请尽量详细地填写商品的名称"
 
-#: .\main\forms.py:276 .\main\models.py:182 .\main\models.py:298
+#: .\main\forms.py:273 .\main\models.py:182 .\main\models.py:298
 #: .\main\templates\main\account.html:24
 msgid "First Name"
 msgstr "名"
 
-#: .\main\forms.py:277 .\main\models.py:183 .\main\models.py:299
+#: .\main\forms.py:274 .\main\models.py:183 .\main\models.py:299
 #: .\main\templates\main\account.html:25
 msgid "Last Name"
 msgstr "姓"
@@ -603,7 +604,7 @@ msgstr "微信"
 msgid "Dealmoon"
 msgstr "北美论坛"
 
-#: .\main\models.py:91 .\qycs_web\base.py:291
+#: .\main\models.py:91 .\qycs_web\base.py:293
 msgid "English"
 msgstr "英语"
 
@@ -2486,7 +2487,7 @@ msgstr "我们的付款"
 msgid "Packages"
 msgstr "包裹"
 
-#: .\qycs_web\base.py:292
+#: .\qycs_web\base.py:294
 msgid "Simplified Chinese"
 msgstr "简体中文"
 

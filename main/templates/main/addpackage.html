@@ -155,9 +155,9 @@
     <div class="w3-row content_center">
       <div class="w3-center">
 
-        <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
-        <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
-        <span id="submit_block">
+        <button type="button" class="logo-blue" id="prevBtn" style="display:none">{% trans "Go Back" %}</button>
+        <button type="button" class="logo-red" id="nextBtn" style="display:none">{% trans "Next" %}</button>
+        <span id="submit_block" style="display:none">
           <input class="logo-blue" type="submit" name="next" value="{% trans 'Save and add new package' %}" />
           <input class="logo-red" type="submit" name="finish" value="{% trans 'Submit' %}"/>
         </span>
