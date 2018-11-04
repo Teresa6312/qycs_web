@@ -192,7 +192,8 @@ $(document).ready(function(){
 	});
   	$(".add-row").click(function(){
       $('table').find('.item_num').each(function(){
-        $(this).text(parseInt($(this).parents('tr').find('.item_name').prop('id').split('-')[1])+1);
+        var i = $(this).parents('tr').find('.item_name').prop('id').split('-')[1];
+        $(this).text(parseInt(i)+1);
       });
     });
 

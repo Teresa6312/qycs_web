@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-04 06:01-0500\n"
+"POT-Creation-Date: 2018-11-04 06:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,11 +35,11 @@ msgstr "请介绍你自己，这将会展现在网站上。"
 
 #: .\collector\forms.py:54
 msgid "From: 00:00"
-msgstr "从00:00:00"
+msgstr "从00:00"
 
 #: .\collector\forms.py:56
 msgid "Until: 00:00"
-msgstr "到00:00:00"
+msgstr "到00:00"
 
 #: .\collector\templates\collector\collection_point_view.html:22
 #: .\main\models.py:218
