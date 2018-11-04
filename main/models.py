@@ -435,7 +435,7 @@ class Service(models.Model):
 
 	request_ship_date = models.DateField(blank=True, null=True, verbose_name= _('Date Requested to Ship'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
-	cust_tracking_num = models.CharField(max_length = 50, blank=True, default='',verbose_name= _("Original's Package's Tracking Number"))
+	cust_tracking_num = models.CharField(max_length = 50, blank=True, default='',verbose_name= _("Original Package's Tracking Number"))
 	cust_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Original Package Carrier"))
 	low_volume_request = models.BooleanField(default = True,verbose_name= _('Low Volume Request'))
 	low_volume_request.boolean = True
