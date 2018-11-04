@@ -55,7 +55,39 @@ function getPackageNumber(url,id){
       });
 }//end of getPackageNumber
 
+function displayImages(id){
+    $('#images_view'+id).remove();
+    var files = $(id).prop('files');
+    if(files.length > 0){
+      var viewblock = document.createElement("div");
+      viewblock.setAttribute("id", "images_view"+id);
+      $(id).after(viewblock);
 
+      for (i = 0; i < files.length; i++) {
+          var type = files[i].type.split('/')[0];
+
+          var size = Math.round(files[i].size / 1024 / 1024);
+          if (type !='image') {
+              alert(gettext('Images only, please try again.'));
+              return;
+          }
+          if (size > 3) {
+              alert(gettext('The maxium size of each image is 3M, please try again.'));
+              return;
+          };
+          var reader = new FileReader();//creat FileReader for each images
+          reader.readAsDataURL(files[i]);
+                reader.onload=function(e){
+                var img = document.createElement("img");
+                img.setAttribute("width", "70");
+                img.setAttribute("height", "70");
+                      img.setAttribute("src", e.target.result);
+                viewblock.append(img);
+                }
+      }
+
+      }
+} //display upload images
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

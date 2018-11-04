@@ -400,19 +400,23 @@ a:hover{
 
 
 /* ---------------------------------- for inputs ----------------------------------- */
-.contentCSS input[type="checkbox"]{
-  width: 15px;
-  height: 15px;
-  vertical-align: middle;
-}
 
-.contentCSS input[type="text"],.contentCSS textarea,.w3-modal-content input[type="text"],  .w3-modal-content textarea{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width: 100%;display:block;border:1px solid #ccc}
+
+.contentCSS input,.contentCSS textarea,.w3-modal-content input,  .w3-modal-content textarea{
+  padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width: 100%;display:block;border:1px solid #ccc
+}
 .w3-modal-content select,.contentCSS select{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width:100%;border:1px solid #ccc}
 #id_birthday_year, #id_birthday_month, #id_birthday_day{
   width: 32.5%;
 }
+.contentCSS input[type="checkbox"]{
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+  display: inline;
+}
 
-.w3-third input[type="text"], .w3-third select, .w3-half input[type="text"], .w3-half select, .w3-quarter input[type="text"], .w3-quarter select{
+.w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
   width: 95%;
 }
 
@@ -874,7 +878,10 @@ input:checked + .slider:before {
   border-radius: 4px;
   border: none;
   margin: 0.5vw 0.5vw;
+  width: auto;
+  display: inline;
 }
+
 
 .contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover, .contentCSS .ui_button:hover{
   opacity: 0.8;

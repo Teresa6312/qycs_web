@@ -188,7 +188,7 @@ function showTab(n) {
   // This function will display the specified tab of the form ...
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
-
+    document.getElementById("prevBtn").style.display = "inline";
 
   if (n == (x.length - 1)) {
     document.getElementById("nextBtn").style.display = "none";

@@ -210,10 +210,10 @@ class CollectionPoint(Address_Common_Info):
 	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License type'))
 
 
-	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
-	license_image = CloudinaryField('collector_license', blank=True, null=True)
-	id_image = CloudinaryField('collector_id')
-	wechat_qrcode = CloudinaryField('collector_wechat', blank=True, null=True)
+	collector_icon = CloudinaryField( _('Collector Icon'), blank=True, null=True)
+	license_image = CloudinaryField( _('Collector License'), blank=True, null=True)
+	id_image = CloudinaryField( _('Collector ID'))
+	wechat_qrcode = CloudinaryField( _('Collector WeChat'), blank=True, null=True)
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))
 	store = models.BooleanField(default = True, verbose_name= _('Store'))
@@ -579,10 +579,10 @@ class Item(models.Model):
 class PackageSnapshot(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package'))
 	# snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
-	snapshot = CloudinaryField('package_snapshot')
+	snapshot = CloudinaryField(_("Package Snapshot"))
 
 	class Meta:
-		verbose_name_plural = _("Package Snapshot")
+		verbose_name_plural = _("Package Snapshots")
 		ordering = ['package']
 
 class FavoriteWebsite(models.Model):
