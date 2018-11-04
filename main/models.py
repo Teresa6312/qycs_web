@@ -435,16 +435,16 @@ class Service(models.Model):
 
 	request_ship_date = models.DateField(blank=True, null=True, verbose_name= _('Date Requested to Ship'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
-	cust_tracking_num = models.CharField(max_length = 50, blank=True, default='',verbose_name= _("Customer's Package's Tracking Number"))
-	cust_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Customer's Package's Carrier"))
-	low_volume_request = models.BooleanField(default = False,verbose_name= _('Low Volume Request'))
+	cust_tracking_num = models.CharField(max_length = 50, blank=True, default='',verbose_name= _("Original's Package's Tracking Number"))
+	cust_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Original Package Carrier"))
+	low_volume_request = models.BooleanField(default = True,verbose_name= _('Low Volume Request'))
 	low_volume_request.boolean = True
 
 # for direct shipping only
 	no_rush_request = models.BooleanField(default = False,verbose_name= _('No Rush Request'))
 	no_rush_request.boolean = True
 
-	wh_received = models.ForeignKey(Warehouse, on_delete=models.DO_NOTHING, related_name='received_at_warehouse',verbose_name= _('Warehouse Received'))
+	wh_received = models.ForeignKey(Warehouse, on_delete=models.DO_NOTHING, related_name='received_at_warehouse',verbose_name= _('Inter-warehouse'))
 	wh_received_date = models.DateField(blank=True, null=True,verbose_name= _('Warehouse Received Date'))
 	ready_date = models.DateField(blank=True, null=True, verbose_name= _('Package Ready Date'))
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))

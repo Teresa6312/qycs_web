@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-03 08:07-0400\n"
+"POT-Creation-Date: 2018-11-04 00:03-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,11 +25,11 @@ msgstr "Paypal账户邮箱"
 msgid "Agree"
 msgstr "同意"
 
-#: .\collector\forms.py:26 .\main\forms.py:118
+#: .\collector\forms.py:26 .\main\forms.py:116
 msgid "Street Address"
 msgstr "街道地址"
 
-#: .\collector\forms.py:29 .\main\forms.py:121
+#: .\collector\forms.py:29 .\main\forms.py:113
 msgid "Apartment/Suit/Unit"
 msgstr "单元"
 
@@ -308,12 +308,12 @@ msgstr ""
 "QYCS想要试用我提供的信息。                    "
 
 #: .\collector\templates\collector\colregister.html:200
-#: .\main\templates\main\addpackage.html:155
+#: .\main\templates\main\addpackage.html:158
 msgid "Go Back"
 msgstr "返回"
 
 #: .\collector\templates\collector\colregister.html:201
-#: .\main\templates\main\addpackage.html:156
+#: .\main\templates\main\addpackage.html:159
 #: .\main\templates\main\register.html:146
 msgid "Next"
 msgstr "下页"
@@ -349,87 +349,44 @@ msgstr "你输入了无效的结束日期，然而这里是要求的。"
 msgid "Activate your Qycs Website account."
 msgstr "激活你的QYCS账户"
 
-#: .\main\forms.py:53 .\main\forms.py:116
+#: .\main\forms.py:32 .\main\forms.py:62 .\main\models.py:126
+#: .\main\templates\main\account.html:37
+msgid "Birthday"
+msgstr "生日"
+
+#: .\main\forms.py:36 .\main\forms.py:66 .\main\forms.py:114
 msgid "+1-234-567-8900"
 msgstr "+1-234-567-8900"
 
-#: .\main\forms.py:160
-msgid "Inter-warehouse"
-msgstr "中转仓库"
-
-#: .\main\forms.py:163
-msgid "Original Package Carrier"
-msgstr "客户包裹原运输公司"
-
-#: .\main\forms.py:166
-msgid "Original Package Tracking Number"
-msgstr "客户原包裹单号"
-
-#: .\main\forms.py:169 .\main\forms.py:273
-msgid "Note"
-msgstr "备注"
-
-#: .\main\forms.py:170
+#: .\main\forms.py:152 .\main\forms.py:177 .\main\forms.py:206
 msgid "Please enter your needs about this package"
 msgstr "请输入有关此包裹的需求"
 
-#: .\main\forms.py:174
-msgid "Minimize your package's volume"
-msgstr "减小你的包裹体积"
-
-#: .\main\forms.py:198 .\main\templates\main\addpackage.html:64
-msgid "No Rush Shipping (Double Points)"
-msgstr "非急件（双倍积分）"
-
-#: .\main\forms.py:219 .\main\models.py:453
+#: .\main\forms.py:214 .\main\models.py:453
 msgid "Select a Carrier"
 msgstr "选择运输公司"
 
-#: .\main\forms.py:252 .\main\models.py:555
-msgid "Item Name"
-msgstr "商品名称"
-
-#: .\main\forms.py:254
-msgid "Please enter your items' name as detailed as possible"
-msgstr "请尽量详细地填写商品的名称"
-
-#: .\main\forms.py:258
-msgid "Item Detail"
-msgstr "商品细节"
-
-#: .\main\forms.py:259
-msgid "color/size.etc"
-msgstr "颜色/尺寸.etc"
-
-#: .\main\forms.py:263 .\main\models.py:557
-msgid "quantity"
-msgstr "数量"
-
-#: .\main\forms.py:266 .\main\models.py:560
-msgid "Item URL"
-msgstr "商品链接"
-
-#: .\main\forms.py:267
-msgid "https://..."
-msgstr "https://..."
-
-#: .\main\forms.py:274
+#: .\main\forms.py:240
 msgid "Please enter your needs with this item"
 msgstr "请输入有关此包裹的需求"
 
-#: .\main\forms.py:307 .\main\forms.py:321 .\main\models.py:182
-#: .\main\models.py:298 .\main\templates\main\account.html:24
+#: .\main\forms.py:243
+msgid "color/size.etc"
+msgstr "颜色/尺寸等"
+
+#: .\main\forms.py:244
+msgid "Please enter your items' name as detailed as possible"
+msgstr "请尽量详细地填写商品的名称"
+
+#: .\main\forms.py:276 .\main\models.py:182 .\main\models.py:298
+#: .\main\templates\main\account.html:24
 msgid "First Name"
 msgstr "名"
 
-#: .\main\forms.py:308 .\main\forms.py:322 .\main\models.py:183
-#: .\main\models.py:299 .\main\templates\main\account.html:25
+#: .\main\forms.py:277 .\main\models.py:183 .\main\models.py:299
+#: .\main\templates\main\account.html:25
 msgid "Last Name"
 msgstr "姓"
-
-#: .\main\forms.py:309 .\main\forms.py:323
-msgid "Phone Number (+1-234-567-8900)"
-msgstr "电话号码 (+1-234-567-8900)"
 
 #: .\main\models.py:18
 msgid "Invalid phone number format. Enter as 1-123-456-7890."
@@ -635,7 +592,7 @@ msgstr "微信"
 msgid "Dealmoon"
 msgstr "北美论坛"
 
-#: .\main\models.py:91 .\qycs_web\base.py:281
+#: .\main\models.py:91 .\qycs_web\base.py:291
 msgid "English"
 msgstr "英语"
 
@@ -712,10 +669,6 @@ msgstr "默认收件站"
 #: .\main\models.py:125 .\main\templates\main\customer_service.html:38
 msgid "Reward Points"
 msgstr "奖励积分"
-
-#: .\main\models.py:126 .\main\templates\main\account.html:37
-msgid "Birthday"
-msgstr "生日"
 
 #: .\main\models.py:127
 msgid "Profile Updated Date"
@@ -1094,12 +1047,14 @@ msgid "Date Requested to Ship"
 msgstr "要求邮寄的日期"
 
 #: .\main\models.py:438
-msgid "Customer's Package's Tracking Number"
-msgstr "客户包裹单号"
+#, fuzzy
+#| msgid "Original Package Tracking Number"
+msgid "Original's Package's Tracking Number"
+msgstr "客户原包裹单号"
 
 #: .\main\models.py:439
-msgid "Customer's Package's Carrier"
-msgstr "客户包裹运输公司"
+msgid "Original Package Carrier"
+msgstr "客户包裹原运输公司"
 
 #: .\main\models.py:440 .\main\models.py:562
 msgid "Low Volume Request"
@@ -1109,10 +1064,9 @@ msgstr "要求减小体积"
 msgid "No Rush Request"
 msgstr "非急件"
 
-#: .\main\models.py:447 .\main\templates\main\package_detail.html:44
-#: .\main\templates\main\tracked.html:51
-msgid "Warehouse Received"
-msgstr "仓库已接收"
+#: .\main\models.py:447
+msgid "Inter-warehouse"
+msgstr "中转仓库"
 
 #: .\main\models.py:448
 msgid "Warehouse Received Date"
@@ -1241,13 +1195,25 @@ msgstr "未有信息"
 msgid "Package/Order"
 msgstr "包裹/订单"
 
+#: .\main\models.py:555
+msgid "Item Name"
+msgstr "商品名称"
+
 #: .\main\models.py:556
 msgid "Item Details"
 msgstr "商品细节"
 
+#: .\main\models.py:557
+msgid "quantity"
+msgstr "数量"
+
 #: .\main\models.py:558
 msgid "Item Value"
 msgstr "商品价值"
+
+#: .\main\models.py:560
+msgid "Item URL"
+msgstr "商品链接"
 
 #: .\main\models.py:566
 msgid "Included Tax"
@@ -1257,7 +1223,7 @@ msgstr "已含税"
 msgid "Order by Employee"
 msgstr "下单员工"
 
-#: .\main\models.py:575 .\main\templates\main\addpackage.html:119
+#: .\main\models.py:575 .\main\templates\main\addpackage.html:120
 msgid "Item"
 msgstr "商品"
 
@@ -1525,10 +1491,10 @@ msgstr "cc 到我的邮箱地址"
 
 #: .\main\templates\blocks\email_block.html:13
 msgid "Subject"
-msgstr "目的/原因"
+msgstr "标题"
 
 #: .\main\templates\blocks\email_block.html:20
-#: .\main\templates\main\addpackage.html:159
+#: .\main\templates\main\addpackage.html:162
 #: .\main\templates\main\package_cart.html:105
 msgid "Submit"
 msgstr "确认"
@@ -1648,6 +1614,10 @@ msgstr "拼邮"
 msgid "Ship to"
 msgstr "寄去"
 
+#: .\main\templates\main\addpackage.html:64
+msgid "No Rush Shipping (Double Points)"
+msgstr "非急件（双倍积分）"
+
 #: .\main\templates\main\addpackage.html:69
 msgid "Minimize this package's volume"
 msgstr "减小包裹体积"
@@ -1664,23 +1634,23 @@ msgstr "包裹商品细节"
 msgid "Add Order Snapshot of the Package"
 msgstr "添加包裹的订单截图"
 
-#: .\main\templates\main\addpackage.html:107
+#: .\main\templates\main\addpackage.html:108
 msgid "Upload Snapshot(s)"
 msgstr "上传一个或多个截图"
 
-#: .\main\templates\main\addpackage.html:111
+#: .\main\templates\main\addpackage.html:112
 msgid "OR"
 msgstr "或"
 
-#: .\main\templates\main\addpackage.html:113
+#: .\main\templates\main\addpackage.html:114
 msgid "Add details of each item in the package"
 msgstr "添加包裹里每件商品的细节"
 
-#: .\main\templates\main\addpackage.html:137
+#: .\main\templates\main\addpackage.html:140
 msgid "Minimize this item's volume"
 msgstr "减小商品的体积"
 
-#: .\main\templates\main\addpackage.html:158
+#: .\main\templates\main\addpackage.html:161
 msgid "Save and add new package"
 msgstr "保存并添加新包裹"
 
@@ -1721,23 +1691,23 @@ msgstr "保存"
 msgid "QYCS Global Shipping Inc. Official Website"
 msgstr "QYCS全球邮购公司官方网站"
 
-#: .\main\templates\main\base.html:148
+#: .\main\templates\main\base.html:68
 msgid "Welcome,"
 msgstr "欢迎您，"
 
-#: .\main\templates\main\base.html:153
+#: .\main\templates\main\base.html:73
 msgid "View site"
 msgstr "浏览网页"
 
-#: .\main\templates\main\base.html:158
+#: .\main\templates\main\base.html:78
 msgid "Documentation"
 msgstr "文件"
 
-#: .\main\templates\main\base.html:162
+#: .\main\templates\main\base.html:82
 msgid "Change password"
 msgstr "更改密码"
 
-#: .\main\templates\main\base.html:164
+#: .\main\templates\main\base.html:84
 msgid "Log out"
 msgstr "退出"
 
@@ -2098,6 +2068,11 @@ msgstr "拼邮包裹"
 #: .\main\templates\main\tracked.html:43
 msgid "Package Marked"
 msgstr "包裹已标记"
+
+#: .\main\templates\main\package_detail.html:44
+#: .\main\templates\main\tracked.html:51
+msgid "Warehouse Received"
+msgstr "仓库已接收"
 
 #: .\main\templates\main\package_detail.html:53
 #: .\main\templates\main\tracked.html:60
@@ -2510,7 +2485,7 @@ msgstr "我们的付款"
 msgid "Packages"
 msgstr "包裹"
 
-#: .\qycs_web\base.py:282
+#: .\qycs_web\base.py:292
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
@@ -2519,6 +2494,27 @@ msgid ""
 "You already have an account with this email. Please use the below username "
 "and password fields to log in."
 msgstr "你已经有一个用户连接此邮箱。请使用以下的用户名和密码来登录。"
+
+#~ msgid "Note"
+#~ msgstr "备注"
+
+#~ msgid "Minimize your package's volume"
+#~ msgstr "减小你的包裹体积"
+
+#~ msgid "Item Detail"
+#~ msgstr "商品细节"
+
+#~ msgid "https://..."
+#~ msgstr "https://..."
+
+#~ msgid "Phone Number (+1-234-567-8900)"
+#~ msgstr "电话号码 (+1-234-567-8900)"
+
+#~ msgid "Customer's Package's Tracking Number"
+#~ msgstr "客户包裹单号"
+
+#~ msgid "Customer's Package's Carrier"
+#~ msgstr "客户包裹运输公司"
 
 #~ msgid "Packages Cart"
 #~ msgstr "包裹车"

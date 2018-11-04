@@ -404,15 +404,15 @@ a:hover{
   width: 15px;
   height: 15px;
   vertical-align: middle;
-
-}
-.contentCSS input, .contentCSS select, .contentCSS textarea, .w3-modal-content input, .w3-modal-content select, .w3-modal-content textarea{
-  padding: 0.2vw;
-  margin: 0.2vw 0.2vw 0.2vw 0;
 }
 
+.contentCSS input[type="text"],.contentCSS textarea,.w3-modal-content input[type="text"],  .w3-modal-content textarea{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width: 100%;display:block;border:1px solid #ccc}
+.w3-modal-content select,.contentCSS select{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width:100%;border:1px solid #ccc}
+#id_birthday_year, #id_birthday_month, #id_birthday_day{
+  width: 32.5%;
+}
 
-.w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
+.w3-third input[type="text"], .w3-third select, .w3-half input[type="text"], .w3-half select, .w3-quarter input[type="text"], .w3-quarter select{
   width: 95%;
 }
 
