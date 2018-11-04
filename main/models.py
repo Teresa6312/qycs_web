@@ -210,10 +210,10 @@ class CollectionPoint(Address_Common_Info):
 	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License type'))
 
 
-	collector_icon = CloudinaryField('collector_icon', blank=True, null=True)
-	license_image = CloudinaryField('collector_license', blank=True, null=True)
-	id_image = CloudinaryField('collector_id')
-	wechat_qrcode = CloudinaryField('collector_wechat', blank=True, null=True)
+	collector_icon = CloudinaryField( _('Collector Icon'), blank=True, null=True)
+	license_image = CloudinaryField( _('Collector License'), blank=True, null=True)
+	id_image = CloudinaryField( _('Collector ID'))
+	wechat_qrcode = CloudinaryField( _('Collector WeChat'), blank=True, null=True)
 
 	store_name = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('Store Name'))
 	store = models.BooleanField(default = True, verbose_name= _('Store'))
@@ -246,21 +246,21 @@ class CollectionPoint(Address_Common_Info):
 	show_contact.boolean = True
 
 	# collection_point schedule
-	mon_start = models.TimeField(blank=True, null=True, verbose_name= _('Monday Start'))
+	mon_start = models.TimeField(blank=True, null=True, verbose_name= _('Monday'))
 	mon_end = models.TimeField(blank=True, null=True, verbose_name= _('Monday End'))
-	tue_start = models.TimeField(blank=True, null=True, verbose_name= _('Tuesday Start'))
+	tue_start = models.TimeField(blank=True, null=True, verbose_name= _('Tuesday'))
 	tue_end = models.TimeField(blank=True, null=True, verbose_name= _('Tuesday End'))
-	wed_start = models.TimeField(blank=True, null=True, verbose_name= _('Wednesday Start'))
+	wed_start = models.TimeField(blank=True, null=True, verbose_name= _('Wednesday'))
 	wed_end = models.TimeField(blank=True, null=True, verbose_name= _('Wednesday End'))
-	thu_start = models.TimeField(blank=True, null=True, verbose_name= _('Thursday Start'))
+	thu_start = models.TimeField(blank=True, null=True, verbose_name= _('Thursday'))
 	thu_end = models.TimeField(blank=True, null=True, verbose_name= _('Thursday End'))
-	fri_start = models.TimeField(blank=True, null=True, verbose_name= _('Friday Start'))
+	fri_start = models.TimeField(blank=True, null=True, verbose_name= _('Friday'))
 	fri_end = models.TimeField(blank=True, null=True, verbose_name= _('Friday End'))
-	sat_start = models.TimeField(blank=True, null=True, verbose_name= _('Saturday Start'))
+	sat_start = models.TimeField(blank=True, null=True, verbose_name= _('Saturday'))
 	sat_end = models.TimeField(blank=True, null=True, verbose_name= _('Saturday End'))
-	sun_start = models.TimeField(blank=True, null=True, verbose_name= _('Sunday Start'))
+	sun_start = models.TimeField(blank=True, null=True, verbose_name= _('Sunday'))
 	sun_end = models.TimeField(blank=True, null=True, verbose_name= _('Sunday End'))
-	absent_start = models.DateField(blank=True, null=True, verbose_name= _('Absent Start'))
+	absent_start = models.DateField(blank=True, null=True, verbose_name= _('Absent'))
 	absent_end = models.DateField(blank=True, null=True, verbose_name= _('Absent End'))
 
 
@@ -435,16 +435,16 @@ class Service(models.Model):
 
 	request_ship_date = models.DateField(blank=True, null=True, verbose_name= _('Date Requested to Ship'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
-	cust_tracking_num = models.CharField(max_length = 50, blank=True, default='',verbose_name= _("Customer's Package's Tracking Number"))
-	cust_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Customer's Package's Carrier"))
-	low_volume_request = models.BooleanField(default = False,verbose_name= _('Low Volume Request'))
+	cust_tracking_num = models.CharField(max_length = 50, blank=True, default='',verbose_name= _("Original's Package's Tracking Number"))
+	cust_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _("Original Package Carrier"))
+	low_volume_request = models.BooleanField(default = True,verbose_name= _('Low Volume Request'))
 	low_volume_request.boolean = True
 
 # for direct shipping only
 	no_rush_request = models.BooleanField(default = False,verbose_name= _('No Rush Request'))
 	no_rush_request.boolean = True
 
-	wh_received = models.ForeignKey(Warehouse, on_delete=models.DO_NOTHING, related_name='received_at_warehouse',verbose_name= _('Warehouse Received'))
+	wh_received = models.ForeignKey(Warehouse, on_delete=models.DO_NOTHING, related_name='received_at_warehouse',verbose_name= _('Inter-warehouse'))
 	wh_received_date = models.DateField(blank=True, null=True,verbose_name= _('Warehouse Received Date'))
 	ready_date = models.DateField(blank=True, null=True, verbose_name= _('Package Ready Date'))
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
@@ -579,10 +579,10 @@ class Item(models.Model):
 class PackageSnapshot(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package'))
 	# snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
-	snapshot = CloudinaryField('package_snapshot')
+	snapshot = CloudinaryField(_("Package Snapshot"))
 
 	class Meta:
-		verbose_name_plural = _("Package Snapshot")
+		verbose_name_plural = _("Package Snapshots")
 		ordering = ['package']
 
 class FavoriteWebsite(models.Model):

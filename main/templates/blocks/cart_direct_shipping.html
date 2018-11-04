@@ -1,0 +1,23 @@
+{% load i18n static %}
+<div class="w3-card-2 w3-round w3-row package w3-container">
+      <div class="w3-quarter w3-container">
+        <div class="cust_tracking_num text-regular-bold">{{package.cust_tracking_num}}</div>
+
+          {{package.get_cust_carrier_display}} ({{package.wh_received.country}})<br/>
+          {% if package.created_date %}
+          {% trans 'Created on' %}: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
+          {% if package.weight %}
+            {{package.weight}}(KG)<br/>{% endif %}
+    </div>
+    <div class="w3-half w3-container">
+
+          <div class="text-regular-bold">{% trans 'Direct Shipping to' %}:</div>
+{% if package.ship_to_add %}
+            {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
+{% endif %}
+    </div>
+    <div class="w3-quarter w3-container">
+    {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
+    <button type="button" class="w3-right w3-light-grey w3-text-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'detail' %}</button>
+    </div>
+  </div>
