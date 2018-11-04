@@ -9,7 +9,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     overflow: auto;
     background-size: 100%;
-    background-image: url("/static/image/home_background.png");
+    background-image: url("/static/image/home_background.6c00fd6d0f09.png");
 }
 
 #container{
@@ -178,7 +178,7 @@ a:hover{
 
 
 #shop-content {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/image/brand_red.png");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/image/brand_red.62bca0be2761.png");
   background-size: 100%;
   background-repeat: no-repeat;
   padding-top: 5vw;
@@ -189,7 +189,7 @@ a:hover{
 .home_logged{
   background-size: 100%;
   background-repeat: no-repeat;
-  background-image: url("/static/image/car_background.png");
+  background-image: url("/static/image/car_background.15c77abd2f0e.png");
   background-position: right 0 bottom 0vw;
   padding-bottom: 10vw;
 }
@@ -400,21 +400,17 @@ a:hover{
 
 
 /* ---------------------------------- for inputs ----------------------------------- */
-
-
-.contentCSS input,.contentCSS textarea,.w3-modal-content input,  .w3-modal-content textarea{
-  padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width: 100%;display:block;border:1px solid #ccc
-}
-.w3-modal-content select,.contentCSS select{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width:100%;border:1px solid #ccc}
-#id_birthday_year, #id_birthday_month, #id_birthday_day{
-  width: 32.5%;
-}
 .contentCSS input[type="checkbox"]{
   width: 15px;
   height: 15px;
   vertical-align: middle;
-  display: inline;
+
 }
+.contentCSS input, .contentCSS select, .contentCSS textarea, .w3-modal-content input, .w3-modal-content select, .w3-modal-content textarea{
+  padding: 0.2vw;
+  margin: 0.2vw 0.2vw 0.2vw 0;
+}
+
 
 .w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
   width: 95%;
@@ -775,18 +771,18 @@ input:checked + .slider:before {
       font-size: 13px;
       padding: 10px 10px 10px 65px;
       margin: 0 0 10px 0;
-      background: #dfd url("/static/admin/img/icon-yes.svg") 40px 12px no-repeat;
+      background: #dfd url("/static/admin/img/icon-yes.d2f9f035226a.svg") 40px 12px no-repeat;
       background-size: 16px auto;
       color: #333;
   }
 
   ul.messagelist li.warning {
-      background: #ffc url("/static/admin/img/icon-alert.svg") 40px 14px no-repeat;
+      background: #ffc url("/static/admin/img/icon-alert.034cc7d8a67f.svg") 40px 14px no-repeat;
       background-size: 14px auto;
   }
 
   ul.messagelist li.error {
-      background: #ffefef url("/static/admin/img/icon-no.svg") 40px 12px no-repeat;
+      background: #ffefef url("/static/admin/img/icon-no.439e821418cd.svg") 40px 12px no-repeat;
       background-size: 16px auto;
   }
 
@@ -857,7 +853,7 @@ input:checked + .slider:before {
       padding: 4px 5px 4px 25px;
       margin: 0;
       color: #c11;
-      background: #ffefef url("/static/admin/img/icon-no.svg") 5px 5px no-repeat;
+      background: #ffefef url("/static/admin/img/icon-no.439e821418cd.svg") 5px 5px no-repeat;
   }
 
   .description {
@@ -878,10 +874,7 @@ input:checked + .slider:before {
   border-radius: 4px;
   border: none;
   margin: 0.5vw 0.5vw;
-  width: auto;
-  display: inline;
 }
-
 
 .contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover, .contentCSS .ui_button:hover{
   opacity: 0.8;

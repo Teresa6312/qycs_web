@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+
 #: .\base.js:98
 msgid "Please enter the content"
 msgstr "请输入正文"
@@ -67,7 +68,7 @@ msgstr "商品名称"
 
 #: .\packageset.js:39
 msgid "Please enter your items name as detailed as possible"
-msgstr "请尽量详细地填写商品信息"
+msgstr "请尽量详细地填写商品的名称"
 
 #: .\packageset.js:54
 msgid "color/size.etc"
@@ -101,9 +102,22 @@ msgstr "删除所有的商品"
 msgid "Add Items' Detail"
 msgstr "添加商品详情"
 
+#: addpackage.html:173
 #: .\packageset.js:136
 msgid "add Item"
 msgstr "添加商品"
+
+#: addpackage.html:174
+msgid "remove"
+msgstr "删除"
+
+#: addpackage.html:209
+msgid "Images only, please try again."
+msgstr "只能上传图片，请重新上传。"
+
+#: addpackage.html:209
+msgid "The maxium size of each image is 3M, please try again."
+msgstr "每张图片的大小不得超过3M，请重新上传"
 
 #: .\packageset.js:137
 msgid "delete item"

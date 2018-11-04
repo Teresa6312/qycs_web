@@ -9,7 +9,7 @@
      - {% trans 'Default' %}
      {% endif %}</div>
 
-  {{add.country}} | {{add.state}} | {{add.city}}<br/>
+  {{add.country|upper}} | {{add.state|upper}} | {{add.city|upper}}<br/>
   {{add.address}}{% if add.apt %} - {{add.apt}}{% endif %}<br/>
   {{add.zipcode}}<br/>
 </div>
