@@ -123,7 +123,7 @@
                                             <div class="w3-col w3-container" style="width:100px;">
                                               {{ subform.item_quantity.label_tag }} {{ subform.item_quantity.errors }} {{ subform.item_quantity }}
                                             </div>
-                                            <div class="w3-rest w3-container">
+                                            <div class="w3-rest w3-container item_name">
                                               {{ subform.item_name.label_tag }} {{ subform.item_name.errors }} {{ subform.item_name }}
                                             </div>
                                           </div>
@@ -192,8 +192,7 @@ $(document).ready(function(){
 	});
   	$(".add-row").click(function(){
       $('table').find('.item_num').each(function(){
-        var i = $(this).parents('tr').find('.item_name').prop('id').split('-')[1];
-        $(this).text(parseInt(i)+1);
+        $(this).text(parseInt($(this).parents('tr').find('.item_name input').prop('id').split('-')[1])+1);
       });
     });
 
