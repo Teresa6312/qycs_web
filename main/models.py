@@ -246,21 +246,21 @@ class CollectionPoint(Address_Common_Info):
 	show_contact.boolean = True
 
 	# collection_point schedule
-	mon_start = models.TimeField(blank=True, null=True, verbose_name= _('Monday Start'))
+	mon_start = models.TimeField(blank=True, null=True, verbose_name= _('Monday'))
 	mon_end = models.TimeField(blank=True, null=True, verbose_name= _('Monday End'))
-	tue_start = models.TimeField(blank=True, null=True, verbose_name= _('Tuesday Start'))
+	tue_start = models.TimeField(blank=True, null=True, verbose_name= _('Tuesday'))
 	tue_end = models.TimeField(blank=True, null=True, verbose_name= _('Tuesday End'))
-	wed_start = models.TimeField(blank=True, null=True, verbose_name= _('Wednesday Start'))
+	wed_start = models.TimeField(blank=True, null=True, verbose_name= _('Wednesday'))
 	wed_end = models.TimeField(blank=True, null=True, verbose_name= _('Wednesday End'))
-	thu_start = models.TimeField(blank=True, null=True, verbose_name= _('Thursday Start'))
+	thu_start = models.TimeField(blank=True, null=True, verbose_name= _('Thursday'))
 	thu_end = models.TimeField(blank=True, null=True, verbose_name= _('Thursday End'))
-	fri_start = models.TimeField(blank=True, null=True, verbose_name= _('Friday Start'))
+	fri_start = models.TimeField(blank=True, null=True, verbose_name= _('Friday'))
 	fri_end = models.TimeField(blank=True, null=True, verbose_name= _('Friday End'))
-	sat_start = models.TimeField(blank=True, null=True, verbose_name= _('Saturday Start'))
+	sat_start = models.TimeField(blank=True, null=True, verbose_name= _('Saturday'))
 	sat_end = models.TimeField(blank=True, null=True, verbose_name= _('Saturday End'))
-	sun_start = models.TimeField(blank=True, null=True, verbose_name= _('Sunday Start'))
+	sun_start = models.TimeField(blank=True, null=True, verbose_name= _('Sunday'))
 	sun_end = models.TimeField(blank=True, null=True, verbose_name= _('Sunday End'))
-	absent_start = models.DateField(blank=True, null=True, verbose_name= _('Absent Start'))
+	absent_start = models.DateField(blank=True, null=True, verbose_name= _('Absent'))
 	absent_end = models.DateField(blank=True, null=True, verbose_name= _('Absent End'))
 
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-04 00:03-0400\n"
+"POT-Creation-Date: 2018-11-04 01:06-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,88 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\collector\forms.py:15
-msgid "Paypal Account Email"
-msgstr "Paypal账户邮箱"
-
-#: .\collector\forms.py:17
-msgid "Agree"
-msgstr "同意"
+#: .\collector\forms.py:25 .\main\forms.py:113
+msgid "Apartment/Suit/Unit"
+msgstr "单元"
 
 #: .\collector\forms.py:26 .\main\forms.py:116
 msgid "Street Address"
 msgstr "街道地址"
 
-#: .\collector\forms.py:29 .\main\forms.py:113
-msgid "Apartment/Suit/Unit"
-msgstr "单元"
-
-#: .\collector\forms.py:50
-msgid "Information Source"
-msgstr "信息资源"
-
-#: .\collector\forms.py:54
+#: .\collector\forms.py:27
 msgid "Please tell us why you want to join us"
 msgstr "请告诉我你为什么想加入我们"
 
-#: .\collector\forms.py:76
-#: .\collector\templates\collector\collection_point_view.html:58
-msgid "Monday"
-msgstr "星期一"
-
-#: .\collector\forms.py:76 .\collector\forms.py:84 .\collector\forms.py:92
-#: .\collector\forms.py:96 .\collector\forms.py:100
-msgid "From: 00:00:00"
-msgstr "从00:00:00"
-
-#: .\collector\forms.py:78 .\collector\forms.py:82 .\collector\forms.py:86
-#: .\collector\forms.py:90 .\collector\forms.py:94 .\collector\forms.py:98
-#: .\collector\forms.py:102
-msgid "Until: 00:00:00"
-msgstr "到00:00:00"
-
-#: .\collector\forms.py:80
-#: .\collector\templates\collector\collection_point_view.html:59
-msgid "Tuesday"
-msgstr "星期二"
-
-#: .\collector\forms.py:80 .\collector\forms.py:88
-msgid "From:  00:00:00"
-msgstr "从00:00:00"
-
-#: .\collector\forms.py:84
-#: .\collector\templates\collector\collection_point_view.html:60
-msgid "Wednesday"
-msgstr "星期三"
-
-#: .\collector\forms.py:88
-#: .\collector\templates\collector\collection_point_view.html:61
-msgid "Thursday"
-msgstr "星期四"
-
-#: .\collector\forms.py:92
-#: .\collector\templates\collector\collection_point_view.html:62
-msgid "Friday"
-msgstr "星期五"
-
-#: .\collector\forms.py:96
-#: .\collector\templates\collector\collection_point_view.html:63
-msgid "Saturday"
-msgstr "星期六"
-
-#: .\collector\forms.py:100
-#: .\collector\templates\collector\collection_point_view.html:64
-msgid "Sunday"
-msgstr "星期日"
-
-#: .\collector\forms.py:105
+#: .\collector\forms.py:51
 msgid "Introduce yourself. This will show up in the website."
 msgstr "请介绍你自己，这将会展现在网站上。"
 
-#: .\collector\forms.py:109
-#: .\collector\templates\collector\collection_point_view.html:88
-msgid "Wechat ID"
-msgstr "微信账号"
+#: .\collector\forms.py:54
+msgid "From: 00:00"
+msgstr "从00:00:00"
+
+#: .\collector\forms.py:56
+msgid "Until: 00:00"
+msgstr "到00:00:00"
 
 #: .\collector\templates\collector\collection_point_view.html:22
 #: .\main\models.py:218
@@ -158,6 +99,41 @@ msgstr "时间表"
 msgid "Not available from"
 msgstr "外出期间暂不提供服务"
 
+#: .\collector\templates\collector\collection_point_view.html:58
+#: .\main\models.py:249
+msgid "Monday"
+msgstr "星期一"
+
+#: .\collector\templates\collector\collection_point_view.html:59
+#: .\main\models.py:251
+msgid "Tuesday"
+msgstr "星期二"
+
+#: .\collector\templates\collector\collection_point_view.html:60
+#: .\main\models.py:253
+msgid "Wednesday"
+msgstr "星期三"
+
+#: .\collector\templates\collector\collection_point_view.html:61
+#: .\main\models.py:255
+msgid "Thursday"
+msgstr "星期四"
+
+#: .\collector\templates\collector\collection_point_view.html:62
+#: .\main\models.py:257
+msgid "Friday"
+msgstr "星期五"
+
+#: .\collector\templates\collector\collection_point_view.html:63
+#: .\main\models.py:259
+msgid "Saturday"
+msgstr "星期六"
+
+#: .\collector\templates\collector\collection_point_view.html:64
+#: .\main\models.py:261
+msgid "Sunday"
+msgstr "星期日"
+
 #: .\collector\templates\collector\collection_point_view.html:73
 msgid "Introduction"
 msgstr "介绍"
@@ -174,6 +150,10 @@ msgstr "邮箱"
 #: .\collector\templates\collector\collection_point_view.html:86
 msgid "Wechat"
 msgstr "微信"
+
+#: .\collector\templates\collector\collection_point_view.html:88
+msgid "Wechat ID"
+msgstr "微信账号"
 
 #: .\collector\templates\collector\collection_point_view.html:100
 msgid "Reviews"
@@ -238,17 +218,36 @@ msgstr "我的收件站简介"
 msgid "Currently Icon"
 msgstr "目前的图标"
 
-#: .\collector\templates\collector\collector_update.html:81
+#: .\collector\templates\collector\collector_update.html:61
+#: .\collector\templates\collector\colregister.html:96
+msgid "Collector Icon:"
+msgstr "收件站头像"
+
+#: .\collector\templates\collector\collector_update.html:63
+#: .\collector\templates\collector\collector_update.html:78
+#: .\collector\templates\collector\colregister.html:98
+#: .\collector\templates\collector\colregister.html:148
+#: .\collector\templates\collector\colregister.html:158
+#: .\collector\templates\collector\colregister.html:167
+msgid "Upload"
+msgstr "上传"
+
+#: .\collector\templates\collector\collector_update.html:76
+#: .\collector\templates\collector\colregister.html:165
+msgid "WeChat QRcode:"
+msgstr "微信二维码"
+
+#: .\collector\templates\collector\collector_update.html:90
 #: .\main\models.py:245
 msgid "Show Contact Information"
 msgstr "显示联系信息"
 
-#: .\collector\templates\collector\collector_update.html:87
+#: .\collector\templates\collector\collector_update.html:96
 msgid "My Schedule"
 msgstr "我的时间表"
 
-#: .\collector\templates\collector\collector_update.html:153
-#: .\collector\templates\collector\colregister.html:203
+#: .\collector\templates\collector\collector_update.html:162
+#: .\collector\templates\collector\colregister.html:222
 #: .\main\templates\blocks\email_block.html:19
 #: .\main\templates\blocks\select_address_block.html:13
 #: .\main\templates\main\address.html:92
@@ -257,7 +256,7 @@ msgstr "我的时间表"
 msgid "Cancel"
 msgstr "取消"
 
-#: .\collector\templates\collector\collector_update.html:154
+#: .\collector\templates\collector\collector_update.html:163
 msgid "Update"
 msgstr "更新"
 
@@ -283,19 +282,31 @@ msgstr "我的简介"
 msgid "My Location"
 msgstr "我的位置"
 
-#: .\collector\templates\collector\colregister.html:135
+#: .\collector\templates\collector\colregister.html:103
+msgid "The location is a store."
+msgstr "此地址为店铺，非私人地址。"
+
+#: .\collector\templates\collector\colregister.html:137
 msgid "Document"
 msgstr "文件"
 
-#: .\collector\templates\collector\colregister.html:163
+#: .\collector\templates\collector\colregister.html:146
+msgid "Collector License:"
+msgstr "站长证件"
+
+#: .\collector\templates\collector\colregister.html:156
+msgid "Collector ID:"
+msgstr "站长身份证"
+
+#: .\collector\templates\collector\colregister.html:182
 msgid "Other Information"
 msgstr "其他信息"
 
-#: .\collector\templates\collector\colregister.html:186
+#: .\collector\templates\collector\colregister.html:205
 msgid "Collection Point Registration Terms"
 msgstr "收件站注册条例"
 
-#: .\collector\templates\collector\colregister.html:189
+#: .\collector\templates\collector\colregister.html:208
 msgid ""
 "\n"
 "                      I have read, understood and agreed to be bound by "
@@ -307,18 +318,18 @@ msgstr ""
 "                      我已经阅读，理解并同意myqycs.com的注册条例。我也理解"
 "QYCS想要试用我提供的信息。                    "
 
-#: .\collector\templates\collector\colregister.html:200
+#: .\collector\templates\collector\colregister.html:219
 #: .\main\templates\main\addpackage.html:158
 msgid "Go Back"
 msgstr "返回"
 
-#: .\collector\templates\collector\colregister.html:201
+#: .\collector\templates\collector\colregister.html:220
 #: .\main\templates\main\addpackage.html:159
 #: .\main\templates\main\register.html:146
 msgid "Next"
 msgstr "下页"
 
-#: .\collector\templates\collector\colregister.html:204
+#: .\collector\templates\collector\colregister.html:223
 #: .\main\templates\main\register.html:148
 msgid "Register"
 msgstr "注册"
@@ -770,6 +781,22 @@ msgstr "站长"
 msgid "License type"
 msgstr "证件类型"
 
+#: .\main\models.py:213
+msgid "Collector Icon"
+msgstr "站长头像"
+
+#: .\main\models.py:214
+msgid "Collector License"
+msgstr "站长证件"
+
+#: .\main\models.py:215
+msgid "Collector ID"
+msgstr "站长身份证"
+
+#: .\main\models.py:216
+msgid "Collector WeChat"
+msgstr "站长的微信号"
+
 #: .\main\models.py:219 .\main\templates\blocks\col_card_fields.html:11
 #: .\main\templates\blocks\col_less_fields.html:6
 msgid "Store"
@@ -823,65 +850,37 @@ msgstr "运行中"
 msgid "Instruction"
 msgstr "指示"
 
-#: .\main\models.py:249
-msgid "Monday Start"
-msgstr "星期一，开始于"
-
 #: .\main\models.py:250
 msgid "Monday End"
 msgstr "星期一，结束于"
-
-#: .\main\models.py:251
-msgid "Tuesday Start"
-msgstr "星期二，开始于"
 
 #: .\main\models.py:252
 msgid "Tuesday End"
 msgstr "星期二，结束于"
 
-#: .\main\models.py:253
-msgid "Wednesday Start"
-msgstr "星期三，开始于"
-
 #: .\main\models.py:254
 msgid "Wednesday End"
 msgstr "星期三，结束于"
-
-#: .\main\models.py:255
-msgid "Thursday Start"
-msgstr "星期四，开始于"
 
 #: .\main\models.py:256
 msgid "Thursday End"
 msgstr "星期四，结束于"
 
-#: .\main\models.py:257
-msgid "Friday Start"
-msgstr "星期五，开始于"
-
 #: .\main\models.py:258
 msgid "Friday End"
 msgstr "星期五，结束于"
 
-#: .\main\models.py:259
-msgid "Saturday Start"
-msgstr "星期六，开始于"
-
 #: .\main\models.py:260
 msgid "Saturday End"
 msgstr "星期六，结束于"
-
-#: .\main\models.py:261
-msgid "Sunday Start"
-msgstr "星期日，开始于"
 
 #: .\main\models.py:262
 msgid "Sunday End"
 msgstr "星期日，结束于"
 
 #: .\main\models.py:263
-msgid "Absent Start"
-msgstr "外出开始于"
+msgid "Absent"
+msgstr "外出"
 
 #: .\main\models.py:264
 msgid "Absent End"
@@ -1047,8 +1046,6 @@ msgid "Date Requested to Ship"
 msgstr "要求邮寄的日期"
 
 #: .\main\models.py:438
-#, fuzzy
-#| msgid "Original Package Tracking Number"
 msgid "Original's Package's Tracking Number"
 msgstr "客户原包裹单号"
 
@@ -1231,8 +1228,12 @@ msgstr "商品"
 msgid "Package"
 msgstr "包裹"
 
-#: .\main\models.py:585 .\main\templates\main\package_detail.html:161
+#: .\main\models.py:582 .\main\templates\main\package_detail.html:161
 msgid "Package Snapshot"
+msgstr "包裹细节截图"
+
+#: .\main\models.py:585
+msgid "Package Snapshots"
 msgstr "包裹细节截图"
 
 #: .\main\models.py:591 .\main\models.py:629
@@ -2494,6 +2495,42 @@ msgid ""
 "You already have an account with this email. Please use the below username "
 "and password fields to log in."
 msgstr "你已经有一个用户连接此邮箱。请使用以下的用户名和密码来登录。"
+
+#~ msgid "Monday Start"
+#~ msgstr "星期一，开始于"
+
+#~ msgid "Tuesday Start"
+#~ msgstr "星期二，开始于"
+
+#~ msgid "Wednesday Start"
+#~ msgstr "星期三，开始于"
+
+#~ msgid "Thursday Start"
+#~ msgstr "星期四，开始于"
+
+#~ msgid "Friday Start"
+#~ msgstr "星期五，开始于"
+
+#~ msgid "Saturday Start"
+#~ msgstr "星期六，开始于"
+
+#~ msgid "Sunday Start"
+#~ msgstr "星期日，开始于"
+
+#~ msgid "Absent Start"
+#~ msgstr "外出开始于"
+
+#~ msgid "Paypal Account Email"
+#~ msgstr "Paypal账户邮箱"
+
+#~ msgid "Agree"
+#~ msgstr "同意"
+
+#~ msgid "Information Source"
+#~ msgstr "信息资源"
+
+#~ msgid "From:  00:00:00"
+#~ msgstr "从00:00:00"
 
 #~ msgid "Note"
 #~ msgstr "备注"
