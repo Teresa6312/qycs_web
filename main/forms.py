@@ -41,7 +41,6 @@ class NewUserCreationForm(UserCreationForm):
 		user.first_name = user.first_name.title()
 		user.last_name = user.last_name.title()
 		user.email = user.email.lower()
-		user.country = user.country.upper()
 		if commit:
 			user.save()
 		return user
@@ -83,7 +82,6 @@ class NewUserChangeForm(UserChangeForm):
 		user.first_name = user.first_name.title()
 		user.last_name = user.last_name.title()
 		user.email = user.email.lower()
-		user.country = user.country.upper()
 		if commit:
 			user.save()
 		return user
@@ -124,7 +122,6 @@ class AddressForm(forms.ModelForm):
 		add.apt = add.apt.title()
 		add.city = add.city.title()
 		add.state = add.state.title()
-		add.country = add.country.upper()
 		if commit:
 			add.save()
 		return add

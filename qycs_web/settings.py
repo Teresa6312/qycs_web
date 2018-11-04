@@ -64,6 +64,15 @@ EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 EMAIL_USE_TLS = True
 
+
+# Email address that error messages come from.
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', '')
+
+# Default email address to use for various automated correspondence from
+# the site managers.
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', '')
+
+
 # to storage the images
 CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '')
 

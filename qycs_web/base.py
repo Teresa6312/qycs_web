@@ -224,6 +224,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Default form rendering class.
+FORM_RENDERER = 'django.forms.renderers.DjangoTemplates'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
