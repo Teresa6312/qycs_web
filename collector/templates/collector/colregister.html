@@ -146,7 +146,7 @@
                               {% trans 'Collector License:' %}
                               {{ colform.license_image.errors }}
                               <label class="ui_button logo-red" for="id_license_image">{% trans 'Upload' %}</label>
-                              <input type="file" name="license_image" id="id_license_image" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+                              <input type="file" name="license_image" id="id_license_image" required accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
 
 
                             </div>
@@ -155,8 +155,8 @@
 
                               {% trans 'Collector ID:' %}<span class="required_stick">*</span>
                               {{ colform.id_image.errors }}
-                              <label class="ui_button logo-red" for="id_image">{% trans 'Upload' %}</label>
-                              <input type="file" name="image" id="id_image" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+                              <label class="ui_button logo-red" for="id_id_image">{% trans 'Upload' %}</label>
+                              <input type="file" name="id_image" id="id_id_image" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
 
 
                             </div>
@@ -239,7 +239,7 @@
   });
 
   $('#id_store').change( function(){
-          if (!$(this).is(':checked')) {
+          if(!$(this).prop('checked')){
             $('#id_store_name').closest('.w3-row').slideUp(300, function(){
                 $('#id_store_name').closest('.w3-row').hide();
             });
@@ -282,8 +282,8 @@
         $('#id_license_image').change(function(){
               displayImages('#id_license_image');
         });
-        $('#id_image').change(function(){
-              displayImages('#id_image');
+        $('#id_id_image').change(function(){
+              displayImages('#id_id_image');
         });
         $('#id_wechat_qrcode').change(function(){
               displayImages('#id_wechat_qrcode');
