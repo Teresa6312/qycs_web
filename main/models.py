@@ -391,6 +391,10 @@ class ParentPackage(models.Model):
 	carrier = models.CharField(max_length=100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
 	shipped_date = models.DateField(blank=True, null=True,verbose_name= _('Shipped Date'))
 
+	package_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Direct Shipping Package Amount'))
+	order_set = models.ForeignKey(OrderSet, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Order Set'))
+
+
 # for order only
 	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 	emp_split = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))

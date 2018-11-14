@@ -1,5 +1,5 @@
 from .models import (
-	Address, Service, CollectionPoint, Coupon,
+	Address, Service, CollectionPoint, Coupon, ParentPackage,
 	User, Warehouse, PackageSnapshot, OrderSet
 	)
 from .forms import (
@@ -43,6 +43,13 @@ class PackageCartView(TemplateView):
 	def get(self, request):
 		order = OrderSetForm()
 		package_list = Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date')
+		# ids = [i['parent_package'] for i in  Service.objects.filter(user = request.user, co_shipping = False, order = False, paid_amount = None).values('parent_package')]
+		# print(set(ids))
+		# parent_package_list = ParentPackage.objects.filter(tracking_num = '', service__user = request.user, service__co_shipping = False, service__order = False, service__paid_amount = None)
+		# parent_package_list = Service.objects.filter(user = request.user, co_shipping = False, order = False, paid_amount = None).parentpackages.all()
+		# print(parent_package_list)
+
+
 		return render(request, self.template_name,
 			{'package_list': package_list,
 			'order':order})
@@ -266,3 +273,30 @@ def couponView(request):
 			return HttpResponse(coupon.discount)
 		except:
 			return HttpResponse()
+
+
+class ConfirmDirectShipping(TemplateView):
+		template_name = 'main/confirm_direct_shipping.html'
+
+		def get(self, request):
+			order = OrderSetForm()
+			package_list = Service.objects.filter(user = request.user, co_shipping = False, order = False, paid_amount = None).order_by('ship_to_add')
+			return render(request, self.template_name,
+				{'package_list': package_list,
+				'order':order})
+
+		def post(self, request):
+			cart = CartForm(request.user, request.POST)
+			if cart.is_valid():
+				parent_pack = ParentPackage()
+				parent_pack.save()
+
+				for pack in cart.cleaned_data['package_set']:
+					package = Service.objects.get(id = pack.id )
+					if package.issue == '':
+						package.parent_package = parent_pack
+						package.save()
+
+				return redirect(reverse('packagecart'))
+			else:
+				return redirect(reverse('confirm_direct_shipping'))
