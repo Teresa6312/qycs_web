@@ -9,6 +9,7 @@
 <form method = "post" class="w3-margin-top">
 {% csrf_token %}
 <div class="w3-cell w3-container w3-mobile">
+  {% if parent_package_list or order_list or co_shipping_list or direct_shipping_list %}
     <div class="w3-container">
 
       {% if parent_package_list %}
@@ -107,6 +108,13 @@
             </table>
         {% endif %}
 	</div>
+  {% else %}
+  <div class="text-xxlarge">{% trans 'No package' %}</div>
+  <div class="w3-row">
+      <button class="logo-red" type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
+      <button class="logo-blue" type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
+  </div>
+  {% endif %}
 </div>
 <script src="{% static 'js/package_cart.js' %}"></script>
 {% endblock %}

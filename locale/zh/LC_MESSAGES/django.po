@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 20:36+0800\n"
+"POT-Creation-Date: 2018-11-16 21:17+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -948,14 +948,14 @@ msgid "Coupon Used Times"
 msgstr "优惠码使用次数"
 
 #: .\main\models.py:353 .\main\models.py:358
-#: .\main\templates\main\package_cart.html:127
+#: .\main\templates\main\package_cart.html:135
 msgid "Coupon"
 msgstr "优惠码"
 
 #: .\main\models.py:359 .\main\templates\blocks\cart_coshipping.html:33
 #: .\main\templates\blocks\cart_direct_packages.html:29
 #: .\main\templates\blocks\cart_order.html:47
-#: .\main\templates\main\package_cart.html:129
+#: .\main\templates\main\package_cart.html:137
 #: .\main\templates\main\package_history.html:79
 #: .\main\templates\main\package_history.html:142
 #: .\payment\templates\payment\process.html:42
@@ -1332,21 +1332,21 @@ msgstr "平均重价格"
 msgid "Price Rate"
 msgstr "价格及汇率"
 
-#: .\main\package_views.py:151 .\main\package_views.py:238
+#: .\main\package_views.py:155 .\main\package_views.py:242
 msgid " is created successfully!"
 msgstr "被创建成功"
 
-#: .\main\package_views.py:197
+#: .\main\package_views.py:201
 msgid ""
 "The Collection Point you selected is not available right now! Please choose "
 "another one."
 msgstr "你所选择的收件站暂时无效！请选择 另外一个。"
 
-#: .\main\package_views.py:259 .\main\package_views.py:275
+#: .\main\package_views.py:263 .\main\package_views.py:279
 msgid " is not your package. You cannot view the detail."
 msgstr "不是你的包裹，你无权预览细节。"
 
-#: .\main\package_views.py:262 .\main\package_views.py:278
+#: .\main\package_views.py:266 .\main\package_views.py:282
 msgid "Cannot Find the package"
 msgstr "无法找到你的包裹"
 
@@ -1504,7 +1504,7 @@ msgstr "标题"
 #: .\main\templates\blocks\email_block.html:20
 #: .\main\templates\main\addpackage.html:162
 #: .\main\templates\main\confirm_direct_shipping.html:16
-#: .\main\templates\main\package_cart.html:131
+#: .\main\templates\main\package_cart.html:139
 msgid "Submit"
 msgstr "确认"
 
@@ -1913,15 +1913,15 @@ msgid "Confirm Direct Shipping"
 msgstr "确认直邮包裹"
 
 #: .\main\templates\main\confirm_direct_shipping.html:22
-#: .\main\templates\main\package_cart.html:19
-#: .\main\templates\main\package_cart.html:46
-#: .\main\templates\main\package_cart.html:74
+#: .\main\templates\main\package_cart.html:20
+#: .\main\templates\main\package_cart.html:47
+#: .\main\templates\main\package_cart.html:75
 msgid "Select All"
 msgstr "全选"
 
 #: .\main\templates\main\confirm_direct_shipping.html:23
-#: .\main\templates\main\package_cart.html:75
-#: .\main\templates\main\package_cart.html:98
+#: .\main\templates\main\package_cart.html:76
+#: .\main\templates\main\package_cart.html:99
 #: .\payment\templates\payment\process.html:50
 msgid "Package(s)"
 msgstr "包裹"
@@ -2035,49 +2035,55 @@ msgstr "你没有得到允许进入此页面。你是否想要登入另外一个
 msgid "Forgot Password?"
 msgstr "忘记密码？"
 
-#: .\main\templates\main\package_cart.html:15
+#: .\main\templates\main\package_cart.html:16
 msgid "Direct Shipping Package(s)"
 msgstr "直邮包裹"
 
-#: .\main\templates\main\package_cart.html:20
+#: .\main\templates\main\package_cart.html:21
 msgid "Big Package(s)"
 msgstr "大包裹"
 
-#: .\main\templates\main\package_cart.html:42
+#: .\main\templates\main\package_cart.html:43
 msgid "Global Shopping Cart"
 msgstr "国际购物车"
 
-#: .\main\templates\main\package_cart.html:47
+#: .\main\templates\main\package_cart.html:48
 msgid "Order(s)"
 msgstr "购物单"
 
-#: .\main\templates\main\package_cart.html:65
+#: .\main\templates\main\package_cart.html:66
 msgid "Co-shipping Cart"
 msgstr "拼邮包裹车"
 
-#: .\main\templates\main\package_cart.html:68
+#: .\main\templates\main\package_cart.html:69
+#: .\main\templates\main\package_cart.html:114
 #: .\main\templates\main\package_history.html:17
 msgid "Add Co-shipping Package"
 msgstr "添加拼邮包裹"
 
-#: .\main\templates\main\package_cart.html:92
+#: .\main\templates\main\package_cart.html:93
 msgid "Direct Shipping Cart"
 msgstr "直邮包裹车"
 
-#: .\main\templates\main\package_cart.html:93
+#: .\main\templates\main\package_cart.html:94
+#: .\main\templates\main\package_cart.html:115
 #: .\main\templates\main\package_history.html:19
 msgid "Add Direct Shipping Package"
 msgstr "添加直邮包裹"
 
-#: .\main\templates\main\package_cart.html:94
+#: .\main\templates\main\package_cart.html:95
 msgid "Ready to ship"
 msgstr "准备直邮"
 
-#: .\main\templates\main\package_cart.html:123
+#: .\main\templates\main\package_cart.html:112
+msgid "No package"
+msgstr "没有包裹"
+
+#: .\main\templates\main\package_cart.html:131
 msgid "Place Packages"
 msgstr "包裹下单"
 
-#: .\main\templates\main\package_cart.html:127
+#: .\main\templates\main\package_cart.html:135
 msgid "Apply"
 msgstr "申请"
 
