@@ -356,8 +356,7 @@ class Coupon(models.Model):
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
-	reward_point_used = models.PositiveIntegerField(default=0,verbose_name= _('Reward Point Used'))
-	total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name= _('Total Amount'))
+	total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=True, default=0, verbose_name= _('Insurance Plan'))
 
@@ -392,7 +391,10 @@ class ParentPackage(models.Model):
 	shipped_date = models.DateField(blank=True, null=True,verbose_name= _('Shipped Date'))
 
 	package_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Direct Shipping Package Amount'))
+	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
+
 	order_set = models.ForeignKey(OrderSet, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Order Set'))
+	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
 
 
 # for order only
@@ -459,16 +461,13 @@ class Service(models.Model):
 
 
 	deposit = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2 , verbose_name= _('Deposit Amount'))
-	# deposit_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='deposit_payment_key', verbose_name= _('Deposit Confirmation'))
 
 	storage_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Storage Fee'))
 	shipping_fee = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Shipping Fee'))
 # for order only
 	order_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Order Amount'))
-	# total_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Total Amount')) # need to add service fee
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
-	# paid_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING,  blank=True, null=True, related_name='paid_payment_key', verbose_name= _('Payment Confirmation'))
 
 # NULL FOR SHIPPING TO COLLECTION POINT
 	ship_to_add = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_personal_location', verbose_name= _("Shipping Address"))

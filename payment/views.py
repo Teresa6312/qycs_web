@@ -21,7 +21,7 @@ def payment_process(request):
 			"invoice": orderSet.id,
 			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
 			"return": 'http://{}{}'.format(host, reverse('userpackage')),
-			"cancel_return": 'http://{}{}'.format(host, reverse('package_cart')),
+			"cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
 		}
 	else:
 		paypal_dict = {

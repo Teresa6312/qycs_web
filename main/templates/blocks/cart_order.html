@@ -22,7 +22,7 @@
 
     </div>
     <div class="w3-third w3-container">
-      <div class="text-regular-bold">Items:</div>
+      <div class="text-regular-bold">{% trans 'Item(s)'%}:</div>
         {% if package.item_set.all %}
           <ul>
             {% for item in package.item_set.all %}

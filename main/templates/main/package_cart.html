@@ -11,76 +11,97 @@
 <div class="w3-cell w3-container w3-mobile">
     <div class="w3-container">
 
-		<div class="text-xxlarge">{% trans 'Global shopping Cart' %}</div>
-    <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
-        <thead>
-            <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
-              <input type="checkbox" id="select_all_order">&nbsp;{% trans 'Select All' %}
-            </th><th class="text-regular-bold content_right">{% trans 'Order(s)' %}</th></tr>
-        </thead>
-        <tbody>
-      {% if package_list %}
-          {% for package in package_list %}
-            {% if package.order %}
-              <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
-                <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
-              </td><td class="w3-cell w3-rest">
-                {% include "blocks/cart_order.html" with package=package %}
-              </td></tr>
-              {% endif %}
-          {% endfor %}
+      {% if parent_package_list %}
+          <div class="text-xxlarge">{% trans 'Direct Shipping Package(s)' %}</div>
+          <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
+              <thead>
+                  <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
+                    <input type="checkbox" id="select_all_direct_package">&nbsp;{% trans 'Select All' %}
+                  </th><th class="text-regular-bold content_right">{% trans 'Big Package(s)' %}</th></tr>
+              </thead>
+              <tbody>
+
+                {% for package in parent_package_list %}
+                    <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
+                      <input type="checkbox" name="parent_package_set" value="{{package.id}}" id="id_parent_package_set_{{ forloop.counter0 }}">
+                    </td><td class="w3-cell w3-rest">
+                      {% include "blocks/cart_direct_packages.html" with package=package %}
+                    </td></tr>
+                {% endfor %}
+
+            </tbody>
+          </table>
       {% endif %}
-      </tbody>
-    </table>
-
-    <div class="text-xxlarge">{% trans 'Co-Shipping Cart' %}</div>
 
 
-		<button class="logo-red" type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
+        {% if order_list %}
+        		<div class="text-xxlarge">{% trans 'Global Shopping Cart' %}</div>
+            <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
+                <thead>
+                    <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
+                      <input type="checkbox" id="select_all_order">&nbsp;{% trans 'Select All' %}
+                    </th><th class="text-regular-bold content_right">{% trans 'Order(s)' %}</th></tr>
+                </thead>
+                <tbody>
+
+                  {% for package in order_list %}
+                      <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
+                        <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
+                      </td><td class="w3-cell w3-rest">
+                        {% include "blocks/cart_order.html" with package=package %}
+                      </td></tr>
+                  {% endfor %}
+
+              </tbody>
+            </table>
+        {% endif %}
 
 
-    <table class="w3-mobile" style="width:100%;overflow:auto; max-height:400px;">
-        <thead>
-            <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
-              <input type="checkbox" id="select_all_coshipping">&nbsp;{% trans 'Select All' %}
-            </th><th class="text-regular-bold content_right">{% trans 'Package(s)' %}</th></tr>
-        </thead>
-        <tbody>
-      {% if package_list %}
-          {% for package in package_list %}
-            {% if package.co_shipping and not package.order %}
-              <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
-                <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
-              </td><td class="w3-cell w3-rest">
-                {% include "blocks/cart_coshipping.html" with package=package %}
-              </td></tr>
-              {% endif %}
-          {% endfor %}
-      {% endif %}
-      </tbody>
-    </table>
+        {% if co_shipping_list %}
+            <div class="text-xxlarge">{% trans 'Co-shipping Cart' %}</div>
 
-		<div class="text-xxlarge">{% trans 'Direct Shipping Cart' %}</div>
-    <button class="logo-blue" type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
-    <span class="w3-right"><button class="logo-red" type="button" onclick="window.location.href = '{% url 'confirm_direct_shipping' %}'">{% trans 'Ready to ship' %}</button></span>
 
-    <table class="w3-mobile" style="width:100%;">
-        <thead>
-            <tr><th class="text-regular-bold content_right">{% trans 'Package(s)' %}</th></tr>
-        </thead>
-        <tbody style="overflow:auto; max-height:100px;">
-      {% if package_list %}
-          {% for package in package_list %}
-            {% if  not package.co_shipping and not package.order %}
-              <tr class="w3-cell-row"><td class="w3-cell w3-rest">
-                {% include "blocks/cart_direct_shipping.html" with package=package lessline="yes"%}
-              </td></tr>
-              {% endif %}
-          {% endfor %}
-      {% endif %}
-      </tbody>
-    </table>
+        		<button class="logo-red" type="button" onclick="window.location.href = '{% url 'collection_points' %}'">{% trans 'Add Co-shipping Package' %}</button>
 
+
+            <table class="w3-mobile" style="width:100%;overflow:auto; max-height:400px;">
+                <thead>
+                    <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
+                      <input type="checkbox" id="select_all_coshipping">&nbsp;{% trans 'Select All' %}
+                    </th><th class="text-regular-bold content_right">{% trans 'Package(s)' %}</th></tr>
+                </thead>
+                <tbody>
+
+                  {% for package in co_shipping_list %}
+                      <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
+                        <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
+                      </td><td class="w3-cell w3-rest">
+                        {% include "blocks/cart_coshipping.html" with package=package %}
+                      </td></tr>
+                  {% endfor %}
+
+              </tbody>
+            </table>
+        {% endif %}
+
+        {% if direct_shipping_list %}
+        		<div class="text-xxlarge">{% trans 'Direct Shipping Cart' %}</div>
+            <button class="logo-blue" type="button" onclick="window.location.href = '{% url 'add_direct_shipping' %}'">{% trans 'Add Direct Shipping Package' %}</button>
+            <span class="w3-right"><button class="logo-red" type="button" onclick="window.location.href = '{% url 'confirm_direct_shipping' %}'">{% trans 'Ready to ship' %}</button></span>
+
+            <table class="w3-mobile" style="width:100%;">
+                <thead>
+                    <tr><th class="text-regular-bold content_right">{% trans 'Package(s)' %}</th></tr>
+                </thead>
+                <tbody style="overflow:auto; max-height:100px;">
+                  {% for package in direct_shipping_list %}
+                      <tr class="w3-cell-row"><td class="w3-cell w3-rest">
+                        {% include "blocks/cart_direct_shipping.html" with package=package lessline="yes"%}
+                      </td></tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+        {% endif %}
 	</div>
 </div>
 <script src="{% static 'js/package_cart.js' %}"></script>
@@ -99,7 +120,7 @@
         <div id="selected_list">
         </div>
         <hr class="w3-border-grey"/>
-          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="coupon" id="id_coupon" class="w3-input w3-border"><span class="w3-text-blue w3-right"  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
+          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="code" id="id_code" class="w3-input w3-border"><span class="w3-text-blue w3-right "  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
           <hr class="w3-border-black"/>
         <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
         <div class="w3-row">{{order.insurance.label_tag}}<span class="w3-right" id="id_total_amount">{{order.insurance}}</span></div>

@@ -205,7 +205,7 @@ a:hover{
   margin: auto;
 }
 
-.wechat, .email, .ui_button{
+.wechat, .email, .ui_button, #apply_coupon{
   cursor:pointer;
 }
 .w3-card-2, .w3-card-4, .w3-border{
