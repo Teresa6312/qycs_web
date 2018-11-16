@@ -168,7 +168,7 @@ class ParentPackageAdmin(admin.ModelAdmin):
 
 
 	fieldsets = [
-		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'memo']}),
+		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'currency','package_amount', 'memo']}),
 		('Shipment',               	{'fields': ['ship_to', 'shipped_date', 'tracking_num', 'carrier','received_date']}),
 		('Shipped to Warehouse from Warehouse',    {'fields': ['emp_split'], 'classes': ['collapse']}),
 		('Issue',                   {'fields': ['issue']}),
