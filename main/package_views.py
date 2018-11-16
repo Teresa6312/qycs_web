@@ -59,38 +59,42 @@ class PackageCartView(TemplateView):
 		cart = CartForm(request.user, request.POST)
 		order = OrderSetForm(request.POST)
 		if cart.is_valid() and order.is_valid():
-			try:
-				coupon = Coupon.objects.get(code = request.POST.get('code'))
-			except:
-				coupon = None
+			if cart.cleaned_data['package_set'] or cart.cleaned_data['parent_package_set']:
+				try:
+					coupon = Coupon.objects.get(code = request.POST.get('code'))
+				except:
+					coupon = None
 
-			orderSet = order.save()
-			orderSet.coupon = coupon
+				orderSet = order.save()
+				orderSet.coupon = coupon
 
-			amount = 0;
-			for pack in cart.cleaned_data['package_set']:
-				package = Service.objects.get(id = pack.id )
-				if package.get_total()>0:
-					package.order_set = orderSet
-					package.save()
-					amount = package.get_total() + amount
+				amount = 0;
+				for pack in cart.cleaned_data['package_set']:
+					package = Service.objects.get(id = pack.id )
+					if package.get_total()>0:
+						package.order_set = orderSet
+						package.save()
+						amount = package.get_total() + amount
 
 
-			for parent_pack in cart.cleaned_data['parent_package_set']:
-				package = ParentPackage.objects.get(id = parent_pack.id )
-				if float (package.package_amount)>0:
-					package.order_set = orderSet
-					package.save()
-					amount = float (package.package_amount) + amount
+				for parent_pack in cart.cleaned_data['parent_package_set']:
+					package = ParentPackage.objects.get(id = parent_pack.id )
+					if float (package.package_amount)>0:
+						package.order_set = orderSet
+						package.save()
+						amount = float (package.package_amount) + amount
 
-			orderSet.total_amount = amount
-			if orderSet.service_set.all():
-				orderSet.currency = orderSet.service_set.first().currency
+				orderSet.total_amount = amount
+				if orderSet.service_set.all():
+					orderSet.currency = orderSet.service_set.first().currency
+				else:
+					orderSet.currency = orderSet.parentpackage_set.first().currency
+				orderSet.save()
+				request.session['order_set_id'] = orderSet.id
+
+				return redirect(reverse('payment:process'))
 			else:
-				orderSet.currency = orderSet.parentpackage_set.first().currency
-			orderSet.save()
-			request.session['order_set_id'] = orderSet.id
-			return redirect(reverse('payment:process'))
+				return redirect(reverse('packagecart'))
 		else:
 			return redirect(reverse('packagecart'))
 

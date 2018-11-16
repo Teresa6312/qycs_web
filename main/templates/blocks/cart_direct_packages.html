@@ -2,7 +2,7 @@
 <div class="w3-card-4 w3-border-black w3-round w3-row package w3-border w3-container">
     {% if package.weight %}
       <div class="w3-third w3-container">
-          <div class="cust_tracking_num text-regular-bold">{% trans 'Direct Package'%} ({{package.created_date|date:"m/d/Y" }})</div>
+          <div class="cust_tracking_num text-regular-bold">{% trans 'Big Package'%} ({{package.created_date|date:"m/d/Y" }})</div>
               {% trans "Weight: " %}{{package.weight}}(KG)<br/>
               {% trans 'Ship to: '%}
               {% if package.service_set.first.ship_to_add %}
