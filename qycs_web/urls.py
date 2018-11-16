@@ -9,11 +9,10 @@ from collector import views as col_views
 from main import views as main_views
 
 from django.contrib.sitemaps.views import sitemap
-from main.sitemap import CollectionPointSitemap, ResourceSitemap, StaticViewSitemap
+from main.sitemap import CollectionPointSitemap, StaticViewSitemap
 
 sitemaps = {
     'collectionpoints': CollectionPointSitemap,
-    'information': ResourceSitemap,
     'static': StaticViewSitemap,
 }
 
@@ -28,9 +27,10 @@ urlpatterns = [
     path('collection-point/<int:col_pk>/view', col_views.CollectionPointDetailView.as_view(), name='collection_point_view'),
     path('information/<str:title>/', main_views.InformationView.as_view(), name='information'),
     path('_/', include('django.conf.urls.i18n')),
+    path('', main_views.HomeView.as_view(), name='home'),
     path('gloabl-shop/', main_views.ShoppingView.as_view(), name='shopping'),
     path('collection-points/', main_views.CollectionPointView.as_view(), name='collection_points'),
-
+    path('price-list/', main_views.PriceListView.as_view(), name='price_list'),
     path('auth/', include('social_django.urls', namespace='social')),
     path('paypal/', include('paypal.standard.ipn.urls')),
 ]

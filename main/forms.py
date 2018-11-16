@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-	User, Address, Service, CollectionPoint, Warehouse,
+	User, Address, Service, CollectionPoint, Warehouse, ParentPackage,
 	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
 	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY, SHIPPING_CARRIER_CHOICE
 	)
@@ -312,11 +312,13 @@ class EmailForm(forms.Form):
 	content = forms.CharField(required = True)
 
 class CartForm(forms.Form):
-	package_set = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
+	package_set = forms.ModelMultipleChoiceField(required = False, queryset=None, widget=forms.CheckboxSelectMultiple())
+	parent_package_set = forms.ModelMultipleChoiceField(required = False, queryset=None, widget=forms.CheckboxSelectMultiple())
 
 	def __init__(self, user, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['package_set'].queryset = Service.objects.filter(user = user, paid_amount = None).order_by('-created_date')
+		self.fields['parent_package_set'].queryset = ParentPackage.objects.filter(paid_amount = None).order_by('-created_date')
 
 class OrderSetForm(forms.ModelForm):
 	class Meta:

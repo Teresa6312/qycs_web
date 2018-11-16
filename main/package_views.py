@@ -1,5 +1,5 @@
 from .models import (
-	Address, Service, CollectionPoint, Coupon,
+	Address, Service, CollectionPoint, Coupon, ParentPackage,
 	User, Warehouse, PackageSnapshot, OrderSet
 	)
 from .forms import (
@@ -42,35 +42,59 @@ class PackageCartView(TemplateView):
 
 	def get(self, request):
 		order = OrderSetForm()
-		package_list = Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date')
+		order_list = Service.objects.filter(user = request.user, paid_amount = None, order = True).order_by('-created_date')
+		co_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).order_by('-created_date')
+		direct_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('-created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, service__paid_amount = None).distinct()
+
+
 		return render(request, self.template_name,
-			{'package_list': package_list,
+			{'order_list': order_list,
+			'co_shipping_list': co_shipping_list,
+			'direct_shipping_list': direct_shipping_list,
+			'parent_package_list': parent_package_list,
 			'order':order})
 
 	def post(self, request):
 		cart = CartForm(request.user, request.POST)
-		if cart.is_valid():
-			try:
-				coupon = Coupon.objects.get(code = request.POST.get('coupon'))
-			except:
-				coupon = None
+		order = OrderSetForm(request.POST)
+		if cart.is_valid() and order.is_valid():
+			if cart.cleaned_data['package_set'] or cart.cleaned_data['parent_package_set']:
+				try:
+					coupon = Coupon.objects.get(code = request.POST.get('code'))
+				except:
+					coupon = None
 
-			orderSet = OrderSet(coupon = coupon, total_amount = 0.0)
-			orderSet.save()
+				orderSet = order.save()
+				orderSet.coupon = coupon
 
-			amount = 0;
-			for pack in cart.cleaned_data['package_set']:
-				package = Service.objects.get(id = pack.id )
-				if package.get_total()>0:
-					package.order_set = orderSet
-					package.save()
-					amount = package.get_total() + amount
+				amount = 0;
+				for pack in cart.cleaned_data['package_set']:
+					package = Service.objects.get(id = pack.id )
+					if package.get_total()>0:
+						package.order_set = orderSet
+						package.save()
+						amount = package.get_total() + amount
 
-			orderSet.total_amount = amount
-			orderSet.currency = orderSet.service_set.first().currency
-			orderSet.save()
-			request.session['order_set_id'] = orderSet.id
-			return redirect(reverse('payment:process'))
+
+				for parent_pack in cart.cleaned_data['parent_package_set']:
+					package = ParentPackage.objects.get(id = parent_pack.id )
+					if float (package.package_amount)>0:
+						package.order_set = orderSet
+						package.save()
+						amount = float (package.package_amount) + amount
+
+				orderSet.total_amount = amount
+				if orderSet.service_set.all():
+					orderSet.currency = orderSet.service_set.first().currency
+				else:
+					orderSet.currency = orderSet.parentpackage_set.first().currency
+				orderSet.save()
+				request.session['order_set_id'] = orderSet.id
+
+				return redirect(reverse('payment:process'))
+			else:
+				return redirect(reverse('packagecart'))
 		else:
 			return redirect(reverse('packagecart'))
 
@@ -266,3 +290,30 @@ def couponView(request):
 			return HttpResponse(coupon.discount)
 		except:
 			return HttpResponse()
+
+
+class ConfirmDirectShipping(TemplateView):
+		template_name = 'main/confirm_direct_shipping.html'
+
+		def get(self, request):
+			order = OrderSetForm()
+			package_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('-created_date')
+			return render(request, self.template_name,
+				{'package_list': package_list,
+				'order':order})
+
+		def post(self, request):
+			cart = CartForm(request.user, request.POST)
+			if cart.is_valid():
+				parent_pack = ParentPackage()
+				parent_pack.save()
+
+				for pack in cart.cleaned_data['package_set']:
+					package = Service.objects.get(id = pack.id )
+					if package.issue == '':
+						package.parent_package = parent_pack
+						package.save()
+
+				return redirect(reverse('packagecart'))
+			else:
+				return redirect(reverse('confirm_direct_shipping'))

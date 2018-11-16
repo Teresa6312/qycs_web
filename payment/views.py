@@ -16,19 +16,19 @@ def payment_process(request):
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
 			"amount": (orderSet.total_amount + orderSet.insurance),
 			"currency_code": orderSet.currency,
-			"item_name": "{} packages".format(orderSet.service_set.all().count()),
+			"item_name": "{} package(s)/order(s) ({})".format(orderSet.service_set.all().count(), orderSet.get_insurance_display()),
 			"discount_rate": orderSet.coupon.discount,
 			"invoice": orderSet.id,
 			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
 			"return": 'http://{}{}'.format(host, reverse('userpackage')),
-			"cancel_return": 'http://{}{}'.format(host, reverse('package_cart')),
+			"cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
 		}
 	else:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
 			"amount": (orderSet.total_amount + orderSet.insurance),
 			"currency_code": orderSet.currency,
-			"item_name": "{} package(s)/order(s)".format(orderSet.service_set.all().count()),
+			"item_name": "{} package(s)/order(s) ({})".format(orderSet.service_set.all().count(), orderSet.get_insurance_display()),
 			"invoice": orderSet.id,
 			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
 			"return": 'http://{}{}'.format(host, reverse('userpackage')),

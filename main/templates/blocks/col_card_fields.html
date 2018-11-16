@@ -8,7 +8,7 @@
     <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:15px;"/>
   {% endif %}
   {% if col.store %}
-      ({% if col.store_name %}({% trans 'Store' %}{{col.store_name}}{% endif %})
+      ({% if col.store_name %}{% trans 'Store' %}{{col.store_name}}{% endif %})
   {% else %}
       ({% trans 'Personal Place' %})
   {% endif %}
