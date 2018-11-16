@@ -42,7 +42,7 @@
           {% else %}<button type="button"  onclick="window.open('https://www.google.com/maps/dir//{{collector.address}} {% if collector.apt %}{{collector.apt}}{% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}')" class="logo-blue">{% trans 'get direction' %}</button>{% endif %}
 
 
-          <button type="button" class="logo-red" onclick="window.location.href='{% url 'add_co_shipping' user.default_col.pk %}'">{% trans 'ship package' %}</button>
+          <button type="button" class="logo-red" onclick="window.location.href='{% url 'add_co_shipping' collector.pk %}'">{% trans 'ship package' %}</button>
       </div>
   </div>
 
@@ -56,7 +56,7 @@
           <div class="w3-row w3-margin-left">{{collector.description|linebreaks|safe}}</div>
         </div>
     {% endif %}
-    
+
     <div style="width:300px;">
             <div class="text-medium-bold w3-margin-top">{% trans 'Schedule' %}</div>
 

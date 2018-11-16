@@ -205,7 +205,7 @@ a:hover{
   margin: auto;
 }
 
-.wechat, .email, .ui_button{
+.wechat, .email, .ui_button, #apply_coupon{
   cursor:pointer;
 }
 .w3-card-2, .w3-card-4, .w3-border{
@@ -406,7 +406,7 @@ a:hover{
   padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width: 100%;display:block;border:1px solid #ccc
 }
 .w3-modal-content select,.contentCSS select{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width:100%;border:1px solid #ccc}
-#id_birthday_year, #id_birthday_month, #id_birthday_day{
+#id_birthday_year, #id_birthday_month, #id_birthday_day, #id_absent_start_year, #id_absent_start_month, #id_absent_start_day, #id_absent_end_year, #id_absent_end_month, #id_absent_end_day{
   width: 32.5%;
 }
 .contentCSS input[type="checkbox"]{
@@ -733,6 +733,9 @@ input:checked + .slider:before {
 
     #shipping_half_circle, #tracking_half_circle, #shipping_full_circle,  #tracking_full_circle{
       font-size: 2.2vw;
+    }
+    .w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
+      width: 100%;
     }
   }
 

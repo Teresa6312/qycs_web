@@ -144,7 +144,7 @@ class SendEmailView(TemplateView):
 			send_mail(
 					subject,
 					content,
-					settings.EMAIL_HOST_USER,
+					settings.DEFAULT_FROM_EMAIL,
 					to_email,
 					fail_silently=False,
 				)

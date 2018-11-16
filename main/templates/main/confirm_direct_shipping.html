@@ -1,0 +1,59 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Upcoming Packages' %}
+{% endblock%}
+
+{% block content %}
+<form method = "post" class="w3-margin-top">
+{% csrf_token %}
+<div class="w3-cell w3-container w3-mobile">
+    <div class="w3-container">
+
+
+		<div class="text-xxlarge">{% trans 'Confirm Direct Shipping' %}</div>
+    <div><input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red"></div>
+
+
+    <table class="w3-mobile" style="width:100%;overflow:auto; max-height:400px;">
+        <thead>
+            <tr><th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
+              <input type="checkbox" id="select_all_direct_shipping">&nbsp;{% trans 'Select All' %}
+            </th><th class="text-regular-bold content_right">{% trans 'Package(s)' %}</th></tr>
+        </thead>
+        <tbody>
+      {% if package_list %}
+          {% for package in package_list %}
+              <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
+                <input type="checkbox" name="package_set" value="{{package.id}}" id="id_package_set_{{ forloop.counter0 }}">
+              </td><td class="w3-cell w3-rest">
+                    {% include "blocks/cart_direct_shipping.html" with package=package lessline="yes"%}
+              </td></tr>
+          {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+	</div>
+</div>
+<script>$(document).ready(function(){
+
+//  for select all checkbox
+  $('#select_all_direct_shipping').change(function(){
+    if($(this).prop('checked')){
+      $(this).parents('table').find("input[type=checkbox]").each(function(){
+        if(!$(this).prop('disabled')){
+          $(this).prop('checked', true);
+        }
+      });
+    }else{
+      $(this).parents('table').find("input[type=checkbox]").each(function(){
+        $(this).prop('checked', false);
+      });
+    }
+  });// end of select_all_coshipping
+
+});
+</script>
+</form>
+{% endblock %}
