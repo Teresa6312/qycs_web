@@ -13,16 +13,35 @@ def payment_paid(sender, **kwargs):
 			return
 
 		if ipn_obj.mc_gross == order.total_amount and ipn_obj.mc_currency == order.currency:
-			if order.coupon:
-				for pack in order.service_set.all():
-					package = Service.objects.get(id = pack.id)
-					package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
-					package.save()
-			else:
-				for pack in order.service_set.all():
-					package = Service.objects.get(id = pack.id)
-					package.paid_amount = package.get_total()
-					package.save()
+			if order.service_set.all().count()>0:
+				if order.coupon:
+					for pack in order.service_set.all():
+						package = Service.objects.get(id = pack.id)
+						package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
+						package.save()
+				else:
+					for pack in order.service_set.all():
+						package = Service.objects.get(id = pack.id)
+						package.paid_amount = package.get_total()
+						package.save()
+
+# parent_package
+			count = order.parentpackage_set.all().count()
+			if count > 0:
+				if order.coupon:
+					for parent_pack in order.parentpackage_set.all():
+						parent_pack.paid_amount = parent_pack.package_amount*(1-order.coupon.discount/100)
+						for pack in parent_pack.service_set.all():
+							package = Service.objects.get(id = pack.id)
+							package.paid_amount = parent_pack.package_amount*(1-order.coupon.discount/100)/count
+							package.save()
+				else:
+					for parent_pack in order.parentpackage_set.all():
+						parent_pack.paid_amount = parent_pack.package_amount
+						for pack in parent_pack.service_set.all():
+							package = Service.objects.get(id = pack.id)
+							package.paid_amount = parent_pack.package_amount/count
+							package.save()
 
 		else:
 			return

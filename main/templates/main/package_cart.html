@@ -22,11 +22,15 @@
               <tbody>
 
                 {% for package in parent_package_list %}
-                    <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
-                      <input type="checkbox" name="parent_package_set" value="{{package.id}}" id="id_parent_package_set_{{ forloop.counter0 }}">
-                    </td><td class="w3-cell w3-rest">
-                      {% include "blocks/cart_direct_packages.html" with package=package %}
-                    </td></tr>
+                    {% if not package.paid_amount %}
+                        <tr class="w3-cell-row"><td  class="w3-cell select_column" style="width:5%;">
+                          <input type="checkbox" name="parent_package_set" value="{{package.id}}" id="id_parent_package_set_{{ forloop.counter0 }}">
+                        </td><td class="w3-cell w3-rest">
+
+                              {% include "blocks/cart_direct_packages.html" with package=package %}
+
+                        </td></tr>
+                    {% endif %}
                 {% endfor %}
 
             </tbody>

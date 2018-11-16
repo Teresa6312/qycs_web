@@ -63,7 +63,7 @@ class PackageCartView(TemplateView):
 				coupon = Coupon.objects.get(code = request.POST.get('code'))
 			except:
 				coupon = None
-			# orderSet = OrderSet(coupon = coupon, total_amount = 0.0)
+
 			orderSet = order.save()
 			orderSet.coupon = coupon
 
