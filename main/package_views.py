@@ -293,7 +293,7 @@ class ConfirmDirectShipping(TemplateView):
 
 		def get(self, request):
 			order = OrderSetForm()
-			package_list = Service.objects.filter(user = request.user, co_shipping = False, order = False, paid_amount = None).order_by('ship_to_add')
+			package_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('-created_date')
 			return render(request, self.template_name,
 				{'package_list': package_list,
 				'order':order})
