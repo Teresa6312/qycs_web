@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 21:17+0800\n"
+"POT-Creation-Date: 2018-11-17 15:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -956,8 +956,6 @@ msgstr "优惠码"
 #: .\main\templates\blocks\cart_direct_packages.html:29
 #: .\main\templates\blocks\cart_order.html:47
 #: .\main\templates\main\package_cart.html:137
-#: .\main\templates\main\package_history.html:79
-#: .\main\templates\main\package_history.html:142
 #: .\payment\templates\payment\process.html:42
 msgid "Total Amount"
 msgstr "总额"
@@ -1025,7 +1023,6 @@ msgstr "主包裹"
 
 #: .\main\models.py:428 .\main\templates\blocks\cart_order.html:4
 #: .\main\templates\main\package_detail.html:20
-#: .\main\templates\main\package_history.html:91
 msgid "Order"
 msgstr "购物单"
 
@@ -1096,8 +1093,6 @@ msgstr "运费"
 #: .\main\models.py:468 .\main\templates\blocks\cart_coshipping.html:25
 #: .\main\templates\blocks\cart_order.html:39
 #: .\main\templates\main\package_detail.html:149
-#: .\main\templates\main\package_history.html:71
-#: .\main\templates\main\package_history.html:134
 msgid "Order Amount"
 msgstr "订单金额"
 
@@ -1332,21 +1327,21 @@ msgstr "平均重价格"
 msgid "Price Rate"
 msgstr "价格及汇率"
 
-#: .\main\package_views.py:155 .\main\package_views.py:242
+#: .\main\package_views.py:161 .\main\package_views.py:248
 msgid " is created successfully!"
 msgstr "被创建成功"
 
-#: .\main\package_views.py:201
+#: .\main\package_views.py:207
 msgid ""
 "The Collection Point you selected is not available right now! Please choose "
 "another one."
 msgstr "你所选择的收件站暂时无效！请选择 另外一个。"
 
-#: .\main\package_views.py:263 .\main\package_views.py:279
+#: .\main\package_views.py:269 .\main\package_views.py:285
 msgid " is not your package. You cannot view the detail."
 msgstr "不是你的包裹，你无权预览细节。"
 
-#: .\main\package_views.py:266 .\main\package_views.py:282
+#: .\main\package_views.py:272 .\main\package_views.py:288
 msgid "Cannot Find the package"
 msgstr "无法找到你的包裹"
 
@@ -1393,23 +1388,18 @@ msgstr "默认"
 
 #: .\main\templates\blocks\cart_coshipping.html:8
 #: .\main\templates\blocks\cart_direct_shipping.html:8
-#: .\main\templates\main\package_history.html:36
 msgid "Created on"
 msgstr "创建于"
 
 #: .\main\templates\blocks\cart_coshipping.html:14
 #: .\main\templates\blocks\cart_order.html:14
 #: .\main\templates\main\package_detail.html:106
-#: .\main\templates\main\package_history.html:53
-#: .\main\templates\main\package_history.html:102
 msgid "Co-shipping to"
 msgstr "拼邮到"
 
 #: .\main\templates\blocks\cart_coshipping.html:23
 #: .\main\templates\blocks\cart_direct_packages.html:25
 #: .\main\templates\blocks\cart_order.html:37
-#: .\main\templates\main\package_history.html:69
-#: .\main\templates\main\package_history.html:132
 #: .\main\templates\main\price_list.html:21
 msgid "Price"
 msgstr "价格"
@@ -1417,8 +1407,6 @@ msgstr "价格"
 #: .\main\templates\blocks\cart_coshipping.html:28
 #: .\main\templates\blocks\cart_order.html:42
 #: .\main\templates\main\package_detail.html:152
-#: .\main\templates\main\package_history.html:74
-#: .\main\templates\main\package_history.html:137
 msgid "Storage fee"
 msgstr "储存费"
 
@@ -1426,8 +1414,6 @@ msgstr "储存费"
 #: .\main\templates\blocks\cart_direct_packages.html:27
 #: .\main\templates\blocks\cart_order.html:45
 #: .\main\templates\main\package_detail.html:155
-#: .\main\templates\main\package_history.html:77
-#: .\main\templates\main\package_history.html:140
 msgid "Shipping fee"
 msgstr "运费"
 
@@ -1435,18 +1421,14 @@ msgstr "运费"
 #: .\main\templates\blocks\cart_direct_packages.html:31
 #: .\main\templates\blocks\cart_direct_shipping.html:20
 #: .\main\templates\blocks\cart_order.html:49
-#: .\main\templates\main\package_history.html:81
-#: .\main\templates\main\package_history.html:144
 msgid "There are some issue with your packages. Please check package detail."
-msgstr "你的包裹有些问题，麻烦检查你的包裹细节。"
+msgstr "您的包裹存在邮寄问题，点击详情了解更多。"
 
 #: .\main\templates\blocks\cart_coshipping.html:36
 #: .\main\templates\blocks\cart_direct_shipping.html:21
 #: .\main\templates\blocks\cart_order.html:50
-#: .\main\templates\main\package_history.html:82
-#: .\main\templates\main\package_history.html:145
 msgid "detail"
-msgstr "细节"
+msgstr "详情"
 
 #: .\main\templates\blocks\cart_direct_packages.html:5
 msgid "Big Package"
@@ -1467,8 +1449,6 @@ msgstr "小包裹"
 #: .\main\templates\blocks\cart_direct_shipping.html:14
 #: .\main\templates\blocks\cart_order.html:7
 #: .\main\templates\main\package_detail.html:98
-#: .\main\templates\main\package_history.html:43
-#: .\main\templates\main\package_history.html:94
 msgid "Direct Shipping to"
 msgstr "直邮到"
 
@@ -1477,7 +1457,6 @@ msgid "Item(s)"
 msgstr "商品"
 
 #: .\main\templates\blocks\cart_order.html:33
-#: .\main\templates\main\package_history.html:122
 msgid "No information at this time."
 msgstr "暂无信息"
 
@@ -2036,6 +2015,7 @@ msgid "Forgot Password?"
 msgstr "忘记密码？"
 
 #: .\main\templates\main\package_cart.html:16
+#: .\main\templates\main\package_history.html:22
 msgid "Direct Shipping Package(s)"
 msgstr "直邮包裹"
 
@@ -2049,7 +2029,7 @@ msgstr "国际购物车"
 
 #: .\main\templates\main\package_cart.html:48
 msgid "Order(s)"
-msgstr "购物单"
+msgstr "购物订单"
 
 #: .\main\templates\main\package_cart.html:66
 msgid "Co-shipping Cart"
@@ -2057,7 +2037,6 @@ msgstr "拼邮包裹车"
 
 #: .\main\templates\main\package_cart.html:69
 #: .\main\templates\main\package_cart.html:114
-#: .\main\templates\main\package_history.html:17
 msgid "Add Co-shipping Package"
 msgstr "添加拼邮包裹"
 
@@ -2067,7 +2046,6 @@ msgstr "直邮包裹车"
 
 #: .\main\templates\main\package_cart.html:94
 #: .\main\templates\main\package_cart.html:115
-#: .\main\templates\main\package_history.html:19
 msgid "Add Direct Shipping Package"
 msgstr "添加直邮包裹"
 
@@ -2182,17 +2160,13 @@ msgstr "没有输入任何商品细节"
 msgid "'s Package History"
 msgstr "的包裹历史"
 
-#: .\main\templates\main\package_history.html:65
-msgid "Package Status"
-msgstr "包裹状态"
+#: .\main\templates\main\package_history.html:19
+msgid "Global Shopping Order(s)"
+msgstr "国际购物订单"
 
-#: .\main\templates\main\package_history.html:114
-msgid "Items"
-msgstr "商品"
-
-#: .\main\templates\main\package_history.html:128
-msgid "Order Status"
-msgstr "订单状态"
+#: .\main\templates\main\package_history.html:25
+msgid "Co-shipping Package(s)"
+msgstr "拼邮包裹"
 
 #: .\main\templates\main\price_list.html:16
 msgid "Co-shipping Fee <span class=\"text-regular\">(No Service Fee)</span>"
@@ -2534,6 +2508,15 @@ msgid ""
 "You already have an account with this email. Please use the below username "
 "and password fields to log in."
 msgstr "你已经有一个用户连接此邮箱。请使用以下的用户名和密码来登录。"
+
+#~ msgid "Package Status"
+#~ msgstr "包裹状态"
+
+#~ msgid "Items"
+#~ msgstr "商品"
+
+#~ msgid "Order Status"
+#~ msgstr "订单状态"
 
 #~ msgid "Reward Point Used"
 #~ msgstr "奖励积分已使用了"

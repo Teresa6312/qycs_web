@@ -11,9 +11,6 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
-
-# cloudinary urls
-
 # open for everyone
 
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
