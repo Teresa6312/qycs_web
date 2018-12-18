@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
+
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
@@ -24,6 +25,7 @@ from django.http import HttpResponseRedirect
 # from django.core.serializers.json import DjangoJSONEncoder
 #
 import datetime
+import json
 
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
@@ -293,7 +295,16 @@ def couponView(request):
 		code=request.POST.get('coupon','')
 		try:
 			coupon = Coupon.objects.get(code = code)
-			return HttpResponse(coupon.discount)
+			if coupon.check_coupon:
+				context = json.dumps({
+				'amount_limit': coupon.amount_limit,
+				'package': coupon.package,
+				'order': coupon.order,
+				'discount': coupon.discount,
+				})
+				return HttpResponse(context)
+			else:
+				return HttpResponse(False)
 		except:
 			return HttpResponse()
 

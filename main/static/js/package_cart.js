@@ -35,25 +35,33 @@ function apply_coupon(csrf, url){
               url: url,
               data: dt,
               success: function(data){
-                console.log(data);
                 if(data === ''){
                   var errornote = document.createElement("p");
                   errornote.setAttribute("class", "errornote");
                   errornote.innerHTML = gettext('The coupon does not exist.');
                   $('#coupon_block').before(errornote)
                 }else{
-                  discount = parseFloat(data);
-                  amount = amount *(100-discount)/100;
-                  $('#id_total_amount').text(amount.toFixed(2));
-                  var disc = '<div id="discount_block">'+
-                            dt.coupon +
-                            '('+ discount + '% OFF):'+
-                            '<span class="w3-right" id="discount_amount">-'+
-                            (amount *discount/100).toFixed(2) +
-                            '</span></div>'
-                  $('#amount_block').before(disc);
-                  $('#id_code').prop('type','hidden');
-                  $('#id_reward_point_used').val(0);
+                  coup = JSON.parse(data)
+                  if (coup==false){
+                    var errornote = document.createElement("p");
+                    errornote.setAttribute("class", "errornote");
+                    errornote.innerHTML = gettext('The coupon is invalid.');
+                    $('#coupon_block').before(errornote)
+                  }else{
+                    discount = parseFloat(coup.discount);
+                    amount = amount *(100-discount)/100;
+                    $('#id_total_amount').text(amount.toFixed(2));
+                    var disc = '<div id="discount_block">'+
+                              dt.coupon +
+                              '('+ discount + '% OFF):'+
+                              '<span class="w3-right" id="discount_amount">-'+
+                              (amount *discount/100).toFixed(2) +
+                              '</span></div>'
+                    $('#amount_block').before(disc);
+                    $('#id_code').prop('type','hidden');
+                    $('#id_reward_point_used').val(0);
+                  }
+
                 }
               },
               failure: function(data){
