@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.urls import reverse
 
+from django.db.models.signals import post_save
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
 from cloudinary.models import CloudinaryField
@@ -161,6 +163,13 @@ class Employee(models.Model):
 		verbose_name_plural = _("Employees")
 		ordering = ['-pk']
 
+def create_emp_profile(sender, **kwargs):
+	if kwargs['created']:
+		user = kwargs['instance']
+		if user.is_staff or user.is_superuser:
+			user_profile = Employee.objects.create(employee = kwargs['instance'])
+
+post_save.connect(create_emp_profile, sender = User)
 
 class Address_Common_Info(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -349,9 +358,23 @@ class Coupon(models.Model):
 	def __str__(self):
 		return '%s %d %s'%(self.code,self.discount,"% OFF")
 
+	def check_coupon(self, user):
+		if self.user and user != coupon.user:
+			return False
+		if self.start_date and date.today() < self.start_date:
+			return False
+		if self.end_date and date.today() > self.end_date:
+			return False
+		if self.one_time_only and self.used_times!=0:
+			return False
+		return True
+
+
 	class Meta:
 		verbose_name_plural = _("Coupon")
 		ordering = [F('start_date').asc(nulls_last=True)]
+
+
 
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -552,6 +575,7 @@ class Service(models.Model):
 	class Meta:
 		verbose_name_plural = _("Package/Order")
 		ordering = ['-created_date']
+
 
 class Item(models.Model):
 	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package/Order'))

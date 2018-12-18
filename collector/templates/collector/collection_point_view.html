@@ -196,7 +196,6 @@
 
 
 function AddResponseForm(id, type){
-
     let content = '<div class="w3-row response_block" id="response_block_'+
     id+
     '">'+
@@ -213,24 +212,11 @@ function AddResponseForm(id, type){
         $('#'+type+'_block_'+id).append(content);
         $('#response_block_'+id).hide().slideDown(500);
         $('.response_btn_'+id).hide();
-
     }
 }
 
 
-function openBlock(evt, blockName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("message_block");
-  for (i = 0; i < x.length; i++) {
-     x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
-  }
-  document.getElementById(blockName).style.display = "block";
-  evt.currentTarget.firstElementChild.className += " w3-border-red";
-}
+
 
 $(document).ready(function(){
     $(".block_link").click(function(){
