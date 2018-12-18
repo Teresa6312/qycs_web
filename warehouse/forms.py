@@ -22,11 +22,13 @@ class PriceCalForm(forms.ModelForm):
 		model = Service
 		fields = (
 			'weight',
-			'ship_carrier',
 			'package_type',
 			)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['weight'].required = True
-		self.fields['ship_carrier'].required = True
 		self.fields['package_type'].required = True
+
+
+class IssueForm(forms.Form):
+	issue = forms.CharField(required = True)

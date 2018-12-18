@@ -15,7 +15,7 @@
 {% block content %}
 <div class="w3-panel w3-mobile content_center">
       <h2>{{package.cust_tracking_num}}
-       - {{package.cust_carrier}}
+       - {{package.get_cust_carrier_display}}
       {% if package.order %}
           ({% trans 'Order' %})
       {% else %}
@@ -26,6 +26,7 @@
           {% endif %}
       {% endif %}
       </h2>
+
       <div class="w3-panel">
           <ul class="timeline">
             <li class="li {% if package.created_date %}complete{% endif %}">
@@ -116,7 +117,7 @@
                 </div>
 
                 <div class="w3-row">
-                    <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.package_type}}{% else %}N/A{% endif %}</h6>
+                    <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.get_package_type_display}}{% else %}N/A{% endif %}</h6>
 
                     {% if not package.ship_carrier == '' %}<h6>{% trans 'Selected shipping carrier' %}:{{package.ship_carrier}}</h6>{% endif %}
                     {% if not package.co_shipping %}<h6>{% trans 'No Rush Requested' %}: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
