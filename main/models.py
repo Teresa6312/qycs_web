@@ -407,7 +407,7 @@ class ParentPackage(models.Model):
 	packed_date = models.DateField(blank=True, null=True,verbose_name= _('Packed Date'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
-	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
+	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
 
 	tracking_num = models.CharField(max_length=50, blank=True, default='',verbose_name= _('Tracking Number'))
 	carrier = models.CharField(max_length=100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
@@ -477,8 +477,8 @@ class Service(models.Model):
 	wh_received_date = models.DateField(blank=True, null=True,verbose_name= _('Warehouse Received Date'))
 	ready_date = models.DateField(blank=True, null=True, verbose_name= _('Package Ready Date'))
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
-	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
-	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
+	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
+	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
 	ship_carrier = models.CharField(max_length = 100, choices=SHIPPING_CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
 
 
@@ -668,3 +668,10 @@ class PriceRate(models.Model):
 
 	class Meta:
 		verbose_name_plural = _("Price Rate")
+		unique_together=(
+			'category',
+			'from_country',
+			'to_country',
+			'package_type',
+			'carrier',
+		)

@@ -1,6 +1,6 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
-{% load cloudinary %}
+
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'css/timeline.css'%}"/>
@@ -9,82 +9,13 @@
 {% endblock %}
 
 {% block title%}
-{% trans 'Package Detail' %}
+{% trans 'Enter Weight' %}
 {% endblock%}
 
+
+
 {% block content %}
-<div class="w3-panel w3-mobile content_center">
-      <h2>{{package.cust_tracking_num}}
-       - {{package.cust_carrier}}
-      {% if package.order %}
-          ({% trans 'Order' %})
-      {% else %}
-          {% if package.co_shipping %}
-            ({% trans 'Co-shipping Package' %})
-          {% else %}
-            ({% trans 'Direct Shipping' %})
-          {% endif %}
-      {% endif %}
-      </h2>
-      <div class="w3-panel">
-          <ul class="timeline">
-            <li class="li {% if package.created_date %}complete{% endif %}">
-              <div class="timestamp">
-                <span class="date">{% if package.created_date %}{{package.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-              </div>
-              <div class="status">
-                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Package Marked' %}</div>
-              </div>
-            </li>
-            <li class="li {% if package.wh_received_date %}complete{% endif %}">
-              <div class="timestamp">
-                <span class="date">{% if package.wh_received_date %}{{package.wh_received_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-              </div>
-              <div class="status">
-                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Warehouse Received' %}</div>
-              </div>
-            </li>
-
-            <li class="li {% if package.ready_date %}complete{% endif %}">
-              <div class="timestamp">
-                <span class="date">{% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-              </div>
-              <div class="status">
-                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Ready to Pay' %}</div>
-              </div>
-            </li>
-
-            <li class="li {% if package.paid_amount and package.order_set.created_date %}complete{% endif %}">
-              <div class="timestamp">
-                <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-              </div>
-              <div class="status">
-                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Paid' %}</div>
-              </div>
-            </li>
-            <li class="li {% if package.parent_package.shipped_date %}complete{% endif %}">
-              <div class="timestamp">
-                <span class="date">{% if package.parent_package.shipped_date %}{{package.parent_package.shipped_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-              </div>
-              <div class="status">
-                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Shipped' %}</div>
-              </div>
-            </li>
-            <li class="li {% if package.delieved_date %}complete{% endif %}">
-              <div class="timestamp">
-                <span class="date">{% if package.delieved_date %}{{package.delieved_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-              </div>
-              <div class="status">
-                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'delivered' %}</div>
-              </div>
-            </li>
-          </ul>
-      </div>
-
-
-
-      <hr/>
-
+<div class="w3-container  w3-cell w3-mobile" style="width:70%;">
 
       {% if package.issue %}
           <h5><img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:2vw;"/>{% trans 'This package has the following issue' %}</h5>
@@ -92,7 +23,7 @@
       {% endif %}
 
       <div class="w3-panel content_center">
-            <div class="w3-half">
+
                 <div class="w3-row">
                     {% if not package.co_shipping %}
                     <h6>{% trans 'Direct Shipping to' %}:</h6>
@@ -122,7 +53,7 @@
                     {% if not package.co_shipping %}<h6>{% trans 'No Rush Requested' %}: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
 
                     {% if not package.coshiping %}
-                        <h6>{% trans 'Low Volume Weight Requested'%}:
+                        <h6 class="w3-text-red">{% trans 'Low Volume Weight Requested'%}:
                             {% if package.low_volume_request %}
                             <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
                              {% else %}
@@ -133,16 +64,7 @@
 
 
                     <h6>{% trans 'Weight' %}:
-                      {% if package.volume_weight and package.weight %}
-                          {% if package.volume_weight > package.weight %}
-                              {{package.volume_weight}}
-                          {% else %}
-                              {{package.weight}}
-                          {% endif %}
-                          (kg)
-                      {% else %}
-                      N/A
-                      {% endif %}
+
                     </h6>
 
                     {% if package.order_amount %}
@@ -183,10 +105,62 @@
                         <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
                   {% endif %}
               </div>
-          </div>
-          <div class="w3-half">
-              <img class="w3-right" src="{% static 'image/slogan.png' %}" alt="no" style="width:300px;"/>
-          </div>
+
       </div>
 </div>
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+{% if package.co_shipping %}
+<div class="w3-container w3-cell w3-mobile w3-margin-top">
+    <div class="w3-card-2 w3-round w3-container w3-padding-16">
+      <div class="text-xxlarge-bold">{% trans 'Enter Weight' %}</div>
+      <form method = "post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% if form.errors %}
+          <p class="errornote">
+              {% if form.errors.items|length == 1 %}
+                  {% trans "Please correct the error below." %}
+              {% else %}
+                  {% trans "Please correct the errors below." %}
+              {% endif %}
+          </p>
+      {% endif %}
+      <div class="w3-mobile">
+          <div class="w3-row text-medium">
+            {% trans 'Volume' %}
+          </div>
+            <div class="w3-row" >
+              {{ vol_form.length }}
+            </div>
+            <div class="w3-row" >
+             {{ vol_form.width }}
+            </div>
+            <div  class="w3-row">
+              {{ vol_form.height }}
+            </div>
+          <div class="w3-row">
+              {{ form.weight.label_tag }} {{ form.weight.errors }} {{ form.weight }}
+          </div>
+          <div class="w3-row">
+              {{ form.ship_carrier.label_tag }} {{ form.ship_carrier.errors }} {{ form.ship_carrier }}
+          </div>
+          <div class="w3-row">
+              {{ form.package_type.label_tag }} {{ form.package_type.errors }} {{ form.package_type }}
+          </div>
+
+          <div class="w3-row" id="button_row">
+            <div class="w3-right">
+              <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>
+            </div>
+          </div>
+      </div>
+    </form>
+
+    </div>
+</div>
+{% endif %}
 {% endblock %}
