@@ -429,7 +429,7 @@ class ParentPackage(models.Model):
 			return None
 
 	def __str__(self):
-		if tracking_num=='':
+		if self.tracking_num=='':
 			return "%s - %s"%(self.id, self.ship_to())
 		else:
 			return "%s - %s: "%(self.tracking_num, self.carrier, self.ship_to())
