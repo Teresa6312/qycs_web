@@ -45,23 +45,34 @@ class NotReadyCoPackages(TemplateView):
 			messages.error(request, _("Staff access only!"))
 			return redirect(reverse('login'))
 
+class NotReadyDirectPackages(TemplateView):
+	template_name = 'warehouse/not_ready_direct_packages.html'
+
+	def get(self, request):
+		if request.user.is_staff or request.user.is_superuser:
+			packages = Service.objects.filter(shipping_fee=None, co_shipping = False).order_by('cust_tracking_num', 'parent_package')
+
+			return render(request, self.template_name,
+						{'packages': packages,
+						})
+		else:
+			messages.error(request, _("Staff access only!"))
+			return redirect(reverse('login'))
 
 
 class EnterWeight(TemplateView):
 	template_name = 'warehouse/enter_weight.html'
 
-
 	def get(self, request, service_id):
 		if request.user.is_staff or request.user.is_superuser:
-			vol_form = EnterVolumeForm()
-			form = PriceCalForm()
 			package = Service.objects.get(id=service_id)
+			vol_form = EnterVolumeForm()
+			form = PriceCalForm(instance=package)
 			return render(request, self.template_name,
 						{'form': form,
 						'vol_form':vol_form,
 						'package':package,
 						})
-
 		else:
 			messages.error(request, _("Staff access only!"))
 			return redirect(reverse('login'))
