@@ -244,8 +244,8 @@ class CollectionPoint(Address_Common_Info):
 	regular.boolean = True
 	beauty = models.BooleanField(default = False, verbose_name= _('Beauty'))
 	beauty.boolean = True
-	skincare = models.BooleanField(default = False, verbose_name= _('Skincare'))
-	skincare.boolean = True
+	# skincare = models.BooleanField(default = False, verbose_name= _('Skincare'))
+	# skincare.boolean = True
 
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Available'))

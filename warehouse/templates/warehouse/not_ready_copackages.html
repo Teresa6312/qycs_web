@@ -17,7 +17,7 @@
     <div class="w3-panel">
         {% if packages %}
             <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
-                  <tr><th>{% trans 'Trcking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'User' %}</th><th></th></tr>
+                  <tr><th>{% trans 'Tracking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'User' %}</th><th></th></tr>
                   {% for pack in packages %}
                     <tr>
                       <td>{{pack.cust_tracking_num}}</td>
@@ -31,7 +31,7 @@
                   {% endfor %}
             </table>
         {% else %}
-            {% trans 'No Packages'%}
+            {% trans 'No package'%}
         {% endif %}
     </div>
 </div>

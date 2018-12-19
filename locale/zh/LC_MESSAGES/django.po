@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-18 14:46+0800\n"
+"POT-Creation-Date: 2018-12-19 13:06+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,6 +199,7 @@ msgstr "更新我的收件站信息"
 #: .\main\templates\main\changepassword.html:18
 #: .\main\templates\main\login.html:29 .\main\templates\main\register.html:45
 #: .\main\templates\main\updateprofile.html:32
+#: .\warehouse\templates\warehouse\enter_weight.html:138
 msgid "Please correct the error below."
 msgstr "请更改以下的错误"
 
@@ -207,6 +208,7 @@ msgstr "请更改以下的错误"
 #: .\main\templates\main\changepassword.html:18
 #: .\main\templates\main\login.html:29 .\main\templates\main\register.html:47
 #: .\main\templates\main\updateprofile.html:32
+#: .\warehouse\templates\warehouse\enter_weight.html:140
 msgid "Please correct the errors below."
 msgstr "请更改以下的错误"
 
@@ -569,6 +571,7 @@ msgid "Sport"
 msgstr "运动类"
 
 #: .\main\models.py:74 .\main\models.py:82 .\main\models.py:245
+#: .\main\templates\blocks\col_card_fields.html:29
 msgid "Beauty"
 msgstr "美妆"
 
@@ -604,7 +607,7 @@ msgstr "微信"
 msgid "Dealmoon"
 msgstr "北美论坛"
 
-#: .\main\models.py:93 .\qycs_web\base.py:293
+#: .\main\models.py:93 .\qycs_web\base.py:294
 msgid "English"
 msgstr "英语"
 
@@ -763,6 +766,7 @@ msgid "Address Updated Date"
 msgstr "地址更新日期"
 
 #: .\main\models.py:190 .\main\models.py:335 .\main\models.py:448
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:20
 msgid "User"
 msgstr "用户"
 
@@ -838,10 +842,6 @@ msgstr "食品"
 #: .\main\models.py:243 .\main\templates\blocks\col_card_fields.html:28
 msgid "Regular"
 msgstr "普货"
-
-#: .\main\models.py:247 .\main\templates\blocks\col_card_fields.html:29
-msgid "Skincare"
-msgstr "护肤品"
 
 #: .\main\models.py:251 .\main\models.py:322
 msgid "Available"
@@ -982,10 +982,12 @@ msgid "Weight(kg)"
 msgstr "重量（千克）"
 
 #: .\main\models.py:412
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:20
 msgid "Tracking Number"
 msgstr "追踪单号"
 
 #: .\main\models.py:413 .\main\templates\main\price_list.html:41
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:20
 msgid "Carrier"
 msgstr "运输公司"
 
@@ -1092,7 +1094,8 @@ msgstr "运费"
 
 #: .\main\models.py:491 .\main\templates\blocks\cart_coshipping.html:25
 #: .\main\templates\blocks\cart_order.html:39
-#: .\main\templates\main\package_detail.html:149
+#: .\main\templates\main\package_detail.html:150
+#: .\warehouse\templates\warehouse\enter_weight.html:83
 msgid "Order Amount"
 msgstr "订单金额"
 
@@ -1221,7 +1224,8 @@ msgstr "商品"
 msgid "Package"
 msgstr "包裹"
 
-#: .\main\models.py:609 .\main\templates\main\package_detail.html:161
+#: .\main\models.py:609 .\main\templates\main\package_detail.html:162
+#: .\warehouse\templates\warehouse\enter_weight.html:95
 msgid "Package Snapshot"
 msgstr "包裹细节截图"
 
@@ -1393,7 +1397,8 @@ msgstr "创建于"
 
 #: .\main\templates\blocks\cart_coshipping.html:14
 #: .\main\templates\blocks\cart_order.html:14
-#: .\main\templates\main\package_detail.html:106
+#: .\main\templates\main\package_detail.html:107
+#: .\warehouse\templates\warehouse\enter_weight.html:40
 msgid "Co-shipping to"
 msgstr "拼邮到"
 
@@ -1406,14 +1411,16 @@ msgstr "价格"
 
 #: .\main\templates\blocks\cart_coshipping.html:28
 #: .\main\templates\blocks\cart_order.html:42
-#: .\main\templates\main\package_detail.html:152
+#: .\main\templates\main\package_detail.html:153
+#: .\warehouse\templates\warehouse\enter_weight.html:86
 msgid "Storage fee"
 msgstr "储存费"
 
 #: .\main\templates\blocks\cart_coshipping.html:31
 #: .\main\templates\blocks\cart_direct_packages.html:27
 #: .\main\templates\blocks\cart_order.html:45
-#: .\main\templates\main\package_detail.html:155
+#: .\main\templates\main\package_detail.html:156
+#: .\warehouse\templates\warehouse\enter_weight.html:89
 msgid "Shipping fee"
 msgstr "运费"
 
@@ -1448,7 +1455,8 @@ msgstr "小包裹"
 
 #: .\main\templates\blocks\cart_direct_shipping.html:14
 #: .\main\templates\blocks\cart_order.html:7
-#: .\main\templates\main\package_detail.html:98
+#: .\main\templates\main\package_detail.html:99
+#: .\warehouse\templates\warehouse\enter_weight.html:32
 msgid "Direct Shipping to"
 msgstr "直邮到"
 
@@ -1484,6 +1492,8 @@ msgstr "标题"
 #: .\main\templates\main\addpackage.html:162
 #: .\main\templates\main\confirm_direct_shipping.html:16
 #: .\main\templates\main\package_cart.html:139
+#: .\warehouse\templates\warehouse\enter_issue.html:27
+#: .\warehouse\templates\warehouse\enter_weight.html:166
 msgid "Submit"
 msgstr "确认"
 
@@ -2078,81 +2088,93 @@ msgstr "包裹细节"
 msgid "Co-shipping Package"
 msgstr "拼邮包裹"
 
-#: .\main\templates\main\package_detail.html:36
+#: .\main\templates\main\package_detail.html:37
 #: .\main\templates\main\tracked.html:43
 msgid "Package Marked"
 msgstr "包裹已标记"
 
-#: .\main\templates\main\package_detail.html:44
+#: .\main\templates\main\package_detail.html:45
 #: .\main\templates\main\tracked.html:51
 msgid "Warehouse Received"
 msgstr "仓库已接收"
 
-#: .\main\templates\main\package_detail.html:53
+#: .\main\templates\main\package_detail.html:54
 #: .\main\templates\main\tracked.html:60
 msgid "Ready to Pay"
 msgstr "准备付款"
 
-#: .\main\templates\main\package_detail.html:62
+#: .\main\templates\main\package_detail.html:63
 #: .\main\templates\main\tracked.html:69
 msgid "Paid"
 msgstr "已付款"
 
-#: .\main\templates\main\package_detail.html:70
+#: .\main\templates\main\package_detail.html:71
 #: .\main\templates\main\tracked.html:77
 msgid "Shipped"
 msgstr "已寄出"
 
-#: .\main\templates\main\package_detail.html:78
+#: .\main\templates\main\package_detail.html:79
 #: .\main\templates\main\tracked.html:85
 msgid "delivered"
 msgstr "已到达"
 
-#: .\main\templates\main\package_detail.html:90
+#: .\main\templates\main\package_detail.html:91
+#: .\warehouse\templates\warehouse\enter_weight.html:21
 msgid "This package has the following issue"
 msgstr "这个包裹有以下问题："
 
-#: .\main\templates\main\package_detail.html:119
+#: .\main\templates\main\package_detail.html:120
+#: .\warehouse\templates\warehouse\enter_weight.html:53
 msgid "Package type"
 msgstr "包裹类型"
 
-#: .\main\templates\main\package_detail.html:121
+#: .\main\templates\main\package_detail.html:122
+#: .\warehouse\templates\warehouse\enter_weight.html:55
 msgid "Selected shipping carrier"
 msgstr "选择邮寄公司"
 
-#: .\main\templates\main\package_detail.html:122
+#: .\main\templates\main\package_detail.html:123
+#: .\warehouse\templates\warehouse\enter_weight.html:56
 msgid "No Rush Requested"
 msgstr "非急件"
 
-#: .\main\templates\main\package_detail.html:125
+#: .\main\templates\main\package_detail.html:126
+#: .\warehouse\templates\warehouse\enter_weight.html:59
 msgid "Low Volume Weight Requested"
 msgstr "减小体积重"
 
-#: .\main\templates\main\package_detail.html:135
+#: .\main\templates\main\package_detail.html:136
+#: .\warehouse\templates\warehouse\enter_weight.html:69
 msgid "Weight"
 msgstr "重量"
 
-#: .\main\templates\main\package_detail.html:170
+#: .\main\templates\main\package_detail.html:171
+#: .\warehouse\templates\warehouse\enter_weight.html:104
 msgid "Didn't insert any snapshot"
 msgstr "没有插入任何截图"
 
-#: .\main\templates\main\package_detail.html:174
+#: .\main\templates\main\package_detail.html:175
+#: .\warehouse\templates\warehouse\enter_weight.html:108
 msgid "Package Item details"
 msgstr "包裹商品细节"
 
-#: .\main\templates\main\package_detail.html:177
+#: .\main\templates\main\package_detail.html:178
+#: .\warehouse\templates\warehouse\enter_weight.html:111
 msgid "Item name"
 msgstr "商品名称"
 
-#: .\main\templates\main\package_detail.html:178
+#: .\main\templates\main\package_detail.html:179
+#: .\warehouse\templates\warehouse\enter_weight.html:112
 msgid "Item detail"
 msgstr "商品细节"
 
-#: .\main\templates\main\package_detail.html:179
+#: .\main\templates\main\package_detail.html:180
+#: .\warehouse\templates\warehouse\enter_weight.html:113
 msgid "Item quantity"
 msgstr "商品数量"
 
-#: .\main\templates\main\package_detail.html:183
+#: .\main\templates\main\package_detail.html:184
+#: .\warehouse\templates\warehouse\enter_weight.html:117
 msgid "Didn't enter any item detail"
 msgstr "没有输入任何商品细节"
 
@@ -2477,7 +2499,7 @@ msgstr "没找到"
 
 #: .\main\views.py:414
 msgid "Invalid tracking number."
-msgstr "不可行单号"
+msgstr "无效单号"
 
 #: .\main\views.py:427 .\main\views.py:429
 msgid "Upcoming information"
@@ -2499,7 +2521,7 @@ msgstr "包裹车"
 msgid "Insurance"
 msgstr "保险计划"
 
-#: .\qycs_web\base.py:294
+#: .\qycs_web\base.py:295
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
@@ -2508,6 +2530,56 @@ msgid ""
 "You already have an account with this email. Please use the below username "
 "and password fields to log in."
 msgstr "你已经有一个用户连接此邮箱。请使用以下的用户名和密码来登录。"
+
+#: .\warehouse\forms.py:14
+msgid "length"
+msgstr "长"
+
+#: .\warehouse\forms.py:15
+msgid "width"
+msgstr "宽"
+
+#: .\warehouse\forms.py:16
+msgid "height"
+msgstr "高"
+
+#: .\warehouse\templates\warehouse\enter_issue.html:5
+#: .\warehouse\templates\warehouse\enter_issue.html:21
+msgid "Enter Issue"
+msgstr ""
+
+#: .\warehouse\templates\warehouse\enter_weight.html:12
+#: .\warehouse\templates\warehouse\enter_weight.html:132
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:27
+msgid "Enter Weight"
+msgstr "输入重量"
+
+#: .\warehouse\templates\warehouse\enter_weight.html:24
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:28
+msgid "Has Issue"
+msgstr "包裹有问题"
+
+#: .\warehouse\templates\warehouse\enter_weight.html:146
+msgid "Volume"
+msgstr "体积"
+
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:5
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:11
+msgid "Not Ready Co-shipping Packages"
+msgstr "未收拾的拼邮包裹"
+
+#: .\warehouse\templates\warehouse\not_ready_copackages.html:34
+#, fuzzy
+#| msgid "No package"
+msgid "No ackage"
+msgstr "没有包裹"
+
+#: .\warehouse\views.py:21
+msgid "You have no right to access the page."
+msgstr ""
+
+#~ msgid "Skincare"
+#~ msgstr "护肤品"
 
 #~ msgid "Package Status"
 #~ msgstr "包裹状态"

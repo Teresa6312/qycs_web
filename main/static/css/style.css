@@ -247,6 +247,9 @@ a:hover{
 	color:#B18904;
 }
 
+#wh_link_block a{
+  color: #2196F3;
+}
 
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{

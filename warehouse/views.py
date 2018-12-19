@@ -1,11 +1,35 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from main.models import Service, PriceRate
-from django.http import HttpResponseRedirect
+from main.forms import TrackingForm
+from django.http import HttpResponseRedirect, HttpResponse
 from .forms import PriceCalForm, EnterVolumeForm, IssueForm
 from django.urls import reverse
 import math
 from datetime import date
+from django.contrib import messages
+from django.utils.translation import gettext as _
+
+class HomeView(TemplateView):
+	template_name = 'warehouse/home.html'
+
+	def get(self, request):
+		if request.user.is_staff or request.user.is_superuser:
+			return render(request, self.template_name)
+		else:
+			messages.error(request, _("Staff access only!"))
+			return redirect(reverse('login'))
+
+	def post(self, request):
+		form = TrackingForm(request.POST)
+		if form.is_valid():
+			tracking_num = form.cleaned_data['cust_tracking_num']
+			packages = Service.objects.filter(cust_tracking_num = tracking_num)
+			if packages.count() == 0:
+				messages.error(request, _("Package '"+tracking_num + "' was not found!"))
+			return render(request, self.template_name, {'packages': packages})
+		else:
+			return redirect(reverse('wh_home'))
 
 class NotReadyCoPackages(TemplateView):
 	template_name = 'warehouse/not_ready_copackages.html'
@@ -18,8 +42,8 @@ class NotReadyCoPackages(TemplateView):
 						{'packages': packages,
 						})
 		else:
-			messages.error(request, _("You have no right to access the page."))
-			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			messages.error(request, _("Staff access only!"))
+			return redirect(reverse('login'))
 
 
 
@@ -28,14 +52,19 @@ class EnterWeight(TemplateView):
 
 
 	def get(self, request, service_id):
-		vol_form = EnterVolumeForm()
-		form = PriceCalForm()
-		package = Service.objects.get(id=service_id)
-		return render(request, self.template_name,
-					{'form': form,
-					'vol_form':vol_form,
-					'package':package,
-					})
+		if request.user.is_staff or request.user.is_superuser:
+			vol_form = EnterVolumeForm()
+			form = PriceCalForm()
+			package = Service.objects.get(id=service_id)
+			return render(request, self.template_name,
+						{'form': form,
+						'vol_form':vol_form,
+						'package':package,
+						})
+
+		else:
+			messages.error(request, _("Staff access only!"))
+			return redirect(reverse('login'))
 
 	def post(self, request, service_id):
 		package = Service.objects.get(id=service_id)
@@ -96,13 +125,29 @@ class EnterIssue(TemplateView):
 	template_name = 'warehouse/enter_issue.html'
 
 	def get(self, request, service_id):
-		package = Service.objects.get(id=service_id)
-		return render(request, self.template_name, {'package': package,})
+		if request.user.is_staff or request.user.is_superuser:
+			package = Service.objects.get(id=service_id)
+			return render(request, self.template_name, {'package': package,})
+		else:
+			messages.error(request, _("Staff access only!"))
+			return redirect(reverse('login'))
+
 
 	def post(self, request, service_id):
 		package = Service.objects.get(id=service_id)
 		form = IssueForm(request.POST)
 		if form.is_valid():
 			package.issue = form.cleaned_data['issue']
+			if not pack.wh_received_date:
+				pack.wh_received_date = date.today()
 			package.save()
 		return redirect(reverse('not_ready_copackages'))
+
+
+def packageReceived(request, service_id):
+	if request.POST:
+		package = Service.objects.get(id=service_id)
+		if not package.wh_received_date:
+			package.wh_received_date = date.today()
+			package.save()
+		return HttpResponse()

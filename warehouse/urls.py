@@ -6,7 +6,9 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
+    path('', views.HomeView.as_view(), name='wh_home'),
     path('coshipping-packages/not-ready', login_required(views.NotReadyCoPackages.as_view()), name='not_ready_copackages'),
     path('<int:service_id>/weight', views.EnterWeight.as_view(), name='weight'),
     path('<int:service_id>/issue', views.EnterIssue.as_view(), name='issue'),
+    path('<int:service_id>/received', views.packageReceived, name='received'),
 ]
