@@ -419,15 +419,17 @@ class ParentPackage(models.Model):
 
 
 	def ship_to(self):
-		if self.service_set.first().ship_to_add:
-			return self.service_set.first().ship_to_add
-		elif self.service_set.first().ship_to_col:
-			return self.service_set.first().ship_to_col
-		elif self.service_set.first().ship_to_wh:
-			return self.service_set.first().ship_to_wh
+		if self.service_set.count() > 0:
+			if self.service_set.first().ship_to_add:
+				return self.service_set.first().ship_to_add
+			elif self.service_set.first().ship_to_col:
+				return self.service_set.first().ship_to_col
+			elif self.service_set.first().ship_to_wh:
+				return self.service_set.first().ship_to_wh
+			else:
+				return None
 		else:
 			return None
-
 	def __str__(self):
 		if self.tracking_num=='':
 			return "%s - %s"%(self.id, self.ship_to())
