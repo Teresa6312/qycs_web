@@ -121,8 +121,8 @@ class User(AbstractUser):
 	email_confirmed.boolean = True
 
 	phone = models.CharField(validators=[phone_regex], max_length=16, blank=True, default='',verbose_name= _('Phone Number'))
-	default_address = models.ForeignKey('Address', on_delete=models.CASCADE, blank=True, null=True,  related_name='default_address', verbose_name= _('Default Shipping Address'))
-	default_col = models.ForeignKey('CollectionPoint', on_delete=models.CASCADE, blank=True, null=True, verbose_name= _('Default Collection Point'))
+	default_address = models.ForeignKey('Address', on_delete=models.SET_NULL, blank=True, null=True,  related_name='default_address', verbose_name= _('Default Shipping Address'))
+	default_col = models.ForeignKey('CollectionPoint', on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Default Collection Point'))
 
 	reward = models.PositiveIntegerField(default = 0, verbose_name= _('Reward Points'))
 	birthday = models.DateField(blank=True, null=True,verbose_name= _('Birthday'))
@@ -147,7 +147,7 @@ class User(AbstractUser):
 
 
 class Employee(models.Model):
-	employee = models.OneToOneField(User, on_delete=models.CASCADE, primary_key = True, verbose_name=_('Employee'))
+	employee = models.OneToOneField(User, on_delete=models.PROTECT, primary_key = True, verbose_name=_('Employee'))
 	position = models.CharField(max_length=200, blank = True, default = '', verbose_name=_('Employee Position'))
 	date_joined = models.DateField(blank=True, null=True, verbose_name= _('Recruitment Date'))
 	date_left = models.DateField(blank=True, null=True, verbose_name= _('Resignation Date'))
@@ -215,7 +215,7 @@ class Address(Address_Common_Info):
 
 class CollectionPoint(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Collection Point Updated Date'))
-	collector = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,verbose_name= _('Collector'))
+	collector = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True,verbose_name= _('Collector'))
 	license_type = models.CharField(max_length = 100, blank=True, default='', verbose_name= _('License type'))
 
 
@@ -331,7 +331,7 @@ class Warehouse(Address_Common_Info):
 		ordering = ['-pk']
 
 class Coupon(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE, blank = True, null=True, verbose_name= _('User'))
+	user = models.ForeignKey(User, on_delete=models.PROTECT, blank = True, null=True, verbose_name= _('User'))
 
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Coupon Updated Date'))
@@ -377,7 +377,7 @@ class Coupon(models.Model):
 
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
-	coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, blank= True, null=True, verbose_name= _('Coupon'))
+	coupon = models.ForeignKey(Coupon, on_delete=models.DO_NOTHING, blank= True, null=True, verbose_name= _('Coupon'))
 	total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=False, default=0, verbose_name= _('Insurance Plan'))
@@ -393,7 +393,7 @@ class OrderSet(models.Model):
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
-	emp_pack = models.ForeignKey(Employee, on_delete=models.CASCADE, blank = True, null=True, related_name='package_pack_by_employee',verbose_name= _('Packed by Employee'))
+	emp_pack = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank = True, null=True, related_name='package_pack_by_employee',verbose_name= _('Packed by Employee'))
 	packed_date = models.DateField(blank=True, null=True,verbose_name= _('Packed Date'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
@@ -406,13 +406,13 @@ class ParentPackage(models.Model):
 	package_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Direct Shipping Package Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
 
-	order_set = models.ForeignKey(OrderSet, on_delete=models.CASCADE, blank=True, null=True, verbose_name= _('Order Set'))
+	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
 
 
 # for order only
 	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
-	emp_split = models.ForeignKey(Employee, on_delete=models.CASCADE, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
+	emp_split = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
 
 	issue = models.TextField(blank=True, default='',verbose_name= _('Package Issue'))
 
@@ -442,8 +442,8 @@ class ParentPackage(models.Model):
 		ordering = ['-created_date']
 
 class Service(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE , related_name='client_user',verbose_name= _('User'))
-	order_set = models.ForeignKey(OrderSet, on_delete=models.CASCADE, blank=True, null=True, verbose_name= _('Order Set'))
+	user = models.ForeignKey(User, on_delete=models.PROTECT , related_name='client_user',verbose_name= _('User'))
+	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 
 	order = models.BooleanField(default=False,verbose_name= _('Order'))
 	order.boolean = True
@@ -451,13 +451,13 @@ class Service(models.Model):
 	storage.boolean = True
 	co_shipping = models.NullBooleanField(verbose_name= _('Co-Shipping'))
 	co_shipping.boolean = True
-	parent_package = models.ForeignKey(ParentPackage, on_delete=models.CASCADE, blank = True, null=True,verbose_name= _('Parent Package'))
+	parent_package = models.ForeignKey(ParentPackage, on_delete=models.SET_NULL, blank = True, null=True,verbose_name= _('Parent Package'))
 
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
 
 # for order only
-	emp_created = models.ForeignKey(Employee, on_delete=models.CASCADE, blank = True, null=True, related_name='order_created_by_emplloyee',verbose_name= _('Created by Employee'))
+	emp_created = models.ForeignKey(Employee, on_delete=models.PROTECT, blank = True, null=True, related_name='order_created_by_emplloyee',verbose_name= _('Created by Employee'))
 
 	request_ship_date = models.DateField(blank=True, null=True, verbose_name= _('Date Requested to Ship'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
@@ -470,10 +470,10 @@ class Service(models.Model):
 	no_rush_request = models.BooleanField(default = False,verbose_name= _('No Rush Request'))
 	no_rush_request.boolean = True
 
-	wh_received = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='received_at_warehouse',verbose_name= _('Inter-warehouse'))
+	wh_received = models.ForeignKey(Warehouse, on_delete=models.PROTECT, related_name='received_at_warehouse',verbose_name= _('Inter-warehouse'))
 	wh_received_date = models.DateField(blank=True, null=True,verbose_name= _('Warehouse Received Date'))
 	ready_date = models.DateField(blank=True, null=True, verbose_name= _('Package Ready Date'))
-	emp_pack = models.ForeignKey(Employee, on_delete=models.CASCADE,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
+	emp_pack = models.ForeignKey(Employee, on_delete=models.PROTECT,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
 	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
 	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
 	ship_carrier = models.CharField(max_length = 100, choices=SHIPPING_CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
@@ -490,14 +490,14 @@ class Service(models.Model):
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
 
 # NULL FOR SHIPPING TO COLLECTION POINT
-	ship_to_add = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, null=True, related_name='ship_to_personal_location', verbose_name= _("Shipping Address"))
+	ship_to_add = models.ForeignKey(Address, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_personal_location', verbose_name= _("Shipping Address"))
 
 # NULL FOR SHIP TO USER'S ADDRESS
-	ship_to_col = models.ForeignKey(CollectionPoint, on_delete=models.CASCADE, blank=True, null=True, related_name='ship_to_collection_point', verbose_name= _('Shipping Collection Point location'))
-	receiver = models.ForeignKey(CoReceiver, on_delete=models.CASCADE, blank=True, null=True, verbose_name= _('Receiver'))
+	ship_to_col = models.ForeignKey(CollectionPoint, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_collection_point', verbose_name= _('Shipping Collection Point location'))
+	receiver = models.ForeignKey(CoReceiver, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Receiver'))
 
 # for order only
-	ship_to_wh = models.ForeignKey(Warehouse, on_delete=models.CASCADE, blank=True, null=True, related_name='ship_to_warehouse', verbose_name= _('Ship to Warehouse'))
+	ship_to_wh = models.ForeignKey(Warehouse, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='ship_to_warehouse', verbose_name= _('Ship to Warehouse'))
 
 # for picked up in Warehouse or collection point
 	picked_up = models.BooleanField(default=False, verbose_name= _('Receiver Picked Up'))
@@ -588,7 +588,7 @@ class Item(models.Model):
 	tax_included = models.BooleanField(default=True, verbose_name = _('Included Tax'))
 	tax_included.boolean = True
 
-	order_by = models.ForeignKey(Employee, on_delete=models.CASCADE, blank = True, null=True, verbose_name = _('Order by Employee'))
+	order_by = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, verbose_name = _('Order by Employee'))
 
 	def __str__(self):
 		return self.item_name
