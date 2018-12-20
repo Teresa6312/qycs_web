@@ -59,7 +59,8 @@
             {% endfor %}
         {% endif %}
         <div class="w3-panel">
-          <a href="{% url 'not_ready_copackages'%}"class="w3-text-blue">{% trans 'Not Ready Co-shipping Packages'%}</a>
+          <a href="{% url 'not_ready_copackages'%}"class="w3-text-blue">{% trans 'Not Ready Co-shipping Packages'%}</a>&emsp;|&emsp;
+          <a href="{% url 'not_ready_direct_packages'%}"class="w3-text-blue">{% trans 'Not Ready Direct Shipping Packages'%}</a>
         </div>
 
 

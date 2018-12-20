@@ -50,7 +50,7 @@ class NotReadyDirectPackages(TemplateView):
 
 	def get(self, request):
 		if request.user.is_staff or request.user.is_superuser:
-			packages = Service.objects.filter(shipping_fee=None, co_shipping = False).order_by('cust_tracking_num', 'parent_package')
+			packages = Service.objects.filter(shipping_fee=None, co_shipping = False).order_by('-parent_package','cust_tracking_num')
 
 			return render(request, self.template_name,
 						{'packages': packages,
