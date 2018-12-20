@@ -82,19 +82,16 @@ class EnterWeight(TemplateView):
 
 		vol_form = EnterVolumeForm(request.POST)
 		form = PriceCalForm(request.POST, instance=package)
-		print('--------------------------------------1-------------------------------')
 		if vol_form.is_valid() and form.is_valid():
 			l = vol_form.cleaned_data['length']
 			w = vol_form.cleaned_data['width']
 			h = vol_form.cleaned_data['height']
 
 			pack = form.save(commit = False)
-			print('--------------------------------------2-------------------------------')
 			pack.volume_weight = math.ceil(l*w*h/500)/10
 
 			pack.ship_carrier = ''
 			pack.issue = ''
-			print('--------------------------------------3-------------------------------')
 
 			if pack.wh_received and pack.ship_to_col:
 				if pack.wh_received.country.lower() == 'china':
@@ -110,17 +107,19 @@ class EnterWeight(TemplateView):
 					tc = 'us'
 				else:
 					tc = pack.ship_to_col.country.lower()
-				print('--------------------------------------4-------------------------------')
-				price = PriceRate.objects.get(
-						category='ship',
-						from_country=fc,
-						to_country = tc,
-						package_type = pack.package_type,
-						carrier = '',
-						)
+				try:
+					price = PriceRate.objects.get(
+							category='ship',
+							from_country=fc,
+							to_country = tc,
+							package_type = pack.package_type,
+							carrier = '',
+							)
+				except:
+					price = None
 			else:
 				price = None
-			print('--------------------------------------5-------------------------------')
+
 			if price:
 				if pack.weight > pack.volume_weight:
 					pack.shipping_fee = float ( price.avg_weight_price) * float ( pack.weight) * 10
@@ -128,12 +127,10 @@ class EnterWeight(TemplateView):
 					pack.shipping_fee = float ( price.avg_weight_price) * float ( pack.volume_weight) * 10
 
 				pack.currency = price.shipping_currency
-			print('--------------------------------------6-------------------------------')
 
 			if not pack.wh_received_date:
 				pack.wh_received_date = date.today()
 			pack.ready_date = date.today()
-			print('--------------------------------------7-------------------------------')
 			pack.save()
 
 			return redirect(reverse('not_ready_copackages'))

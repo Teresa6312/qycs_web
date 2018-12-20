@@ -24,7 +24,8 @@
                       <td>{{pack.get_cust_carrier_display}}</td>
                       <td>{{pack.user}}</td>
                       <td>
-                        <a href="{% url 'weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;/&emsp;
+                        <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
+                        <a href="{% url 'weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
                         <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
                       </td>
                     </tr>

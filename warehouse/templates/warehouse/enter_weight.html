@@ -14,8 +14,6 @@
       {% if package.issue %}
           <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:2vw;"/>{% trans 'This package has the following issue' %}
           {{package.issue|linebreaks|safe}}
-      {% else %}
-          <a href="{% url 'issue' package.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
       {% endif %}
       </h5>
 
@@ -156,9 +154,8 @@
           </div>
 
           <div class="w3-row" id="button_row">
-            <div class="w3-right">
-              <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>
-            </div>
+              		<button class="logo-red" type="button" onclick="window.location.href='{% url 'issue' package.id %}'">{% trans 'Has Issue' %}</button>
+                  <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>
           </div>
       </div>
       </form>
