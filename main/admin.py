@@ -49,12 +49,6 @@ class NewUserAdmin(UserAdmin):
 admin.site.register(User, NewUserAdmin)
 
 
-# class PaymentAdmin(admin.ModelAdmin):
-# 	list_display = ['transaction_id', 'pay_date', 'coupon','deposit','amount', 'currency',]
-#
-# admin.site.register(Payment, PaymentAdmin)
-
-
 
 class AddressAdmin(admin.ModelAdmin):
 	list_display = ('id', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
@@ -245,12 +239,12 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Shipping Type', 					{'fields': ['co_shipping']}),
 		('Creation', 						{'fields': [ 'user', 'cust_tracking_num','cust_carrier', 'low_volume_request', 'no_rush_request', 'memo']}),
 		('Status', 							{'fields': ['status_all_display']}),
-		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight', 'ready_date']}),
-		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount', 'currency']}),
-		('Shipment', 						{'fields': ['ship_to_add', 'ship_to_col', 'ship_to_wh', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
+		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight','volume_weight', 'ready_date']}),
+		('Shipment', 						{'fields': ['ship_carrier', 'ship_to_add', 'ship_to_col', 'ship_to_wh', 'parent_package', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
-		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']})
+		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']}),
+		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount', 'currency']})
 
 	]
 

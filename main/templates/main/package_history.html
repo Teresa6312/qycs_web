@@ -8,13 +8,14 @@
 
 {% block content %}
 
-<div class="w3-panel w3-margin-top content_center">
+<div class="w3-panel w3-margin-top">
     <div class="text-xxlarge-bold">{% trans 'Packages History' %}</div>
 </div>
 <hr/>
 
-<div class="w3-panel content_center" >
-      <div style="display:block;">
+
+<div class="w3-panel">
+      <div class="w3-row" style="display:block;">
           <a class="block_link" href="javascript:void(0)" onclick="openBlock(event, 'order');">
             <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red w3-text-black"><div class='text-medium'>{% trans 'Global Shopping Order(s)' %}</div></div>
           </a>
@@ -27,43 +28,35 @@
       </div>
 
       <div id="order" class="message_block">
-          {% if order_list %}
-              <div class="packages_block w3-row"  style="overflow:auto; max-height:500px;">
-                <table style="width:100%;">{% for package in order_list %}
-                  <tr><td>
-                        {% include "blocks/cart_order.html" with package=package %}
-                  </td></tr>{% endfor %}
-                </table>
-
-              </div>
-          {% endif %}
-      </div>
-      <div id="direct_package" class="message_block" style="display:none">
-        {% if parent_package_list %}
-            <div class="packages_block"  style="overflow:auto; max-height:500px;">
-              <table style="width:100%;">{% for package in parent_package_list %}
-                <tr><td>
-                      {% include "blocks/cart_direct_packages.html" with package=package %}
-                </td></tr>{% endfor %}
-              </table>
-
-            </div>
+        {% if order_list %}
+            {% for package in order_list %}
+                {% include "blocks/cart_order.html" with package=package %}
+            {% endfor %}
+        {% else %}
+        {% trans 'No Order'%}
         {% endif %}
       </div>
+
+      <div id="direct_package" class="message_block" style="display:none">
+        {% if parent_package_list %}
+            {% for package in parent_package_list %}
+                {% include "blocks/cart_direct_packages.html" with package=package %}
+            {% endfor %}
+        {% else %}
+        {% trans 'No Direct Shipping Package'%}
+        {% endif %}
+      </div>
+
       <div id="coshipping" class="message_block" style="display:none">
         {% if co_shipping_list %}
-            <div class="packages_block"  style="overflow:auto; max-height:500px;">
-              <table style="width:100%;">
-                 {% for package in co_shipping_list %}
-                    <tr><td>
-                    {% include "blocks/cart_coshipping.html" with package=package %}
-                    </td></tr>
-                  {% endfor %}
-              </table>
-
-            </div>
+            {% for package in co_shipping_list %}
+                {% include "blocks/cart_coshipping.html" with package=package %}
+            {% endfor %}
+        {% else %}
+        {% trans 'No Co-shipping Package'%}
         {% endif %}
       </div>
 </div>
+
 <script src="{% static 'js/package_cart.js' %}"></script>
 {% endblock %}

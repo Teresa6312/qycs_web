@@ -1,0 +1,86 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Warehouse Home Page' %}
+{% endblock%}
+
+
+{% block content %}
+<div class="w3-panel w3-margin-top content_center">
+
+  <h2>{% trans 'Warehouse Home Page'%}
+  </h2>
+</div>
+<hr/>
+
+<div class="w3-panel w3-margin-top content_center">
+
+    <div class="w3-panel">
+      <div class="text-large-bold">{% trans 'Search Tracking Number(one at a time)' %}</div>
+      <form method = "post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" >
+         <div class="w3-row">
+            <div class="w3-right">
+              <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>
+            </div>
+          </div>
+      </form>
+    </div>
+
+    <div id="wh_link_block">
+
+        {% if packages %}
+          {% for pack in packages %}
+              <div class="w3-panel">
+                    <h3>{{pack.cust_tracking_num}}
+                     - {{pack.get_cust_carrier_display}}
+                     {% if pack.order %}
+                         ({% trans 'Order' %})
+                     {% else %}
+                         {% if pack.co_shipping %}
+                           ({% trans 'Co-shipping Package' %})
+                         {% else %}
+                           ({% trans 'Direct Shipping' %})
+                         {% endif %}
+                     {% endif %}
+                     {% if not pack.wh_received_date %}
+                     <span class="text-regular">
+                     <button type="button"  onclick="receive_package('{{ csrf_token }}','{% url 'received' pack.id %}')" class="logo-red">{% trans 'Receive Package'%}</button>
+                     </span>
+                     {% endif %}
+                    </h3>
+
+                    <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
+                    <a href="{% url 'weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
+                    <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="w3-panel">
+          <a href="{% url 'not_ready_copackages'%}"class="w3-text-blue">{% trans 'Not Ready Co-shipping Packages'%}</a>&emsp;|&emsp;
+          <a href="{% url 'not_ready_direct_packages'%}"class="w3-text-blue">{% trans 'Not Ready Direct Shipping Packages'%}</a>
+        </div>
+
+
+    </div>
+</div>
+<script type="text/javascript">
+  function receive_package(csrf, url){
+      let dt={'csrfmiddlewaretoken': csrf};
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: dt,
+        success: function(data){
+            location.reload();
+        },
+        failure: function(data){
+          console.log('failure');
+        },
+      });
+  }// end of receive package
+</script>
+{% endblock %}
