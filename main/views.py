@@ -110,7 +110,7 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
 		user.is_active = True
 		user.email_confirmed = True
 		user.save()
-		login(request, user, backend)
+		# login(request, user, backend)
 		return redirect('account')
 	else:
 		return HttpResponse('Activation link is invalid!')

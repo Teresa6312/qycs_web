@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
+
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
@@ -24,13 +25,20 @@ from django.http import HttpResponseRedirect
 # from django.core.serializers.json import DjangoJSONEncoder
 #
 import datetime
+import json
 
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
 	def get(self, request):
+		order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
+		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).exclude(paid_amount=None).distinct().order_by('-created_date')
+
 		return render(request, self.template_name,
-			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
+			{'order_list': order_list,
+			'co_shipping_list': co_shipping_list,
+			'parent_package_list': parent_package_list})
 
 
 def ReturnPackageNumber(request):
@@ -42,10 +50,10 @@ class PackageCartView(TemplateView):
 
 	def get(self, request):
 		order = OrderSetForm()
-		order_list = Service.objects.filter(user = request.user, paid_amount = None, order = True).order_by('-created_date')
-		co_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).order_by('-created_date')
-		direct_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('-created_date')
-		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, service__paid_amount = None).distinct()
+		order_list = Service.objects.filter(user = request.user, paid_amount = None, order = True).order_by('created_date')
+		co_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).order_by('created_date')
+		direct_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, service__paid_amount = None).distinct().order_by('created_date')
 
 
 		return render(request, self.template_name,
@@ -257,7 +265,7 @@ class PackageDetailView(TemplateView):
 	def get(self, request, pack_id):
 		try:
 			package = Service.objects.get(pk=pack_id)
-			if package.user == request.user:
+			if package.user == request.user or request.user.is_staff or request.user.is_superuser:
 				return render(request, self.template_name , {'package': package})
 			else:
 				messages.error(request, _(package.cust_tracking_num + " is not your package. You cannot view the detail."))
@@ -287,7 +295,16 @@ def couponView(request):
 		code=request.POST.get('coupon','')
 		try:
 			coupon = Coupon.objects.get(code = code)
-			return HttpResponse(coupon.discount)
+			if coupon.check_coupon:
+				context = json.dumps({
+				'amount_limit': coupon.amount_limit,
+				'package': coupon.package,
+				'order': coupon.order,
+				'discount': coupon.discount,
+				})
+				return HttpResponse(context)
+			else:
+				return HttpResponse(False)
 		except:
 			return HttpResponse()
 

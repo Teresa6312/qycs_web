@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('collector/', include('collector.urls')),
     path('payment/', include(('payment.urls', 'reviews'), namespace='payment')),
+    path('warehouse/', include('warehouse.urls')),
     path('guanjia/', admin.site.urls),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),

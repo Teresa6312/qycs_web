@@ -53,4 +53,4 @@ class ColChangeForm(forms.ModelForm):
 		for field_name in ['mon_start','tue_start','wed_start','thu_start','fri_start','sat_start','sun_start']:
 			self.fields[field_name].widget.attrs['placeholder'] =  _('From: 00:00')
 		for field_name in ['mon_end','tue_end','wed_end','thu_end','fri_end','sat_end','sun_end']:
-			self.fields[field_name].widget.attrs['placeholder'] =  _('Until: 00:00')
+			self.fields[field_name].widget.attrs['placeholder'] =  _('Until: 23:59')

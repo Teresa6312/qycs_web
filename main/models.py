@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.urls import reverse
 
+from django.db.models.signals import post_save
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
 from cloudinary.models import CloudinaryField
@@ -161,6 +163,13 @@ class Employee(models.Model):
 		verbose_name_plural = _("Employees")
 		ordering = ['-pk']
 
+def create_emp_profile(sender, **kwargs):
+	if kwargs['created']:
+		user = kwargs['instance']
+		if user.is_staff or user.is_superuser:
+			user_profile = Employee.objects.create(employee = kwargs['instance'])
+
+post_save.connect(create_emp_profile, sender = User)
 
 class Address_Common_Info(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -235,8 +244,7 @@ class CollectionPoint(Address_Common_Info):
 	regular.boolean = True
 	beauty = models.BooleanField(default = False, verbose_name= _('Beauty'))
 	beauty.boolean = True
-	skincare = models.BooleanField(default = False, verbose_name= _('Skincare'))
-	skincare.boolean = True
+
 
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Available'))
@@ -349,9 +357,23 @@ class Coupon(models.Model):
 	def __str__(self):
 		return '%s %d %s'%(self.code,self.discount,"% OFF")
 
+	def check_coupon(self, user):
+		if self.user and user != coupon.user:
+			return False
+		if self.start_date and date.today() < self.start_date:
+			return False
+		if self.end_date and date.today() > self.end_date:
+			return False
+		if self.one_time_only and self.used_times!=0:
+			return False
+		return True
+
+
 	class Meta:
 		verbose_name_plural = _("Coupon")
 		ordering = [F('start_date').asc(nulls_last=True)]
+
+
 
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -367,15 +389,6 @@ class OrderSet(models.Model):
 			total_amount = total_amount + package.get_total()
 
 		return total_amount
-	#
-	# def check_currency(self):
-	# 	i = 0
-	# 	currency = 'USD'
-	# 	for package in self.service_set.all:
-	# 		if i == 0 and :
-	# 		total_amount = total_amount + package.get_total()
-	#
-	# 	return total_amount
 
 
 class ParentPackage(models.Model):
@@ -384,7 +397,7 @@ class ParentPackage(models.Model):
 	packed_date = models.DateField(blank=True, null=True,verbose_name= _('Packed Date'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
-	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
+	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
 
 	tracking_num = models.CharField(max_length=50, blank=True, default='',verbose_name= _('Tracking Number'))
 	carrier = models.CharField(max_length=100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
@@ -401,21 +414,28 @@ class ParentPackage(models.Model):
 	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 	emp_split = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
 
-	# status = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Status'))
 	issue = models.TextField(blank=True, default='',verbose_name= _('Package Issue'))
 
-	def __str__(self):
-		return self.tracking_num
+
 
 	def ship_to(self):
-		if self.service_set.first().ship_to_add:
-			return self.service_set.first().ship_to_add
-		elif self.service_set.first().ship_to_col:
-			return self.service_set.first().ship_to_col
-		elif self.service_set.first().ship_to_wh:
-			return self.service_set.first().ship_to_wh
+		if self.service_set.count() > 0:
+			if self.service_set.first().ship_to_add:
+				return self.service_set.first().ship_to_add
+			elif self.service_set.first().ship_to_col:
+				return self.service_set.first().ship_to_col
+			elif self.service_set.first().ship_to_wh:
+				return self.service_set.first().ship_to_wh
+			else:
+				return None
 		else:
 			return None
+			
+	def __str__(self):
+		if self.tracking_num=='':
+			return "%s - %s"%(self.id, self.ship_to())
+		else:
+			return "%s - %s: "%(self.tracking_num, self.carrier, self.ship_to())
 
 	class Meta:
 		verbose_name_plural = _("Parent Package")
@@ -454,8 +474,8 @@ class Service(models.Model):
 	wh_received_date = models.DateField(blank=True, null=True,verbose_name= _('Warehouse Received Date'))
 	ready_date = models.DateField(blank=True, null=True, verbose_name= _('Package Ready Date'))
 	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
-	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
-	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
+	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
+	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
 	ship_carrier = models.CharField(max_length = 100, choices=SHIPPING_CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
 
 
@@ -489,9 +509,7 @@ class Service(models.Model):
 	tracking_num = models.CharField(max_length = 50, blank=True, default='', verbose_name= _('Final Shipping Tracking Number'))
 	last_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='', verbose_name= _('Final Shipping Carrier'))
 
-	# status = models.CharField(max_length = 20, blank=True, default='', verbose_name= _('Packasge Status'))
 	issue = models.TextField(blank=True, default='', verbose_name= _('Package Issue'))
-	# refund_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='refund_payment_key', verbose_name = _('Refund Confirmation'))
 	refund_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Refund Amount'))
 
 	def get_total(self):
@@ -553,6 +571,7 @@ class Service(models.Model):
 		verbose_name_plural = _("Package/Order")
 		ordering = ['-created_date']
 
+
 class Item(models.Model):
 	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package/Order'))
 	item_name = models.CharField(max_length = 200, blank=False, default='', verbose_name = _('Item Name'))
@@ -581,7 +600,6 @@ class Item(models.Model):
 
 class PackageSnapshot(models.Model):
 	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package'))
-	# snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
 	snapshot = CloudinaryField(_("Package Snapshot"))
 
 	class Meta:
@@ -644,3 +662,10 @@ class PriceRate(models.Model):
 
 	class Meta:
 		verbose_name_plural = _("Price Rate")
+		unique_together=(
+			'category',
+			'from_country',
+			'to_country',
+			'package_type',
+			'carrier',
+		)

@@ -1,7 +1,7 @@
 from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 from django.conf import settings
-from main.models import OrderSet, Service, User
+from main.models import OrderSet, Service, User, Coupon
 from paypal.standard.ipn.models import PayPalIPN
 
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
@@ -52,6 +52,10 @@ def payment_paid(sender, **kwargs):
 			else:
 				paid_user.reward = int(order.total_amount/7)
 			paid_user.save()
+			if order.coupon:
+				coup = Coupon.objects.get(id = order.coupon.id)
+				coup.used_times = coup.used_times+1
+				coup.save()
 		else:
 			return
 	else:
