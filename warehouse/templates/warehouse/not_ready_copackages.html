@@ -1,0 +1,40 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Not Ready Co-shipping Packages' %}
+{% endblock%}
+
+
+{% block content %}
+<div class="w3-panel w3-margin-top content_center">
+    <div class="text-xxlarge-bold">{% trans 'Not Ready Co-shipping Packages' %}</div>
+</div>
+<hr/>
+
+<div class="w3-panel w3-margin-top content_center">
+
+    <div class="w3-panel">
+        {% if packages %}
+            <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
+                  <tr><th>{% trans 'Tracking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'Created Date' %}</th><th>{% trans 'User' %}</th><th></th></tr>
+                  {% for pack in packages %}
+                    <tr>
+                      <td>{{pack.cust_tracking_num}}</td>
+                      <td>{{pack.get_cust_carrier_display}}</td>
+                      <td>{{pack.created_date}}</td>
+                      <td>{{pack.user}}</td>
+                      <td>
+                        <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
+                        <a href="{% url 'weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
+                        <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+            </table>
+        {% else %}
+            {% trans 'No package'%}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

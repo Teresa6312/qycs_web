@@ -265,7 +265,7 @@ class PackageDetailView(TemplateView):
 	def get(self, request, pack_id):
 		try:
 			package = Service.objects.get(pk=pack_id)
-			if package.user == request.user:
+			if package.user == request.user or request.user.is_staff or request.user.is_superuser:
 				return render(request, self.template_name , {'package': package})
 			else:
 				messages.error(request, _(package.cust_tracking_num + " is not your package. You cannot view the detail."))

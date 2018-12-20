@@ -65,7 +65,7 @@ function apply_coupon(csrf, url){
                 }
               },
               failure: function(data){
-                console.log(failure);
+
               },
           });
 

@@ -18,6 +18,9 @@
   </div>
   <div class="w3-rest w3-right">
       <div class="topnav" id="myTopnav">
+        {% if user.is_staff or user.is_superuser %}
+            <a href="{% url 'wh_home' %}">{% trans "WH" %}</a>
+        {% endif %}
         <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
         <a href="{% url 'price_list'%}">{% trans "Price List" %}</a>
             {% if user.is_authenticated %}

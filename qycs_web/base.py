@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'collector.apps.CollectorConfig',
     'payment.apps.PaymentConfig',
+    'warehouse.apps.WarehouseConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
