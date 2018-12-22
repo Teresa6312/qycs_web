@@ -154,8 +154,8 @@ class EnterIssue(TemplateView):
 		form = IssueForm(request.POST)
 		if form.is_valid():
 			package.issue = form.cleaned_data['issue']
-			if not pack.wh_received_date:
-				pack.wh_received_date = date.today()
+			if not package.wh_received_date:
+				package.wh_received_date = date.today()
 			package.save()
 		return redirect(reverse('not_ready_copackages'))
 

@@ -390,6 +390,36 @@ class OrderSet(models.Model):
 
 		return total_amount
 
+	def get_total(self):
+		amount_package = 0
+		amount_order = 0
+		for package in self.service_set.all():
+			if package.order:
+				amount_order = package.get_total() + amount_order
+			else:
+				amount_package = package.get_total() + amount_package
+
+		for package in self.parentpackage_set.all():
+			if package.service_set.first().order:
+				amount_order = float (package.package_amount) + amount_order
+			else:
+				amount_package = float (package.package_amount) + amount_package
+		if self.coupon:
+			if self.coupon.order and self.coupon.package:
+				discounted = (amount_order + amount_package)*self.coupon.discount/100
+			elif self.coupon.order:
+				discounted = amount_order*self.coupon.discount/100
+			elif self.coupon.package:
+				discounted = amount_package*self.coupon.discount/100
+
+			if self.coupon.amount_limit and discounted > self.coupon.amount_limit:
+				discounted = self.coupon.amount_limit
+		else:
+			discounted = 0
+
+
+		return [amount_order+amount_package,discounted]
+
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))

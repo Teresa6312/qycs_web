@@ -240,7 +240,7 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Creation', 						{'fields': [ 'user', 'cust_tracking_num','cust_carrier', 'low_volume_request', 'no_rush_request', 'memo']}),
 		('Status', 							{'fields': ['status_all_display']}),
 		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight','volume_weight', 'ready_date']}),
-		('Shipment', 						{'fields': ['ship_carrier', 'ship_to_add', 'ship_to_col', 'ship_to_wh', 'parent_package', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
+		('Shipment', 						{'fields': ['ship_carrier', 'package_type', 'ship_to_add', 'ship_to_col', 'ship_to_wh', 'parent_package', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
 		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']}),
 		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),

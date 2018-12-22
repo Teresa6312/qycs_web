@@ -12,13 +12,19 @@ def payment_paid(sender, **kwargs):
 		if ipn_obj.receiver_email != settings.PAYPAL_RECEIVER_EMAIL:
 			return
 
-		if ipn_obj.mc_gross == order.total_amount and ipn_obj.mc_currency == order.currency:
+		if ipn_obj.mc_gross_x == order.total_amount-order.get_total()[1] and ipn_obj.mc_currency == order.currency:
 			if order.service_set.all().count()>0:
 				user = order.service_set.first().user
 				if order.coupon:
 					for pack in order.service_set.all():
 						package = Service.objects.get(id = pack.id)
-						package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
+						if package.order and order.coupon.order:
+							package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
+						elif order.coupon.package:
+							package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
+						else:
+							package.paid_amount = package.get_total()
+
 						package.save()
 				else:
 					for pack in order.service_set.all():
