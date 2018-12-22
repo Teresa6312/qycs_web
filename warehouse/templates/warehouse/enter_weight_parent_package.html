@@ -10,6 +10,7 @@
 
 {% block content %}
 <div class="w3-container  w3-cell w3-mobile" style="width:70%;">
+  <div class="w3-right"><button class="logo-red" type="button" onclick="window.location.href='{% url 'parent_package_detail' parent_package.id %}'">{% trans 'More Detail' %}</button></div>
       <div class="w3-panel content_center">
         {% if parent_package.service_set.all %}
           <ul>
