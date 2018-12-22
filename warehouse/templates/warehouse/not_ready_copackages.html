@@ -26,7 +26,7 @@
                       <td>{{pack.user}}</td>
                       <td>
                         <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
-                        <a href="{% url 'weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
+                        <a href="{% url 'copackage_weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
                         <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
                       </td>
                     </tr>

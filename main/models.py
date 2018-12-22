@@ -390,6 +390,36 @@ class OrderSet(models.Model):
 
 		return total_amount
 
+	def get_total(self):
+		amount_package = 0
+		amount_order = 0
+		for package in self.service_set.all():
+			if package.order:
+				amount_order = package.get_total() + amount_order
+			else:
+				amount_package = package.get_total() + amount_package
+
+		for package in self.parentpackage_set.all():
+			if package.service_set.first().order:
+				amount_order = float (package.package_amount) + amount_order
+			else:
+				amount_package = float (package.package_amount) + amount_package
+		if self.coupon:
+			if self.coupon.order and self.coupon.package:
+				discounted = (amount_order + amount_package)*self.coupon.discount/100
+			elif self.coupon.order:
+				discounted = amount_order*self.coupon.discount/100
+			elif self.coupon.package:
+				discounted = amount_package*self.coupon.discount/100
+
+			if self.coupon.amount_limit and discounted > self.coupon.amount_limit:
+				discounted = self.coupon.amount_limit
+		else:
+			discounted = 0
+
+
+		return [amount_order+amount_package,discounted]
+
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -398,9 +428,11 @@ class ParentPackage(models.Model):
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
 	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
+	volume_weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
+	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
 
 	tracking_num = models.CharField(max_length=50, blank=True, default='',verbose_name= _('Tracking Number'))
-	carrier = models.CharField(max_length=100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
+	carrier = models.CharField(max_length=100, choices=PRICE_CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
 	shipped_date = models.DateField(blank=True, null=True,verbose_name= _('Shipped Date'))
 
 	package_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Direct Shipping Package Amount'))
@@ -436,6 +468,12 @@ class ParentPackage(models.Model):
 			return "%s - %s"%(self.id, self.ship_to())
 		else:
 			return "%s - %s: "%(self.tracking_num, self.carrier, self.ship_to())
+
+	def get_total(self):
+		amount_package = 0
+		for package in self.service_set.all():
+			amount_package = package.get_total() + amount_package
+		return amount_package
 
 	class Meta:
 		verbose_name_plural = _("Parent Package")

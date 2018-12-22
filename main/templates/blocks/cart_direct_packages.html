@@ -16,7 +16,7 @@
         {% if package.service_set.all %}
           <ul>
             {% for sub in package.service_set.all %}
-            <li><a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.cust_carrier}} - {{sub.cust_tracking_num}}</a></li>
+            <li><a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>{% if sub.issue %}<span class="w3-text-red">({% trans 'has issue(s)' %})</span>{% endif %}</li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -24,9 +24,9 @@
     <div class="w3-third w3-container">
       <div class="text-regular-bold">{% trans 'Price' %}</div>
           {% if package.package_amount %}
-            {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ forloop.counter0 }}" class="shipping_fee">{{package.package_amount}}</span><br/>
+            {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ package.id }}" class="shipping_fee">{{package.package_amount}}<i>({% trans 'included 10% service fee' %})</i></span><br/>
           {% endif %}
-          {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ forloop.counter0 }}" class="total_amount"></span><br/>
+          {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ package.id }}" class="total_amount"></span><br/>
 
           {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
     </div>
