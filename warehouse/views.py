@@ -50,7 +50,7 @@ class NotReadyDirectPackages(TemplateView):
 
 	def get(self, request):
 		if request.user.is_staff or request.user.is_superuser:
-			packages = Service.objects.filter(shipping_fee=None, co_shipping = False).order_by('-parent_package','cust_tracking_num')
+			packages = Service.objects.filter(paid_amount=None, co_shipping = False).order_by('-parent_package','cust_tracking_num')
 
 			return render(request, self.template_name,
 						{'packages': packages,
@@ -200,14 +200,14 @@ class EnterWeightParentPackage(TemplateView):
 
 			if price:
 				if pack.carrier =='EMS' or pack.carrier =='EMS+':
-					package_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.weight-0.5)*2)
+					shipping_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.weight-0.5)*2)
 				else:
 					if pack.weight > pack.volume_weight:
-						package_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.weight-0.5)*2)
+						shipping_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.weight-0.5)*2)
 					else:
-						package_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.volume_weight-0.5)*2)
+						shipping_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.volume_weight-0.5)*2)
 
-				pack.package_amount = package_amount + pack.get_total()
+				pack.package_amount = shipping_amount*1.1 + pack.get_total()
 				pack.currency = price.shipping_currency
 
 			pack.packed_date = date.today()
