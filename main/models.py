@@ -428,9 +428,11 @@ class ParentPackage(models.Model):
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
 	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
+	volume_weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
+	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
 
 	tracking_num = models.CharField(max_length=50, blank=True, default='',verbose_name= _('Tracking Number'))
-	carrier = models.CharField(max_length=100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
+	carrier = models.CharField(max_length=100, choices=PRICE_CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
 	shipped_date = models.DateField(blank=True, null=True,verbose_name= _('Shipped Date'))
 
 	package_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Direct Shipping Package Amount'))
@@ -466,6 +468,12 @@ class ParentPackage(models.Model):
 			return "%s - %s"%(self.id, self.ship_to())
 		else:
 			return "%s - %s: "%(self.tracking_num, self.carrier, self.ship_to())
+
+	def get_total(self):
+		amount_package = 0
+		for package in self.service_set.all():
+			amount_package = package.get_total() + amount_package
+		return amount_package
 
 	class Meta:
 		verbose_name_plural = _("Parent Package")

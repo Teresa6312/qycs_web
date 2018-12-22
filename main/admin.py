@@ -49,10 +49,21 @@ class NewUserAdmin(UserAdmin):
 admin.site.register(User, NewUserAdmin)
 
 
+class EmployeeAdmin(admin.ModelAdmin):
+	list_display = ('employee', 'position', 'date_joined', 'date_left','is_active')
+	list_filter = ['is_active',]
+	search_fields = ['position',  ]
+
+	# fieldsets = [
+	# 	('User', 				{'fields': ['user',]}),
+	# 	('Address',             {'fields': ['first_name', 'last_name', 'phone', 'address', 'city', 'state','country', 'zipcode']}),
+	# 	('Memo', 				{'fields': ['memo',]}),
+	# ]
+admin.site.register(Employee, EmployeeAdmin)
 
 class AddressAdmin(admin.ModelAdmin):
 	list_display = ('id', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
-	list_editable = ('first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
+	# list_editable = ('first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
 	list_filter = ['country', 'state','city']
 	search_fields = ['first_name', 'last_name', ]
 
@@ -141,7 +152,7 @@ admin.site.register(Coupon, CouponAdmin,)
 
 class ServiceInline(admin.TabularInline):
 	model = Service
-	fields = ('id', 'user', 'receiver', 'ship_to_add', 'ship_to_col')
+	fields = ('cust_carrier', 'cust_tracking_num', 'user', 'receiver', 'ship_to_add', 'ship_to_col')
 	can_delete = False
 
 class ParentPackageAdmin(admin.ModelAdmin):

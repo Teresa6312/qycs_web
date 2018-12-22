@@ -16,7 +16,7 @@
         {% if package.service_set.all %}
           <ul>
             {% for sub in package.service_set.all %}
-            <li><a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.cust_carrier}} - {{sub.cust_tracking_num}}</a>{% if sub.issue %}<span class="w3-text-red">({% trans 'has issue(s)' %})</span>{% endif %}</li>
+            <li><a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>{% if sub.issue %}<span class="w3-text-red">({% trans 'has issue(s)' %})</span>{% endif %}</li>
             {% endfor %}
           </ul>
         {% endif %}
