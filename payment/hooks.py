@@ -23,10 +23,9 @@ def payment_paid(sender, **kwargs):
 
 		need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
 		print(need_pay)
-		print(need_pay)
 		print(ipn_obj.mc_currency)
 		print(order.currency)
-		print(ipn_obj.mc_gross == need_pay)
+		print(float(ipn_obj.mc_gross) == need_pay)
 		print(ipn_obj.mc_currency == order.currency)
 
 		if ipn_obj.mc_gross == need_pay and ipn_obj.mc_currency == order.currency:
