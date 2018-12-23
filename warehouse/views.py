@@ -161,7 +161,9 @@ class EnterWeightParentPackage(TemplateView):
 		parent_package = ParentPackage.objects.get(id=parent_id)
 		vol_form = EnterVolumeForm(request.POST)
 		form = PriceCalForm(request.POST, instance=parent_package)
+		print('----------------------------------0--------------------------')
 		if vol_form.is_valid() and form.is_valid():
+			print('----------------------------------1--------------------------')
 			l = vol_form.cleaned_data['length']
 			w = vol_form.cleaned_data['width']
 			h = vol_form.cleaned_data['height']
@@ -171,6 +173,7 @@ class EnterWeightParentPackage(TemplateView):
 			sub = pack.service_set.first()
 
 			if sub.wh_received and sub.ship_to_add:
+				print('----------------------------------2--------------------------')
 				if sub.wh_received.country.lower() == 'china':
 					fc = 'cn'
 				elif sub.wh_received.country.lower() == 'united states' or sub.wh_received.country.lower() == 'usa' or sub.wh_received.country.lower() == 'us':
@@ -184,7 +187,9 @@ class EnterWeightParentPackage(TemplateView):
 					tc = 'us'
 				else:
 					tc = sub.ship_to_add.country.lower()
-
+				print('----------------------------------3--------------------------')
+				print(fc)
+				print(tc)
 				try:
 					price = PriceRate.objects.get(
 							category='ship',
@@ -195,26 +200,30 @@ class EnterWeightParentPackage(TemplateView):
 							)
 				except:
 					price = None
+
 			else:
 				price = None
+			print('----------------------------------4--------------------------')
 
 			if price:
 				if pack.carrier =='EMS' or pack.carrier =='EMS+':
-					shipping_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.weight-0.5)*2)
+					print('----------------------------------5--------------------------')
+					shipping_amount = float ( price.first_weight_price) + float ( price.next_weight_price) * math.ceil((float(pack.weight)-0.5)*2)
 				else:
+					print('----------------------------------6--------------------------')
 					if pack.weight > pack.volume_weight:
-						shipping_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.weight-0.5)*2)
+						shipping_amount = float ( price.first_weight_price) + float ( price.next_weight_price) *  math.ceil((float(pack.weight)-0.5)*2)
 					else:
-						shipping_amount = float ( price.first_weight_price) + float ( pack.next_weight_price) * math.ceil((pack.volume_weight-0.5)*2)
-
+						shipping_amount = float ( price.first_weight_price) + float ( price.next_weight_price) *  math.ceil((float(pack.volume_weight)-0.5)*2)
+				print('----------------------------------7--------------------------')
 				pack.package_amount = shipping_amount*1.1 + pack.get_total()
 				pack.currency = price.shipping_currency
-
+			print('----------------------------------8--------------------------')
 			pack.packed_date = date.today()
 			pack.emp_pack = request.user.employee
 			pack.save()
 
-			return redirect(reverse('not_ready_copackages'))
+			return redirect(reverse('wh_home'))
 		else:
 			return render(request, self.template_name, {'form': form})
 

@@ -5,7 +5,7 @@ from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
 	Warehouse, PackageSnapshot, ParentPackage, Item,
-	Coupon, FavoriteWebsite, Resource, PriceRate
+	Coupon, FavoriteWebsite, Resource, PriceRate, OrderSet
 )
 from django.utils.html import mark_safe
 
@@ -178,7 +178,16 @@ class ParentPackageAdmin(admin.ModelAdmin):
 
 admin.site.register(ParentPackage, ParentPackageAdmin,)
 
+class ParentPackageInline(admin.TabularInline):
+	model = ParentPackage
+	fields = ('carrier', 'package_type', 'tracking_num', 'package_amount', 'paid_amount')
+	can_delete = False
 
+class OrderSetAdmin(admin.ModelAdmin):
+	inlines = (ServiceInline, ParentPackageInline, )
+	list_display = ('created_date','coupon', 'total_amount', 'insurance', )
+
+admin.site.register(OrderSet, OrderSetAdmin,)
 
 class WarehouseAdmin(admin.ModelAdmin):
 	list_display = ('name', 'address', 'city', 'state','country', 'zipcode', 'status')
