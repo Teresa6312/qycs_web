@@ -21,9 +21,9 @@ def payment_paid(sender, **kwargs):
 		print('------------ipn_obj.mc_gross_x---------------------')
 		# print(ipn_obj.mc_gross_x)
 		print('------------order.total_amount-order.get_total()[1]--------------------')
-		print(order.total_amount + order.insurance)
+		print(order.total_amount + order.insurancet-order.get_total()[1])
 
-		if ipn_obj.mc_gross == order.total_amount + order.insurance and ipn_obj.mc_currency == order.currency:
+		if ipn_obj.mc_gross == order.total_amount + order.insurancet-order.get_total()[1] and ipn_obj.mc_currency == order.currency:
 			no_rush_amount = 0
 # for sub packages
 			if order.service_set.all().count()>0:
