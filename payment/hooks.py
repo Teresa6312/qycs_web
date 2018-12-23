@@ -29,7 +29,6 @@ def payment_paid(sender, **kwargs):
 		print(ipn_obj.mc_currency == order.currency)
 
 		if float(ipn_obj.mc_gross) == need_pay and ipn_obj.mc_currency == order.currency:
-			print('------------ipn_obj.mc_gross_x------------1---------')
 			no_rush_amount = 0
 # for sub packages
 			if order.service_set.all().count()>0:
