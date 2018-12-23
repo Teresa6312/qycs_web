@@ -18,12 +18,13 @@ def payment_paid(sender, **kwargs):
 
 		print('------------ipn_obj.mc_gross---------------------')
 		print(ipn_obj.mc_gross)
-		print('------------ipn_obj.mc_gross_x---------------------')
 		# print(ipn_obj.mc_gross_x)
 		print('------------order.total_amount-order.get_total()[1]--------------------')
-		print(order.total_amount + order.insurancet-order.get_total()[1])
 
-		if ipn_obj.mc_gross == order.total_amount + order.insurancet-order.get_total()[1] and ipn_obj.mc_currency == order.currency:
+		need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
+		print(need_pay)
+
+		if ipn_obj.mc_gross == need_pay and ipn_obj.mc_currency == order.currency:
 			no_rush_amount = 0
 # for sub packages
 			if order.service_set.all().count()>0:

@@ -19,13 +19,14 @@ def payment_process(request):
 		return redirect(reverse('packagecart'))
 
 	orderSet = get_object_or_404(OrderSet, id = order_set_id)
+
 	host = request.get_host()
 
-
+	total = orderSet.total_amount + orderSet.insurance
 	if orderSet.coupon:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
-			"amount": (orderSet.total_amount + orderSet.insurance),
+			"amount": total,
 			"currency_code": orderSet.currency,
 			"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
 			"discount_amount": discount_amount,
@@ -37,7 +38,7 @@ def payment_process(request):
 	else:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
-			"amount": (orderSet.total_amount + orderSet.insurance),
+			"amount": total,
 			"currency_code": orderSet.currency,
 			"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
 			"invoice": orderSet.id,
@@ -49,4 +50,5 @@ def payment_process(request):
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	return render(request, 'payment/process.html', {'orderSet': orderSet,
 													'form' : form,
-													'discount_amount':discount_amount})
+													'discount_amount':discount_amount,
+													'total':total})
