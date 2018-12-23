@@ -40,7 +40,7 @@
 
 
         <div id="amount_block">{% trans 'Total Amount' %}({{orderSet.currency}}):
-          <span class="w3-right" id="id_total_amount">{{orderSet.insurance|add:orderSet.total_amount|sub:discount_amount|floatformat:"2"|safe}}</span>
+          <span class="w3-right" id="id_total_amount">{{orderSet.total_amount|add:orderSet.insurance|sub:discount_amount|floatformat:"2"|safe}}</span>
         </div>
           {{form.render}}
         <br/>
