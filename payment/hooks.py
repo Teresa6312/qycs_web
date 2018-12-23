@@ -4,6 +4,8 @@ from django.conf import settings
 from main.models import OrderSet, Service, User, Coupon, ParentPackage
 from paypal.standard.ipn.models import PayPalIPN
 
+import math
+
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
 def payment_paid(sender, **kwargs):
 	ipn_obj = sender
@@ -13,6 +15,7 @@ def payment_paid(sender, **kwargs):
 			return
 
 		print('------------ipn_obj.mc_gross_x---------------------')
+		print(ipn_obj.mc_gross)
 		print(ipn_obj.mc_gross_x)
 		print(order.total_amount-order.get_total()[1])
 
@@ -86,10 +89,11 @@ def payment_paid(sender, **kwargs):
 
 			paid_user = User.objects.get(id = user.id)
 			if order.currency == 'USD':
-				paid_user.reward = int(no_rush_amount)
+				paid_user.reward = math.floor(no_rush_amount) + math.floor(p.paid_amount)
 			else:
-				paid_user.reward = int(no_rush_amount/7)
+				paid_user.reward = math.floor(no_rush_amount/7)+ math.floor(p.paid_amount/7)
 			paid_user.save()
+			
 			if order.coupon:
 				coup = Coupon.objects.get(id = order.coupon.id)
 				coup.used_times = coup.used_times+1
