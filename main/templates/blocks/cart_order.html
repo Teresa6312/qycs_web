@@ -1,0 +1,52 @@
+{% load i18n static %}
+<div class="w3-card-4 w3-border-red w3-round w3-row package w3-border w3-container">
+      <div class="w3-third w3-container">
+          <div class="cust_tracking_num text-regular-bold">{% trans 'Order'%} ({{package.created_date|date:"m/d/Y" }})</div>
+
+          {% if package.ship_to_add %}
+          <div>{% trans 'Direct Shipping to' %}:</div>
+
+          {% if package.ship_to_add %}
+                      {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
+          {% endif %}
+
+          {% elif package.ship_to_col %}
+          <div>{% trans 'Co-shipping to' %}:</div>
+          <div class="logo-text-blue"><i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})</div>
+          {% if package.ship_to_col %}
+              {% include "blocks/col_less_fields.html" with col=package.ship_to_col %}
+          {% endif %}
+
+          {% endif %}
+
+
+    </div>
+    <div class="w3-third w3-container">
+      <div class="text-regular-bold">{% trans 'Item(s)'%}:</div>
+        {% if package.item_set.all %}
+          <ul>
+            {% for item in package.item_set.all %}
+            <li>{{item.item_name}} - {{item.currency}}{{item.item_value}}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+            {% trans 'No information at this time.' %}
+        {% endif %}
+    </div>
+    <div class="w3-third w3-container">
+      <div class="text-regular-bold">{% trans 'Price' %}</div>
+          {% if package.order_amount %}
+            {% trans 'Order Amount' %}: {{package.currency}} <span id="order_amount_{{ package.id0 }}" class="order_amount order">{{package.order_amount}}</span><br/>
+          {% endif %}
+          {% if package.storage_fee %}
+            {% trans 'Storage fee' %}: {{package.currency}} <span id="storage_fee_{{ package.id }}" class="storage_fee order">{{package.storage_fee}}</span><br/>
+          {% endif %}
+          {% if package.shipping_fee %}
+            {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ package.id }}" class="shipping_fee order">{{package.shipping_fee}}</span><br/>
+          {% endif %}
+          {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ package.id }}" class="total_amount order"></span><br/>
+
+        {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
+        <button type="button" class="w3-right w3-light-grey w3-text-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'detail' %}</button>
+    </div>
+  </div>

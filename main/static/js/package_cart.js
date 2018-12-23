@@ -1,6 +1,9 @@
 var amount = 0.0;
-var discount = 0;
-var reward_used = 0;
+var final_amount = 0.0;
+var amount_package = 0.0;
+var amount_order = 0.0;
+var discount = Object.create({discount:0, order: false, package: false, amount_limit:0.0}) ;
+
 // set up the total amount for each package
 $('tbody').find(".package").each(function(){
   var order = 0.0, storage = 0.0, shipping = 0.0;
@@ -21,125 +24,151 @@ $('tbody').find(".package").each(function(){
   }
 });
 
-// for apply rewards
-function apply_reward(reward){
-  if($('#id_reward_point_used').prop('type')==='hidden'){
-    $('#id_reward_point_used').prop('type','number');
-    $('#id_reward_point_used').prop('title','You have '+ reward +' point(s).');
-  }else{
-    if(0<$('#id_reward_point_used').val()<= reward &&  $('#id_reward_point_used').val()/100 < amount && discount===0){
-      amount = amount + reward_used/100;
-      reward_used = $('#id_reward_point_used').val();
-      amount = amount - reward_used/100;
-      $('#id_total_amount').text(amount.toFixed(2));
-      if($('#reward_used_block').length>0){
-        $('#reward_used_block').remove();
-      }
-      var rew = '<div id="reward_used_block">' + reward_used +
-                ' points:<span class="w3-right" id="reward_discount_amount">-'+
-                (reward_used/100).toFixed(2) +
-                '</span></div>'
-      $('#amount_block').before(rew);
-      $('#id_reward_point_used').prop('type','hidden');
-      $('#id_coupon').val('');
-    }else if(discount>0){
-      var errornote = '<p class="errornote">Coupon and Reward ponits can bed used only one.</p>'
-      $('#reward_block').before(errornote);
-    }
-  }
-}// endof apply rewards
 // for apply coupon
 function apply_coupon(csrf, url){
-    if($('#id_coupon').prop('type')==='hidden'){
-      $('#id_coupon').prop('type','text');
+    if($('#id_code').prop('type')==='hidden'){
+      $('#id_code').prop('type','text');
     }else{
-      if(reward_used===0){
             $('.errornote').remove();
             let dt={'csrfmiddlewaretoken': csrf,
-                    'coupon':$('#id_coupon').val()
+                    'coupon':$('#id_code').val()
                   };
             $.ajax({
               type: "POST",
               url: url,
               data: dt,
               success: function(data){
-                console.log(data);
                 if(data === ''){
-                  var errornote = '<p class="errornote">The coupon is not exicted.</p>'
+                  var errornote = document.createElement("p");
+                  errornote.setAttribute("class", "errornote");
+                  errornote.innerHTML = gettext('The coupon does not exist.');
                   $('#coupon_block').before(errornote)
                 }else{
-                  discount = parseFloat(data);
-                  amount = amount *(100-discount)/100;
-                  $('#id_total_amount').text(amount.toFixed(2));
-                  var disc = '<div id="discount_block">'+
-                            dt.coupon +
-                            '('+ discount + '% OFF):'+
-                            '<span class="w3-right" id="discount_amount">-'+
-                            (amount *discount/100).toFixed(2) +
-                            '</span></div>'
-                  $('#amount_block').before(disc);
-                  $('#id_coupon').prop('type','hidden');
-                  $('#id_reward_point_used').val(0);
+                  coup = JSON.parse(data)
+
+                  if (coup==false){
+                    var errornote = document.createElement("p");
+                    errornote.setAttribute("class", "errornote");
+                    errornote.innerHTML = gettext('The coupon is invalid.');
+                    $('#coupon_block').before(errornote)
+                  }else{
+                    discount = coup;
+                    if($('#discount_block').length == 0){
+                      var disc = '<div id="discount_block">'+
+                                dt.coupon +
+                                '('+ discount.discount + '% OFF):'+
+                                '<span class="w3-right" id="discount_amount"></span></div>'
+                      $('#amount_block').before(disc);
+                    }
+                    update_price(discount);
+                    $('#id_code').prop('type','hidden');
+                  }
                 }
               },
               failure: function(data){
-                console.log(failure);
+
               },
           });
-        }else {
-          var errornote = '<p class="errornote">Coupon and Reward ponits can bed used only one.</p>'
-          $('#coupon_block').before(errornote);
-        }
+
     }
 }// end of apply coupon
+
+function update_price(discount){
+  if (discount.package){
+    var new_package = amount_package *(100-discount.discount)/100;
+  }else{
+    var new_package = amount_package;
+  }
+  if (discount.order){
+    var new_order = amount_order *(100-discount.discount)/100;
+  }else{
+    var new_order = amount_order;
+  }
+  if(discount.amount_limit && discount.amount_limit<(amount - final_amount)){
+    final_amount = amount - discount.amount_limit;
+  }else{
+    final_amount = new_package+new_order;
+  }
+  $('#id_total_amount').text(final_amount.toFixed(2));
+  $('#discount_amount').text("-"+(amount - final_amount).toFixed(2));
+}// end of update price
+
 $(document).ready(function(){
-  $('input[type=image]').prop('src','https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif');
-  //  for select all checkbox
-      $('#select_all').change(function(){
+      //  for select all checkbox
+      $('#select_all_coshipping').change(function(){
         if($(this).prop('checked')){
-          $('tbody').find("input[type=checkbox]").each(function(){
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
             if(!$(this).prop('disabled')){
               $(this).prop('checked', true);
             }
           });
         }else{
-          $('tbody').find("input[type=checkbox]").each(function(){
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
+            $(this).prop('checked', false);
+          });
+        }
+      });// end of select_all_coshipping
+      $('#select_all_order').change(function(){
+        if($(this).prop('checked')){
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
+            if(!$(this).prop('disabled')){
+              $(this).prop('checked', true);
+            }
+          });
+        }else{
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
+            $(this).prop('checked', false);
+          });
+        }
+      });// end of select all
+      $('#select_all_direct_package').change(function(){
+        if($(this).prop('checked')){
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
+            if(!$(this).prop('disabled')){
+              $(this).prop('checked', true);
+            }
+          });
+        }else{
+          $(this).parents('table').find("input[type=checkbox]").each(function(){
             $(this).prop('checked', false);
           });
         }
       });// end of select all
 
-// change the amount when any checkbox chenged
+// change the amount when any checkbox changed
       $('input[type=checkbox]').change(function(){
-        amount = 0.0;
-        $('#selected_list').empty();
-        $('tbody').find("input[type=checkbox]").each(function(){
-            if($(this).prop('checked')){
-                var single = 0.0;
-                if($(this).parents('tr').find('.total_amount').length>0){
-                  single = parseFloat($(this).parents('tr').find('.total_amount').text());
-                }
-              amount = amount + single;
-              var selected = '<div class="selected_package">' +
-                              $(this).parents('tr').find('.cust_tracking_num').text().toUpperCase() +
-                              '<span class="w3-right">' +
-                              single.toFixed(2) +
-                              '</span></div>'
-              $('#selected_list').append(selected);
-            }
+              amount_package = 0.0;
+              amount_order = 0.0;
+              $('#selected_list').empty();
 
-        });
+              $('tbody').find("input[type=checkbox]").each(function(){
+                  if($(this).prop('checked')){
+                      var single = 0.0;
+                      if($(this).parents('tr').find('.total_amount').length>0){
+                        single = parseFloat($(this).parents('tr').find('.total_amount').text());
+                      }
+                      if($(this).parents('tr').find('.order').length>0){
+                        amount_order = amount_order+single;
+                      }
+                      else{
+                        amount_package = amount_package+single;
+                      }
+                    var selected = '<div class="selected_package w3-row">' +
+                                    $(this).parents('tr').find('.cust_tracking_num').text().toUpperCase() +
+                                    '<span class="w3-right">' +
+                                    single.toFixed(2) +
+                                    '</span></div>'
+                    $('#selected_list').append(selected);
+                  }
 
-        if(amount *(100-discount)/100>reward_used/100){
-          amount = amount *(100-discount)/100 - reward_used/100;
-        }else{
-          reward_used = 0;
-          amount = amount *(100-discount)/100;
-          $('#reward_used_block').remove();
-          $('#id_reward_point_used').val(0);
-        }
-        $('#discount_amount').text((amount *discount/100).toFixed(2));
-        $('#reward_used_amount').text((reward_used/100).toFixed(2));
-        $('#id_total_amount').text(amount.toFixed(2));
+              });
+              amount = amount_package+amount_order;
+              if(discount.discount>0){
+                  update_price(discount);
+              }else{
+                  $('#id_total_amount').text(amount.toFixed(2));
+              }
+
       });//end of checkbox changed
+
 });

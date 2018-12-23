@@ -3,9 +3,10 @@
     border: 1px solid red;
     border-radius: 4px;
     overflow: hidden;
-    width: 30vw;
-    margin: 5vw auto;
-    font-size: 1.2vw;
+    width: 400px;
+    margin: 60px auto;
+    font-size: 15px;
+    flex: 0 0 auto;
 }
 .contentCSS{
   padding-bottom: 10px;
@@ -65,19 +66,20 @@ select{
 
 /* RESPONSIVE */
 @media screen and (max-height: 600px) {
-	.login-form-container {
+  #container {
 		margin-top: 0 !important;
 		top: 10px !important;
+    border:none;
+    background: none;
 	}
 }
 @media screen and (max-width: 400px) {
-	.login-form-container {
-		left: 5px;
-		margin-left: 5px;
+  #container {
 		min-width: 283px;
-		right: 10px;
-		margin-bottom: 10px;
-		width: auto;
+		width: 95%;
+    margin: 10px auto;
+    border:none;
+    background: none;
 	}
 	.login-form .input {
 		width: 140px;

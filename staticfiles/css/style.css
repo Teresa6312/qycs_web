@@ -40,9 +40,8 @@ body{
   font-size: 35px;
   font-weight: bold;
 }
-.text-xxlarge, .home-xxlarge{
+.text-xxlarge{
   font-size: 30px;
-  font-family: Georgia;
 }
 .text-xxlarge-bold, .home-xxlarge-bold{
   font-size: 30px;
@@ -116,6 +115,7 @@ a:hover{
   color: #939393;
   font-weight: bold;
   text-transform: uppercase;
+  padding-bottom: 0;
 }
 
 
@@ -124,6 +124,7 @@ a:hover{
 }
 .topnav .icon {
   display: none;
+  font-size: 25px;
 }
 
 .dropdown {
@@ -140,6 +141,7 @@ a:hover{
     outline: none;
     padding: 1vw;
     text-transform: uppercase;
+    padding-bottom: 0;
 }
 
 .dropdown-content {
@@ -169,6 +171,7 @@ a:hover{
 }
 .dropdown:hover .dropdown-content {
     display: block;
+    margin: 0;
 }
 
 /*------------------------------------ content --------------------------------------*/
@@ -202,7 +205,7 @@ a:hover{
   margin: auto;
 }
 
-.wechat, .email{
+.wechat, .email, .ui_button, #apply_coupon{
   cursor:pointer;
 }
 .w3-card-2, .w3-card-4, .w3-border{
@@ -228,6 +231,26 @@ a:hover{
   margin-left: 25px;
   margin-top: 15px;
 }
+
+
+.h2{
+	font-weight:bold;
+	position: center;
+	color:darkblue;
+}
+
+.i{
+	color: red;
+}
+
+.h3{
+	color:#B18904;
+}
+
+#wh_link_block a{
+  color: #2196F3;
+}
+
 /*  -------------------------- for circles ------------------------------------------*/
 .half_circle_left{
   margin-top: 8vw;
@@ -287,6 +310,7 @@ a:hover{
   animation-name: hoverIN;
   animation-duration: .5s;
   left: 3vw;
+
 }
 
 
@@ -344,22 +368,25 @@ a:hover{
 
 
 #shipping_full_circle{
-  border-radius:50%;
-  padding:12.5vw 5vw;
-  background-color: #E73229;
-  font-size: 1.2vw;
-  padding-right: 11vw;
   width:28vw;
+  height:28vw;
+  border-radius:50%;
+  padding-top:13vw;
+  background-color: #E73229;
+  font-size: 1.5vw;
+  padding-left: 3vw;
+  text-align: left;
 }
 
-
 #tracking_full_circle{
-  border-radius:50%;
-  padding:12.7vw 5vw;
-  background-color: #121A50;
-  font-size: 1.2vw;
-  padding-left: 11vw;
   width:28vw;
+  height:28vw;
+  border-radius:50%;
+  padding-top:13vw;
+  background-color: #121A50;
+  font-size: 1.5vw;
+  padding-right: 3vw;
+  text-align: right;
 }
 
 .mini_full_circle{
@@ -376,16 +403,21 @@ a:hover{
 
 
 /* ---------------------------------- for inputs ----------------------------------- */
+
+
+.contentCSS input,.contentCSS textarea,.w3-modal-content input,  .w3-modal-content textarea{
+  padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width: 100%;display:block;border:1px solid #ccc
+}
+.w3-modal-content select,.contentCSS select{padding: 0.2vw; margin: 0.2vw 0.2vw 0.2vw 0; width:100%;border:1px solid #ccc}
+#id_birthday_year, #id_birthday_month, #id_birthday_day, #id_absent_start_year, #id_absent_start_month, #id_absent_start_day, #id_absent_end_year, #id_absent_end_month, #id_absent_end_day{
+  width: 32.5%;
+}
 .contentCSS input[type="checkbox"]{
   width: 15px;
   height: 15px;
   vertical-align: middle;
+  display: inline;
 }
-.contentCSS input, .contentCSS select, .contentCSS textarea, .w3-modal-content input, .w3-modal-content select, .w3-modal-content textarea{
-  padding: 0.2vw;
-  margin: 0.2vw 0.2vw 0.2vw 0;
-}
-
 
 .w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
   width: 95%;
@@ -449,6 +481,7 @@ thead th{
   vertical-align: middle;
 }
 
+
 table {
   max-height:450px;
   overflow:auto;
@@ -482,6 +515,7 @@ tr th{
   width: 44px;
   height: 26px;
 }
+
 
 .switch input {display:none;}
 
@@ -615,6 +649,9 @@ input:checked + .slider:before {
     #main_address_form{
       margin: 20px auto;
     }
+    #container{
+      flex: 0 0 auto;
+    }
     #footer{
       position:relative;
       height:auto;
@@ -652,6 +689,13 @@ input:checked + .slider:before {
       padding: 0;
       margin: 0;
       z-index: 1;
+      padding-top: 10px;
+      padding-right: 10px;
+    }
+    .topnav .icon {
+      position: absolute;
+      right: 0;
+      top: 0;
     }
     .topnav a, .dropdown .dropbtn, .topnav form {
       display: none;
@@ -666,7 +710,7 @@ input:checked + .slider:before {
       display: block;
       padding: 5px 10px;
     }
-    #account_nav{
+    .topnav    #account_nav{
       float: left;
       display: block;
     }
@@ -690,18 +734,16 @@ input:checked + .slider:before {
       width:50px;
     }
 
-    #shipping_half_circle, #tracking_half_circle{
+    #shipping_half_circle, #tracking_half_circle, #shipping_full_circle,  #tracking_full_circle{
       font-size: 2.2vw;
+    }
+    .w3-third input, .w3-third select, .w3-half input, .w3-half select, .w3-quarter input, .w3-quarter select{
+      width: 100%;
     }
   }
 
   @media screen and (max-width: 600px) {
     .topnav.responsive {position: relative;}
-    .topnav.responsive .icon {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
     .topnav.responsive a {
       float: none;
       display: block;
@@ -720,6 +762,9 @@ input:checked + .slider:before {
       display: block;
       width: 100%;
       text-align: left;
+    }
+    .topnav select{
+      display: relative;
     }
   }
 
@@ -833,15 +878,18 @@ input:checked + .slider:before {
   margin: 0.5vw 0;
 }
 
-.w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"]{
+.w3-modal button, .contentCSS button, .contentCSS input[type="submit"], .contentCSS input[type="button"], #newAddressFormModalBody input[type="button"], .contentCSS .ui_button{
   color: #fff;
   padding: 0.4vw 3vw;
   border-radius: 4px;
   border: none;
   margin: 0.5vw 0.5vw;
+  width: auto;
+  display: inline;
 }
 
-.contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover{
+
+.contentCSS button:hover, .add-row:hover, .contentCSS input[type="submit"]:hover, .contentCSS input[type="button"]:hover, #newAddressFormModalBody input[type="button"]:hover, .contentCSS .ui_button:hover{
   opacity: 0.8;
   cursor:pointer;
 }
@@ -886,10 +934,10 @@ input:checked + .slider:before {
 
 /* ------------------------------------- for tracking and tracked page ------------------------------------------------------- */
 #tracking_block{
-  width:400px;
   border: 1px solid #eee;
   background-color: #fafafa;
   display: inline-block;
+  margin-bottom: 10px;
 }
 #track_btn{
   color: red;
@@ -898,7 +946,7 @@ input:checked + .slider:before {
   margin: 0;
   font-weight: bold;
   background-color: Transparent;
-  font-size: 25px;
+  font-size: 20px;
   display:inline;
   text-align:right;
   width: 20%;
@@ -909,7 +957,7 @@ input:checked + .slider:before {
 .tracking #id_cust_tracking_num{
   border: none;
   margin: 0;
-  height: 30px;
+  height: 100%;
   width: 75%;
   font-size: 25px;
 }

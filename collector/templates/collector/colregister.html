@@ -29,7 +29,7 @@
       {% endfor %}</ul>
       {% endif %}
 
-      {% if form.errors %}
+      {% if userform.errors or colform.errors %}
           <p class="errornote">
           {% trans "Please correct the error(s) below." %}
           </p>
@@ -78,7 +78,7 @@
 
                             {{ userform.phone.label_tag }}   {{ userform.phone.errors }}{{ userform.phone }}
                           </div>
-                          <div class="w3-half">
+                          <div class="w3-row">
                             {{ userform.language.label_tag }} {{ userform.language.errors }} {{ userform.language }}
                           </div>
                     </div>
@@ -92,13 +92,15 @@
                           <div class="w3-row">
                             {{ colform.name.label_tag }}{{ colform.name.errors }} {{ colform.name }}
                           </div>
-                          <div class="w3-row">
+                          <div class="w3-row w3-margin-top w3-margin-bottom">
+                            {% trans 'Collector Icon:' %}
+                            {{ colform.collector_icon.errors }}
+                            <label class="ui_button logo-red" for="id_collector_icon">{% trans 'Upload' %}</label>
+                            <input type="file" name="collector_icon" id="id_collector_icon" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
 
-                            {{ colform.collector_icon.label_tag }} {{ colform.collector_icon.errors }} {{ colform.collector_icon }}
                           </div>
                           <div class="w3-row">
-
-                            {{ colform.store.label_tag }} {{ colform.store.errors }}{{ colform.store }}
+                            {{ colform.store }}{% trans 'The location is a store.'%}
                           </div>
                           <div class="w3-row">
 
@@ -139,21 +141,38 @@
                             <div class="w3-row">
                               {{ colform.license_type.label_tag }} {{ colform.license_type.errors }}{{ colform.license_type }}
                             </div>
-                            <div class="w3-row">
+                            <div class="w3-row w3-margin-top w3-margin-bottom">
 
-                              {{ colform.license_image.label_tag }} {{ colform.license_image.errors }}{{ colform.license_image }}
+                              {% trans 'Collector License:' %}
+                              {{ colform.license_image.errors }}
+                              <label class="ui_button logo-red" for="id_license_image">{% trans 'Upload' %}</label>
+                              <input type="file" name="license_image" id="id_license_image" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+
+
+                            </div>
+                            <div class="w3-row w3-margin-top w3-margin-bottom">
+
+
+                              {% trans 'Collector ID:' %}<span class="required_stick">*</span>
+                              {{ colform.id_image.errors }}
+                              <label class="ui_button logo-red" for="id_id_image">{% trans 'Upload' %}</label>
+                              <input type="file" name="id_image" id="id_id_image" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+
+
+                            </div>
+
+                            <div class="w3-row w3-margin-top w3-margin-bottom">
+                              {% trans 'WeChat QRcode:' %}
+                              {{ colform.id_wechat_qrcode.errors }}
+                              <label class="ui_button logo-red" for="id_wechat_qrcode">{% trans 'Upload' %}</label>
+                              <input type="file" name="wechat_qrcode" id="id_wechat_qrcode" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+
                             </div>
                             <div class="w3-row">
-
-                              {{ colform.id_image.label_tag }} {{ colform.id_image.errors }}{{ colform.id_image }}
-                            </div>
-                            <div class="w3-row">
-
                               {{ colform.wechat.label_tag }} {{ colform.wechat.errors }}{{ colform.wechat }}
                             </div>
                             <div class="w3-row">
-
-                              {{ colform.wechat_qrcode.label_tag }}  {{ colform.wechat_qrcode.errors }} {{ colform.wechat_qrcode }}
+                              {{ colform.paypal.label_tag }}  {{ colform.paypal.errors }} {{ colform.paypal }}
                             </div>
                       </div>
                   </div>
@@ -197,10 +216,10 @@
         <div class="w3-row content_center">
           <div class="w3-center">
 
-            <button type="button" class="logo-blue" id="prevBtn">{% trans "Go Back" %}</button>
-            <button type="button" class="logo-red" id="nextBtn">{% trans "Next" %}</button>
-            <span id="submit_block">
-              <button  type="button" class="logo-red" onclick="window.location.href = '{% url 'account'%}'" >{% trans 'Cancel' %}</button>
+            <button type="button" class="logo-blue" id="prevBtn"  style="display:none">{% trans "Go Back" %}</button>
+            <button type="button" class="logo-red" id="nextBtn"  style="display:none">{% trans "Next" %}</button>
+            <span id="submit_block"  style="display:none">
+              <button  type="button" class="logo-red" onclick="window.location.href = '{% url 'account'%}'">{% trans 'Cancel' %}</button>
               <input class="logo-red" type="submit" name="finish" value="{% trans 'Register' %}"/>
             </span>
           </div>
@@ -220,7 +239,7 @@
   });
 
   $('#id_store').change( function(){
-          if (!$(this).is(':checked')) {
+          if(!$(this).prop('checked')){
             $('#id_store_name').closest('.w3-row').slideUp(300, function(){
                 $('#id_store_name').closest('.w3-row').hide();
             });
@@ -251,12 +270,26 @@
         var url = '';
         if ('{{LANGUAGE_CODE}}'=="en-us"){
           url = "/static/information/collection_point_terms_en.txt";
-        }else if('{{LANGUAGE_CODE}}'=="zh-Hans"){
-          url = "/static/information/collection_point_terms_cn.txt";
+        }else if('{{LANGUAGE_CODE}}'=="zh-hans"){
+        url = "/static/information/collection_point_terms_cn.txt";
         }
         if(url!=''){
           loadDoc(url)
         }
+        $('#id_collector_icon').change(function(){
+              displayImages('#id_collector_icon');
+        });
+        $('#id_license_image').change(function(){
+              displayImages('#id_license_image');
+        });
+        $('#id_id_image').change(function(){
+              displayImages('#id_id_image');
+        });
+        $('#id_wechat_qrcode').change(function(){
+              displayImages('#id_wechat_qrcode');
+        });
+
       });
+
   </script>
 {% endblock%}

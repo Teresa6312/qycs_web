@@ -110,7 +110,7 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
 		user.is_active = True
 		user.email_confirmed = True
 		user.save()
-		login(request, user, backend)
+		# login(request, user, backend)
 		return redirect('account')
 	else:
 		return HttpResponse('Activation link is invalid!')
@@ -144,7 +144,7 @@ class SendEmailView(TemplateView):
 			send_mail(
 					subject,
 					content,
-					settings.EMAIL_HOST_USER,
+					settings.DEFAULT_FROM_EMAIL,
 					to_email,
 					fail_silently=False,
 				)
@@ -421,7 +421,7 @@ class InformationView(TemplateView):
 	def get(self, request, title):
 		try:
 			information = Resource.objects.get(title=title)
-			if information.english_content != '' or information.chinese_content != '':		
+			if information.english_content != '' or information.chinese_content != '':
 				return render(request, self.template_name, {'information': information})
 			else:
 				return render(request, self.template_name, {'empty': _('Upcoming information')})
@@ -433,5 +433,5 @@ class PriceListView(TemplateView):
 	template_name = 'main/price_list.html'
 
 	def get(self, request):
-		price_list = PriceRate.objects.filter(category='ship', from_country='cn', to_country='us')
+		price_list = PriceRate.objects.filter(category='ship', from_country='cn', to_country='us').order_by('package_type', 'carrier')
 		return render(request, self.template_name, {'price_list': price_list})

@@ -1,0 +1,166 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+
+{% block title%}
+{% trans 'Enter Weight' %}
+{% endblock%}
+
+
+
+{% block content %}
+<div class="w3-container  w3-cell w3-mobile" style="width:70%;">
+      <h5>
+      {% if package.issue %}
+          <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:2vw;"/>{% trans 'This package has the following issue' %}
+          {{package.issue|linebreaks|safe}}
+      {% endif %}
+      </h5>
+
+      <div class="w3-panel content_center">
+
+                <div class="w3-row">
+                    {% if not package.co_shipping %}
+                    <h6>{% trans 'Direct Shipping to' %}:</h6>
+                    <div class="w3-margin-left">
+                      {% if package.ship_to_add %}
+                                  {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
+                      {% else %}N/A
+                      {% endif %}
+                    </div>
+                    {% else %}
+                    <h6>{% trans 'Co-shipping to' %}:</h6>
+                    <div class="w3-margin-left">
+                        <div class="logo-text-blue">
+                            <i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})
+                        </div>
+                        {% if package.ship_to_col %}
+                            {% include "blocks/col_card_fields.html" with col=package.ship_to_col %}{% else %}N/A
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="w3-row">
+                    <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.get_package_type_display}}{% else %}N/A{% endif %}</h6>
+
+                    {% if not package.ship_carrier == '' %}<h6>{% trans 'Selected shipping carrier' %}:{{package.ship_carrier}}</h6>{% endif %}
+                    {% if not package.co_shipping %}<h6>{% trans 'No Rush Requested' %}: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
+
+                    {% if not package.coshiping %}
+                        <h6 class="w3-text-red">{% trans 'Low Volume Weight Requested'%}:
+                            {% if package.low_volume_request %}
+                            <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                             {% else %}
+                            <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                            {% endif %}
+                        </h6>
+                    {% endif %}
+
+
+                    <h6>{% trans 'Weight' %}:
+                      {% if package.volume_weight and package.weight %}
+                          {% if package.volume_weight > package.weight %}
+                              {{package.volume_weight}}
+                          {% else %}
+                              {{package.weight}}
+                          {% endif %}
+                          (kg)
+                      {% else %}
+                      N/A
+                      {% endif %}
+                    </h6>
+
+                    {% if package.order_amount %}
+                      <h6>{% trans 'Order Amount' %}: {{package.currency}} <span class="order_amount">{{package.order_amount}}</span></h6>
+                    {% endif %}
+                    {% if package.storage_fee %}
+                      <h6>{% trans 'Storage fee' %}: {{package.currency}} <span class="storage_fee">{{package.storage_fee}}</span></h6>
+                    {% endif %}
+                    {% if package.shipping_fee %}
+                      <h6>{% trans 'Shipping fee' %}: {{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
+                    {% endif %}
+              </div>
+
+              <div class="w3-row">
+                  {% if package.packagesnapshot_set.all %}
+                      <h5>{% trans 'Package Snapshot' %}:</h5>
+                      {% for snapshot in package.packagesnapshot_set.all %}
+                          {% if snapshot.snapshot %}
+                            <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+                              <img alt="package snapshot" src="{{snapshot.snapshot.url}}" style="width:100%; margin:auto;">
+                            </div>
+                          {% endif %}
+                      {% endfor %}
+                  {% else %}
+                      <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
+                  {% endif %}
+
+                  {% if package.item_set.all %}
+                  <h5>{% trans 'Package Item details'%}:</h5>
+                        {% for item in package.item_set.all %}
+                        <div class="w3-row  w3-card-2 w3-container">
+                          {% trans 'Item name' %}: {{item.item_name}}<br/>
+                          {% trans 'Item detail' %}:{{item.item_detail}}<br/>
+                          {% trans 'Item quantity' %}:{{item.item_quantity}}<br/>
+                        </div>
+                        {% endfor %}
+                  {% else %}
+                        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
+                  {% endif %}
+              </div>
+
+      </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+{% if package.co_shipping %}
+<div class="w3-container w3-cell w3-mobile w3-margin-top">
+    <div class="w3-card-2 w3-round w3-container w3-padding-16">
+      <div class="text-xxlarge-bold">{% trans 'Enter Weight' %}</div>
+      <form method = "post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% if form.errors %}
+          <p class="errornote">
+              {% if form.errors.items|length == 1 %}
+                  {% trans "Please correct the error below." %}
+              {% else %}
+                  {% trans "Please correct the errors below." %}
+              {% endif %}
+          </p>
+      {% endif %}
+      <div class="w3-mobile">
+          <div class="w3-row text-medium">
+            {% trans 'Volume' %}
+          </div>
+            <div class="w3-row" >
+              {{ vol_form.length }}
+            </div>
+            <div class="w3-row" >
+             {{ vol_form.width }}
+            </div>
+            <div  class="w3-row">
+              {{ vol_form.height }}
+            </div>
+          <div class="w3-row">
+              {{ form.weight.label_tag }} {{ form.weight.errors }} {{ form.weight }}
+          </div>
+          <div class="w3-row">
+              {{ form.package_type.label_tag }} {{ form.package_type.errors }} {{ form.package_type }}
+          </div>
+
+          <div class="w3-row" id="button_row">
+              		<button class="logo-red" type="button" onclick="window.location.href='{% url 'issue' package.id %}'">{% trans 'Has Issue' %}</button>
+                  <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>
+          </div>
+      </div>
+      </form>
+
+    </div>
+</div>
+{% endif %}
+{% endblock %}

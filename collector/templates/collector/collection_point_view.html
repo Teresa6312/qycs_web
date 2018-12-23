@@ -42,37 +42,40 @@
           {% else %}<button type="button"  onclick="window.open('https://www.google.com/maps/dir//{{collector.address}} {% if collector.apt %}{{collector.apt}}{% endif %} {{collector.city}}, {{collector.state}} {{collector.zipcode}}')" class="logo-blue">{% trans 'get direction' %}</button>{% endif %}
 
 
-          <button type="button" class="logo-red" onclick="window.location.href='{% url 'add_co_shipping' user.default_col.pk %}'">{% trans 'ship package' %}</button>
-      </div>
-      <div class = "w3-card-2 w3-col w3-container aside-bar-background-color w3-mobile w3-right" style="width:300px;">
-              <div class="text-medium-bold w3-margin-top">{% trans 'Schedule' %}</div>
-
-              {% if collector.absent_start %}
-              <div class="w3-row w3-text-red">
-                <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:20px;"/>
-                {% trans 'Not available from' %} {{collector.absent_start|date:"M d, Y"}} - {{collector.absent_end|date:"M d, Y"}}.
-              </div>
-              {% endif %}
-
-                <div class = "w3-col-row w3-mobile">
-                  <div class="w3-col" style="width:100px;">{% trans 'Monday' %}: </div><div class="w3-rest">{{collector.mon_start}} - {{collector.mon_end}}</div>
-                  <div class="w3-col" style="width:100px;">{% trans 'Tuesday' %}: </div><div class="w3-rest">{{collector.tue_start}} - {{collector.tue_end}}</div>
-                  <div class="w3-col" style="width:100px;">{% trans 'Wednesday' %}: </div><div class="w3-rest">{{collector.wed_start}} - {{collector.wed_end}}</div>
-                  <div class="w3-col" style="width:100px;">{% trans 'Thursday' %}: </div><div class="w3-rest">{{collector.thu_start}} - {{collector.thu_end}}</div>
-                  <div class="w3-col" style="width:100px;">{% trans 'Friday' %}: </div><div class="w3-rest">{{collector.fri_start}} - {{collector.fri_end}}</div>
-                  <div class="w3-col" style="width:100px;">{% trans 'Saturday' %}: </div><div class="w3-rest">{{collector.sat_start}} - {{collector.sat_end}}</div>
-                  <div class="w3-col" style="width:100px;">{% trans 'Sunday' %}: </div><div class="w3-rest">{{collector.sun_start}} - {{collector.sun_end}}</div>
-                </div>
+          <button type="button" class="logo-red" onclick="window.location.href='{% url 'add_co_shipping' collector.pk %}'">{% trans 'ship package' %}</button>
       </div>
   </div>
 
     <hr/>
 <div class="content_center">
-    <div class="w3-panel w3-cell-row">
-      <div class="w3-row text-regular-bold">
-      {% trans 'Introduction' %}
-      </div>
-      <div class="w3-row w3-margin-left">{{collector.description|linebreaks|safe}}</div>
+    {% if not collector.description == '' %}
+        <div class="w3-panel w3-cell-row">
+          <div class="w3-row text-regular-bold">
+          {% trans 'Introduction' %}
+          </div>
+          <div class="w3-row w3-margin-left">{{collector.description|linebreaks|safe}}</div>
+        </div>
+    {% endif %}
+
+    <div style="width:300px;">
+            <div class="text-medium-bold w3-margin-top">{% trans 'Schedule' %}</div>
+
+            {% if collector.absent_start %}
+            <div class="w3-row w3-text-red">
+              <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:20px;"/>
+              {% trans 'Not available from' %} {{collector.absent_start|date:"M d, Y"}} - {{collector.absent_end|date:"M d, Y"}}.
+            </div>
+            {% endif %}
+
+              <div class = "w3-col-row w3-mobile">
+                <div class="w3-col" style="width:100px;">{% trans 'Monday' %}: </div><div class="w3-rest">{{collector.mon_start}} - {{collector.mon_end}}</div>
+                <div class="w3-col" style="width:100px;">{% trans 'Tuesday' %}: </div><div class="w3-rest">{{collector.tue_start}} - {{collector.tue_end}}</div>
+                <div class="w3-col" style="width:100px;">{% trans 'Wednesday' %}: </div><div class="w3-rest">{{collector.wed_start}} - {{collector.wed_end}}</div>
+                <div class="w3-col" style="width:100px;">{% trans 'Thursday' %}: </div><div class="w3-rest">{{collector.thu_start}} - {{collector.thu_end}}</div>
+                <div class="w3-col" style="width:100px;">{% trans 'Friday' %}: </div><div class="w3-rest">{{collector.fri_start}} - {{collector.fri_end}}</div>
+                <div class="w3-col" style="width:100px;">{% trans 'Saturday' %}: </div><div class="w3-rest">{{collector.sat_start}} - {{collector.sat_end}}</div>
+                <div class="w3-col" style="width:100px;">{% trans 'Sunday' %}: </div><div class="w3-rest">{{collector.sun_start}} - {{collector.sun_end}}</div>
+              </div>
     </div>
 
 {% if collector.show_contact %}
@@ -193,7 +196,6 @@
 
 
 function AddResponseForm(id, type){
-
     let content = '<div class="w3-row response_block" id="response_block_'+
     id+
     '">'+
@@ -210,24 +212,11 @@ function AddResponseForm(id, type){
         $('#'+type+'_block_'+id).append(content);
         $('#response_block_'+id).hide().slideDown(500);
         $('.response_btn_'+id).hide();
-
     }
 }
 
 
-function openBlock(evt, blockName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("message_block");
-  for (i = 0; i < x.length; i++) {
-     x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
-  }
-  document.getElementById(blockName).style.display = "block";
-  evt.currentTarget.firstElementChild.className += " w3-border-red";
-}
+
 
 $(document).ready(function(){
     $(".block_link").click(function(){
@@ -258,7 +247,6 @@ function submitForm(id){
       },
       failure: function(){
         location.reload();
-        console.log('failure to insert the response');
       },
     });
   }

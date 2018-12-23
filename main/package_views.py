@@ -1,5 +1,5 @@
 from .models import (
-	Address, Service, CollectionPoint, Coupon,
+	Address, Service, CollectionPoint, Coupon, ParentPackage,
 	User, Warehouse, PackageSnapshot, OrderSet
 	)
 from .forms import (
@@ -10,6 +10,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
+
 
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
@@ -24,13 +25,23 @@ from django.http import HttpResponseRedirect
 # from django.core.serializers.json import DjangoJSONEncoder
 #
 import datetime
+import json
 
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
 	def get(self, request):
+		# order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
+		# co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
+		# parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).exclude(paid_amount=None).distinct().order_by('-created_date')
+		order_list = Service.objects.filter(user = request.user, order = True).order_by('-created_date')
+		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).order_by('-created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).distinct().order_by('-created_date')
+
 		return render(request, self.template_name,
-			{'package_list': Service.objects.filter(user = request.user).order_by('-created_date')})
+			{'order_list': order_list,
+			'co_shipping_list': co_shipping_list,
+			'parent_package_list': parent_package_list})
 
 
 def ReturnPackageNumber(request):
@@ -42,35 +53,64 @@ class PackageCartView(TemplateView):
 
 	def get(self, request):
 		order = OrderSetForm()
-		package_list = Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date')
+		order_list = Service.objects.filter(user = request.user, paid_amount = None, order = True).order_by('created_date')
+		co_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).order_by('created_date')
+		direct_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, service__paid_amount = None).distinct().order_by('created_date')
+
+
 		return render(request, self.template_name,
-			{'package_list': package_list,
+			{'order_list': order_list,
+			'co_shipping_list': co_shipping_list,
+			'direct_shipping_list': direct_shipping_list,
+			'parent_package_list': parent_package_list,
 			'order':order})
 
 	def post(self, request):
 		cart = CartForm(request.user, request.POST)
-		if cart.is_valid():
-			try:
-				coupon = Coupon.objects.get(code = request.POST.get('coupon'))
-			except:
-				coupon = None
+		order = OrderSetForm(request.POST)
+		if cart.is_valid() and order.is_valid():
+			if cart.cleaned_data['package_set'] or cart.cleaned_data['parent_package_set']:
+				try:
+					coupon = Coupon.objects.get(code = request.POST.get('code'))
+				except:
+					coupon = None
 
-			orderSet = OrderSet(coupon = coupon, total_amount = 0.0)
-			orderSet.save()
+				orderSet = order.save(commit=False)
+				orderSet.coupon = coupon
+				orderSet.save()
 
-			amount = 0;
-			for pack in cart.cleaned_data['package_set']:
-				package = Service.objects.get(id = pack.id )
-				if package.get_total()>0:
-					package.order_set = orderSet
-					package.save()
-					amount = package.get_total() + amount
 
-			orderSet.total_amount = amount
-			orderSet.currency = orderSet.service_set.first().currency
-			orderSet.save()
-			request.session['order_set_id'] = orderSet.id
-			return redirect(reverse('payment:process'))
+				for pack in cart.cleaned_data['package_set']:
+					package = Service.objects.get(id = pack.id )
+					if package.get_total()>0:
+						package.order_set = orderSet
+						package.save()
+
+
+
+				for parent_pack in cart.cleaned_data['parent_package_set']:
+					package = ParentPackage.objects.get(id = parent_pack.id )
+					if float (package.package_amount)>0:
+						package.order_set = orderSet
+						package.save()
+
+				orderSet.total_amount = orderSet.get_total()[0]
+				discount_amount = orderSet.get_total()[1]
+
+				if orderSet.service_set.all():
+					orderSet.currency = orderSet.service_set.first().currency
+				else:
+					orderSet.currency = orderSet.parentpackage_set.first().currency
+				orderSet.save()
+
+				request.session['order_set_id'] = orderSet.id
+
+				request.session['discount_amount'] = discount_amount
+
+				return redirect(reverse('payment:process'))
+			else:
+				return redirect(reverse('packagecart'))
 		else:
 			return redirect(reverse('packagecart'))
 
@@ -233,7 +273,7 @@ class PackageDetailView(TemplateView):
 	def get(self, request, pack_id):
 		try:
 			package = Service.objects.get(pk=pack_id)
-			if package.user == request.user:
+			if package.user == request.user or request.user.is_staff or request.user.is_superuser:
 				return render(request, self.template_name , {'package': package})
 			else:
 				messages.error(request, _(package.cust_tracking_num + " is not your package. You cannot view the detail."))
@@ -263,6 +303,42 @@ def couponView(request):
 		code=request.POST.get('coupon','')
 		try:
 			coupon = Coupon.objects.get(code = code)
-			return HttpResponse(coupon.discount)
+			if coupon.check_coupon:
+				context = json.dumps({
+				'amount_limit': coupon.amount_limit,
+				'package': coupon.package,
+				'order': coupon.order,
+				'discount': coupon.discount,
+				})
+				return HttpResponse(context)
+			else:
+				return HttpResponse(False)
 		except:
 			return HttpResponse()
+
+
+class ConfirmDirectShipping(TemplateView):
+		template_name = 'main/confirm_direct_shipping.html'
+
+		def get(self, request):
+			order = OrderSetForm()
+			package_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('-created_date')
+			return render(request, self.template_name,
+				{'package_list': package_list,
+				'order':order})
+
+		def post(self, request):
+			cart = CartForm(request.user, request.POST)
+			cart.fields['package_set'].required = True
+			if cart.is_valid():
+				parent_pack = ParentPackage()
+				parent_pack.save()
+
+				for pack in cart.cleaned_data['package_set']:
+					package = Service.objects.get(id = pack.id )
+					package.parent_package = parent_pack
+					package.save()
+
+				return redirect(reverse('packagecart'))
+			else:
+				return redirect(reverse('confirm_direct_shipping'))

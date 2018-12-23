@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-	User, Address, Service, CollectionPoint, Warehouse,
+	User, Address, Service, CollectionPoint, Warehouse, ParentPackage,
 	Item, PackageSnapshot, CoReceiver, FavoriteWebsite,
 	CARRIER_CHOICE, phone_regex, OrderSet, LANGUAGE_CATEGORY, SHIPPING_CARRIER_CHOICE
 	)
@@ -20,45 +20,35 @@ schedule_years = [year, year+1]
 
 class NewUserCreationForm(UserCreationForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
-					empty_label=("Year", "Month", "Day"),
+						empty_label=("YYYY", "MM", "DD"),
 					years = birthday_years))
-	privacy_policy_agree = forms.BooleanField(required = True)
 	class Meta(UserCreationForm.Meta):
 		model = User
 		fields = ('username', 'email', 'first_name', 'last_name',
 					'phone', 'country', 'language', 'birthday', 'password1', 'password2', 'privacy_policy_agree')
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['birthday'].label = _('Birthday')
+		self.fields['country'].initial = 'USA'
+		self.fields['phone'].validators = [phone_regex]
+		self.fields['language'].choices = LANGUAGE_CATEGORY
+		self.fields['phone'].widget.attrs['placeholder'] = _('+1-234-567-8900')
+		self.fields['privacy_policy_agree'].required = True
 
 	def save(self, commit=True, *args, **kwargs):
 		user = super(NewUserCreationForm, self).save(commit=False, *args, **kwargs)
 		user.first_name = user.first_name.title()
 		user.last_name = user.last_name.title()
 		user.email = user.email.lower()
-		user.country = user.country.upper()
 		if commit:
 			user.save()
 		return user
 
 class NewUserChangeForm(UserChangeForm):
 	birthday = forms.DateField(required = False, widget=forms.SelectDateWidget(
-				empty_label=("Year", "Month", "Day"),
-				years = birthday_years,
-				attrs={"class":"w3-quarter w3-border"}))
-
-	first_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	last_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	email = forms.EmailField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('+1-234-567-8900'),"class":"w3-input w3-border"
-									}))
-	country = forms.CharField(required = False, initial='USA',  widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	language = forms.ChoiceField(required = False, choices = LANGUAGE_CATEGORY,
-									widget=forms.Select(attrs={"class":"w3-select w3-border"
-									}))
-	username = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
+				empty_label=("YYYY", "MM", "DD"),
+				years = birthday_years))
 
 	class Meta:
 		model = User
@@ -68,6 +58,11 @@ class NewUserChangeForm(UserChangeForm):
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
+		self.fields['birthday'].label = _('Birthday')
+		self.fields['country'].initial = 'USA'
+		self.fields['phone'].validators = [phone_regex]
+		self.fields['language'].choices = LANGUAGE_CATEGORY
+		self.fields['phone'].widget.attrs['placeholder'] = _('+1-234-567-8900')
 		if self.instance:
 			try:
 				user = User.objects.get(id = self.instance.id)
@@ -87,7 +82,6 @@ class NewUserChangeForm(UserChangeForm):
 		user.first_name = user.first_name.title()
 		user.last_name = user.last_name.title()
 		user.email = user.email.lower()
-		user.country = user.country.upper()
 		if commit:
 			user.save()
 		return user
@@ -107,34 +101,18 @@ Create new Address
 '''
 #-----------------------------------------------------------------------------------------
 class AddressForm(forms.ModelForm):
-	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	last_name = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	email = forms.EmailField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('+1-234-567-8900'),"class":"w3-input w3-border"
-																									}))
-	address = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder':  _("Street Address"),
-																		"class":"w3-input w3-border"
-																		}))
-	apt = forms.CharField(required = False, widget=forms.TextInput(attrs={'placeholder':  _("Apartment/Suit/Unit"),
-																		"class":"w3-input w3-border"
-																		}))
-	city = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	state = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	country = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	zipcode = forms.CharField(required = True, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	location_name = forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
 
 	class Meta:
 		model = Address
 		exclude = ('meno',)
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['apt'].widget.attrs['placeholder'] = _('Apartment/Suit/Unit')
+		self.fields['phone'].widget.attrs['placeholder'] = _('+1-234-567-8900')
+		self.fields['phone'].validators = [phone_regex]
+		self.fields['address'].widget.attrs['placeholder'] = _('Street Address')
+
 
 	def save(self, commit=True, *args, **kwargs):
 		add = super(AddressForm, self).save(commit=False, *args, **kwargs)
@@ -144,7 +122,6 @@ class AddressForm(forms.ModelForm):
 		add.apt = add.apt.title()
 		add.city = add.city.title()
 		add.state = add.state.title()
-		add.country = add.country.upper()
 		if commit:
 			add.save()
 		return add
@@ -155,28 +132,7 @@ class AddressForm(forms.ModelForm):
 Create new Package
 '''
 #-----------------------------------------------------------------------------------------
-
-class PackageCommonForm(forms.ModelForm):
-	wh_received = forms.ModelChoiceField(label = _("From Warehouse"), queryset=Warehouse.objects.filter(status=True),
-									widget=forms.Select(attrs={"class":"w3-select w3-border"
-									}))
-	cust_carrier = forms.ChoiceField(label = _("Carrier"), required = True, choices = CARRIER_CHOICE,
-									widget=forms.Select(attrs={"class":"w3-select w3-border"
-									}))
-	cust_tracking_num = forms.CharField(label = _("Tracking Number"), required = True,
-									widget=forms.TextInput(attrs={"class":"w3-input w3-border"
-									}))
-	memo = forms.CharField(label = 'Note', required=False,
-							widget=forms.Textarea(attrs={'placeholder':  _("Please enter your needs about this package"),
-												"class":"w3-input w3-border",
-												"rows":5
-												}))
-	low_volume_request = forms.BooleanField(label = _("Minimize your package's volume"), required=False)
-
-	class Meta:
-		abstract = True
-
-class PackageCreationForm(PackageCommonForm):
+class PackageCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = Service
@@ -188,14 +144,20 @@ class PackageCreationForm(PackageCommonForm):
 			'no_rush_request',
 			'memo',
 			)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['memo'].widget.attrs['placeholder'] =_("Please enter your needs about this package")
+		self.fields['memo'].widget.attrs['rows'] = 5
+		self.fields['wh_received'].queryset=Warehouse.objects.filter(status=True)
+		self.fields['wh_received'].required = True
+
 
 #-----------------------------------------------------------------------------------------
 '''
 Create new Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class CoShippingCreationForm(PackageCommonForm):
-	no_rush_request = forms.BooleanField(label = _("No Rush Shipping (Double Points)"), required=False)
+class CoShippingCreationForm(forms.ModelForm):
 	class Meta:
 		model = Service
 		fields = (
@@ -203,11 +165,20 @@ class CoShippingCreationForm(PackageCommonForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
+			'no_rush_request',			
 			'receiver',
 			'ship_to_col',
 			'memo',
 			)
-
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['memo'].widget.attrs['placeholder'] =_("Please enter your needs about this package")
+		self.fields['memo'].widget.attrs['rows'] = 5
+		self.fields['wh_received'].queryset=Warehouse.objects.filter(status=True)
+		self.fields['wh_received'].required = True
+		self.fields['cust_carrier'].required = True
+		self.fields['cust_tracking_num'].required = True
+		self.fields['ship_to_col'].required = True
 
 
 #-----------------------------------------------------------------------------------------
@@ -215,10 +186,7 @@ class CoShippingCreationForm(PackageCommonForm):
 Create Direct Shipping Package
 '''
 #-----------------------------------------------------------------------------------------
-class DirectShippingCreationForm(PackageCommonForm):
-	ship_carrier = forms.ChoiceField(label = _("Select a Carrier"), required = True, choices = SHIPPING_CARRIER_CHOICE,
-									widget=forms.Select(attrs={"class":"w3-select w3-border"
-									}))
+class DirectShippingCreationForm(forms.ModelForm):
 	class Meta:
 		model = Service
 		fields = (
@@ -226,17 +194,27 @@ class DirectShippingCreationForm(PackageCommonForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
-			'no_rush_request',
 			'ship_carrier',
 			'ship_to_add',
 			'memo',
 			)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['memo'].widget.attrs['placeholder'] =_("Please enter your needs about this package")
+		self.fields['memo'].widget.attrs['rows'] = 5
+		self.fields['wh_received'].queryset=Warehouse.objects.filter(status=True)
+		self.fields['wh_received'].required = True
+		self.fields['cust_carrier'].required = True
+		self.fields['cust_tracking_num'].required = True
+		self.fields['ship_to_add'].required = True
+		self.fields['ship_carrier'].required = True
+		self.fields['ship_carrier'].label = _("Select a Carrier")
+		self.fields['ship_carrier'].choices =SHIPPING_CARRIER_CHOICE
 
 class PackageChangeForm(forms.ModelForm):
 		class Meta:
 			model = Service
 			fields = (
-				'no_rush_request',
 				'ship_carrier',
 				'ship_to_add',
 				'ship_to_col',
@@ -249,36 +227,17 @@ Create new Item in Package
 '''
 #-----------------------------------------------------------------------------------------
 class ItemForm(forms.ModelForm):
-	item_name = forms.CharField(label = 'Item Name',
-								widget=forms.TextInput(attrs={
-									'placeholder': 'Please enter your items name as detailed as possible',
-									"class":"w3-input w3-border item_name"
-									}))
-
-	item_detail = forms.CharField( label = 'Item Detail', required=False,
-								widget=forms.TextInput(attrs={'placeholder': 'color/size.etc',
-								"class":"w3-input w3-border"
-								}))
-
-	item_quantity = forms.IntegerField(label = 'quantity',
-								widget=forms.NumberInput(attrs={"class":"w3-input w3-border"}))
-
-	item_url  = forms.URLField(label = 'Item URL', required=False,
-								widget=forms.TextInput(attrs={'placeholder': "https://...",
-																"class":"w3-input w3-border"
-																}))
-
-	low_volume_request = forms.BooleanField(required=False)
-
-	memo = forms.CharField( label = 'Note', required=False,
-							widget=forms.Textarea(attrs={'placeholder': 'Please enter your needs with this item',
-												"class":"w3-input w3-border",
-												"rows": 3 }))
-
 	class Meta:
 		model = Item
 		fields = ('item_name', 'item_detail', 'item_quantity', 'item_url', 'low_volume_request', 'memo', )
 
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['memo'].widget.attrs['placeholder'] =_("Please enter your needs with this item")
+		self.fields['memo'].widget.attrs['rows'] = 5
+		self.fields['item_url'].widget.attrs['placeholder'] ="http://..."
+		self.fields['item_detail'].widget.attrs['placeholder'] =_('color/size.etc')
+		self.fields['item_name'].widget.attrs['placeholder'] = _("Please enter your items' name as detailed as possible")
 
 #-----------------------------------------------------------------------------------------
 '''
@@ -289,16 +248,6 @@ ItemFormset = inlineformset_factory(Service,
 									Item,
 									form=ItemForm,
 									extra=1)
-
-# ItemFormset = inlineformset_factory(Service,
-# 									Item,
-# 									form=ItemForm,
-# 									extra=1,
-# 									widgets={'name': Textarea(attrs={'cols': 80, 'rows': 20})}
-
-
-
-
 
 class SnapshotForm(forms.Form):
 	Snapshot = forms.FileField(required = False, widget=forms.ClearableFileInput(attrs={'multiple': True,}))
@@ -314,12 +263,16 @@ CoReceiver form in Co-shipping Package
 '''
 #-----------------------------------------------------------------------------------------
 class CoReceiverForm(forms.Form):
-	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder': _('First Name'),"class":"w3-input w3-border"}))
-	last_name = forms.CharField(required = True,  widget=forms.TextInput(attrs={'placeholder': _('Last Name'),"class":"w3-input w3-border"}))
-	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('Phone Number (+1-234-567-8900)'),"class":"w3-input w3-border"}))
+	first_name = forms.CharField(required = True)
+	last_name = forms.CharField(required = True)
+	phone = forms.CharField(required = True)
 
 	def __init__(self, receiver=None, *args, **kwargs):
 		super().__init__(*args, **kwargs)
+		self.fields['first_name'].widget.attrs['placeholder'] =_('First Name')
+		self.fields['last_name'].widget.attrs['placeholder'] =_('Last Name')
+		self.fields['phone'].widget.attrs['placeholder'] ='(+1)234-567-8900'
+		self.fields['phone'].validators = [phone_regex]
 		if receiver:
 			self.fields['first_name'].initial = receiver.first_name
 			self.fields['last_name'].initial = receiver.last_name
@@ -327,10 +280,11 @@ class CoReceiverForm(forms.Form):
 
 
 
+
 class CoReceiverCheckForm(forms.Form):
-	first_name = forms.CharField(required = True, widget=forms.TextInput(attrs={'placeholder': _('First Name'),"class":"w3-input w3-border"}))
-	last_name = forms.CharField(required = True,  widget=forms.TextInput(attrs={'placeholder': _('Last Name'),"class":"w3-input w3-border"}))
-	phone = forms.CharField(required = True, validators=[phone_regex], widget=forms.TextInput(attrs={'placeholder': _('Phone Number (+1-234-567-8900)'),"class":"w3-input w3-border"}))
+	first_name = forms.CharField(required = True)
+	last_name = forms.CharField(required = True)
+	phone = forms.CharField(required = True)
 
 	def check(self):
 		self.first_name = self.cleaned_data['first_name'].title()
@@ -357,11 +311,13 @@ class EmailForm(forms.Form):
 	content = forms.CharField(required = True)
 
 class CartForm(forms.Form):
-	package_set = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
+	package_set = forms.ModelMultipleChoiceField(required = False, queryset=None, widget=forms.CheckboxSelectMultiple())
+	parent_package_set = forms.ModelMultipleChoiceField(required = False, queryset=None, widget=forms.CheckboxSelectMultiple())
 
 	def __init__(self, user, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['package_set'].queryset = Service.objects.filter(user = user, paid_amount = None).order_by('-created_date')
+		self.fields['parent_package_set'].queryset = ParentPackage.objects.filter(paid_amount = None).order_by('-created_date')
 
 class OrderSetForm(forms.ModelForm):
 	class Meta:

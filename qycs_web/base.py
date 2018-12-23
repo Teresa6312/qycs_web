@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'collector.apps.CollectorConfig',
     'payment.apps.PaymentConfig',
+    'warehouse.apps.WarehouseConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,13 +70,16 @@ INSTALLED_APPS = [
     'social_django',
 
     # paypal
-    # 'paypal.standard.ipn',
-    'paypal.standard.pdt',
+    'paypal.standard.ipn',
+
     # for template calculation
     'mathfilters',
 
     # for upload and storage images
     'cloudinary',
+
+    # for js translate
+    'localejs.jscripti18n',
 
     'django.contrib.admindocs',
 ]
@@ -86,14 +90,15 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # for translation after SessionMiddleware and before CommonMiddleware
+    'django.middleware.locale.LocaleMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # for translation
-    'django.middleware.locale.LocaleMiddleware',
 
     # social media login
     'social_django.middleware.SocialAuthExceptionMiddleware',
@@ -220,6 +225,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Default form rendering class.
+FORM_RENDERER = 'django.forms.renderers.DjangoTemplates'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
@@ -239,11 +246,21 @@ LANGUAGE_CODE = 'en-us'
 USE_I18N = True
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
-USE_L10N = False
+USE_L10N = True
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-USE_TZ = False
+USE_TZ = True
 
+
+# Settings for language cookie
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = None
+LANGUAGE_COOKIE_DOMAIN = None
+LANGUAGE_COOKIE_PATH = '/'
+
+TIME_INPUT_FORMATS = [
+    '%H:%M',        # '14:30'
+]
 
 AUTH_USER_MODEL = 'main.User'
 
@@ -267,6 +284,7 @@ STATICFILES_FINDERS = (
     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'

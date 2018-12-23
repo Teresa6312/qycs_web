@@ -7,6 +7,6 @@
 {% endblock%}
 
 {% block shippingset %}
-	{{form.ship_to_add.errors}}
 	{% include "blocks/address_block_all.html" with add_field_name='ship_to_add' %}
+	{{form.ship_to_add.errors}}
 {% endblock %}

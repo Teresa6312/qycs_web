@@ -23,7 +23,6 @@
 		{% endif %}
 </div>
 
-
 <script src="{% static 'js/update_profile.js' %}"></script>
 <script>
 		$(document).ready(function(){
@@ -34,7 +33,7 @@
 		                'phone': '{{user.phone}}',
 										'country': '{{user.country}}'
 		              };
-					getAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');							
+					getAddForm(user_obj, "{{ csrf_token }}", "{% url 'useraddress' %}", '{{add_field_name}}');
 		  });
 		});//end of ready function
 </script>

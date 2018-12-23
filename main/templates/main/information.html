@@ -4,9 +4,9 @@
 {% block title%}
 {{empty}}
 {% if LANGUAGE_CODE == "en-us" %}
-    {{information.english_header|title}}
+    {{information.english_header|title|safe}}
 {% elif LANGUAGE_CODE == "zh-hans" %}
-    {{information.chinese_header|title}}
+    {{information.chinese_header|safe}}
 {% endif %}
 {% endblock%}
 

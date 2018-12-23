@@ -55,7 +55,39 @@ function getPackageNumber(url,id){
       });
 }//end of getPackageNumber
 
+function displayImages(id){
+    $('#images_view'+id).remove();
+    var files = $(id).prop('files');
+    if(files.length > 0){
+      var viewblock = document.createElement("div");
+      viewblock.setAttribute("id", "images_view"+id);
+      $(id).after(viewblock);
 
+      for (i = 0; i < files.length; i++) {
+          var type = files[i].type.split('/')[0];
+
+          var size = Math.round(files[i].size / 1024 / 1024);
+          if (type !='image') {
+              alert(gettext('Images only, please try again.'));
+              return;
+          }
+          if (size > 3) {
+              alert(gettext('The maxium size of each image is 3M, please try again.'));
+              return;
+          };
+          var reader = new FileReader();//creat FileReader for each images
+          reader.readAsDataURL(files[i]);
+                reader.onload=function(e){
+                var img = document.createElement("img");
+                img.setAttribute("width", "70");
+                img.setAttribute("height", "70");
+                      img.setAttribute("src", e.target.result);
+                viewblock.append(img);
+                }
+      }
+
+      }
+} //display upload images
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -95,13 +127,13 @@ function send_email(id,csrf){
           if(cont.val().trim()!==''){
               formpass=true
           }else{
-            alert('Please enter the content');
+            alert(gettext('Please enter the content'));
           }
       }else{
-        alert('Please enter the subject');
+        alert(gettext('Please enter the subject'));
       }
     }else{
-      alert('Please enter a valid Email');
+      alert(gettext('Please enter a valid Email'));
     }
    if(formpass){
      $.ajax({
@@ -109,13 +141,13 @@ function send_email(id,csrf){
        url: '/contact-us/',
        data: email_data,
        success: function(data){
-         alert('The email was sent successfully!');
+         alert(gettext('The email was sent successfully!'));
          form.find("input[type=text], textarea").val("");
          form.parents('.w3-modal').hide();
 
        },
        failure: function(data){
-         alert('Failure, please try again.');
+         alert(gettext('Failure, please try again.'));
      },
    });
    }
@@ -155,4 +187,19 @@ function createmodal(id){
 
     var container = document.getElementById('container');
     container.appendChild(modal);
+}
+
+
+function openBlock(evt, blockName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("message_block");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+  }
+  document.getElementById(blockName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-border-red";
 }

@@ -50,15 +50,19 @@
               </div>
               <hr/>
               <div class="w3-container w3-mobile content_left">
-                      <div class="w3-row">
+                      <div class="w3-row w3-margin-top w3-margin-bottom">
                       {% if user.collectionpoint.collector_icon %}
                       <div class="w3-row w3-mobile">{% trans 'Currently Icon' %}:</br/>
                         <img alt="collection point icon" src = "{{user.collectionpoint.collector_icon.url}}" style="width:12vw; margin-left:3vw;"/>
                       </div>
                       {% endif %}
 
-                        {{ form.collector_icon.label_tag }}{{ form.collector_icon.errors }}<br/>
-                        <input type="file" name="collector_icon" id="id_collector_icon" style="width:100%;">
+
+                        {% trans 'Collector Icon:' %}
+                        {{ colform.collector_icon.errors }}
+                        <label class="ui_button logo-red" for="id_collector_icon">{% trans 'Upload' %}</label>
+                        <input type="file" name="collector_icon" id="id_collector_icon" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+
 
                       </div>
                       {% if not user.collectionpoint.wechat and not user.collectionpoint.wechat_qrcode %}
@@ -66,9 +70,14 @@
                         {{ form.wechat.label_tag }} {{ form.wechat.errors }} {{ form.wechat }}
                       </div>
                       {% endif %}
-                      <div class="w3-row">
+                      <div class="w3-row w3-margin-top w3-margin-bottom">
                       {% if not user.collectionpoint.wechat_qrcode %}
-                        {{ form.wechat_qrcode.label_tag }} {{ form.wechat_qrcode.errors }}{{ form.wechat_qrcode }}
+
+                          {% trans 'WeChat QRcode:' %}
+                          {{ colform.id_wechat_qrcode.errors }}
+                          <label class="ui_button logo-red" for="id_wechat_qrcode">{% trans 'Upload' %}</label>
+                          <input type="file" name="wechat_qrcode" id="id_wechat_qrcode" accept="image/*" style="position:absolute;clip:rect(0 0 0 0);">
+
                       {% else %}
                         {{ form.wechat_qrcode.label_tag }}<br/>
                         <img alt="collector WeChat qrcode" src = "{{user.collectionpoint.wechat_qrcode.url}}" style="width:12vw; margin-left:3vw;"/>
@@ -180,6 +189,15 @@
             $('#id_license_image').closest('.form-row').hide().slideDown(300);
             $('#id_license_type').closest('.form-row').hide().slideDown(300);
           }
+      });
+      $(document).ready(function(){
+        $('#id_collector_icon').change(function(){
+              displayImages('#id_collector_icon');
+        });
+        $('#id_wechat_qrcode').change(function(){
+              displayImages('#id_wechat_qrcode');
+        });
+
       });
   </script>
 {% endblock %}

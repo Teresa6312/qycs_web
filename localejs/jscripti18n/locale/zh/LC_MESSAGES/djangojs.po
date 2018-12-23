@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-18 14:52+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\base.js:98
+msgid "Please enter the content"
+msgstr "请输入正文"
+
+#: .\base.js:101
+msgid "Please enter the subject"
+msgstr "请输入标题"
+
+#: .\base.js:104
+msgid "Please enter a valid Email"
+msgstr "请输入有效的邮箱"
+
+#: .\base.js:112
+msgid "The email was sent successfully!"
+msgstr "邮件已成功发送！"
+
+#: .\base.js:118
+msgid "Failure, please try again."
+msgstr "错误，请重试。"
+
+#: .\map.js:128
+msgid "Geocode was not successful for the following reason: "
+msgstr "地址由于以下原因搜索不成功："
+
+#: .\map.js:149
+msgid "Error: We cannot load your location."
+msgstr "错误：无法加载你的位置"
+
+#: .\map.js:150
+msgid "Error: Your browser doesn't support geolocation."
+msgstr "错误：浏览器无法支持定位。"
+
+#: .\package_cart.js:41
+msgid "The coupon does not exist."
+msgstr "优惠卷不存在。"
+
+#: .\package_cart.js:48
+msgid "The coupon is invalid."
+msgstr "优惠卷无效。"
+
+#: .\packageset.js:16
+msgid "Add details of each item in the package: "
+msgstr "添加包裹里的商品详情："
+
+#: .\packageset.js:27 .\packageset.js:47
+msgid "Item Detail: "
+msgstr "商品信息"
+
+#: .\packageset.js:32
+msgid "Item Name: "
+msgstr "商品名称"
+
+#: .\packageset.js:39
+msgid "Please enter your items name as detailed as possible"
+msgstr "请尽量详细地填写商品的名称"
+
+#: .\packageset.js:54
+msgid "color/size.etc"
+msgstr "颜色、尺寸等"
+
+#: .\packageset.js:60
+msgid "Quantity: "
+msgstr "数量"
+
+#: .\packageset.js:75
+msgid "Item URL: "
+msgstr "商品网址"
+
+#: .\packageset.js:96
+msgid "Minimize this item's volume"
+msgstr "减小体积重"
+
+#: .\packageset.js:101
+msgid "Note: "
+msgstr "备注： "
+
+#: .\packageset.js:108
+msgid "tell us your needs"
+msgstr "请填写你的需求"
+
+#: .\packageset.js:122
+msgid "Delect all Items"
+msgstr "删除所有的商品"
+
+#: .\packageset.js:129
+msgid "Add Items' Detail"
+msgstr "添加商品详情"
+
+#: .\packageset.js:136
+msgid "add Item"
+msgstr "添加商品"
+
+#: .\packageset.js:137
+msgid "delete item"
+msgstr "删除商品"
+
+#: .\packageset.js:150
+msgid "Add Order Snapshot of the Package:"
+msgstr "添加包裹的订单截图"
+
+#: .\packageset.js:165
+msgid "Delete Snapshot"
+msgstr "删除截图"
+
+#: .\packageset.js:172
+msgid "Add Snapshot"
+msgstr "添加截图"
+
+#: .\packageset.js:212 .\register.js:43
+msgid "Please correct the error(s) below."
+msgstr "请修改以下错误"
+
+#: .\update_profile.js:69 .\update_profile.js:328
+msgid "Cancel"
+msgstr "取消"
+
+#: .\update_profile.js:80 .\update_profile.js:339
+msgid "Save"
+msgstr "保存"
+
+#: .\update_profile.js:128
+msgid "Follow User Information"
+msgstr "追随用户信息"
+
+#: .\update_profile.js:144
+msgid "First Name:"
+msgstr "名："
+
+#: .\update_profile.js:162
+msgid "Last Name:"
+msgstr "姓："
+
+#: .\update_profile.js:183
+msgid "Phone:"
+msgstr "电话号码："
+
+#: .\update_profile.js:204
+msgid "Country:"
+msgstr "国家："
+
+#: .\update_profile.js:223
+msgid "State:"
+msgstr "州/省："
+
+#: .\update_profile.js:242
+msgid "City:"
+msgstr "市："
+
+#: .\update_profile.js:263
+msgid "Zip Code:"
+msgstr "邮编"
+
+#: .\update_profile.js:282
+msgid "Address:"
+msgstr "地址："
+
+#: .\update_profile.js:301
+msgid "Address2/Apartment:"
+msgstr "地址2"
+
+#: .\update_profile.js:457
+msgid "Select a Collection Point"
+msgstr "选择收件站"
+
+#~ msgid "remove"
+#~ msgstr "删除"
+
+#~ msgid "Images only, please try again."
+#~ msgstr "只能上传图片，请重新上传。"
+
+#~ msgid "The maxium size of each image is 3M, please try again."
+#~ msgstr "每张图片的大小不得超过3M，请重新上传"
