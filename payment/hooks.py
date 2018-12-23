@@ -8,6 +8,7 @@ import math
 
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
 def payment_paid(sender, **kwargs):
+	print('------------ipn_obj.mc_gross_x---------0------------')
 	ipn_obj = sender
 	if ipn_obj.payment_status == ST_PP_COMPLETED:
 		order = OrderSet.objects.get(id = ipn_obj.invoice)
@@ -19,7 +20,7 @@ def payment_paid(sender, **kwargs):
 		print(ipn_obj.mc_gross_x)
 		print(order.total_amount-order.get_total()[1])
 
-		if ipn_obj.mc_gross_x == order.total_amount-order.get_total()[1] and ipn_obj.mc_currency == order.currency:
+		if ipn_obj.mc_gross_x == order.total_amount-order.get_total()[1]-order.insurance and ipn_obj.mc_currency == order.currency:
 			no_rush_amount = 0
 # for sub packages
 			if order.service_set.all().count()>0:
@@ -93,7 +94,7 @@ def payment_paid(sender, **kwargs):
 			else:
 				paid_user.reward = math.floor(no_rush_amount/7)+ math.floor(p.paid_amount/7)
 			paid_user.save()
-			
+
 			if order.coupon:
 				coup = Coupon.objects.get(id = order.coupon.id)
 				coup.used_times = coup.used_times+1
