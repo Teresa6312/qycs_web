@@ -57,7 +57,10 @@ def payment_paid(sender, **kwargs):
 					print('------------ipn_obj.mc_gross_x------------3---------')
 
 # for parent_package
+			print('------------ipn_obj.mc_gross_x------------count---------')
+			print(order.parentpackage_set.all().count())
 			count = order.parentpackage_set.all().count()
+
 			if count > 0:
 				user = order.parentpackage_set.first().service_set.first().user
 				print('------------ipn_obj.mc_gross_x------------4---------')
@@ -97,12 +100,13 @@ def payment_paid(sender, **kwargs):
 						print('------------ipn_obj.mc_gross_x------------7---------')
 
 			paid_user = User.objects.get(id = user.id)
+			print(paid_user)
 			if order.currency == 'USD':
-				paid_user.reward = math.floor(no_rush_amount) + math.floor(p.paid_amount)
+				paid_user.reward = math.floor(no_rush_amount) + math.floor(need_pay)
 			else:
-				paid_user.reward = math.floor(no_rush_amount/7)+ math.floor(p.paid_amount/7)
+				paid_user.reward = math.floor(no_rush_amount/7)+ math.floor(need_pay/7)
 			paid_user.save()
-
+			print(paid_user.reward)
 			if order.coupon:
 				coup = Coupon.objects.get(id = order.coupon.id)
 				coup.used_times = coup.used_times+1
