@@ -165,6 +165,7 @@ class CoShippingCreationForm(forms.ModelForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
+			'no_rush_request',			
 			'receiver',
 			'ship_to_col',
 			'memo',
@@ -193,7 +194,6 @@ class DirectShippingCreationForm(forms.ModelForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
-			'no_rush_request',
 			'ship_carrier',
 			'ship_to_add',
 			'memo',
@@ -215,7 +215,6 @@ class PackageChangeForm(forms.ModelForm):
 		class Meta:
 			model = Service
 			fields = (
-				'no_rush_request',
 				'ship_carrier',
 				'ship_to_add',
 				'ship_to_col',

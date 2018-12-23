@@ -1,5 +1,5 @@
 from django import forms
-from main.models import Service
+from main.models import Service,ParentPackage
 
 
 from django.utils.translation import gettext as _
@@ -16,7 +16,7 @@ class EnterVolumeForm(forms.Form):
 		self.fields['height'].widget.attrs['placeholder'] =_('height')
 
 
-class PriceCalForm(forms.ModelForm):
+class CoPriceCalForm(forms.ModelForm):
 
 	class Meta:
 		model = Service
@@ -29,6 +29,20 @@ class PriceCalForm(forms.ModelForm):
 		self.fields['weight'].required = True
 		self.fields['package_type'].required = True
 
+class PriceCalForm(forms.ModelForm):
+
+	class Meta:
+		model = ParentPackage
+		fields = (
+			'weight',
+			'package_type',
+			'carrier',
+			)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['weight'].required = True
+		self.fields['package_type'].required = True
+		self.fields['carrier'].required = True
 
 class IssueForm(forms.Form):
 	issue = forms.CharField(required = True)

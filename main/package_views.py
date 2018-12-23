@@ -73,16 +73,17 @@ class PackageCartView(TemplateView):
 				except:
 					coupon = None
 
-				orderSet = order.save()
+				orderSet = order.save(commit=False)
 				orderSet.coupon = coupon
+				orderSet.save()
 
-				amount = 0;
+
 				for pack in cart.cleaned_data['package_set']:
 					package = Service.objects.get(id = pack.id )
 					if package.get_total()>0:
 						package.order_set = orderSet
 						package.save()
-						amount = package.get_total() + amount
+
 
 
 				for parent_pack in cart.cleaned_data['parent_package_set']:
@@ -90,15 +91,19 @@ class PackageCartView(TemplateView):
 					if float (package.package_amount)>0:
 						package.order_set = orderSet
 						package.save()
-						amount = float (package.package_amount) + amount
 
-				orderSet.total_amount = amount
+				orderSet.total_amount = orderSet.get_total()[0]
+				discount_amount = orderSet.get_total()[1]
+
 				if orderSet.service_set.all():
 					orderSet.currency = orderSet.service_set.first().currency
 				else:
 					orderSet.currency = orderSet.parentpackage_set.first().currency
 				orderSet.save()
+
 				request.session['order_set_id'] = orderSet.id
+
+				request.session['discount_amount'] = discount_amount
 
 				return redirect(reverse('payment:process'))
 			else:
@@ -321,15 +326,15 @@ class ConfirmDirectShipping(TemplateView):
 
 		def post(self, request):
 			cart = CartForm(request.user, request.POST)
+			cart.fields['package_set'].required = True
 			if cart.is_valid():
 				parent_pack = ParentPackage()
 				parent_pack.save()
 
 				for pack in cart.cleaned_data['package_set']:
 					package = Service.objects.get(id = pack.id )
-					if package.issue == '':
-						package.parent_package = parent_pack
-						package.save()
+					package.parent_package = parent_pack
+					package.save()
 
 				return redirect(reverse('packagecart'))
 			else:

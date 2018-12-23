@@ -20,7 +20,7 @@
                   <tr><th>{% trans 'Parent Package' %}</th><th>{% trans 'Tracking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'Created Date' %}</th><th>{% trans 'User' %}</th><th></th></tr>
                   {% for pack in packages %}
                     <tr>
-                      <td>{% if pack.parent_package %}{{pack.parent_package}}{% else %}N/A{% endif %}</td>
+                      <td>{% if pack.parent_package %}<a class="w3-text-blue" href="{% url 'parent_package_weight' pack.parent_package.id %}">{{pack.parent_package}}</a>{% else %}N/A{% endif %}</td>
                       <td>{{pack.cust_tracking_num}}</td>
                       <td>{{pack.get_cust_carrier_display}}</td>
                       <td>{{pack.created_date}}</td>

@@ -17,13 +17,13 @@
         {% if orderSet.coupon or orderSet.insurance %}
 
               <div id="amount_block">{% trans 'Packages Amount'%}:
-                <span class="w3-right" id="package_amount">{{orderSet.total_amount}}</span>
+                <span class="w3-right" id="package_amount">{{orderSet.total_amount|floatformat:"2"|safe}}</span>
               </div>
               <hr class="w3-border-black"/>
 
               {% if orderSet.coupon %}
                 <div id="discount_block">{{orderSet.coupon.code}}(5% OFF):
-                  <span class="w3-right" id="discount_amount">-{{orderSet.coupon.discount|div:100|mul:orderSet.total_amount|floatformat:"2"|safe}}</span>
+                  <span class="w3-right" id="discount_amount">-{{discount_amount|floatformat:"2"|safe}}</span>
               </div>
                 <hr class="w3-border-black"/>
               {% endif %}
@@ -40,7 +40,7 @@
 
 
         <div id="amount_block">{% trans 'Total Amount' %}({{orderSet.currency}}):
-          <span class="w3-right" id="id_total_amount">{{orderSet.total_amount}}</span>
+          <span class="w3-right" id="id_total_amount">{{orderSet.total_amount|add:orderSet.insurance|sub:discount_amount|floatformat:"2"|safe}}</span>
         </div>
           {{form.render}}
         <br/>
