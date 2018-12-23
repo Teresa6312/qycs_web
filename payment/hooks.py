@@ -8,19 +8,22 @@ import math
 
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
 def payment_paid(sender, **kwargs):
-	print('------------ipn_obj.mc_gross_x---------0------------')
+	print('------------ipn_obj.invoice---------0------------')
 	ipn_obj = sender
 	if ipn_obj.payment_status == ST_PP_COMPLETED:
 		order = OrderSet.objects.get(id = ipn_obj.invoice)
+		print(ipn_obj.invoice)
 		if ipn_obj.receiver_email != settings.PAYPAL_RECEIVER_EMAIL:
 			return
 
-		print('------------ipn_obj.mc_gross_x---------------------')
+		print('------------ipn_obj.mc_gross---------------------')
 		print(ipn_obj.mc_gross)
+		print('------------ipn_obj.mc_gross_x---------------------')
 		print(ipn_obj.mc_gross_x)
-		print(order.total_amount-order.get_total()[1])
+		print('------------order.total_amount-order.get_total()[1]--------------------')
+		print(order.total_amount - order.insurance)
 
-		if ipn_obj.mc_gross >= order.total_amount + order.insurance and ipn_obj.mc_currency == order.currency:
+		if ipn_obj.mc_gross == order.total_amount + order.insurance and ipn_obj.mc_currency == order.currency:
 			no_rush_amount = 0
 # for sub packages
 			if order.service_set.all().count()>0:
