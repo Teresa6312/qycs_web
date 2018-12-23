@@ -1,5 +1,6 @@
 {% extends "main/base_site.html" %}
 {% load i18n static %}
+{% load mathfilters %}
 
 {% block title%}
 {% trans 'Upcoming Packages' %}
@@ -116,7 +117,7 @@
   </div>
   {% endif %}
 </div>
-<script src="{% static 'js/package_cart1.js' %}"></script>
+<script src="{% static 'js/package_cart.js' %}"></script>
 {% endblock %}
 
 

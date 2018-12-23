@@ -54,11 +54,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 	list_filter = ['is_active',]
 	search_fields = ['position',  ]
 
-	# fieldsets = [
-	# 	('User', 				{'fields': ['user',]}),
-	# 	('Address',             {'fields': ['first_name', 'last_name', 'phone', 'address', 'city', 'state','country', 'zipcode']}),
-	# 	('Memo', 				{'fields': ['memo',]}),
-	# ]
+
 admin.site.register(Employee, EmployeeAdmin)
 
 class AddressAdmin(admin.ModelAdmin):
@@ -173,7 +169,7 @@ class ParentPackageAdmin(admin.ModelAdmin):
 
 
 	fieldsets = [
-		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'currency','package_amount', 'memo']}),
+		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'currency','package_amount', 'paid_amount', 'memo']}),
 		('Shipment',               	{'fields': ['ship_to', 'shipped_date', 'tracking_num', 'carrier','received_date']}),
 		('Shipped to Warehouse from Warehouse',    {'fields': ['emp_split'], 'classes': ['collapse']}),
 		('Issue',                   {'fields': ['issue']}),
@@ -255,7 +251,7 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
 		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']}),
 		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount', 'currency']})
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount','paid_amount', 'currency']})
 
 	]
 

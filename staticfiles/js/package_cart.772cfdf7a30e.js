@@ -171,14 +171,4 @@ $(document).ready(function(){
 
       });//end of checkbox changed
 
-//payment process page
-      // if($('#instance_amount').length>0){
-      //   var instance_amount = parseFloat($('#instance_amount').text());
-      // }else{
-      //   var instance_amount = 0.0;
-      // }
-      // $('#package_amount').text((amount + instance_amount).toFixed(2));
-      // $('#discount_amount').text("-"+(amount - final_amount).toFixed(2));
-      // $('#id_total_amount').text((amount+instance_amount).toFixed(2));
-
 });

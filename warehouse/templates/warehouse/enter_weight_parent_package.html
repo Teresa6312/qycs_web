@@ -10,7 +10,24 @@
 
 {% block content %}
 <div class="w3-container  w3-cell w3-mobile" style="width:70%;">
+  <div class="w3-right">
+      <button class="logo-red" type="button" onclick="window.location.href='{% url 'parent_package_detail' parent_package.id %}'">{% trans 'More Detail' %}</button></div>
       <div class="w3-panel content_center">
+        <div class="w3-row w3-text-red text-large-bold w3-center">
+          {% if parent_package.paid_amount %}
+              {% trans 'Paid'%}: {{parent_package.currency}}{{parent_package.paid_amount}}
+          {% else %}
+              {% trans 'NOT PAY YET' %}
+          {% endif %}
+        </div>
+
+        <div class="w3-row w3-text-red text-large">{% trans 'Shipping Carrier' %}: {{parent_package.get_carrier_display}}</div>
+        <div class="w3-row w3-text-red text-large">{% trans 'Package Type' %}: {{parent_package.get_package_type_display}}</div>
+        <div class="w3-row w3-text-red text-large">{% trans 'Package Amount' %}: {{parent_package.currency}}{{parent_package.package_amount}}</div>
+        <div class="w3-row w3-text-red text-large">{% trans "Package's Weight" %}: {{parent_package.weight}}(KG)</div>
+        <div class="w3-row w3-text-red text-large">{% trans "Package's Volume Weight" %}: {{parent_package.volume_weight}}(KG)</div>
+
+
         {% if parent_package.service_set.all %}
           <ul>
             {% for sub in parent_package.service_set.all %}
@@ -36,7 +53,7 @@
 
 
 {% block sidebar %}
-
+{% if not parent_package.paid_amount %}
 <div class="w3-container w3-cell w3-mobile w3-margin-top">
     <div class="w3-card-2 w3-round w3-container w3-padding-16">
       <div class="text-xxlarge-bold">{% trans 'Enter Weight' %}</div>
@@ -81,5 +98,5 @@
 
     </div>
 </div>
-
+{% endif %}
 {% endblock %}

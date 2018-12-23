@@ -13,7 +13,7 @@
 
 
       <div class="w3-panel content_center">
-        <div class="w3-row w3-text-red text-large-bold">
+        <div class="w3-row w3-text-red text-large-bold w3-center">
           {% if parent_package.paid_amount %}
               {% trans 'Paid'%}: {{parent_package.currency}}{{parent_package.paid_amount}}
           {% else %}
@@ -55,7 +55,7 @@
 {% block sidebar %}
 <div class="w3-container w3-cell w3-mobile w3-margin-top">
     <div class="w3-card-2 w3-round w3-container w3-padding-16">
-      <div class="text-xxlarge-bold">{% trans 'Enter Tracking Number' %}</div>
+      <div class="text-xlarge-bold">{% trans 'Enter Tracking Number' %}</div>
       <form method = "post" enctype="multipart/form-data">
       {% csrf_token %}
       {% if form.errors %}

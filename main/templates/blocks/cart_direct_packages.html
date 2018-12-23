@@ -1,4 +1,6 @@
 {% load i18n static %}
+{% load mathfilters %}
+
 <div class="w3-card-4 w3-border-black w3-round w3-row package w3-border w3-container">
     {% if package.weight %}
       <div class="w3-third w3-container">
@@ -27,7 +29,10 @@
             {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ package.id }}" class="shipping_fee">{{package.package_amount}}<i>({% trans 'included 10% service fee' %})</i></span><br/>
           {% endif %}
           {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ package.id }}" class="total_amount"></span><br/>
-
+          {% if package.paid_amount and package.package_amount and not package.paid_amount == package.package_amount %}
+            {% trans 'Discount Amount' %}: {{package.currency}} {{package.package_amount|sub:package.paid_amount}}<br/>
+            {% trans 'Paid Amount' %}: {{package.currency}} {{package.paid_amount}}<br/>
+          {% endif %}
           {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
     </div>
   </div>
