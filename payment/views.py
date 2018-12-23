@@ -10,8 +10,14 @@ from main.models import OrderSet, Service
 from django.views.decorators.csrf import csrf_exempt
 
 def payment_process(request):
-	order_set_id = request.session.get('order_set_id')
-	discount_amount = request.session.get('discount_amount')
+	try:
+		order_set_id = request.session.get('order_set_id')
+		discount_amount = request.session.get('discount_amount')
+		del request.session['order_set_id']
+		del request.session['discount_amount']
+	except:
+		return redirect(reverse('packagecart'))
+
 	orderSet = get_object_or_404(OrderSet, id = order_set_id)
 	host = request.get_host()
 
