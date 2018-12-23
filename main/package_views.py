@@ -31,9 +31,12 @@ class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
 	def get(self, request):
-		order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
-		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
-		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).exclude(paid_amount=None).distinct().order_by('-created_date')
+		# order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
+		# co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
+		# parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).exclude(paid_amount=None).distinct().order_by('-created_date')
+		order_list = Service.objects.filter(user = request.user, order = True).order_by('-created_date')
+		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).order_by('-created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).distinct().order_by('-created_date')
 
 		return render(request, self.template_name,
 			{'order_list': order_list,
