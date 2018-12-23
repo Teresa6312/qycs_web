@@ -1,0 +1,14 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+{% load mathfilters %}
+
+{% block title%}
+{% trans 'Payment Processed' %}
+{% endblock%}
+
+{% block content %}
+<div class="w3-panel w3-margin-top content_center">
+    <div class="text-xxlarge-bold">{{failed}}</div>
+    <div class="text-medium-bold">{{pdt_obj}}</div>
+</div>
+{% endblock %}

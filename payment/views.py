@@ -24,8 +24,8 @@ def payment_process(request):
 			"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
 			"discount_amount": discount_amount,
 			"invoice": orderSet.id,
-			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-			"return": 'http://{}{}'.format(host, reverse('userpackage')),
+			"notify_url": request.build_absolute_uri(reverse('paypal-pdt')),
+			# "return": 'http://{}{}'.format(host, reverse('paypal_return')),
 			"cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
 		}
 	else:
@@ -35,8 +35,8 @@ def payment_process(request):
 			"currency_code": orderSet.currency,
 			"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
 			"invoice": orderSet.id,
-			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-			"return": 'http://{}{}'.format(host, reverse('pdt_return_url')),
+			"notify_url": request.build_absolute_uri(reverse('paypal-pdt')),
+			# "return": 'http://{}{}'.format(host, reverse('paypal_return')),
 			"cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
 		}
 	# Create the instance.
@@ -112,7 +112,7 @@ def process_pdt(request):
 	return (pdt_obj, failed)
 
 @require_GET
-def payment_processed(request):
+def payment_processed_done(request):
 	pdt_obj, failed = process_pdt(request)
 	context = {"failed": failed, "pdt_obj": pdt_obj}
 	if not failed:
@@ -123,7 +123,11 @@ def payment_processed(request):
 		# with those fields on payment form before send it to PayPal)
 
 		if pdt_obj.receiver_email == settings.PAYPAL_RECEIVER_EMAIL:
-
 			print('yes')
-			return render(request, reverse('packages'), context)
-	return render(request, reverse('packagecart'), context)
+
+			# ALSO: for the same reason, you need to check the amount
+			# received etc. are all what you expect.
+
+			# Do whatever action is needed, then:
+			return render(request, 'payment/processed.html', context)
+	return render(request, 'payment/processed.html', context)

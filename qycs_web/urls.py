@@ -33,7 +33,7 @@ urlpatterns = [
     path('collection-points/', main_views.CollectionPointView.as_view(), name='collection_points'),
     path('price-list/', main_views.PriceListView.as_view(), name='price_list'),
     path('auth/', include('social_django.urls', namespace='social')),
-    # path('paypal/', include('paypal.standard.ipn.urls')),
+    path('paypal/', include('paypal.standard.pdt.urls')),
 ]
 
 # js files translation
