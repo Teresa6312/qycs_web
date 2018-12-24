@@ -46,9 +46,15 @@
               </div>
             </li>
 
-            <li class="li {% if package.ready_date %}complete{% endif %}">
+            <li class="li {% if package.ready_date or package.parent_package.packed_date %}complete{% endif %}">
               <div class="timestamp">
-                <span class="date">{% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+                <span class="date">
+                  {% if package.co_shipping %}
+                      {% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}
+                  {% else %}
+                      {% if package.parent_package.packed_date %}{{package.parent_package.packed_date|date:"M d, Y" }}{% else %}N/A{% endif %}
+                  {% endif %}
+                </span>
               </div>
               <div class="status">
                 <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Ready to Pay' %}</div>
@@ -57,7 +63,7 @@
 
             <li class="li {% if package.paid_amount and package.order_set.created_date %}complete{% endif %}">
               <div class="timestamp">
-                <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+                <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.order_set.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
               </div>
               <div class="status">
                 <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Paid' %}</div>

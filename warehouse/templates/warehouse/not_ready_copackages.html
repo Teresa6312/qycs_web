@@ -17,15 +17,23 @@
     <div class="w3-panel">
         {% if packages %}
             <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
-                  <tr><th>{% trans 'Tracking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'Created Date' %}</th><th>{% trans 'User' %}</th><th></th></tr>
+                  <tr>
+                    <th>{% trans 'Tracking Number' %}</th>
+                    <th>{% trans 'Carrier' %}</th>
+                    <th>{% trans 'User' %}</th>
+                    <th>{% trans 'Collection Point' %}</th>
+                    <th>{% trans 'Weight(KG)' %}</th>
+                    <th></th>
+                  </tr>
                   {% for pack in packages %}
                     <tr>
                       <td>{{pack.cust_tracking_num}}</td>
                       <td>{{pack.get_cust_carrier_display}}</td>
-                      <td>{{pack.created_date}}</td>
                       <td>{{pack.user}}</td>
+                      <th>{{pack.ship_to_col}}</th>
+                      <td>{{pack.weight}}</td>
                       <td>
-                        <a href="{{pack.get_absolute_url}}" >{% trans 'View Details'%}</a>&emsp;|&emsp;
+                        <a href="{{pack.get_absolute_url}}" target="_blank" >{% trans 'View Details'%}</a>&emsp;|&emsp;
                         <a href="{% url 'copackage_weight' pack.id %}">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
                         <a href="{% url 'issue' pack.id %}">{% trans 'Has Issue'%}</a>
                         {% if not pack.wh_received_date %}

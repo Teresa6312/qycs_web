@@ -17,16 +17,23 @@
     <div class="w3-panel">
         {% if packages %}
             <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
-                  <tr><th>{% trans 'Parent Package' %}</th><th>{% trans 'Tracking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'Created Date' %}</th><th>{% trans 'User' %}</th><th></th></tr>
+                  <tr>
+                      <th>{% trans 'Parent Package' %}</th>
+                      <th>{% trans 'Tracking Number' %}</th>
+                      <th>{% trans 'Carrier' %}</th>
+                      <th>{% trans 'User' %}</th>
+                      <th>{% trans 'Shipping Address' %}</th>
+                      <th></th>
+                  </tr>
                   {% for pack in packages %}
                     <tr>
                       <td>{% if pack.parent_package %}<a href="{% url 'parent_package_weight' pack.parent_package.id %}">{{pack.parent_package}}</a>{% else %}N/A{% endif %}</td>
                       <td>{{pack.cust_tracking_num}}</td>
                       <td>{{pack.get_cust_carrier_display}}</td>
-                      <td>{{pack.created_date}}</td>
                       <td>{{pack.user}}</td>
+                      <td>{{pack.ship_to_add}}</td>
                       <td>
-                        <a href="{{pack.get_absolute_url}}">{% trans 'View Details'%}</a>&emsp;|&emsp;
+                        <a href="{{pack.get_absolute_url}}" target="_blank">{% trans 'View Details'%}</a>&emsp;|&emsp;
                         <a href="{% url 'issue' pack.id %}">{% trans 'Has Issue'%}</a>
                         {% if not pack.wh_received_date %}
                             <button type="button"  onclick="receive_package('{{ csrf_token }}','{% url 'received' pack.id %}')" class="logo-red">{% trans 'Receive Package'%}</button>

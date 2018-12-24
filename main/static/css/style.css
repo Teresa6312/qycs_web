@@ -323,7 +323,7 @@ a:hover{
   width: 16vw;
 }
 
-.half_circle_left a,.half_circle_right a, #shipping_full_circle a, #tracking_half_circle a, .circle a{
+.half_circle_left a,.half_circle_right a, #shipping_full_circle a, #tracking_half_circle a, .circle a, .hidden a{
   color: #fff;
 }
 
