@@ -119,7 +119,7 @@ function updateCollectionPointsTable(pointsArray){
              google.maps.event.addListener(marker, 'mouseover', (function(marker) {
                 return function() {
                  infoWindow.setPosition(marker.position);
-                 infoWindow.setContent(location.address+'<a href="/packages/'+location.id+'/add" class="w3-text-blue"><i>add package</i></a>');
+                 infoWindow.setContent(location.address+'<a href="/packages/'+location.id+'/add"><i>add package</i></a>');
                  infoWindow.open(resultsMap,marker);
 
                 }

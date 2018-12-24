@@ -231,65 +231,19 @@
 
 
 {% block script%}
+<script src="{% static 'js/collector.js' %}"></script>
 <script>
-  $(function() {
-    if($.fn.cloudinary_fileupload !== undefined) {
-      $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
-    }
-  });
-
-  $('#id_store').change( function(){
-          if(!$(this).prop('checked')){
-            $('#id_store_name').closest('.w3-row').slideUp(300, function(){
-                $('#id_store_name').closest('.w3-row').hide();
-            });
-            $('#id_license_type').closest('.w3-row').slideUp(300, function(){
-                $('#id_license_type').closest('.w3-row').hide();
-            });
-            $('#id_license_image').closest('.w3-row').slideUp(300, function(){
-                $('#id_license_image').closest('.w3-row').hide();
-            });
-          }else{
-            $('#id_store_name').closest('.w3-row').hide().slideDown(300);
-            $('#id_license_image').closest('.w3-row').hide().slideDown(300);
-            $('#id_license_type').closest('.w3-row').hide().slideDown(300);
-          }
-      });
-
-      function loadDoc(url) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("term_block").innerHTML = this.responseText;
-          }
-        };
-        xhttp.open("GET", url, true);
-        xhttp.send();
+$(document).ready(function(){
+      var url = '';
+      if ('{{LANGUAGE_CODE}}'=="en-us"){
+        url = "/static/information/collection_point_terms_en.txt";
+      }else if('{{LANGUAGE_CODE}}'=="zh-hans"){
+      url = "/static/information/collection_point_terms_cn.txt";
       }
-      $(document).ready(function(){
-        var url = '';
-        if ('{{LANGUAGE_CODE}}'=="en-us"){
-          url = "/static/information/collection_point_terms_en.txt";
-        }else if('{{LANGUAGE_CODE}}'=="zh-hans"){
-        url = "/static/information/collection_point_terms_cn.txt";
-        }
-        if(url!=''){
-          loadDoc(url)
-        }
-        $('#id_collector_icon').change(function(){
-              displayImages('#id_collector_icon');
-        });
-        $('#id_license_image').change(function(){
-              displayImages('#id_license_image');
-        });
-        $('#id_id_image').change(function(){
-              displayImages('#id_id_image');
-        });
-        $('#id_wechat_qrcode').change(function(){
-              displayImages('#id_wechat_qrcode');
-        });
-
-      });
-
-  </script>
+      if(url!=''){
+        loadDoc(url)
+      }
+      console.log(url);
+});
+</script>
 {% endblock%}

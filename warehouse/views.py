@@ -26,39 +26,12 @@ class HomeView(TemplateView):
 			tracking_num = form.cleaned_data['cust_tracking_num']
 			packages = Service.objects.filter(cust_tracking_num = tracking_num)
 			if packages.count() == 0:
-				messages.error(request, _("Package '"+tracking_num + "' was not found!"))
+				packages = Service.objects.filter(id = tracking_num)
+				if packages.count() == 0:
+					messages.error(request, _("Package '"+tracking_num + "' was not found!"))
 			return render(request, self.template_name, {'packages': packages})
 		else:
 			return redirect(reverse('wh_home'))
-
-class NotReadyCoPackages(TemplateView):
-	template_name = 'warehouse/not_ready_copackages.html'
-
-	def get(self, request):
-		if request.user.is_staff or request.user.is_superuser:
-			packages = Service.objects.filter(shipping_fee=None, co_shipping = True).order_by('cust_tracking_num')
-
-			return render(request, self.template_name,
-						{'packages': packages,
-						})
-		else:
-			messages.error(request, _("Staff access only!"))
-			return redirect(reverse('login'))
-
-class NotReadyDirectPackages(TemplateView):
-	template_name = 'warehouse/not_ready_direct_packages.html'
-
-	def get(self, request):
-		if request.user.is_staff or request.user.is_superuser:
-			packages = Service.objects.filter(paid_amount=None, co_shipping = False).order_by('-parent_package','cust_tracking_num')
-
-			return render(request, self.template_name,
-						{'packages': packages,
-						})
-		else:
-			messages.error(request, _("Staff access only!"))
-			return redirect(reverse('login'))
-
 
 class EnterWeightCoPackage(TemplateView):
 	template_name = 'warehouse/enter_weight_copackage.html'

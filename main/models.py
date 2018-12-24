@@ -440,10 +440,10 @@ class ParentPackage(models.Model):
 
 	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
+	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 
 
 # for order only
-	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 	emp_split = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
 
 	issue = models.TextField(blank=True, default='',verbose_name= _('Package Issue'))

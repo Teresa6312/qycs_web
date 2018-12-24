@@ -1,4 +1,4 @@
-{% extends "main/base_site.html" %}
+{% extends "warehouse/base.html" %}
 {% load i18n static %}
 
 {% block title%}
@@ -17,7 +17,7 @@
 <div class="w3-panel w3-margin-top content_center">
 
     <div class="w3-panel">
-      <div class="text-large-bold">{% trans 'Search Tracking Number(one at a time)' %}</div>
+      <div class="text-large-bold">{% trans 'Search Tracking Number(one at a time)' %} or ID</div>
       <form method = "post" enctype="multipart/form-data">
       {% csrf_token %}
       <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" >
@@ -52,17 +52,12 @@
                      {% endif %}
                     </h3>
 
-                    <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
-                    <a href="{% url 'copackage_weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
-                    <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
+                    <a href="{{pack.get_absolute_url}}">{% trans 'View Details'%}</a>&emsp;|&emsp;
+                    {% if pack.co_shipping %}<a href="{% url 'copackage_weight' pack.id %}">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;{% endif %}
+                    <a href="{% url 'issue' pack.id %}">{% trans 'Has Issue'%}</a>
                 </div>
             {% endfor %}
         {% endif %}
-        <div class="w3-panel">
-          <a href="{% url 'not_ready_copackages'%}"class="w3-text-blue">{% trans 'Not Ready Co-shipping Packages'%}</a>&emsp;|&emsp;
-          <a href="{% url 'not_ready_direct_packages'%}"class="w3-text-blue">{% trans 'Not Ready Direct Shipping Packages'%}</a>
-        </div>
-
 
     </div>
 </div>

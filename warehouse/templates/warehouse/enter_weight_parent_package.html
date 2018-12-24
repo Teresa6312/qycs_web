@@ -1,4 +1,4 @@
-{% extends "main/base_site.html" %}
+{% extends "warehouse/base.html" %}
 {% load i18n static %}
 
 
@@ -32,7 +32,7 @@
           <ul>
             {% for sub in parent_package.service_set.all %}
             <li>
-              <a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:{{sub.ship_to_add}}{{sub.ship_to_col}}
+              <a href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:{{sub.ship_to_add}}{{sub.ship_to_col}}
               {% if sub.issue %}
                   <span class="w3-text-red">({% trans 'has issue(s)' %})</span>
               {% endif %}

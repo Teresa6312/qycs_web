@@ -1,0 +1,103 @@
+{% extends "main/base.html" %}
+{% load i18n static %}
+
+
+{% block blockbots %}
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="QYCS provides Co-shipping, Direct Shipping, Global Shop service.">
+<meta name="keywords" content="Co-shipping, Direct Shipping, Global Shop">
+<meta name="author" content="QYCS Technique team">
+{% endblock %}
+
+{% block coltype %}contentCSS{% endblock %}
+
+{% block branding %}
+{% if user.is_staff or user.is_superuser %}
+    <div class="w3-row">
+          <div class="w3-col w3-left" style="width:20%;">
+              <a href="{% url 'home' %}"><img src="{% static 'image/brand.png' %}" alt="logo" style="max-width:150px; margin:auto;"></a>
+          </div>
+          <div class="w3-rest w3-right">
+              <div class="topnav" id="myTopnav">
+
+                    <a href="{% url 'wh_home' %}">{% trans "HOME" %}</a>
+                    <a href="{% url 'price_list'%}" target="_blank">{% trans "Price List" %}</a>
+                    <div class="dropdown">
+                        <button type="button" class="dropbtn">
+                          <span class="logo-text-blue">{% trans 'Not Ready Packages'%}</span>
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                          <a href="{% url 'not_ready_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+                          <a href="{% url 'not_ready_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button type="button" class="dropbtn">
+                          <span class="logo-text-blue">{% trans 'Ready Packages'%}</span>
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                          <a href="{% url 'ready_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+                          <a href="{% url 'ready_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+                        </div>
+                  </div>
+                  <a href="{% url 'price_list'%}" target="_blank">{% trans "Price List" %}</a>
+                  <div class="dropdown">
+                      <button type="button" class="dropbtn">
+                        <span class="logo-text-blue">{% trans 'Shipped Packages'%}</span>
+                          <i class="fa fa-caret-down"></i>
+                      </button>
+                      <div class="dropdown-content">
+                        <a href="{% url 'shipped_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+                        <a href="{% url 'shipped_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+                      </div>
+                </div>
+                    <div class="dropdown">
+                        <button type="button" class="dropbtn">Language/语言</button>
+                        <div class="dropdown-content">
+                          <form action="/_/setlang/" method="post">
+                              {% csrf_token %}
+                              <input name="next" type="hidden" value="{{ redirect_to }}"/>
+                                  <select name="language">
+                                        <option value="en-us">English</option>
+                                        <option value="zh-Hans">简体中文</option>
+                                  </select>
+                              <input type="submit" value="Change"/>
+                          </form>
+                        </div>
+                    </div>
+
+
+                  <a href="javascript:void(0);" class="icon" onclick="openMenu()">
+                    <i class="fa fa-bars"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+
+
+
+  <script type="text/javascript">
+    function receive_package(csrf, url){
+        let dt={'csrfmiddlewaretoken': csrf};
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: dt,
+          success: function(data){
+              location.reload();
+          },
+          failure: function(data){
+            console.log('failure');
+          },
+        });
+    }// end of receive package
+  </script>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

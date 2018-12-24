@@ -37,7 +37,7 @@ class PackagesView(TemplateView):
 		# order_list = Service.objects.filter(user = request.user, order = True).order_by('-created_date')
 		# co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).order_by('-created_date')
 		# parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).distinct().order_by('-created_date')
-
+		print(request)
 		return render(request, self.template_name,
 			{'order_list': order_list,
 			'co_shipping_list': co_shipping_list,
