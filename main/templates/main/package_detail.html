@@ -116,21 +116,44 @@
                             <i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})
                         </div>
                         {% if package.ship_to_col %}
-                            {% include "blocks/col_card_fields.html" with col=package.ship_to_col %}{% else %}N/A
+                            {% include "blocks/col_card_fields.html" with col=package.ship_to_col %}
+                        {% else %}
+                            N/A
                         {% endif %}
                     </div>
                     {% endif %}
                 </div>
 
                 <div class="w3-row">
-                    <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.get_package_type_display}}{% else %}N/A{% endif %}</h6>
 
-                    {% if not package.ship_carrier == '' %}<h6>{% trans 'Selected shipping carrier' %}:{{package.ship_carrier}}</h6>{% endif %}
-                    {% if not package.co_shipping %}<h6>{% trans 'No Rush Requested' %}: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
+                    {% if not package.ship_carrier == '' %}
+                        <h6>{% trans 'Selected shipping carrier' %}:&emsp;{{package.get_ship_carrier_display}}</h6>
+                    {% endif %}
 
-                    {% if not package.coshiping %}
-                        <h6>{% trans 'Low Volume Weight Requested'%}:
-                            {% if package.low_volume_request %}
+                    <h6>{% trans 'Low Volume Weight Requested'%}:
+                        {% if package.low_volume_request %}
+                        <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                         {% else %}
+                        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                        {% endif %}
+                    </h6>
+
+                    {% if package.co_shipping %}
+                        <h6>{% trans 'Package type' %}:&emsp;{% if package.package_type %}{{package.get_package_type_display}}{% else %}N/A{% endif %}</h6>
+                        <h6>{% trans 'Weight' %}:&emsp;
+                          {% if package.volume_weight and package.weight %}
+                              {% if package.volume_weight > package.weight %}
+                                  {{package.volume_weight}}
+                              {% else %}
+                                  {{package.weight}}
+                              {% endif %}
+                              (KG)
+                          {% else %}
+                          N/A
+                          {% endif %}
+                        </h6>
+                        <h6>{% trans 'No Rush Requested'%}:
+                            {% if package.no_rush_request %}
                             <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
                              {% else %}
                             <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
@@ -138,28 +161,14 @@
                         </h6>
                     {% endif %}
 
-
-                    <h6>{% trans 'Weight' %}:
-                      {% if package.volume_weight and package.weight %}
-                          {% if package.volume_weight > package.weight %}
-                              {{package.volume_weight}}
-                          {% else %}
-                              {{package.weight}}
-                          {% endif %}
-                          (kg)
-                      {% else %}
-                      N/A
-                      {% endif %}
-                    </h6>
-
                     {% if package.order_amount %}
-                      <h6>{% trans 'Order Amount' %}: {{package.currency}} <span class="order_amount">{{package.order_amount}}</span></h6>
+                      <h6>{% trans 'Order Amount' %}:&emsp;{{package.currency}} <span class="order_amount">{{package.order_amount}}</span></h6>
                     {% endif %}
                     {% if package.storage_fee %}
-                      <h6>{% trans 'Storage fee' %}: {{package.currency}} <span class="storage_fee">{{package.storage_fee}}</span></h6>
+                      <h6>{% trans 'Storage fee' %}:&emsp;{{package.currency}} <span class="storage_fee">{{package.storage_fee}}</span></h6>
                     {% endif %}
                     {% if package.shipping_fee %}
-                      <h6>{% trans 'Shipping fee' %}: {{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
+                      <h6>{% trans 'Shipping fee' %}:&emsp;{{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
                     {% endif %}
               </div>
 

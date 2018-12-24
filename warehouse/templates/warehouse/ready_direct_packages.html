@@ -13,10 +13,10 @@
 
 <div class="w3-panel w3-margin-top">
 
-    <div class="w3-panel">
+    <div class="w3-row">
         {% if packages %}
-            <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
-                  <tr>
+            <table class="w3-mobile  w3-table" style="width:100%; overflow:auto; max-height:400px;">
+                  <tr class="w3-border-bottom w3-border-grey">
                       <th>{% trans 'Parent Package' %}</th>
                       <th>{% trans 'Tracking Number' %}</th>
                       <th>{% trans 'Carrier' %}</th>
@@ -25,14 +25,14 @@
                       <th></th>
                   </tr>
                   {% for pack in packages %}
-                    <tr>
+                    <tr class="w3-border-bottom w3-border-grey">
                       <td>{% if pack.parent_package %}<a href="{% url 'parent_package_weight' pack.parent_package.id %}">{{pack.parent_package}}</a>{% else %}N/A{% endif %}</td>
-                      <td>{{pack.cust_tracking_num}}</td>
+                    <td><a href="{{pack.get_absolute_url}}" target="_blank" >{{pack.cust_tracking_num}}</a></td>
                       <td>{{pack.get_cust_carrier_display}}</td>
-                      <td>{{pack.user}}</td>
+                      <td>{{pack.user.username}}<br>{{pack.user.email}}</td>
                       <td>{{pack.ship_to_add}}</td>
                       <td>
-                        <a href="{{pack.get_absolute_url}}" target="_blank">{% trans 'View Details'%}</a>
+
                       </td>
                     </tr>
                   {% endfor %}

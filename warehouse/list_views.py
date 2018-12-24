@@ -14,7 +14,7 @@ class NotReadyCoPackages(TemplateView):
 
 	def get(self, request):
 		if request.user.is_staff or request.user.is_superuser:
-			packages = Service.objects.filter(shipping_fee=None, co_shipping = True).order_by('cust_tracking_num')
+			packages = Service.objects.filter(paid_amount=None, co_shipping = True).order_by('cust_tracking_num')
 
 			return render(request, self.template_name,
 						{'packages': packages,
