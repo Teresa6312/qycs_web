@@ -1,5 +1,5 @@
 from .models import Review, Question, ReviewResponse, QuestionResponse
-from main.models import CollectionPoint, Resource, ParentPackage
+from main.models import CollectionPoint, Resource, ParentPackage, Service
 from main.forms import  NewUserChangeForm
 
 from .forms import MessageForm, ResponseForm, ColChangeForm, ColCreationForm
