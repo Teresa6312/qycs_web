@@ -459,15 +459,15 @@ class ParentPackage(models.Model):
 			elif self.service_set.first().ship_to_wh:
 				return self.service_set.first().ship_to_wh
 			else:
-				return None
+				return ''
 		else:
-			return None
+			return ''
 
 	def __str__(self):
 		if self.tracking_num=='':
 			return "%s - %s"%(self.id, self.ship_to())
 		else:
-			return "%s - %s: "%(self.tracking_num, self.carrier, self.ship_to())
+			return "%s - %s: %s"%(self.tracking_num, self.carrier, self.ship_to())
 
 	def get_total(self):
 		amount_package = 0
@@ -568,7 +568,7 @@ class Service(models.Model):
 		elif self.ship_to_wh:
 			return self.ship_to_wh
 		else:
-			return None
+			return ''
 
 	def __str__(self):
 		if self.ship_to():
