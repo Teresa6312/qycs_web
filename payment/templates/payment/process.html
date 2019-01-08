@@ -22,7 +22,7 @@
               <hr class="w3-border-black"/>
 
               {% if orderSet.coupon %}
-                <div id="discount_block">{{orderSet.coupon.code}}(5% OFF):
+                <div id="discount_block">{{orderSet.coupon.code}}({{orderSet.coupon.discount}}% OFF):
                   <span class="w3-right" id="discount_amount">-{{discount_amount|floatformat:"2"|safe}}</span>
               </div>
                 <hr class="w3-border-black"/>

@@ -168,7 +168,7 @@ class ParentPackageAdmin(admin.ModelAdmin):
 	def display_type(self, obj):
 		if obj.service_set.count() > 0:
 			if obj.service_set.first().co_shipping:
-				return "Co-shipping - %s"%(obj.service_set.first().ship_to_add)
+				return "Co-shipping - %s"%(obj.service_set.first().ship_to_col)
 			else:
 				return  "Direct Shipping - %s"%(obj.service_set.first().user)
 		else:

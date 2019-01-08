@@ -54,7 +54,7 @@
         <ul>
           {% for pack in parent_package_list %}
           <li>
-            <a href="{% url 'parent_pack_detail'%}">{{pack.get_carrier_display}}-{{pack.tracking_num}}</a>
+            <a href="{% url 'parent_pack_detail' pack.id %}">{{pack.get_carrier_display}}-{{pack.tracking_num}}</a>
             {% if not pack.received_date %}<button type="button"  onclick="pass_package('{{ csrf_token }}','{% url 'parent_pack_received' pack.id %}')" class="logo-red">{% trans 'Receive Package'%}</button>{% endif %}
           </li>
           {% endfor %}
