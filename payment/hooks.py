@@ -8,8 +8,6 @@ import math
 
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
 def payment_paid(sender, **kwargs):
-	print('------------------------------0-------------------')
-	print(sender)
 	ipn_obj = sender
 	if ipn_obj.payment_status == ST_PP_COMPLETED:
 		order = OrderSet.objects.get(id = ipn_obj.invoice)
@@ -46,21 +44,16 @@ def payment_paid(sender, **kwargs):
 
 # for parent_package
 			count = order.parentpackage_set.all().count()
-			print('------------------------------1-------------------')
+
 			if count > 0:
-				print('------------------------------2-------------------')
 				user = order.parentpackage_set.first().service_set.first().user
 				if order.coupon:
-					print('-----------------------------3-------------------')
 					for parent_pack in order.parentpackage_set.all():
-						print('------------------------------4-------------------')
 						p = ParentPackage.objects.get(id = parent_pack.id)
 						p.paid_amount = float(p.package_amount)*(1-order.coupon.discount/100)
 						p.save()
 				else:
-					print('------------------------------5-------------------')
 					for parent_pack in order.parentpackage_set.all():
-						print('------------------------------6-------------------')
 						p = ParentPackage.objects.get(id = parent_pack.id)
 						p.paid_amount = parent_pack.package_amount
 						p.save()
