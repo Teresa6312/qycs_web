@@ -37,9 +37,6 @@
             {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ package.id }}" class="total_amount"></span><br/>
         {% endif %}
 
-
-
-
   {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
   <button type="button" class="w3-right w3-light-grey w3-text-blue" onclick="window.location.href='{{package.get_absolute_url}}'">{% trans 'detail' %}</button>
   </div>

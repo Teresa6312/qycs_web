@@ -9,6 +9,7 @@ import math
 from datetime import date
 from django.contrib import messages
 from django.utils.translation import gettext as _
+from main.code import send_copackage_ready_to_pay_email, send_package_ready_to_pay_email
 
 class HomeView(TemplateView):
 	template_name = 'warehouse/home.html'
@@ -121,7 +122,8 @@ class EnterWeightCoPackage(TemplateView):
 			pack.emp_pack = request.user.employee
 			pack.save()
 
-			return redirect(reverse('not_ready_copackages'))
+			send_copackage_ready_to_pay_email(pack.id)
+			return redirect(reverse('copackage_weight',args = (pack.id,)))
 		else:
 			return render(request, self.template_name, {'form': form})
 
@@ -205,8 +207,8 @@ class EnterWeightParentPackage(TemplateView):
 			if request.user.employee:
 				pack.emp_pack = request.user.employee
 			pack.save()
-
-			return redirect(reverse('wh_home'))
+			send_package_ready_to_pay_email(pack.id)
+			return redirect(reverse('parent_package_weight',args = (pack.id,)))
 		else:
 			return render(request, self.template_name, {'form': form})
 
