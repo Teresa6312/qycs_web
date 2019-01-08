@@ -45,8 +45,8 @@ class PackagesView(TemplateView):
 
 def ReturnPackageNumber(request):
 	copackageNumber=Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).count()
-	packageNumber=Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False).count()
-	orderNumber=Service.objects.filter(user = request.user, paid_amount = None, order = True, parent_package__paid_amount=None).count()
+	packageNumber=Service.objects.filter(user = request.user, paid_amount = None, parentpackage__paid_amount=None, order = False, co_shipping = False).count()
+	orderNumber=Service.objects.filter(user = request.user, paid_amount = None, order = True).count()
 	return HttpResponse(packageNumber+copackageNumber+orderNumber)
 
 class PackageCartView(TemplateView):
