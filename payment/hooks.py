@@ -9,7 +9,7 @@ import math
 # https://django-paypal.readthedocs.io/en/stable/standard/ipn.html
 def payment_paid(sender, **kwargs):
 	print('------------------------------0-------------------')
-	print(ipn_obj)
+	print(sender)
 	ipn_obj = sender
 	if ipn_obj.payment_status == ST_PP_COMPLETED:
 		order = OrderSet.objects.get(id = ipn_obj.invoice)
