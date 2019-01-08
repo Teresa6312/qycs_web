@@ -1,5 +1,5 @@
 from django import forms
-from main.models import Service,ParentPackage
+from main.models import Service, ParentPackage, SHIPPING_CARRIER_CHOICE
 
 
 from django.utils.translation import gettext as _
@@ -46,3 +46,13 @@ class PriceCalForm(forms.ModelForm):
 
 class IssueForm(forms.Form):
 	issue = forms.CharField(required = True)
+
+
+class ShipCopackageForm(forms.Form):
+	package_set = forms.ModelMultipleChoiceField(required = True, queryset=None, widget=forms.CheckboxSelectMultiple())
+	tracking_num = forms.CharField(required = True)
+	carrier = forms.ChoiceField(required = True, choices=SHIPPING_CARRIER_CHOICE)
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['package_set'].queryset = Service.objects.filter(co_shipping = True, parent_package__shipped_date = None).exclude(paid_amount=None)

@@ -87,8 +87,6 @@ class PackageCartView(TemplateView):
 						package.order_set = orderSet
 						package.save()
 
-
-
 				for parent_pack in cart.cleaned_data['parent_package_set']:
 					package = ParentPackage.objects.get(id = parent_pack.id )
 					if float (package.package_amount)>0:

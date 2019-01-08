@@ -24,6 +24,7 @@
                     <th>{% trans 'Collection Point' %}</th>
                     <th>{% trans 'Weight(KG)' %}</th>
                     <th></th>
+                    <th></th>
                   </tr>
                   {% for pack in packages %}
                     <tr class="w3-border-bottom w3-border-grey">
@@ -32,6 +33,11 @@
                       <td>{{pack.user.username}}<br>{{pack.user.email}}</td>
                       <td>{{pack.ship_to_col.name}}<br>{{pack.ship_to_col.collector.email}}</td>
                       <td>{{pack.weight}}</td>
+                      <td class="w3-text-red">
+                        {% if pack.low_volume_request %}{% trans 'low weight' %}{% else %}{% trans 'NO low weight' %}{% endif %}<br/>
+                        {% if pack.no_rush_request %}{% trans 'no rush' %}{% endif %}
+                      </td>
+
                       <td>
                         <a href="{% url 'copackage_weight' pack.id %}">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
                         <a href="{% url 'issue' pack.id %}">{% trans 'Has Issue'%}</a><br/>

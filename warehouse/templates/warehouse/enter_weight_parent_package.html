@@ -31,7 +31,12 @@
           <ul>
             {% for sub in parent_package.service_set.all %}
             <li>
-              <a href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:{{sub.ship_to_add}}{{sub.ship_to_col}}
+              <a href="{{sub.get_absolute_url}}" target="_blank">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:
+              {% if sub.co_shipping %}
+                  {{sub.ship_to_col}}
+              {% else %}
+                  {{sub.ship_to_add}}
+              {% endif %}
               {% if sub.issue %}
                   <span class="w3-text-red">({% trans 'has issue(s)' %})</span>
               {% endif %}
@@ -40,6 +45,21 @@
               {% else %}
                   {{sub.wh_received_date | timeuntil}}
               {% endif %}
+              <div class="w3-text-red">
+                <i>
+                  {% if sub.low_volume_request %}
+                      {% trans 'low weight' %}
+                  {% else %}
+                      {% trans 'NO low weight' %}
+                  {% endif %}
+
+                  {% if sub.no_rush_request %}
+                      -{% trans 'no rush' %}
+                  {% endif %}
+                </i>
+
+              </div>
+
             </li>
             {% endfor %}
           </ul>
