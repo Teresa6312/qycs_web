@@ -15,7 +15,21 @@ class HomeView(TemplateView):
 
 	def get(self, request):
 		if request.user.is_staff or request.user.is_superuser:
-			return render(request, self.template_name)
+			not_ready_co_pack_num = Service.objects.filter(paid_amount=None, co_shipping = True).count()
+			not_ready_pack_num = Service.objects.filter(parent_package__paid_amount=None, co_shipping = False).count()
+			ready_co_pack_num =  Service.objects.filter(co_shipping = True, parent_package__shipped_date = None).exclude(paid_amount=None).count()
+			ready_pack_num =  Service.objects.filter(co_shipping = False, parent_package__shipped_date = None).exclude(parent_package__paid_amount=None).count()
+			shipped_co_pack_num =  Service.objects.filter(co_shipping = True).exclude(parent_package__shipped_date = None).count()
+			shipped_pack_num =   Service.objects.filter(co_shipping = False).exclude(parent_package__shipped_date = None).count()
+
+			return render(request, self.template_name,{
+			"not_ready_co_pack_num":not_ready_co_pack_num,
+			"not_ready_pack_num":not_ready_pack_num,
+			"ready_co_pack_num":ready_co_pack_num,
+			"ready_pack_num":ready_pack_num,
+			"shipped_co_pack_num":shipped_co_pack_num,
+			"shipped_pack_num":shipped_pack_num,
+			})
 		else:
 			messages.error(request, _("Staff access only!"))
 			return redirect(reverse('login'))
@@ -196,8 +210,8 @@ class EnterWeightParentPackage(TemplateView):
 		else:
 			return render(request, self.template_name, {'form': form})
 
-class ParentPackageDetail(TemplateView):
-	template_name = 'warehouse/parent_package_detail.html'
+class ShipParentPackage(TemplateView):
+	template_name = 'warehouse/ship_parent_package.html'
 
 	def get(self, request, parent_id):
 		if request.user.is_staff or request.user.is_superuser:
@@ -221,7 +235,7 @@ class ParentPackageDetail(TemplateView):
 			parent_package.tracking_num = form.cleaned_data['cust_tracking_num']
 			parent_package.shipped_date = date.today()
 
-		return redirect(reverse('parent_package_detail'))
+		return redirect(reverse('ship_parent_package',args = (parent_package.id,)))
 
 
 class EnterIssue(TemplateView):

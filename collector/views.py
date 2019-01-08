@@ -107,7 +107,7 @@ class CollectionPointDetailView(TemplateView):
 		try:
 			collector = CollectionPoint.objects.get(pk=col_pk)
 			if request.user == collector.collector or request.user.is_staff :
-				parent_package_list = ParentPackage.objects.filter(service__ship_to_col = collector).order_by('-shipped_date')
+				parent_package_list = ParentPackage.objects.filter(service__ship_to_col = collector).order_by('-shipped_date').distinct()
 				package_list = Service.objects.filter(ship_to_col = collector, parent_package = None).order_by('receiver')
 				return render(request, self.template_name, {'collector': collector, 'parent_package_list': parent_package_list, 'package_list': package_list})
 			else:

@@ -152,20 +152,34 @@ class ServiceInline(admin.TabularInline):
 	can_delete = False
 
 class ParentPackageAdmin(admin.ModelAdmin):
+	def ship_to(self, obj):
+		if obj.service_set.count() > 0:
+			if obj.service_set.first().ship_to_add:
+				return obj.service_set.first().ship_to_add
+			elif obj.service_set.first().ship_to_col:
+				return obj.service_set.first().ship_to_col
+			elif obj.service_set.first().ship_to_wh:
+				return obj.service_set.first().ship_to_wh
+			else:
+				return None
+		else:
+			return None
+
+	def display_type(self, obj):
+		if obj.service_set.count() > 0:
+			if obj.service_set.first().co_shipping:
+				return "Co-shipping - %s"%(obj.service_set.first().ship_to_add)
+			else:
+				return  "Direct Shipping - %s"%(obj.service_set.first().user)
+		else:
+			return None
+
 	inlines = (ServiceInline,)
-	list_display = ('created_date','packed_date', 'shipped_date', 'tracking_num')
+	list_display = ('display_type', 'created_date','packed_date', 'shipped_date', 'tracking_num')
 	list_filter = ['created_date', 'packed_date', 'shipped_date']
 	readonly_fields = [ "ship_to", ]
 
-	def ship_to(self, obj):
-		if obj.sevice_set.first().ship_to_add:
-			return obj.sevice_set.first().ship_to_add
-		elif obj.sevice_set.first().ship_to_col:
-			return obj.sevice_set.first().ship_to_col
-		elif obj.sevice_set.first().ship_to_wh:
-			return obj.sevice_set.first().ship_to_wh
-		else:
-			return None
+
 
 
 	fieldsets = [

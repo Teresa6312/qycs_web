@@ -15,7 +15,7 @@ urlpatterns = [
     path('direct-shipping-packages/shipped', login_required(list_views.ShippedDirectPackages.as_view()), name='shipped_direct_packages'),
     path('<int:service_id>/co-shipping/weight', login_required(views.EnterWeightCoPackage.as_view()), name='copackage_weight'),
     path('<int:parent_id>/weight', login_required(views.EnterWeightParentPackage.as_view()), name='parent_package_weight'),
-    path('<int:parent_id>/detail',login_required( views.ParentPackageDetail.as_view()), name='parent_package_detail'),
+    path('<int:parent_id>/ship',login_required( views.ShipParentPackage.as_view()), name='ship_parent_package'),
     path('<int:service_id>/issue', login_required(views.EnterIssue.as_view()), name='issue'),
     path('<int:service_id>/received', login_required(views.packageReceived), name='received'),
 ]

@@ -94,6 +94,14 @@
           },
         });
     }// end of receive package
+    function openMenu() {
+      var mynnav = document.getElementById("myTopnav");
+      if (mynnav.className === "topnav") {
+          mynnav.className += " responsive";
+      } else {
+          mynnav.className = "topnav";
+      }
+    }
   </script>
 {% endif %}
 {% endblock %}

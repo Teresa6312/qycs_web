@@ -61,6 +61,68 @@
 
     </div>
 </div>
+
+<div class="w3-row">
+
+      <div class="w3-third">
+          <div class="text-regular-bold">
+            {% trans 'Not Ready Packages'%}
+          </div>
+          <ul>
+            <li>
+              <a href="{% url 'not_ready_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{not_ready_co_pack_num}}
+              </div></span>
+            </li>
+            <li>
+              <a href="{% url 'not_ready_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{not_ready_pack_num}}
+              </div></span>
+            </li>
+          </ul>
+      </div>
+      <div class="w3-third">
+          <div class="text-regular-bold">
+            {% trans 'Ready Packages'%}
+          </div>
+          <ul>
+            <li>
+              <a href="{% url 'ready_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{ready_co_pack_num}}
+              </div></span>
+            </li>
+            <li>
+              <a href="{% url 'ready_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{ready_pack_num}}
+              </div></span>
+            </li>
+          </ul>
+    </div>
+    <div class="w3-third">
+          <div class="text-regular-bold">
+            {% trans 'Shipped Packages'%}
+          </div>
+          <ul>
+            <li>
+              <a href="{% url 'shipped_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{shipped_co_pack_num}}
+              </div></span>
+            </li>
+            <li>
+              <a href="{% url 'shipped_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{shipped_pack_num}}
+              </div></span>
+            </li>
+          </ul>
+    </div>
+</div>
+
 <script type="text/javascript">
   function receive_package(csrf, url){
       let dt={'csrfmiddlewaretoken': csrf};

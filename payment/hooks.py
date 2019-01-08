@@ -49,32 +49,11 @@ def payment_paid(sender, **kwargs):
 				user = order.parentpackage_set.first().service_set.first().user
 				if order.coupon:
 					for parent_pack in order.parentpackage_set.all():
-						paid_amount = 0
-						for pack in parent_pack.service_set.all():
-							package = Service.objects.get(id = pack.id)
-							if package.order and order.coupon.order:
-								package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
-							elif order.coupon.package and not package.order:
-								package.paid_amount = package.get_total()*(1-order.coupon.discount/100)
-							else:
-								package.paid_amount = package.get_total()
-							package.save()
-							if package.no_rush_request:
-								no_rush_amount = no_rush_amount + package.paid_amount
-							paid_amount = paid_amount+package.paid_amount
-
 						p = ParentPackage.objects.get(id = parent_pack.id)
-						p.paid_amount = paid_amount
+						p.paid_amount = float(p.package_amount)*(1-order.coupon.discount/100)
 						p.save()
 				else:
 					for parent_pack in order.parentpackage_set.all():
-						for pack in parent_pack.service_set.all():
-							package = Service.objects.get(id = pack.id)
-							package.paid_amount = parent_pack.package_amount/count
-							package.save()
-							if package.no_rush_request:
-								no_rush_amount = no_rush_amount + package.paid_amount
-
 						p = ParentPackage.objects.get(id = parent_pack.id)
 						p.paid_amount = parent_pack.package_amount
 						p.save()
