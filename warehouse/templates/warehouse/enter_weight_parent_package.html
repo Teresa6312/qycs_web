@@ -107,7 +107,20 @@
               {{ form.package_type.label_tag }} {{ form.package_type.errors }} {{ form.package_type }}
           </div>
           <div class="w3-row">
-              {{ form.carrier.label_tag }} {{ form.carrier.errors }} {{ form.carrier }}
+              {{ form.carrier.label_tag }} {{ form.carrier.errors }}
+              <select name="carrier" required="" id="id_carrier">
+  <option value="">---------</option>
+
+  <option value="DHL">DHL</option>
+
+  <option value="EMS" selected="">EMS</option>
+
+  <option value="FEDEX">FEDEX</option>
+
+  <option value="SF EXPRESS">SF EXPRESS</option>
+
+  <option value="UPS">UPS</option>
+</select>
           </div>
           <div class="w3-row" id="button_row">
                   <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>

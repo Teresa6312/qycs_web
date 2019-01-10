@@ -177,6 +177,13 @@ class EnterWeightParentPackage(TemplateView):
 				else:
 					tc = sub.ship_to_add.country.lower()
 
+				if pack.carrier =='EMS' :
+					if pack.weight >= 20.5:
+						pack.carrier = "%s+"%(pack.carrier)
+				else:
+					if pack.volume_weight >= 20.5 or pack.weight >= 20.5:
+						pack.carrier = "%s+"%(pack.carrier)
+
 				try:
 					price = PriceRate.objects.get(
 							category='ship',
@@ -191,7 +198,6 @@ class EnterWeightParentPackage(TemplateView):
 			else:
 				price = None
 
-
 			if price:
 				if pack.carrier =='EMS' or pack.carrier =='EMS+':
 
@@ -203,6 +209,8 @@ class EnterWeightParentPackage(TemplateView):
 						shipping_amount = float ( price.first_weight_price) + float ( price.next_weight_price) *  math.ceil((float(pack.volume_weight)-0.5)*2)
 				pack.package_amount = shipping_amount*1.1 + pack.get_total()
 				pack.currency = price.shipping_currency
+			else:
+				messages.error(request, _("Cannot find the match price!"))
 			pack.packed_date = date.today()
 			if request.user.employee:
 				pack.emp_pack = request.user.employee
