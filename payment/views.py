@@ -59,6 +59,7 @@ class PaymentProcessView(TemplateView):
 													'total':total})
 
 	def post(self, request):
+		print('---------------------payment_process-------------------')
 		print(request)
 		return HttpResponse('')
 
