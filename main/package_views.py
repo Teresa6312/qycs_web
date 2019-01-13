@@ -34,8 +34,8 @@ class PackagesView(TemplateView):
 	def get(self, request):
  # <WSGIRequest: GET '/myaccount/packages?amt=5.10&cc=USD&item_name=1%20package(s)%2Forder(s)%20(%E6%97%A0%E4%BF%9D%E9%99%A9)&st=Completed&tx=3UT61356S4474704H'>
 		if request.session.get('order_set_id') and request.GET.get('st')=='Completed':
+			print('--------------------------in PackagesView--------------------------')
 			order_set_id = request.session.get('order_set_id')
-			discount_amount = request.session.get('discount_amount',0)
 			paid(order_set_id = order_set_id, amount = request.GET.get('amt'), currency = cc)
 
 		order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
@@ -310,7 +310,7 @@ def couponView(request):
 		code=request.POST.get('coupon','')
 		try:
 			coupon = Coupon.objects.get(code = code)
-			if coupon.check_coupon(request.user):
+			if coupon.check_coupon:
 				context = json.dumps({
 				'amount_limit': coupon.amount_limit,
 				'package': coupon.package,

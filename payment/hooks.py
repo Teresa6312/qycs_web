@@ -15,6 +15,7 @@ def payment_paid(sender, **kwargs):
 		order = OrderSet.objects.get(id = ipn_obj.invoice)
 		if ipn_obj.receiver_email != settings.PAYPAL_RECEIVER_EMAIL:
 			return
+		print('--------------------in hook--------------------------------')
 		paid(order_set_id = ipn_obj.invoice, amount = ipn_obj.mc_gross, currency = ipn_obj.mc_currency)
 		# need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
 #
