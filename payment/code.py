@@ -47,7 +47,6 @@ def paid(order_set_id, amount, currency, tx = None, confirmed = False):
 						p.paid_amount = p.package_amount
 						p.save()
 
-			print('--------------0----------------')
 			paid_user = User.objects.get(id = user.id)
 			if order.currency == 'USD':
 				paid_user.reward = math.floor(no_rush_amount) + math.floor(need_pay)
@@ -59,9 +58,6 @@ def paid(order_set_id, amount, currency, tx = None, confirmed = False):
 				coup.used_times = int(coup.used_times) +1
 				coup.save()
 
-			print('------------confirmed-----------------')
-			print(confirmed)
-			print('tx')
 			if confirmed:
 				order.payment_confirmed = True
 			if tx:
