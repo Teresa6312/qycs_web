@@ -45,31 +45,36 @@ def paid(order_set_id, amount, currency, tx = None, confirmed = False):
 			if count > 0:
 				print('---------------------------6--------------')
 				user = order.parentpackage_set.first().service_set.first().user
+				print('--------------user---------------------------')
 				if order.coupon:
+					print('---------------------------7--------------')
 					for parent_pack in order.parentpackage_set.all():
+						print('---------------------------8--------------')
 						p = ParentPackage.objects.get(id = parent_pack.id)
 						p.paid_amount = float(p.package_amount)*(1-order.coupon.discount/100)
 						p.save()
 				else:
+					print('---------------------------9--------------')
 					for parent_pack in order.parentpackage_set.all():
+						print('---------------------------10--------------')
 						p = ParentPackage.objects.get(id = parent_pack.id)
 						p.paid_amount = parent_pack.package_amount
 						p.save()
 
-			print('---------------------------7---------------')
+			print('---------------------------11---------------')
 			paid_user = User.objects.get(id = user.id)
 			if order.currency == 'USD':
 				paid_user.reward = math.floor(no_rush_amount) + math.floor(need_pay)
 			else:
 				paid_user.reward = math.floor(no_rush_amount/7)+ math.floor(need_pay/7)
 			paid_user.save()
-			print('---------------------------8---------------')
+			print('---------------------------12---------------')
 			if order.coupon:
 				coup = Coupon.objects.get(id = order.coupon.id)
 				coup.used_times = coup.used_times+1
 				coup.save()
 
-			print('---------------------------9---------------')
+			print('---------------------------13---------------')
 			if confirmed:
 				order.payment_confirmed = True
 			if tx != None:
