@@ -234,18 +234,19 @@ class ShipParentPackage(TemplateView):
 			return redirect(reverse('login'))
 
 	def post(self, request, parent_id):
-		form = TrackingForm(request.POST)
 		if request.user.is_staff or request.user.is_superuser:
 			parent_package = ParentPackage.objects.get(id=parent_id)
+			form = TrackingForm(request.POST)
+			if form.is_valid():
+				parent_package.tracking_num = form.cleaned_data['cust_tracking_num']
+				parent_package.shipped_date = date.today()
+				parent_package.save()
+			return redirect(reverse('ship_parent_package',args = (parent_package.id,)))
 		else:
 			messages.error(request, _("Staff access only!"))
 			return redirect(reverse('login'))
 
-		if form.is_valid():
-			parent_package.tracking_num = form.cleaned_data['cust_tracking_num']
-			parent_package.shipped_date = date.today()
 
-		return redirect(reverse('ship_parent_package',args = (parent_package.id,)))
 
 
 class EnterIssue(TemplateView):
