@@ -1,10 +1,8 @@
 from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 from django.conf import settings
-from main.models import OrderSet, Service, User, Coupon, ParentPackage
+from main.models import OrderSet
 from paypal.standard.ipn.models import PayPalIPN
-
-import math
 
 from .code import paid
 
