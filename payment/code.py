@@ -68,6 +68,6 @@ def paid(order_set_id, amount, currency):
 				coup = Coupon.objects.get(id = order.coupon.id)
 				coup.used_times = coup.used_times+1
 				coup.save()
-
+				
 	except:
 		return

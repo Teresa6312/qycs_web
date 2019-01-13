@@ -415,10 +415,10 @@ class OrderSet(models.Model):
 			if self.coupon.amount_limit and discounted > self.coupon.amount_limit:
 				discounted = self.coupon.amount_limit
 		else:
-			discounted = 0
+			discounted = 0.00
 
 
-		return [amount_order+amount_package,discounted]
+		return [amount_order+amount_package,float('%.2f' % discounted)]
 
 
 class ParentPackage(models.Model):
