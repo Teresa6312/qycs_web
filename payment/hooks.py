@@ -17,6 +17,8 @@ def payment_paid(sender, **kwargs):
 			return
 		if order.tx == None or order.tx == '':
 			paid(order_set_id = ipn_obj.invoice, amount = ipn_obj.mc_gross, currency = ipn_obj.mc_currency, confirmed = True)
+		else:
+			order.payment_confirmed = True
 	else:
 		return
 

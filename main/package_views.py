@@ -34,6 +34,7 @@ class PackagesView(TemplateView):
 	def get(self, request):
  # <WSGIRequest: GET '/myaccount/packages?amt=5.10&cc=USD&item_name=1%20package(s)%2Forder(s)%20(%E6%97%A0%E4%BF%9D%E9%99%A9)&st=Completed&tx=3UT61356S4474704H'>
 		if request.session.get('order_set_id') and request.GET.get('st')=='Completed':
+			print('--------------------------in PackagesView--------------------------')
 			order_set_id = request.session.get('order_set_id')
 			paid(order_set_id = order_set_id, amount = request.GET.get('amt'), currency = request.GET.get('cc'), tx = request.GET.get('tx'))
 
