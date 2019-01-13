@@ -2,9 +2,13 @@ import math
 from main.models import OrderSet, Service, User, Coupon, ParentPackage
 
 def paid(order_set_id, amount, currency, tx = None, confirmed = False):
-
 	try:
 		order = OrderSet.objects.get(id=order_set_id)
+		if order.payment_confirmed:
+			order.tx = tx
+			order.save()
+			return
+			
 		need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
 		if need_pay == float(amount) and currency == order.currency:
 			no_rush_amount = 0

@@ -5,7 +5,7 @@
 
           {{package.get_cust_carrier_display}} ({{package.wh_received.country}})<br/>
           {% if package.created_date %}
-          {% trans 'Created on' %}: {{package.created_date|date:"M d, Y" }}<br/>{% endif %}
+          {% trans 'Created on' %}: {{package.created_date|date:"m/d/Y"  }}<br/>{% endif %}
 
           {% trans "Weight: " %}
             {% if package.volume_weight and package.weight %}

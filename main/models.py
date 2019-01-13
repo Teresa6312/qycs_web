@@ -422,6 +422,8 @@ class OrderSet(models.Model):
 
 		return [amount_order+amount_package,float('%.2f' % discounted)]
 
+	class Meta:
+		verbose_name_plural = _("Order Set")
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
