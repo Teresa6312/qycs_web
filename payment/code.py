@@ -1,10 +1,10 @@
 from main.models import OrderSet
 
 def paid(order_set_id, amount, currency):
-    try:
-        order = OrderSet.objects.get(id=order_set_id)
-        need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
-        if need_pay == float(amount) and currency == order.currency:
+	try:
+		order = OrderSet.objects.get(id=order_set_id)
+		need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
+		if need_pay == float(amount) and currency == order.currency:
 			no_rush_amount = 0
 # for sub packages
 			if order.service_set.all().count()>0:
@@ -56,5 +56,5 @@ def paid(order_set_id, amount, currency):
 				coup.used_times = coup.used_times+1
 				coup.save()
 
-    except:
-        return
+	except:
+		return

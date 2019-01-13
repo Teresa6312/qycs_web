@@ -26,7 +26,7 @@ from django.http import HttpResponseRedirect
 #
 import datetime
 import json
-from .code import paid
+from payment.code import paid
 
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
