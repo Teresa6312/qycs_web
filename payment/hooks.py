@@ -19,6 +19,7 @@ def payment_paid(sender, **kwargs):
 			paid(order_set_id = ipn_obj.invoice, amount = ipn_obj.mc_gross, currency = ipn_obj.mc_currency, confirmed = True)
 		else:
 			order.payment_confirmed = True
+			order.save()
 	else:
 		return
 

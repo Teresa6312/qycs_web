@@ -14,7 +14,21 @@
               {% endif %}
               )
             </div>
-              {% trans "Weight: " %}{{package.weight}}(KG)<br/>
+              {% trans "Weight: " %}
+                {% if package.volume_weight and package.weight %}
+                    {% if not package.carrier == 'EMS' and not package.carrier == 'EMS+' %}
+                          {% if package.volume_weight > package.weight %}
+                              {{package.volume_weight}}
+                          {% endif %}
+                    {% else %}
+                          {{package.weight}}
+                    {% endif %}
+                    (KG)
+                {% else %}
+                N/A
+                {% endif %}
+              <br/>
+
               {% trans 'Ship to: '%}
               {% if package.service_set.first.ship_to_add %}
                           {% include "blocks/address_card_fields.html" with add=package.service_set.first.ship_to_add %}
