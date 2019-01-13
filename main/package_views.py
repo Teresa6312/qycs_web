@@ -33,7 +33,12 @@ class PackagesView(TemplateView):
 	def get(self, request):
 		print('---------------------package_history-------------------')
 		 # <WSGIRequest: GET '/myaccount/packages?amt=5.10&cc=USD&item_name=1%20package(s)%2Forder(s)%20(%E6%97%A0%E4%BF%9D%E9%99%A9)&st=Completed&tx=3UT61356S4474704H'>
-		print(request.GET.get('amt'))
+		if request.session.get('order_set_id') and request.GET.get('st')=='Completed':
+			order_set_id = request.session.get('order_set_id')
+			discount_amount = request.session.get('discount_amount',0)
+			print(order_set_id)
+			print(request.GET.get('amt'))
+
 		order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
 		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
 		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).exclude(paid_amount=None).distinct().order_by('-created_date')
