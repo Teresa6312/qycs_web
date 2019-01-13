@@ -36,7 +36,7 @@ class PackagesView(TemplateView):
 		if request.session.get('order_set_id') and request.GET.get('st')=='Completed':
 			print('--------------------------in PackagesView--------------------------')
 			order_set_id = request.session.get('order_set_id')
-			paid(order_set_id = order_set_id, amount = request.GET.get('amt'), currency = cc)
+			paid(order_set_id = order_set_id, amount = request.GET.get('amt'), currency = request.GET.get('cc'))
 
 		order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
 		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
