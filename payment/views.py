@@ -19,8 +19,6 @@ class PaymentProcessView(TemplateView):
 		try:
 			order_set_id = request.session.get('order_set_id')
 			discount_amount = request.session.get('discount_amount')
-			del request.session['order_set_id']
-			del request.session['discount_amount']
 			orderSet = get_object_or_404(OrderSet, id = order_set_id)
 		except:
 			return redirect(reverse('packagecart'))
