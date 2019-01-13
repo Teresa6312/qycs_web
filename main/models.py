@@ -382,6 +382,7 @@ class OrderSet(models.Model):
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=False, default=0, verbose_name= _('Insurance Plan'))
 	payment_confirmed = models.BooleanField(default=False, verbose_name=_("Payment Confirmed"))
+	payment_confirmed.boolean = True
 	tx =  models.CharField(max_length = 30, blank=True, verbose_name= _('tx From PayPal'))
 
 	def get_should_pay_amount(self):

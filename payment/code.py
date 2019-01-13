@@ -5,10 +5,6 @@ def paid(order_set_id, amount, currency, tx = None, confirmed = False):
 	try:
 		order = OrderSet.objects.get(id=order_set_id)
 		need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
-		print(need_pay)
-		print(float(amount))
-		print(need_pay == float(amount))
-		print(currency == order.currency)
 		if need_pay == float(amount) and currency == order.currency:
 			no_rush_amount = 0
 # for sub packages

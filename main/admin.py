@@ -199,7 +199,7 @@ class ParentPackageInline(admin.TabularInline):
 
 class OrderSetAdmin(admin.ModelAdmin):
 	inlines = (ServiceInline, ParentPackageInline, )
-	list_display = ('created_date','coupon', 'total_amount', 'insurance', )
+	list_display = ('created_date','coupon', 'total_amount', 'insurance','payment_confirmed', 'tx' )
 
 admin.site.register(OrderSet, OrderSetAdmin,)
 
