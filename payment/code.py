@@ -1,9 +1,7 @@
 from main.models import OrderSet
 
-def paid(order_set_id, amount, currency):
-
+def paid(order_set_id, amount, currency, tx = None, confirmed = False):
 	try:
-		print('---------------------------0---------------')
 		order = OrderSet.objects.get(id=order_set_id)
 		need_pay = float(order.total_amount) + float(order.insurance)-order.get_total()[1]
 		print(need_pay)
@@ -13,13 +11,10 @@ def paid(order_set_id, amount, currency):
 		if need_pay == float(amount) and currency == order.currency:
 			no_rush_amount = 0
 # for sub packages
-			print('---------------------------2---------------')
 
 			if order.service_set.all().count()>0:
-				print('---------------------------3---------------')
 				user = order.service_set.first().user
 				if order.coupon:
-					print('---------------------------4---------------')
 					for pack in order.service_set.all():
 						package = Service.objects.get(id = pack.id)
 						if package.order and order.coupon.order:
@@ -41,9 +36,7 @@ def paid(order_set_id, amount, currency):
 
 # for parent_package
 			count = order.parentpackage_set.all().count()
-			print('---------------------------5---------------')
 			if count > 0:
-				print('---------------------------6--------------')
 				user = order.parentpackage_set.first().service_set.first().user
 				if order.coupon:
 					for parent_pack in order.parentpackage_set.all():
@@ -56,18 +49,21 @@ def paid(order_set_id, amount, currency):
 						p.paid_amount = parent_pack.package_amount
 						p.save()
 
-			print('---------------------------7---------------')
 			paid_user = User.objects.get(id = user.id)
 			if order.currency == 'USD':
 				paid_user.reward = math.floor(no_rush_amount) + math.floor(need_pay)
 			else:
 				paid_user.reward = math.floor(no_rush_amount/7)+ math.floor(need_pay/7)
 			paid_user.save()
-			print('---------------------------8---------------')
 			if order.coupon:
 				coup = Coupon.objects.get(id = order.coupon.id)
 				coup.used_times = coup.used_times+1
 				coup.save()
-				
+		if confirmed:
+			order.payment_confirmed = True
+		if tx != None:
+			order.tx = tx
+		order.save()
+
 	except:
 		return
