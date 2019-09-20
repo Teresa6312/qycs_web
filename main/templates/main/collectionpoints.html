@@ -46,11 +46,10 @@
 
 <script>
   let locations={{col_str_json|safe}}
-  let map_url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDLyUK5D-laS8iQsSDWwOhehl-Gvhz8xfA&libraries=places&callback=initAutocomplete";
-  // let map_url = "https://maps.googleapis.com/maps/api/js?key=" + {{map_key}} +"&libraries=places&callback=initAutocomplete";
 </script>
 <script src="{% static 'js/map.js' %}"></script>
+
 <script async defer
-  src=map_url>
+src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
 </script>
 {% endblock %}

@@ -26,7 +26,7 @@ urlpatterns = [
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
     path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
 
-
+    path('543243243234234/', views.CollectionPointView.as_view()),
 
 
 
