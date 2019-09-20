@@ -7,7 +7,6 @@ from .forms import (
 	)
 
 from .code import send_confirmation_email
-
 from django.forms.utils import ErrorList
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -110,7 +109,7 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
 		user.is_active = True
 		user.email_confirmed = True
 		user.save()
-		login(request, user, backend)
+		# login(request, user, backend)
 		return redirect('account')
 	else:
 		return HttpResponse('Activation link is invalid!')
@@ -286,6 +285,7 @@ class EditAddressView(TemplateView):
 		add = Address.objects.get(pk=add_id)
 
 		# never update an address that has been shipped with package(s)
+		print(Service.objects.filter(ship_to_add=add))
 		if Service.objects.filter(ship_to_add=add).count()==0:
 			# just update the addresss
 			addform = AddressForm(request.POST, instance = add)
@@ -296,13 +296,17 @@ class EditAddressView(TemplateView):
 		if addform.is_valid():
 			updateaddress = addform.save(commit = False)
 			updateaddress.user = request.user
+			updateaddress.save()
 
 			# when create a new address for update, neet to reset the old one's user to be null
-			if addform.instance:
+			if add.id != updateaddress.id:
 				add.user = None
 				add.save()
+				if request.user.default_address == add:
+					user = User.objects.get(id = request.user.id)
+					user.default_address = updateaddress
+					user.save()
 
-			updateaddress.save()
 			return redirect(reverse('useraddress'))
 		else:
 			return render(request, self.template_name, {'addform': addform})
@@ -313,12 +317,15 @@ class DeleteAddressView(TemplateView):
 
 	def get(self, request, add_id):
 		add = Address.objects.get(pk=add_id)
-		add.user = None
-		add.save()
-		if add == request.user.default_address:
-			user = User.objects.get(pk = request.user.pk)
-			user.default_address = None
-			user.save()
+		if Service.objects.filter(ship_to_add=add).count()==0:
+			add.delete()
+		else:
+			add.user = None
+			add.save()
+			if add == request.user.default_address:
+				user = User.objects.get(pk = request.user.pk)
+				user.default_address = None
+				user.save()
 		return redirect(reverse('useraddress'))
 
 class SetDefaultAddressView(TemplateView):
@@ -358,7 +365,8 @@ class CollectionPointView(TemplateView):
 
 	def get(self, request):
 		col_dict=return_col_address_str()
-		return render(request, self.template_name, {'col_list': col_dict['col_list'],'col_str_json': col_dict['col_str_json']})
+		map_key = settings.GOOGLE_MAPS_API_KEY
+		return render(request, self.template_name, {'map_key': map_key, 'col_list': col_dict['col_list'],'col_str_json': col_dict['col_str_json']})
 
 
 

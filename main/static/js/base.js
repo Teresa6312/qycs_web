@@ -188,3 +188,18 @@ function createmodal(id){
     var container = document.getElementById('container');
     container.appendChild(modal);
 }
+
+
+function openBlock(evt, blockName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("message_block");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+  }
+  document.getElementById(blockName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-border-red";
+}

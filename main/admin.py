@@ -5,7 +5,7 @@ from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
 	Warehouse, PackageSnapshot, ParentPackage, Item,
-	Coupon, FavoriteWebsite, Resource, PriceRate
+	Coupon, FavoriteWebsite, Resource, PriceRate, OrderSet
 )
 from django.utils.html import mark_safe
 
@@ -49,16 +49,17 @@ class NewUserAdmin(UserAdmin):
 admin.site.register(User, NewUserAdmin)
 
 
-# class PaymentAdmin(admin.ModelAdmin):
-# 	list_display = ['transaction_id', 'pay_date', 'coupon','deposit','amount', 'currency',]
-#
-# admin.site.register(Payment, PaymentAdmin)
+class EmployeeAdmin(admin.ModelAdmin):
+	list_display = ('employee', 'position', 'date_joined', 'date_left','is_active')
+	list_filter = ['is_active',]
+	search_fields = ['position',  ]
 
 
+admin.site.register(Employee, EmployeeAdmin)
 
 class AddressAdmin(admin.ModelAdmin):
 	list_display = ('id', 'user', 'first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
-	list_editable = ('first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
+	# list_editable = ('first_name', 'last_name', 'address','apt',  'city', 'state','country', 'zipcode')
 	list_filter = ['country', 'state','city']
 	search_fields = ['first_name', 'last_name', ]
 
@@ -147,28 +148,42 @@ admin.site.register(Coupon, CouponAdmin,)
 
 class ServiceInline(admin.TabularInline):
 	model = Service
-	fields = ('id', 'user', 'receiver', 'ship_to_add', 'ship_to_col')
+	fields = ('cust_carrier', 'cust_tracking_num', 'user', 'receiver', 'ship_to_add', 'ship_to_col')
 	can_delete = False
 
 class ParentPackageAdmin(admin.ModelAdmin):
-	inlines = (ServiceInline,)
-	list_display = ('created_date','packed_date', 'shipped_date', 'tracking_num')
-	list_filter = ['created_date', 'packed_date', 'shipped_date']
-	readonly_fields = [ "ship_to", ]
-
 	def ship_to(self, obj):
-		if obj.sevice_set.first().ship_to_add:
-			return obj.sevice_set.first().ship_to_add
-		elif obj.sevice_set.first().ship_to_col:
-			return obj.sevice_set.first().ship_to_col
-		elif obj.sevice_set.first().ship_to_wh:
-			return obj.sevice_set.first().ship_to_wh
+		if obj.service_set.count() > 0:
+			if obj.service_set.first().ship_to_add:
+				return obj.service_set.first().ship_to_add
+			elif obj.service_set.first().ship_to_col:
+				return obj.service_set.first().ship_to_col
+			elif obj.service_set.first().ship_to_wh:
+				return obj.service_set.first().ship_to_wh
+			else:
+				return None
 		else:
 			return None
 
+	def display_type(self, obj):
+		if obj.service_set.count() > 0:
+			if obj.service_set.first().co_shipping:
+				return "Co-shipping - %s"%(obj.service_set.first().ship_to_col)
+			else:
+				return  "Direct Shipping - %s"%(obj.service_set.first().user)
+		else:
+			return None
+
+	inlines = (ServiceInline,)
+	list_display = ('display_type', 'created_date','packed_date', 'shipped_date', 'tracking_num')
+	list_filter = ['created_date', 'packed_date', 'shipped_date']
+	readonly_fields = [ "ship_to", ]
+
+
+
 
 	fieldsets = [
-		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'currency','package_amount', 'memo']}),
+		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'volume_weight','currency','package_amount', 'paid_amount', 'memo']}),
 		('Shipment',               	{'fields': ['ship_to', 'shipped_date', 'tracking_num', 'carrier','received_date']}),
 		('Shipped to Warehouse from Warehouse',    {'fields': ['emp_split'], 'classes': ['collapse']}),
 		('Issue',                   {'fields': ['issue']}),
@@ -177,7 +192,16 @@ class ParentPackageAdmin(admin.ModelAdmin):
 
 admin.site.register(ParentPackage, ParentPackageAdmin,)
 
+class ParentPackageInline(admin.TabularInline):
+	model = ParentPackage
+	fields = ('carrier', 'package_type', 'tracking_num', 'package_amount', 'paid_amount')
+	can_delete = False
 
+class OrderSetAdmin(admin.ModelAdmin):
+	inlines = (ServiceInline, ParentPackageInline, )
+	list_display = ('created_date','coupon', 'total_amount', 'insurance','payment_confirmed', 'tx' )
+
+admin.site.register(OrderSet, OrderSetAdmin,)
 
 class WarehouseAdmin(admin.ModelAdmin):
 	list_display = ('name', 'address', 'city', 'state','country', 'zipcode', 'status')
@@ -245,12 +269,12 @@ class ServiceAdmin(admin.ModelAdmin):
 		('Shipping Type', 					{'fields': ['co_shipping']}),
 		('Creation', 						{'fields': [ 'user', 'cust_tracking_num','cust_carrier', 'low_volume_request', 'no_rush_request', 'memo']}),
 		('Status', 							{'fields': ['status_all_display']}),
-		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight', 'ready_date']}),
-		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
-		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount', 'currency']}),
-		('Shipment', 						{'fields': ['ship_to_add', 'ship_to_col', 'ship_to_wh', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
+		('Service Started at Warehouse', 	{'fields': ['wh_received', 'wh_received_date', 'emp_pack', 'weight','volume_weight', 'ready_date']}),
+		('Shipment', 						{'fields': ['ship_carrier', 'package_type', 'ship_to_add', 'ship_to_col', 'ship_to_wh', 'parent_package', 'last_shipped_date', 'tracking_num', 'last_carrier']}),
 		('Receiver', 						{'fields': ['receiver', 'picked_up', 'picked_up_date']}),
-		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']})
+		('Issue', 							{'fields': ['issue'], 'classes': ['collapse']}),
+		('Deposit', 						{'fields': ['deposit'], 'classes': ['collapse']}),
+		('Charges', 						{'fields': ['storage_fee', 'shipping_fee', 'order_amount', 'total_amount','paid_amount', 'currency']})
 
 	]
 

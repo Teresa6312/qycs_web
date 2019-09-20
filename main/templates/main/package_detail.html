@@ -14,71 +14,88 @@
 
 {% block content %}
 <div class="w3-panel w3-mobile content_center">
-    <h2>{{package.cust_tracking_num}}
-     - {{package.cust_carrier}}
-    {% if package.order %}
-        ({% trans 'Order' %})
-    {% else %}
-        {% if package.co_shipping %}
-          ({% trans 'Co-shipping Package' %})
-        {% else %}
-          ({% trans 'Direct Shipping' %})
-        {% endif %}
-    {% endif %}
-    </h2>
-    <div class="w3-panel">
-        <ul class="timeline">
-          <li class="li {% if package.created_date %}complete{% endif %}">
-            <div class="timestamp">
-              <span class="date">{% if package.created_date %}{{package.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-            </div>
-            <div class="status">
-              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Package Marked' %}</div>
-            </div>
-          </li>
-          <li class="li {% if package.wh_received_date %}complete{% endif %}">
-            <div class="timestamp">
-              <span class="date">{% if package.wh_received_date %}{{package.wh_received_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-            </div>
-            <div class="status">
-              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Warehouse Received' %}</div>
-            </div>
-          </li>
+      <h2>{{package.cust_tracking_num}}
+       - {{package.get_cust_carrier_display}}
+      {% if package.order %}
+          ({% trans 'Order' %})
+      {% else %}
+          {% if package.co_shipping %}
+            ({% trans 'Co-shipping Package' %})
+          {% else %}
+            ({% trans 'Direct Shipping' %})
+          {% endif %}
+      {% endif %}
+      </h2>
 
-          <li class="li {% if package.ready_date %}complete{% endif %}">
-            <div class="timestamp">
-              <span class="date">{% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-            </div>
-            <div class="status">
-              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Ready to Pay' %}</div>
-            </div>
-          </li>
+      <div class="w3-panel">
+          <ul class="timeline">
+            <li class="li {% if package.created_date %}complete{% endif %}">
+              <div class="timestamp">
+                <span class="date">{% if package.created_date %}{{package.created_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+              </div>
+              <div class="status">
+                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Package Marked' %}</div>
+              </div>
+            </li>
+            <li class="li {% if package.wh_received_date %}complete{% endif %}">
+              <div class="timestamp">
+                <span class="date">{% if package.wh_received_date %}{{package.wh_received_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+              </div>
+              <div class="status">
+                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Warehouse Received' %}</div>
+              </div>
+            </li>
 
-          <li class="li {% if package.paid_amount and package.order_set.created_date %}complete{% endif %}">
-            <div class="timestamp">
-              <span class="date">{% if package.paid_amount and package.order_set.created_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-            </div>
-            <div class="status">
-              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Paid' %}</div>
-            </div>
-          </li>
-          <li class="li {% if package.parent_package.shipped_date %}complete{% endif %}">
-            <div class="timestamp">
-              <span class="date">{% if package.parent_package.shipped_date %}{{package.parent_package.shipped_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-            </div>
-            <div class="status">
-              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Shipped' %}</div>
-            </div>
-          </li>
-          <li class="li {% if package.delieved_date %}complete{% endif %}">
-            <div class="timestamp">
-              <span class="date">{% if package.delieved_date %}{{package.delieved_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
-            </div>
-            <div class="status">
-              <div class="text-regular-bold w3-center w3-margin-top">{% trans 'delivered' %}</div>
-            </div>
-          </li>
-         </ul>
+            <li class="li {% if package.ready_date or package.parent_package.packed_date %}complete{% endif %}">
+              <div class="timestamp">
+                <span class="date">
+                  {% if package.co_shipping %}
+                      {% if package.ready_date %}{{package.ready_date|date:"M d, Y" }}{% else %}N/A{% endif %}
+                  {% else %}
+                      {% if package.parent_package.packed_date %}{{package.parent_package.packed_date|date:"M d, Y" }}{% else %}N/A{% endif %}
+                  {% endif %}
+                </span>
+              </div>
+              <div class="status">
+                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Ready to Pay' %}</div>
+              </div>
+            </li>
+
+            <li class="li {% if package.paid_amount or package.parent_package.paid_amount %}complete{% endif %}">
+              <div class="timestamp">
+                <span class="date">
+                  {% if package.paid_amount and package.order_set.created_date %}
+                      {{package.order_set.created_date|date:"M d, Y" }}
+                  {% else %}
+                      {% if package.parent_package.paid_amount and package.parent_package.order_set.created_date %}
+                          {{package.parent_package.order_set.created_date|date:"M d, Y" }}
+                      {% else %}
+                          N/A
+                      {% endif %}
+                  {% endif %}
+                </span>
+              </div>
+              <div class="status">
+                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Paid' %}</div>
+              </div>
+            </li>
+            <li class="li {% if package.parent_package.shipped_date %}complete{% endif %}">
+              <div class="timestamp">
+                <span class="date">{% if package.parent_package.shipped_date %}{{package.parent_package.shipped_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+              </div>
+              <div class="status">
+                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'Shipped' %}</div>
+              </div>
+            </li>
+            <li class="li {% if package.delieved_date %}complete{% endif %}">
+              <div class="timestamp">
+                <span class="date">{% if package.delieved_date %}{{package.delieved_date|date:"M d, Y" }}{% else %}N/A{% endif %}</span>
+              </div>
+              <div class="status">
+                <div class="text-regular-bold w3-center w3-margin-top">{% trans 'delivered' %}</div>
+              </div>
+            </li>
+          </ul>
       </div>
 
 
@@ -92,101 +109,110 @@
       {% endif %}
 
       <div class="w3-panel content_center">
-        <div class="w3-half">
-          <div class="w3-row">
-              {% if not package.co_shipping %}
-              <h6>{% trans 'Direct Shipping to' %}:</h6>
-              <div class="w3-margin-left">
-                {% if package.ship_to_add %}
-                            {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
-                {% else %}N/A
-                {% endif %}
+            <div class="w3-half">
+                <div class="w3-row">
+                    {% if not package.co_shipping %}
+                    <h6>{% trans 'Direct Shipping to' %}:</h6>
+                    <div class="w3-margin-left">
+                      {% if package.ship_to_add %}
+                                  {% include "blocks/address_card_fields.html" with add=package.ship_to_add %}
+                      {% else %}N/A
+                      {% endif %}
+                    </div>
+                    {% else %}
+                    <h6>{% trans 'Co-shipping to' %}:</h6>
+                    <div class="w3-margin-left">
+                        <div class="logo-text-blue">
+                            <i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})
+                        </div>
+                        {% if package.ship_to_col %}
+                            {% include "blocks/col_card_fields.html" with col=package.ship_to_col %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="w3-row">
+
+                    {% if not package.ship_carrier == '' %}
+                        <h6>{% trans 'Selected shipping carrier' %}:&emsp;{{package.get_ship_carrier_display}}</h6>
+                    {% endif %}
+
+                    <h6>{% trans 'Low Volume Weight Requested'%}:
+                        {% if package.low_volume_request %}
+                        <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                         {% else %}
+                        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                        {% endif %}
+                    </h6>
+
+                    {% if package.co_shipping %}
+                        <h6>{% trans 'Package type' %}:&emsp;{% if package.package_type %}{{package.get_package_type_display}}{% else %}N/A{% endif %}</h6>
+                        <h6>{% trans 'Weight' %}:&emsp;
+                          {% if package.volume_weight and package.weight %}
+                              {% if package.volume_weight > package.weight %}
+                                  {{package.volume_weight}}
+                              {% else %}
+                                  {{package.weight}}
+                              {% endif %}
+                              (KG)
+                          {% else %}
+                          N/A
+                          {% endif %}
+                        </h6>
+                        <h6>{% trans 'No Rush Requested'%}:
+                            {% if package.no_rush_request %}
+                            <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
+                             {% else %}
+                            <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
+                            {% endif %}
+                        </h6>
+                    {% endif %}
+
+                    {% if package.order_amount %}
+                      <h6>{% trans 'Order Amount' %}:&emsp;{{package.currency}} <span class="order_amount">{{package.order_amount}}</span></h6>
+                    {% endif %}
+                    {% if package.storage_fee %}
+                      <h6>{% trans 'Storage fee' %}:&emsp;{{package.currency}} <span class="storage_fee">{{package.storage_fee}}</span></h6>
+                    {% endif %}
+                    {% if package.shipping_fee %}
+                      <h6>{% trans 'Shipping fee' %}:&emsp;{{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
+                    {% endif %}
               </div>
-              {% else %}
-              <h6>{% trans 'Co-shipping to' %}:</h6>
-              <div class="w3-margin-left">
-                  <div class="logo-text-blue">
-                      <i>{{package.receiver.last_name}},{{package.receiver.first_name}}</i> ({{package.receiver.phone}})
-                  </div>
-                  {% if package.ship_to_col %}
-                      {% include "blocks/col_card_fields.html" with col=package.ship_to_col %}{% else %}N/A
+
+              <div class="w3-row">
+                  {% if package.packagesnapshot_set.all %}
+                      <h5>{% trans 'Package Snapshot' %}:</h5>
+                      {% for snapshot in package.packagesnapshot_set.all %}
+                          {% if snapshot.snapshot %}
+                            <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
+                              <img alt="package snapshot" src="{{snapshot.snapshot.url}}" style="width:100%; margin:auto;">
+                            </div>
+                          {% endif %}
+                      {% endfor %}
+                  {% else %}
+                      <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
+                  {% endif %}
+
+                  {% if package.item_set.all %}
+                  <h5>{% trans 'Package Item details'%}:</h5>
+                        {% for item in package.item_set.all %}
+                        <div class="w3-row  w3-card-2 w3-container">
+                          {% trans 'Item name' %}: {{item.item_name}}<br/>
+                          {% trans 'Item detail' %}:{{item.item_detail}}<br/>
+                          {% trans 'Item quantity' %}:{{item.item_quantity}}<br/>
+                        </div>
+                        {% endfor %}
+                  {% else %}
+                        <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
                   {% endif %}
               </div>
-              {% endif %}
           </div>
-
-          <div class="w3-row">
-              <h6>{% trans 'Package type' %}: {% if package.package_type %}{{package.package_type}}{% else %}N/A{% endif %}</h6>
-
-              {% if not package.ship_carrier == '' %}<h6>{% trans 'Selected shipping carrier' %}:{{package.ship_carrier}}</h6>{% endif %}
-              {% if not package.co_shipping %}<h6>{% trans 'No Rush Requested' %}: <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/></h6>{% endif %}
-
-              {% if not package.coshiping %}
-                  <h6>{% trans 'Low Volume Weight Requested'%}:
-                      {% if package.low_volume_request %}
-                      <img src="{% static 'admin/img/icon-yes.svg' %}" alt="yes" style="width:20px;"/>
-                       {% else %}
-                      <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>
-                      {% endif %}
-                  </h6>
-              {% endif %}
-
-
-              <h6>{% trans 'Weight' %}:
-                {% if package.volume_weight and package.weight %}
-                    {% if package.volume_weight > package.weight %}
-                        {{package.volume_weight}}
-                    {% else %}
-                        {{package.weight}}
-                    {% endif %}
-                    (kg)
-                {% else %}
-                N/A
-                {% endif %}
-              </h6>
-
-              {% if package.order_amount %}
-                <h6>{% trans 'Order Amount' %}: {{package.currency}} <span class="order_amount">{{package.order_amount}}</span></h6>
-              {% endif %}
-              {% if package.storage_fee %}
-                <h6>{% trans 'Storage fee' %}: {{package.currency}} <span class="storage_fee">{{package.storage_fee}}</span></h6>
-              {% endif %}
-              {% if package.shipping_fee %}
-                <h6>{% trans 'Shipping fee' %}: {{package.currency}} <span class="shipping_fee">{{package.shipping_fee}}</span></h6>
-              {% endif %}
-        </div>
-
-        <div class="w3-row">
-            {% if package.packagesnapshot_set.all %}
-                <h5>{% trans 'Package Snapshot' %}:</h5>
-                {% for snapshot in package.packagesnapshot_set.all %}
-                    {% if snapshot.snapshot %}
-                      <div class="w3-row w3-card-2 w3-container" style="max-width: 90%">
-                        <img alt="package snapshot" src="{{snapshot.snapshot.url}}" style="width:100%; margin:auto;">
-                      </div>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't insert any snapshot" %}<br/>
-            {% endif %}
-
-            {% if package.item_set.all %}
-            <h5>{% trans 'Package Item details'%}:</h5>
-                  {% for item in package.item_set.all %}
-                  <div class="w3-row  w3-card-2 w3-container">
-                    {% trans 'Item name' %}: {{item.item_name}}<br/>
-                    {% trans 'Item detail' %}:{{item.item_detail}}<br/>
-                    {% trans 'Item quantity' %}:{{item.item_quantity}}<br/>
-                  </div>
-                  {% endfor %}
-            {% else %}
-                  <img src="{% static 'admin/img/icon-no.svg' %}" alt="no" style="width:20px;"/>{% trans "Didn't enter any item detail" %}<br/><br/>
-            {% endif %}
-        </div>
+          <div class="w3-half">
+              <img class="w3-right" src="{% static 'image/slogan.png' %}" alt="no" style="width:300px;"/>
+          </div>
       </div>
-    <div class="w3-half">
-      <img class="w3-right" src="{% static 'image/slogan.png' %}" alt="no" style="width:300px;"/>
-    </div>
-  </div>
 </div>
 {% endblock %}

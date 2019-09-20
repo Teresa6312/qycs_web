@@ -1,3 +1,6 @@
+# HTML Variables for PayPal Payments Standard
+# https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
+
 from django.urls import reverse
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
@@ -5,19 +8,82 @@ from paypal.standard.forms import PayPalPaymentsForm
 
 from main.models import OrderSet, Service
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
+
+from django.http import HttpResponse
+
+class PaymentProcessView(TemplateView):
+	template_name = 'payment/process.html'
+
+	def get(self, request):
+		try:
+			order_set_id = request.session.get('order_set_id')
+			discount_amount = request.session.get('discount_amount')
+			orderSet = get_object_or_404(OrderSet, id = order_set_id)
+		except:
+			return redirect(reverse('packagecart'))
+
+		host = request.get_host()
+
+		total = orderSet.total_amount + orderSet.insurance
+		if orderSet.coupon:
+			paypal_dict = {
+				"business" : settings.PAYPAL_RECEIVER_EMAIL,
+				"amount": total,
+				"currency_code": orderSet.currency,
+				"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
+				"discount_amount": discount_amount,
+				"invoice": orderSet.id,
+				"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+				"return": 'http://{}{}'.format(host, reverse('userpackage')),
+				"cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
+			}
+		else:
+			paypal_dict = {
+				"business" : settings.PAYPAL_RECEIVER_EMAIL,
+				"amount": total,
+				"currency_code": orderSet.currency,
+				"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
+				"invoice": orderSet.id,
+				"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+				"return": 'http://{}{}'.format(host, reverse('userpackage')),
+				"cancel_return": 'http://{}{}'.format(host, reverse('packagecart')),
+			}
+		# Create the instance.
+		form = PayPalPaymentsForm(initial=paypal_dict)
+		return render(request, self.template_name, {'orderSet': orderSet,
+													'form' : form,
+													'discount_amount':discount_amount,
+													'total':total})
+
+	def post(self, request):
+		print('---------------------payment_process-------------------')
+		print(request)
+		return HttpResponse('')
 
 def payment_process(request):
-	order_set_id = request.session.get('order_set_id')
+	if request.POST:
+		print(request.POST)
+	try:
+		order_set_id = request.session.get('order_set_id')
+		discount_amount = request.session.get('discount_amount')
+		del request.session['order_set_id']
+		del request.session['discount_amount']
+	except:
+		return redirect(reverse('packagecart'))
+
 	orderSet = get_object_or_404(OrderSet, id = order_set_id)
+
 	host = request.get_host()
 
+	total = orderSet.total_amount + orderSet.insurance
 	if orderSet.coupon:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
-			"amount": (orderSet.total_amount + orderSet.insurance),
+			"amount": total,
 			"currency_code": orderSet.currency,
-			"item_name": "{} package(s)/order(s) ({})".format(orderSet.service_set.all().count(), orderSet.get_insurance_display()),
-			"discount_rate": orderSet.coupon.discount,
+			"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
+			"discount_amount": discount_amount,
 			"invoice": orderSet.id,
 			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
 			"return": 'http://{}{}'.format(host, reverse('userpackage')),
@@ -26,9 +92,9 @@ def payment_process(request):
 	else:
 		paypal_dict = {
 			"business" : settings.PAYPAL_RECEIVER_EMAIL,
-			"amount": (orderSet.total_amount + orderSet.insurance),
+			"amount": total,
 			"currency_code": orderSet.currency,
-			"item_name": "{} package(s)/order(s) ({})".format(orderSet.service_set.all().count(), orderSet.get_insurance_display()),
+			"item_name": "{} package(s)/order(s) ({})".format((orderSet.service_set.all().count()+orderSet.parentpackage_set.all().count()), orderSet.get_insurance_display()),
 			"invoice": orderSet.id,
 			"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
 			"return": 'http://{}{}'.format(host, reverse('userpackage')),
@@ -37,4 +103,6 @@ def payment_process(request):
 	# Create the instance.
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	return render(request, 'payment/process.html', {'orderSet': orderSet,
-													'form' : form})
+													'form' : form,
+													'discount_amount':discount_amount,
+													'total':total})

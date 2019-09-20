@@ -7,7 +7,11 @@ class PaymentConfig(AppConfig):
 
     def ready(self):
         # importing model classes
-        from paypal.standard.ipn.models import PayPalIPN
-        from .hooks import payment_paid
+        # from paypal.standard.ipn.models import PayPalIPN
+        from . import hooks
 
-        pre_save.connect(payment_paid, sender=PayPalIPN)
+        # pre_save.connect(payment_paid, sender=PayPalIPN)
+
+    # def ready(self):
+    #     # import signal handlers
+    #     from .signals import handler

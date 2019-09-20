@@ -56,9 +56,9 @@
                     <div class="w3-container w3-mobile content_left">
                           {% if form.ship_carrier %}
                             <div class="w3-row">
-
                                 {{ form.ship_carrier.label_tag }}{{ form.ship_carrier.errors }}{{ form.ship_carrier }}
                             </div>
+                          {% else %}
                             <div class="w3-row">
                                 {{ form.no_rush_request.errors }}
                                 {{ form.no_rush_request }}&emsp;{% trans 'No Rush Shipping (Double Points)' %}

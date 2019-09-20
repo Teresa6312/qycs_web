@@ -1,0 +1,80 @@
+{% extends "warehouse/base.html" %}
+{% load i18n static %}
+
+
+{% block title%}
+{% trans 'Enter Weight' %}
+{% endblock%}
+
+
+
+{% block content %}
+<div class="w3-container  w3-cell w3-mobile" style="width:70%;">
+
+
+      <div class="w3-panel content_center">
+        <div class="w3-row w3-text-red text-large-bold w3-center">
+          {% if parent_package.paid_amount %}
+              {% trans 'Paid'%}: {{parent_package.currency}}{{parent_package.paid_amount}}
+          {% else %}
+              {% trans 'NOT PAY YET' %}
+          {% endif %}
+        </div>
+
+        <div class="w3-row w3-text-red text-large">{% trans 'Shipping Carrier' %}: {{parent_package.get_carrier_display}}</div>
+        <div class="w3-row w3-text-red text-large">{% trans 'Package Type' %}: {{parent_package.get_package_type_display}}</div>
+        <div class="w3-row w3-text-red text-large">{% trans 'Package Amount' %}: {{parent_package.currency}}{{parent_package.package_amount}}</div>
+        <div class="w3-row w3-text-red text-large">{% trans "Package's Weight" %}: {{parent_package.weight}}(KG)</div>
+        <div class="w3-row w3-text-red text-large">{% trans "Package's Volume Weight" %}: {{parent_package.volume_weight}}(KG)</div>
+
+
+        {% if parent_package.service_set.all %}
+          <ul>
+            {% for sub in parent_package.service_set.all %}
+            <li>
+              <a href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:{{sub.ship_to_add}}{{sub.ship_to_col}}
+              {% if sub.issue %}
+                  <span class="w3-text-red">({% trans 'has issue(s)' %})</span>
+              {% endif %}
+              {% if not sub.wh_received_date %}
+                  <span class="w3-text-red">({% trans 'NOT RECEIVED YET' %})</span>
+              {% else %}
+                  ({{sub.wh_received_date | timeuntil}})
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+<div class="w3-container w3-cell w3-mobile w3-margin-top">
+    <div class="w3-card-2 w3-round w3-container w3-padding-16">
+      <div class="text-xlarge-bold">{% trans 'Enter Tracking Number' %}</div>
+      <form method = "post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% if form.errors %}
+          <p class="errornote">
+              {% if form.errors.items|length == 1 %}
+                  {% trans "Please correct the error below." %}
+              {% else %}
+                  {% trans "Please correct the errors below." %}
+              {% endif %}
+          </p>
+      {% endif %}
+
+        <input type="text" name="cust_tracking_num" maxlength="50" id="id_cust_tracking_num">
+        <div class="w3-row" id="button_row">
+                <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>
+        </div>
+      </form>
+
+    </div>
+</div>
+
+{% endblock %}

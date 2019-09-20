@@ -1,0 +1,21 @@
+{% load i18n static %}
+
+{% autoescape off %}
+Hi {{ username }},
+
+{% trans 'Thank you for using our service!' %}
+
+{% trans 'Your following package is ready to pay:' %}
+  {{carrier}} - {{tracking_num}}
+
+{% if coupon %}
+{% trans 'Get 10% off by using coupon "' %}{{coupon.code}}"
+{% endif %}
+
+{% trans 'Please do not reply this email!' %}
+
+{% trans 'If you want to contact us, please send email to ' %}myqycs@gmail.com.
+
+MYQYCS.com
+
+{% endautoescape %}

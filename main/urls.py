@@ -11,9 +11,6 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
-
-# cloudinary urls
-
 # open for everyone
 
     path('accounts/register/', views.RegisterView.as_view(), name = 'register'),
@@ -29,7 +26,7 @@ urlpatterns = [
     path('tracking/', views.TrackingView.as_view(), name='tracking'),
     path('customer-service/', info_views.CustomerServiceView.as_view(), name='customer_service'),
 
-
+    path('543243243234234/', views.CollectionPointView.as_view()),
 
 
 
@@ -48,7 +45,7 @@ urlpatterns = [
     path('myaccount/address/<int:add_id>/set_dedault_address', login_required(views.SetDefaultAddressView.as_view()), name='set_dedault_address'),
 
 
-    path('myaccount/package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
+    path('package/<int:pack_id>/detail', login_required(pk_views.PackageDetailView.as_view()), name='package_detail'),
 
     path('myaccount/wallet', login_required(views.WalletView.as_view()), name='userwallet'),
 

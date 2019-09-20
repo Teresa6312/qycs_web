@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.urls import reverse
 
+from django.db.models.signals import post_save
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.validators import RegexValidator
 from cloudinary.models import CloudinaryField
@@ -119,8 +121,8 @@ class User(AbstractUser):
 	email_confirmed.boolean = True
 
 	phone = models.CharField(validators=[phone_regex], max_length=16, blank=True, default='',verbose_name= _('Phone Number'))
-	default_address = models.ForeignKey('Address', on_delete=models.CASCADE, blank=True, null=True,  related_name='default_address', verbose_name= _('Default Shipping Address'))
-	default_col = models.ForeignKey('CollectionPoint', on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Default Collection Point'))
+	default_address = models.ForeignKey('Address', on_delete=models.SET_NULL, blank=True, null=True,  related_name='default_address', verbose_name= _('Default Shipping Address'))
+	default_col = models.ForeignKey('CollectionPoint', on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Default Collection Point'))
 
 	reward = models.PositiveIntegerField(default = 0, verbose_name= _('Reward Points'))
 	birthday = models.DateField(blank=True, null=True,verbose_name= _('Birthday'))
@@ -161,6 +163,13 @@ class Employee(models.Model):
 		verbose_name_plural = _("Employees")
 		ordering = ['-pk']
 
+def create_emp_profile(sender, **kwargs):
+	if kwargs['created']:
+		user = kwargs['instance']
+		if user.is_staff or user.is_superuser:
+			user_profile = Employee.objects.create(employee = kwargs['instance'])
+
+post_save.connect(create_emp_profile, sender = User)
 
 class Address_Common_Info(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -178,7 +187,7 @@ class Address_Common_Info(models.Model):
 
 class Address(Address_Common_Info):
 	updated_date = models.DateTimeField(auto_now = True, blank=True, null=True, verbose_name= _('Address Updated Date'))
-	user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('User'))
+	user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name= _('User'))
 	first_name = models.CharField(max_length=100, default='',verbose_name= _('First Name'))
 	last_name = models.CharField(max_length=100, default='',verbose_name= _('Last Name'))
 	phone = models.CharField(validators=[phone_regex], max_length=16, default='',verbose_name= _('Phone Number'))
@@ -235,8 +244,7 @@ class CollectionPoint(Address_Common_Info):
 	regular.boolean = True
 	beauty = models.BooleanField(default = False, verbose_name= _('Beauty'))
 	beauty.boolean = True
-	skincare = models.BooleanField(default = False, verbose_name= _('Skincare'))
-	skincare.boolean = True
+
 
 # the following field can be updated by collector
 	status = models.BooleanField(default = False, verbose_name= _('Available'))
@@ -349,9 +357,23 @@ class Coupon(models.Model):
 	def __str__(self):
 		return '%s %d %s'%(self.code,self.discount,"% OFF")
 
+	def check_coupon(self, user):
+		if self.user and user != coupon.user:
+			return False
+		if self.start_date and date.today() < self.start_date:
+			return False
+		if self.end_date and date.today() > self.end_date:
+			return False
+		if self.one_time_only and self.used_times!=0:
+			return False
+		return True
+
+
 	class Meta:
 		verbose_name_plural = _("Coupon")
 		ordering = [F('start_date').asc(nulls_last=True)]
+
+
 
 class OrderSet(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -359,7 +381,9 @@ class OrderSet(models.Model):
 	total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=False, default=0, verbose_name= _('Insurance Plan'))
-
+	payment_confirmed = models.BooleanField(default=False, verbose_name=_("Payment Confirmed"))
+	payment_confirmed.boolean = True
+	tx =  models.CharField(max_length = 30, blank=True, verbose_name= _('tx From PayPal'))
 
 	def get_should_pay_amount(self):
 		total_amount = 0
@@ -367,63 +391,101 @@ class OrderSet(models.Model):
 			total_amount = total_amount + package.get_total()
 
 		return total_amount
-	#
-	# def check_currency(self):
-	# 	i = 0
-	# 	currency = 'USD'
-	# 	for package in self.service_set.all:
-	# 		if i == 0 and :
-	# 		total_amount = total_amount + package.get_total()
-	#
-	# 	return total_amount
 
+	def get_total(self):
+		amount_package = 0
+		amount_order = 0
+		for package in self.service_set.all():
+			if package.order:
+				amount_order = package.get_total() + amount_order
+			else:
+				amount_package = package.get_total() + amount_package
+
+		for package in self.parentpackage_set.all():
+			if package.service_set.first().order:
+				amount_order = float (package.package_amount) + amount_order
+			else:
+				amount_package = float (package.package_amount) + amount_package
+		if self.coupon:
+			if self.coupon.order and self.coupon.package:
+				discounted = (amount_order + amount_package)*self.coupon.discount/100
+			elif self.coupon.order:
+				discounted = amount_order*self.coupon.discount/100
+			elif self.coupon.package:
+				discounted = amount_package*self.coupon.discount/100
+
+			if self.coupon.amount_limit and discounted > self.coupon.amount_limit:
+				discounted = self.coupon.amount_limit
+		else:
+			discounted = 0.00
+
+
+		return [amount_order+amount_package,float('%.2f' % discounted)]
+
+	class Meta:
+		verbose_name_plural = _("Order Set")
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
-	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, related_name='package_pack_by_employee',verbose_name= _('Packed by Employee'))
+	emp_pack = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank = True, null=True, related_name='package_pack_by_employee',verbose_name= _('Packed by Employee'))
 	packed_date = models.DateField(blank=True, null=True,verbose_name= _('Packed Date'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
 
-	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
+	weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
+	volume_weight = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
+	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
 
 	tracking_num = models.CharField(max_length=50, blank=True, default='',verbose_name= _('Tracking Number'))
-	carrier = models.CharField(max_length=100, choices=CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
+	carrier = models.CharField(max_length=100, choices=PRICE_CARRIER_CHOICE, blank=True, default='',verbose_name= _('Carrier'))
 	shipped_date = models.DateField(blank=True, null=True,verbose_name= _('Shipped Date'))
 
 	package_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Direct Shipping Package Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='', verbose_name= _('Currency'))
 
-	order_set = models.ForeignKey(OrderSet, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Order Set'))
+	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
+	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 
 
 # for order only
-	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
-	emp_split = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
+	emp_split = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
 
-	# status = models.CharField(max_length=100, blank=True, default='',verbose_name= _('Status'))
 	issue = models.TextField(blank=True, default='',verbose_name= _('Package Issue'))
 
-	def __str__(self):
-		return self.tracking_num
+
 
 	def ship_to(self):
-		if self.service_set.first().ship_to_add:
-			return self.service_set.first().ship_to_add
-		elif self.service_set.first().ship_to_col:
-			return self.service_set.first().ship_to_col
-		elif self.service_set.first().ship_to_wh:
-			return self.service_set.first().ship_to_wh
+		if self.service_set.count() > 0:
+			if self.service_set.first().ship_to_add:
+				return self.service_set.first().ship_to_add
+			elif self.service_set.first().ship_to_col:
+				return self.service_set.first().ship_to_col
+			elif self.service_set.first().ship_to_wh:
+				return self.service_set.first().ship_to_wh
+			else:
+				return ''
 		else:
-			return None
+			return ''
+
+	def __str__(self):
+		if self.tracking_num=='':
+			return "%s - %s"%(self.id, self.ship_to())
+		else:
+			return "%s - %s: %s"%(self.tracking_num, self.carrier, self.ship_to())
+
+	def get_total(self):
+		amount_package = 0
+		for package in self.service_set.all():
+			amount_package = package.get_total() + amount_package
+		return amount_package
 
 	class Meta:
 		verbose_name_plural = _("Parent Package")
 		ordering = ['-created_date']
 
 class Service(models.Model):
-	user = models.ForeignKey(User, on_delete=models.DO_NOTHING , related_name='client_user',verbose_name= _('User'))
-	order_set = models.ForeignKey(OrderSet, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name= _('Order Set'))
+	user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='client_user',verbose_name= _('User'))
+	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 
 	order = models.BooleanField(default=False,verbose_name= _('Order'))
 	order.boolean = True
@@ -431,13 +493,13 @@ class Service(models.Model):
 	storage.boolean = True
 	co_shipping = models.NullBooleanField(verbose_name= _('Co-Shipping'))
 	co_shipping.boolean = True
-	parent_package = models.ForeignKey(ParentPackage, on_delete=models.DO_NOTHING, blank = True, null=True,verbose_name= _('Parent Package'))
+	parent_package = models.ForeignKey(ParentPackage, on_delete=models.SET_NULL, blank = True, null=True,verbose_name= _('Parent Package'))
 
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
 	package_type = models.CharField(max_length = 16, choices = PACKAGE_CATEGORY, blank=True, default='',verbose_name = _('Package Type'))
 
 # for order only
-	emp_created = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, blank = True, null=True, related_name='order_created_by_emplloyee',verbose_name= _('Created by Employee'))
+	emp_created = models.ForeignKey(Employee, on_delete=models.PROTECT, blank = True, null=True, related_name='order_created_by_emplloyee',verbose_name= _('Created by Employee'))
 
 	request_ship_date = models.DateField(blank=True, null=True, verbose_name= _('Date Requested to Ship'))
 	memo = models.TextField(blank=True, default='',verbose_name= _('Memo'))
@@ -450,12 +512,12 @@ class Service(models.Model):
 	no_rush_request = models.BooleanField(default = False,verbose_name= _('No Rush Request'))
 	no_rush_request.boolean = True
 
-	wh_received = models.ForeignKey(Warehouse, on_delete=models.DO_NOTHING, related_name='received_at_warehouse',verbose_name= _('Inter-warehouse'))
+	wh_received = models.ForeignKey(Warehouse, on_delete=models.PROTECT, related_name='received_at_warehouse',verbose_name= _('Inter-warehouse'))
 	wh_received_date = models.DateField(blank=True, null=True,verbose_name= _('Warehouse Received Date'))
 	ready_date = models.DateField(blank=True, null=True, verbose_name= _('Package Ready Date'))
-	emp_pack = models.ForeignKey(Employee, on_delete=models.DO_NOTHING,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
-	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Weight(kg)'))
-	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Volume Weight(kg)'))
+	emp_pack = models.ForeignKey(Employee, on_delete=models.PROTECT,  blank = True, null=True, related_name='package_repacked_by_employee', verbose_name= _('Packed by Employee'))
+	weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Weight(kg)'))
+	volume_weight = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=1, verbose_name= _('Volume Weight(kg)'))
 	ship_carrier = models.CharField(max_length = 100, choices=SHIPPING_CARRIER_CHOICE, blank=True, default='',verbose_name= _("Select a Carrier"))
 
 
@@ -489,9 +551,7 @@ class Service(models.Model):
 	tracking_num = models.CharField(max_length = 50, blank=True, default='', verbose_name= _('Final Shipping Tracking Number'))
 	last_carrier = models.CharField(max_length = 100, choices=CARRIER_CHOICE, blank=True, default='', verbose_name= _('Final Shipping Carrier'))
 
-	# status = models.CharField(max_length = 20, blank=True, default='', verbose_name= _('Packasge Status'))
 	issue = models.TextField(blank=True, default='', verbose_name= _('Package Issue'))
-	# refund_key = models.ForeignKey(Payment, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='refund_payment_key', verbose_name = _('Refund Confirmation'))
 	refund_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Refund Amount'))
 
 	def get_total(self):
@@ -512,7 +572,7 @@ class Service(models.Model):
 		elif self.ship_to_wh:
 			return self.ship_to_wh
 		else:
-			return None
+			return ''
 
 	def __str__(self):
 		if self.ship_to():
@@ -553,8 +613,9 @@ class Service(models.Model):
 		verbose_name_plural = _("Package/Order")
 		ordering = ['-created_date']
 
+
 class Item(models.Model):
-	service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package/Order'))
+	service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name = _('Package/Order'))
 	item_name = models.CharField(max_length = 200, blank=False, default='', verbose_name = _('Item Name'))
 	item_detail = models.CharField(max_length = 100, blank=True, default='', verbose_name = _('Item Details'))
 	item_quantity = models.PositiveIntegerField(blank=False, default=1, verbose_name = _('quantity'))
@@ -580,8 +641,7 @@ class Item(models.Model):
 
 
 class PackageSnapshot(models.Model):
-	package = models.ForeignKey(Service, on_delete=models.DO_NOTHING, verbose_name = _('Package'))
-	# snapshot = models.ImageField(upload_to = 'package_snapshot', verbose_name = _('Package Snapshot'))
+	package = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name = _('Package'))
 	snapshot = CloudinaryField(_("Package Snapshot"))
 
 	class Meta:
@@ -644,3 +704,10 @@ class PriceRate(models.Model):
 
 	class Meta:
 		verbose_name_plural = _("Price Rate")
+		unique_together=(
+			'category',
+			'from_country',
+			'to_country',
+			'package_type',
+			'carrier',
+		)
