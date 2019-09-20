@@ -165,7 +165,7 @@ class CoShippingCreationForm(forms.ModelForm):
 			'cust_carrier',
 			'cust_tracking_num',
 			'low_volume_request',
-			'no_rush_request',			
+			'no_rush_request',
 			'receiver',
 			'ship_to_col',
 			'memo',
@@ -316,8 +316,8 @@ class CartForm(forms.Form):
 
 	def __init__(self, user, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.fields['package_set'].queryset = Service.objects.filter(user = user, paid_amount = None).order_by('-created_date')
-		self.fields['parent_package_set'].queryset = ParentPackage.objects.filter(paid_amount = None).order_by('-created_date')
+		self.fields['package_set'].queryset = Service.objects.filter(user = user, paid_amount = None)
+		self.fields['parent_package_set'].queryset = ParentPackage.objects.filter(paid_amount = None)
 
 class OrderSetForm(forms.ModelForm):
 	class Meta:

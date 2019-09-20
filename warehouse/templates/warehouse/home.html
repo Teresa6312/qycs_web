@@ -1,4 +1,4 @@
-{% extends "main/base_site.html" %}
+{% extends "warehouse/base.html" %}
 {% load i18n static %}
 
 {% block title%}
@@ -17,7 +17,7 @@
 <div class="w3-panel w3-margin-top content_center">
 
     <div class="w3-panel">
-      <div class="text-large-bold">{% trans 'Search Tracking Number(one at a time)' %}</div>
+      <div class="text-large-bold">{% trans 'Search Tracking Number(one at a time)' %} or ID</div>
       <form method = "post" enctype="multipart/form-data">
       {% csrf_token %}
       <input name="cust_tracking_num" id="id_cust_tracking_num" required="" type="text" >
@@ -52,20 +52,77 @@
                      {% endif %}
                     </h3>
 
-                    <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
-                    <a href="{% url 'copackage_weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
-                    <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
+                    <a href="{{pack.get_absolute_url}}">{% trans 'View Details'%}</a>&emsp;|&emsp;
+                    {% if pack.co_shipping %}<a href="{% url 'copackage_weight' pack.id %}">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;{% endif %}
+                    <a href="{% url 'issue' pack.id %}">{% trans 'Has Issue'%}</a>
                 </div>
             {% endfor %}
         {% endif %}
-        <div class="w3-panel">
-          <a href="{% url 'not_ready_copackages'%}"class="w3-text-blue">{% trans 'Not Ready Co-shipping Packages'%}</a>&emsp;|&emsp;
-          <a href="{% url 'not_ready_direct_packages'%}"class="w3-text-blue">{% trans 'Not Ready Direct Shipping Packages'%}</a>
-        </div>
-
 
     </div>
 </div>
+
+<div class="w3-row">
+
+      <div class="w3-third">
+          <div class="text-regular-bold">
+            {% trans 'Not Ready Packages'%}
+          </div>
+          <ul>
+            <li>
+              <a href="{% url 'not_ready_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{not_ready_co_pack_num}}
+              </div></span>
+            </li>
+            <li>
+              <a href="{% url 'not_ready_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{not_ready_pack_num}}
+              </div></span>
+            </li>
+          </ul>
+      </div>
+      <div class="w3-third">
+          <div class="text-regular-bold">
+            {% trans 'Ready Packages'%}
+          </div>
+          <ul>
+            <li>
+              <a href="{% url 'ready_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{ready_co_pack_num}}
+              </div></span>
+            </li>
+            <li>
+              <a href="{% url 'ready_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{ready_pack_num}}
+              </div></span>
+            </li>
+          </ul>
+    </div>
+    <div class="w3-third">
+          <div class="text-regular-bold">
+            {% trans 'Shipped Packages'%}
+          </div>
+          <ul>
+            <li>
+              <a href="{% url 'shipped_copackages'%}">{% trans 'Co-shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{shipped_co_pack_num}}
+              </div></span>
+            </li>
+            <li>
+              <a href="{% url 'shipped_direct_packages'%}">{% trans 'Direct Shipping Packages'%}</a>
+              <span class="mini_full_circle w3-display-container">
+                <div class="w3-display-middle">{{shipped_pack_num}}
+              </div></span>
+            </li>
+          </ul>
+    </div>
+</div>
+
 <script type="text/javascript">
   function receive_package(csrf, url){
       let dt={'csrfmiddlewaretoken': csrf};

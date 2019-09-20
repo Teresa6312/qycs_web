@@ -1,4 +1,4 @@
-{% extends "main/base_site.html" %}
+{% extends "warehouse/base.html" %}
 {% load i18n static %}
 
 {% block title%}
@@ -7,27 +7,45 @@
 
 
 {% block content %}
-<div class="w3-panel w3-margin-top content_center">
+<div class="w3-panel w3-margin-top">
     <div class="text-xxlarge-bold">{% trans 'Not Ready Co-shipping Packages' %}</div>
 </div>
 <hr/>
 
-<div class="w3-panel w3-margin-top content_center">
+<div class="w3-panel w3-margin-top">
 
-    <div class="w3-panel">
+    <div class="w3-row">
         {% if packages %}
-            <table class="w3-mobile" style="width:100%; overflow:auto; max-height:400px;">
-                  <tr><th>{% trans 'Tracking Number' %}</th><th>{% trans 'Carrier' %}</th><th>{% trans 'Created Date' %}</th><th>{% trans 'User' %}</th><th></th></tr>
+            <table class="w3-mobile w3-table" style="width:100%; overflow:auto; max-height:400px;">
+                  <tr class="w3-border-bottom w3-border-grey">
+                    <th>{% trans 'Tracking Number' %}</th>
+                    <th>{% trans 'Carrier' %}</th>
+                    <th>{% trans 'User' %}</th>
+                    <th>{% trans 'Collection Point' %}</th>
+                    <th>{% trans 'Weight(KG)' %}</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
                   {% for pack in packages %}
-                    <tr>
-                      <td>{{pack.cust_tracking_num}}</td>
+                    <tr class="w3-border-bottom w3-border-grey">
+                      <td><a href="{{pack.get_absolute_url}}" target="_blank" >{{pack.cust_tracking_num}}</a></td>
                       <td>{{pack.get_cust_carrier_display}}</td>
-                      <td>{{pack.created_date}}</td>
-                      <td>{{pack.user}}</td>
+                      <td>{{pack.user.username}}<br>{{pack.user.email}}</td>
+                      <td>{{pack.ship_to_col.name}}<br>{{pack.ship_to_col.collector.email}}</td>
+                      <td>{{pack.weight}}</td>
+                      <td class="w3-text-red">
+                        {% if pack.low_volume_request %}{% trans 'low weight' %}{% else %}{% trans 'NO low weight' %}{% endif %}<br/>
+                        {% if pack.no_rush_request %}{% trans 'no rush' %}{% endif %}
+                      </td>
+
                       <td>
-                        <a href="{{pack.get_absolute_url}}" class="w3-text-blue">{% trans 'View Details'%}</a>&emsp;|&emsp;
-                        <a href="{% url 'copackage_weight' pack.id %}" class="w3-text-blue">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
-                        <a href="{% url 'issue' pack.id %}"class="w3-text-blue">{% trans 'Has Issue'%}</a>
+                        <a href="{% url 'copackage_weight' pack.id %}">{% trans 'Enter Weight'%}</a>&emsp;|&emsp;
+                        <a href="{% url 'issue' pack.id %}">{% trans 'Has Issue'%}</a><br/>
+                        {% if not pack.wh_received_date %}
+                        <span class="text-regular">
+                        <button type="button"  onclick="receive_package('{{ csrf_token }}','{% url 'received' pack.id %}')" class="logo-red">{% trans 'Receive Package'%}</button>
+                        </span>
+                        {% endif %}
                       </td>
                     </tr>
                   {% endfor %}

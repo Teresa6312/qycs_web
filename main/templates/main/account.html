@@ -26,7 +26,7 @@
 						{% trans 'Email address' %}: {{user.email}}
 
 						{% if not user.email_confirmed %}
-							<br/><a class="w3-text-blue" href="{% url 'send_confirmation_email' %}">
+							<br/><a href="{% url 'send_confirmation_email' %}">
 								{% trans "You havn't confirmed your email yet. Please click here to send a Confirmation link to your email." %}
 							</a></br/>
 						{% else %}

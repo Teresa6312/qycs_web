@@ -381,7 +381,9 @@ class OrderSet(models.Model):
 	total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default=0, verbose_name= _('Total Amount'))
 	currency = models.CharField(max_length = 100, blank=True, choices=CURRENCY_CHOICE, default='USD', verbose_name= _('Currency'))
 	insurance = models.PositiveIntegerField(choices=INSURANCE_CHOICE, blank=False, default=0, verbose_name= _('Insurance Plan'))
-
+	payment_confirmed = models.BooleanField(default=False, verbose_name=_("Payment Confirmed"))
+	payment_confirmed.boolean = True
+	tx =  models.CharField(max_length = 30, blank=True, verbose_name= _('tx From PayPal'))
 
 	def get_should_pay_amount(self):
 		total_amount = 0
@@ -415,11 +417,13 @@ class OrderSet(models.Model):
 			if self.coupon.amount_limit and discounted > self.coupon.amount_limit:
 				discounted = self.coupon.amount_limit
 		else:
-			discounted = 0
+			discounted = 0.00
 
 
-		return [amount_order+amount_package,discounted]
+		return [amount_order+amount_package,float('%.2f' % discounted)]
 
+	class Meta:
+		verbose_name_plural = _("Order Set")
 
 class ParentPackage(models.Model):
 	created_date = models.DateTimeField(auto_now_add = True, blank=True, null=True, verbose_name= _('Creation Date'))
@@ -440,10 +444,10 @@ class ParentPackage(models.Model):
 
 	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 	paid_amount = models.DecimalField( blank=True, null=True, max_digits=10, decimal_places=2, verbose_name= _('Paid Amount'))
+	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 
 
 # for order only
-	received_date = models.DateField(blank=True, null=True,verbose_name= _('Received Date'))
 	emp_split = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank = True, null=True, related_name='emplloyee_splited_package',verbose_name= _('Splitted by Employee'))
 
 	issue = models.TextField(blank=True, default='',verbose_name= _('Package Issue'))
@@ -459,15 +463,15 @@ class ParentPackage(models.Model):
 			elif self.service_set.first().ship_to_wh:
 				return self.service_set.first().ship_to_wh
 			else:
-				return None
+				return ''
 		else:
-			return None
+			return ''
 
 	def __str__(self):
 		if self.tracking_num=='':
 			return "%s - %s"%(self.id, self.ship_to())
 		else:
-			return "%s - %s: "%(self.tracking_num, self.carrier, self.ship_to())
+			return "%s - %s: %s"%(self.tracking_num, self.carrier, self.ship_to())
 
 	def get_total(self):
 		amount_package = 0
@@ -480,7 +484,7 @@ class ParentPackage(models.Model):
 		ordering = ['-created_date']
 
 class Service(models.Model):
-	user = models.ForeignKey(User, on_delete=models.PROTECT , related_name='client_user',verbose_name= _('User'))
+	user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='client_user',verbose_name= _('User'))
 	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 
 	order = models.BooleanField(default=False,verbose_name= _('Order'))
@@ -568,7 +572,7 @@ class Service(models.Model):
 		elif self.ship_to_wh:
 			return self.ship_to_wh
 		else:
-			return None
+			return ''
 
 	def __str__(self):
 		if self.ship_to():

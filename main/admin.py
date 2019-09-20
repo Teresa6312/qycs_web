@@ -5,7 +5,7 @@ from .forms import NewUserCreationForm, NewUserChangeForm
 from .models import (
 	User, Employee, Address, CollectionPoint, Service,
 	Warehouse, PackageSnapshot, ParentPackage, Item,
-	Coupon, FavoriteWebsite, Resource, PriceRate
+	Coupon, FavoriteWebsite, Resource, PriceRate, OrderSet
 )
 from django.utils.html import mark_safe
 
@@ -152,24 +152,38 @@ class ServiceInline(admin.TabularInline):
 	can_delete = False
 
 class ParentPackageAdmin(admin.ModelAdmin):
-	inlines = (ServiceInline,)
-	list_display = ('created_date','packed_date', 'shipped_date', 'tracking_num')
-	list_filter = ['created_date', 'packed_date', 'shipped_date']
-	readonly_fields = [ "ship_to", ]
-
 	def ship_to(self, obj):
-		if obj.sevice_set.first().ship_to_add:
-			return obj.sevice_set.first().ship_to_add
-		elif obj.sevice_set.first().ship_to_col:
-			return obj.sevice_set.first().ship_to_col
-		elif obj.sevice_set.first().ship_to_wh:
-			return obj.sevice_set.first().ship_to_wh
+		if obj.service_set.count() > 0:
+			if obj.service_set.first().ship_to_add:
+				return obj.service_set.first().ship_to_add
+			elif obj.service_set.first().ship_to_col:
+				return obj.service_set.first().ship_to_col
+			elif obj.service_set.first().ship_to_wh:
+				return obj.service_set.first().ship_to_wh
+			else:
+				return None
 		else:
 			return None
 
+	def display_type(self, obj):
+		if obj.service_set.count() > 0:
+			if obj.service_set.first().co_shipping:
+				return "Co-shipping - %s"%(obj.service_set.first().ship_to_col)
+			else:
+				return  "Direct Shipping - %s"%(obj.service_set.first().user)
+		else:
+			return None
+
+	inlines = (ServiceInline,)
+	list_display = ('display_type', 'created_date','packed_date', 'shipped_date', 'tracking_num')
+	list_filter = ['created_date', 'packed_date', 'shipped_date']
+	readonly_fields = [ "ship_to", ]
+
+
+
 
 	fieldsets = [
-		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'currency','package_amount', 'paid_amount', 'memo']}),
+		('Creation', 				{'fields': [ 'packed_date', 'emp_pack', 'weight', 'volume_weight','currency','package_amount', 'paid_amount', 'memo']}),
 		('Shipment',               	{'fields': ['ship_to', 'shipped_date', 'tracking_num', 'carrier','received_date']}),
 		('Shipped to Warehouse from Warehouse',    {'fields': ['emp_split'], 'classes': ['collapse']}),
 		('Issue',                   {'fields': ['issue']}),
@@ -178,7 +192,16 @@ class ParentPackageAdmin(admin.ModelAdmin):
 
 admin.site.register(ParentPackage, ParentPackageAdmin,)
 
+class ParentPackageInline(admin.TabularInline):
+	model = ParentPackage
+	fields = ('carrier', 'package_type', 'tracking_num', 'package_amount', 'paid_amount')
+	can_delete = False
 
+class OrderSetAdmin(admin.ModelAdmin):
+	inlines = (ServiceInline, ParentPackageInline, )
+	list_display = ('created_date','coupon', 'total_amount', 'insurance','payment_confirmed', 'tx' )
+
+admin.site.register(OrderSet, OrderSetAdmin,)
 
 class WarehouseAdmin(admin.ModelAdmin):
 	list_display = ('name', 'address', 'city', 'state','country', 'zipcode', 'status')

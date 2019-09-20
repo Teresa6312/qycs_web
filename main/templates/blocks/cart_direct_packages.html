@@ -4,8 +4,33 @@
 <div class="w3-card-4 w3-border-black w3-round w3-row package w3-border w3-container">
     {% if package.weight %}
       <div class="w3-third w3-container">
-          <div class="cust_tracking_num text-regular-bold">{% trans 'Big Package'%} ({{package.created_date|date:"m/d/Y" }})</div>
-              {% trans "Weight: " %}{{package.weight}}(KG)<br/>
+          <div class="cust_tracking_num text-regular-bold">
+              {% trans 'Big Package'%}
+              (
+              {% if package.tracking_num %}
+                {{package.get_carrier_display}}-{{package.tracking_num}}
+              {% else %}
+                {{package.created_date|date:"m/d/Y" }}
+              {% endif %}
+              )
+            </div>
+              {% trans "Weight: " %}
+                {% if package.volume_weight and package.weight %}
+                    {% if not package.carrier == 'EMS' and not package.carrier == 'EMS+' %}
+                          {% if package.volume_weight > package.weight %}
+                              {{package.volume_weight}}
+                          {% else %}
+                              {{package.weight}}
+                          {% endif %}
+                    {% else %}
+                          {{package.weight}}
+                    {% endif %}
+                    (KG)
+                {% else %}
+                N/A
+                {% endif %}
+              <br/>
+
               {% trans 'Ship to: '%}
               {% if package.service_set.first.ship_to_add %}
                           {% include "blocks/address_card_fields.html" with add=package.service_set.first.ship_to_add %}
@@ -18,7 +43,7 @@
         {% if package.service_set.all %}
           <ul>
             {% for sub in package.service_set.all %}
-            <li><a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>{% if sub.issue %}<span class="w3-text-red">({% trans 'has issue(s)' %})</span>{% endif %}</li>
+            <li><a href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>{% if sub.issue %}<span class="w3-text-red">({% trans 'has issue(s)' %})</span>{% endif %}</li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -28,10 +53,14 @@
           {% if package.package_amount %}
             {% trans 'Shipping fee' %}: {{package.currency}} <span id="shipping_fee_{{ package.id }}" class="shipping_fee">{{package.package_amount}}<i>({% trans 'included 10% service fee' %})</i></span><br/>
           {% endif %}
-          {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ package.id }}" class="total_amount"></span><br/>
-          {% if package.paid_amount and package.package_amount and not package.paid_amount == package.package_amount %}
-            {% trans 'Discount Amount' %}: {{package.currency}} {{package.package_amount|sub:package.paid_amount}}<br/>
-            {% trans 'Paid Amount' %}: {{package.currency}} {{package.paid_amount}}<br/>
+
+          {% if package.paid_amount %}
+              {% if not package.paid_amount == package.package_amount %}
+                  {% trans 'Discount Amount' %}: {{package.currency}} {{package.package_amount|sub:package.paid_amount}}<br/>
+              {% endif %}
+              {% trans 'Paid Amount' %}: {{package.currency}} {{package.paid_amount}}<br/>
+          {% else %}
+              {% trans 'Total Amount' %}: {{package.currency}} <span id="total_amount_{{ package.id }}" class="total_amount"></span><br/>
           {% endif %}
           {% if package.issue %}<div class="errornote">{% trans 'There are some issue with your packages. Please check package detail.' %}</div>{% endif %}
     </div>

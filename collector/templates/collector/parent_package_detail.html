@@ -1,0 +1,36 @@
+{% extends "main/base_site.html" %}
+{% load i18n static %}
+
+
+{% block title%}
+{{parent_pack.tracking_num}}
+{% endblock%}
+
+{% block content %}
+<div class="content_center">
+  {{parent_pack.get_carrier_display}}-{{parent_pack.tracking_num}}
+  {% if not parent_pack.received_date %}<button type="button"  onclick="pass_package('{{ csrf_token }}','{% url 'parent_pack_received' parent_pack.id %}')" class="logo-red">{% trans 'Receive Package'%}</button>{% endif %}
+</div>
+<hr>
+<div class="content_center">
+  <a href="javascript:history.back()">
+    <i class="fa fa-angle-double-left"></i>&emsp;{% trans 'Back' %}
+  </a>
+  {% if parent_pack.service_set.all %}
+
+  <ul>
+    {% for pack in parent_pack.service_set.all %}
+        <li>
+        {{pack.receiver}}: {{pack.get_csut_carrier_display}}-{{pack.cust_tracking_num}}
+        {% if not pack.picked_up %}<button type="button"  onclick="pass_package('{{ csrf_token }}','{% url 'pack_picked_up' pack.id %}')" class="logo-red">{% trans 'Pick Up Package'%}</button>{% endif %}
+        </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+</div>
+{% endblock s%}
+
+{% block script%}
+<script src="{% static 'js/collector.js' %}"></script>
+{% endblock%}
