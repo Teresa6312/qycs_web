@@ -484,7 +484,7 @@ class ParentPackage(models.Model):
 		ordering = ['-created_date']
 
 class Service(models.Model):
-	user = models.ForeignKey(User, on_delete=models.PROTECT , related_name='client_user',verbose_name= _('User'))
+	user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='client_user',verbose_name= _('User'))
 	order_set = models.ForeignKey(OrderSet, on_delete=models.SET_NULL, blank=True, null=True, verbose_name= _('Order Set'))
 
 	order = models.BooleanField(default=False,verbose_name= _('Order'))

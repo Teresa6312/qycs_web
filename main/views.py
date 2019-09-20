@@ -7,7 +7,6 @@ from .forms import (
 	)
 
 from .code import send_confirmation_email
-
 from django.forms.utils import ErrorList
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -366,7 +365,8 @@ class CollectionPointView(TemplateView):
 
 	def get(self, request):
 		col_dict=return_col_address_str()
-		return render(request, self.template_name, {'col_list': col_dict['col_list'],'col_str_json': col_dict['col_str_json']})
+		map_key = settings.GOOGLE_MAPS_API_KEY
+		return render(request, self.template_name, {'map_key': map_key, 'col_list': col_dict['col_list'],'col_str_json': col_dict['col_str_json']})
 
 
 
