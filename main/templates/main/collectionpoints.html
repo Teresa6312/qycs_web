@@ -35,7 +35,7 @@
   </div>
   <img src="{% static 'admin/img/icon-alert.svg' %}" alt="alert" style="width:20px;"/>
   {% trans "If you didn't see the map in this page and want to use our co-shipping service to ship your package to United States, please" %}
-  <a href="{% url 'information' 'contact' %}">   <span class="w3-text-blue"><i>{% trans 'contact us' %}</i></span></a>
+  <a href="{% url 'information' 'contact' %}"> <i>{% trans 'contact us' %}</i></a>
 </div>
 
 
@@ -48,10 +48,8 @@
   let locations={{col_str_json|safe}}
 </script>
 <script src="{% static 'js/map.js' %}"></script>
-<!-- <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLyUK5D-laS8iQsSDWwOhehl-Gvhz8xfA&libraries=places&callback=initAutocomplete">
-</script> -->
+
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuQpITLk1GMkrPyVzBRNqvg_0QPgwMtZs&libraries=places&callback=initAutocomplete">
+src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete">
 </script>
 {% endblock %}

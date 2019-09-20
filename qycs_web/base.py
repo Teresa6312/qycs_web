@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
 
     # google map
-    'django_google_maps',
+    # 'django_google_maps',
 
     # social media login
     'social_django',
@@ -193,6 +193,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 
 # PASSWORD STORAGE SETTINGS

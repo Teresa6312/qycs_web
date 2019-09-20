@@ -47,6 +47,34 @@
   </div>
 
     <hr/>
+
+        {% if parent_package_list %}
+        <div class="content_center">
+          <h4>{% trans 'Packages History'%}</h4>
+        <ul>
+          {% for pack in parent_package_list %}
+          <li>
+            <a href="{% url 'parent_pack_detail' pack.id %}">{{pack.get_carrier_display}}-{{pack.tracking_num}}</a>
+            {% if not pack.received_date %}<button type="button"  onclick="pass_package('{{ csrf_token }}','{% url 'parent_pack_received' pack.id %}')" class="logo-red">{% trans 'Receive Package'%}</button>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+        {% endif %}
+<hr/>
+      {% if package_list %}
+      <div class="content_center">
+        <h4>{% trans 'Upcoming Packages' %}</h4>
+      <ul>
+        {% for pack in package_list %}
+            <li>
+                {{pack.receiver}}: {{pack.get_cust_carrier_display}}-{{pack.cust_tracking_num}}
+            </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+<hr/>
+
 <div class="content_center">
     {% if not collector.description == '' %}
         <div class="w3-panel w3-cell-row">
@@ -192,63 +220,5 @@
 
 
 {% block script%}
-<script>
-
-
-function AddResponseForm(id, type){
-    let content = '<div class="w3-row response_block" id="response_block_'+
-    id+
-    '">'+
-    '<textarea class="w3-input w3-border" name="'+
-    type+
-    '" id="response_txt"/>'+
-    '<button type="button" class="w3-right" onclick="submitForm('+
-    id+
-    ')">Save</button></div>'
-    if($('.response_block').length>0){
-        $('.response_block').remove();
-    }
-    if($('#response_block_'+id).length==0){
-        $('#'+type+'_block_'+id).append(content);
-        $('#response_block_'+id).hide().slideDown(500);
-        $('.response_btn_'+id).hide();
-    }
-}
-
-
-
-
-$(document).ready(function(){
-    $(".block_link").click(function(){
-      if($('.response_block').length>=1){
-        $('.response_block').remove();
-      }
-    });
-    $("#id_message").click(function(){
-      if($('.response_block').length>0){
-          $('.response_block').remove();
-      }
-    });
-})
-
-
-function submitForm(id){
-    let response={'csrfmiddlewaretoken': '{{csrf_token}}',
-                    'type':$('#response_txt').attr('name'),
-                    'response_for': id,
-                    'response':$('#response_txt').val(),
-                  };
-    $.ajax({
-      type: "POST",
-      url: '/collectionpoint/{{collector.pk}}/view',
-      data: response,
-      success: function(){
-        location.reload();
-      },
-      failure: function(){
-        location.reload();
-      },
-    });
-  }
-</script>
-{% endblock %}
+<script src="{% static 'js/collector.js' %}"></script>
+{% endblock%}

@@ -26,15 +26,23 @@ from django.http import HttpResponseRedirect
 #
 import datetime
 import json
+from payment.code import paid
 
 class PackagesView(TemplateView):
 	template_name = 'main/package_history.html'
 
 	def get(self, request):
+ # <WSGIRequest: GET '/myaccount/packages?amt=5.10&cc=USD&item_name=1%20package(s)%2Forder(s)%20(%E6%97%A0%E4%BF%9D%E9%99%A9)&st=Completed&tx=3UT61356S4474704H'>
+		if request.session.get('order_set_id') and request.GET.get('st')=='Completed':
+			order_set_id = request.session.get('order_set_id')
+			paid(order_set_id = order_set_id, amount = request.GET.get('amt'), currency = request.GET.get('cc'), tx = request.GET.get('tx'))
+
 		order_list = Service.objects.filter(user = request.user, order = True).exclude(paid_amount=None).order_by('-created_date')
 		co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).exclude(paid_amount=None).order_by('-created_date')
 		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).exclude(paid_amount=None).distinct().order_by('-created_date')
-
+		# order_list = Service.objects.filter(user = request.user, order = True).order_by('-created_date')
+		# co_shipping_list = Service.objects.filter(user = request.user, order = False, co_shipping = True).order_by('-created_date')
+		# parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False).distinct().order_by('-created_date')
 		return render(request, self.template_name,
 			{'order_list': order_list,
 			'co_shipping_list': co_shipping_list,
@@ -42,8 +50,11 @@ class PackagesView(TemplateView):
 
 
 def ReturnPackageNumber(request):
-	packageNumber=Service.objects.filter(user = request.user, paid_amount = None).order_by('-created_date').count()
-	return HttpResponse(packageNumber)
+	copackageNumber=Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).count()
+	packageNumber=Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).count()
+	parentPackageNumber= ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, paid_amount = None).distinct().count()
+	orderNumber=Service.objects.filter(user = request.user, paid_amount = None, order = True).count()
+	return HttpResponse(packageNumber+copackageNumber+orderNumber+parentPackageNumber)
 
 class PackageCartView(TemplateView):
 	template_name = 'main/package_cart.html'
@@ -53,7 +64,7 @@ class PackageCartView(TemplateView):
 		order_list = Service.objects.filter(user = request.user, paid_amount = None, order = True).order_by('created_date')
 		co_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = True).order_by('created_date')
 		direct_shipping_list = Service.objects.filter(user = request.user, paid_amount = None, order = False, co_shipping = False, parent_package = None).order_by('created_date')
-		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, service__paid_amount = None).distinct().order_by('created_date')
+		parent_package_list = ParentPackage.objects.filter(service__user = request.user, service__co_shipping = False, service__order = False, paid_amount = None).distinct().order_by('created_date')
 
 
 		return render(request, self.template_name,
@@ -83,8 +94,6 @@ class PackageCartView(TemplateView):
 					if package.get_total()>0:
 						package.order_set = orderSet
 						package.save()
-
-
 
 				for parent_pack in cart.cleaned_data['parent_package_set']:
 					package = ParentPackage.objects.get(id = parent_pack.id )

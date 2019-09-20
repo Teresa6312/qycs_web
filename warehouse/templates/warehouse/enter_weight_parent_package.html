@@ -1,4 +1,4 @@
-{% extends "main/base_site.html" %}
+{% extends "warehouse/base.html" %}
 {% load i18n static %}
 
 
@@ -11,7 +11,6 @@
 {% block content %}
 <div class="w3-container  w3-cell w3-mobile" style="width:70%;">
   <div class="w3-right">
-      <button class="logo-red" type="button" onclick="window.location.href='{% url 'parent_package_detail' parent_package.id %}'">{% trans 'More Detail' %}</button></div>
       <div class="w3-panel content_center">
         <div class="w3-row w3-text-red text-large-bold w3-center">
           {% if parent_package.paid_amount %}
@@ -32,7 +31,12 @@
           <ul>
             {% for sub in parent_package.service_set.all %}
             <li>
-              <a class="w3-text-blue" href="{{sub.get_absolute_url}}">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:{{sub.ship_to_add}}{{sub.ship_to_col}}
+              <a href="{{sub.get_absolute_url}}" target="_blank">{{sub.get_cust_carrier_display}} - {{sub.cust_tracking_num}}</a>:
+              {% if sub.co_shipping %}
+                  {{sub.ship_to_col}}
+              {% else %}
+                  {{sub.ship_to_add}}
+              {% endif %}
               {% if sub.issue %}
                   <span class="w3-text-red">({% trans 'has issue(s)' %})</span>
               {% endif %}
@@ -41,6 +45,21 @@
               {% else %}
                   {{sub.wh_received_date | timeuntil}}
               {% endif %}
+              <div class="w3-text-red">
+                <i>
+                  {% if sub.low_volume_request %}
+                      {% trans 'low weight' %}
+                  {% else %}
+                      {% trans 'NO low weight' %}
+                  {% endif %}
+
+                  {% if sub.no_rush_request %}
+                      -{% trans 'no rush' %}
+                  {% endif %}
+                </i>
+
+              </div>
+
             </li>
             {% endfor %}
           </ul>
@@ -88,7 +107,20 @@
               {{ form.package_type.label_tag }} {{ form.package_type.errors }} {{ form.package_type }}
           </div>
           <div class="w3-row">
-              {{ form.carrier.label_tag }} {{ form.carrier.errors }} {{ form.carrier }}
+              {{ form.carrier.label_tag }} {{ form.carrier.errors }}
+              <select name="carrier" required="" id="id_carrier">
+  <option value="">---------</option>
+
+  <option value="DHL">DHL</option>
+
+  <option value="EMS" selected="">EMS</option>
+
+  <option value="FEDEX">FEDEX</option>
+
+  <option value="SF EXPRESS">SF EXPRESS</option>
+
+  <option value="UPS">UPS</option>
+</select>
           </div>
           <div class="w3-row" id="button_row">
                   <input class="logo-blue" type = "submit" value = "{% trans 'Submit' %}"/>

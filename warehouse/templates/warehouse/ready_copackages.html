@@ -1,0 +1,72 @@
+{% extends "warehouse/base.html" %}
+{% load i18n static %}
+
+{% block title%}
+{% trans 'Ready Co-shipping Packages' %}
+{% endblock%}
+
+
+{% block content %}
+<div class="w3-panel w3-margin-top">
+    <div class="text-xxlarge-bold">{% trans 'Ready Co-shipping Packages' %}</div>
+</div>
+<hr/>
+
+
+<div class="w3-panel w3-margin-top">
+
+    <div class="w3-row">
+        {% if packages %}
+        <form method = "post">
+        {% csrf_token %}
+        <div class="w3-row">
+          <div class="w3-half">
+            <label for="carrier">{% trans 'Shipping Carrier' %}</label>
+            <select name="carrier" required="" id="id_carrier">
+                  <option value="DHL">DHL</option>
+                  <option value="EMS" selected="">EMS</option>
+                  <option value="SF EXPRESS">SF EXPRESS</option>
+                  <option value="UPS">UPS</option>
+            </select>
+          </div>
+          <div class="w3-half">
+            <label for="tracking_num">{% trans 'Tracking Number' %}</label>
+            <input type="text" required="" name="tracking_num" maxlength="50" id="id_tracking_num">
+          </div>
+        </div>
+
+        <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
+            <table class="w3-mobile w3-table" style="width:100%; overflow:auto; max-height:400px;">
+                  <tr class="w3-border-bottom w3-border-grey">
+                    <th class="w3-col w3-text-blue select_column text-regular-bold" style="width:100px;">
+                      <input type="checkbox" id="select_all_coshipping">&nbsp;{% trans 'Select All' %}
+                    </th>
+                    <th>{% trans 'Tracking Number' %}</th>
+                    <th>{% trans 'Carrier' %}</th>
+                    <th>{% trans 'Package Type' %}</th>
+                    <th>{% trans 'User' %}</th>
+                    <th>{% trans 'Collection Point' %}</th>
+                    <th>{% trans 'Weight(KG)' %}</th>
+                  </tr>
+                  {% for pack in packages %}
+                    <tr class="w3-border-bottom w3-border-grey">
+                      <td  class="w3-cell select_column" style="width:5%;">
+                        <input type="checkbox" name="package_set" value="{{pack.id}}" id="id_package_set_{{ forloop.counter0 }}">
+                      </td>
+                      <td><a href="{{pack.get_absolute_url}}" target="_blank" >{{pack.cust_tracking_num}}</a></td>
+                      <td>{{pack.get_cust_carrier_display}}</td>
+                      <td>{{pack.get_package_type_display}}</td>
+                      <td>{{pack.user.username}}<br>{{pack.user.email}}</td>
+                      <td>{{pack.ship_to_col.name}}<br>{{pack.ship_to_col.collector.email}}</td>
+                      <td>{{pack.weight}}</td>
+                    </tr>
+                  {% endfor %}
+            </table>
+            </form>
+        {% else %}
+            {% trans 'No package'%}
+        {% endif %}
+    </div>
+</div>
+<script src="{% static 'js/package_cart.js' %}"></script>
+{% endblock %}

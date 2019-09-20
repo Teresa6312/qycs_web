@@ -1,5 +1,5 @@
 from .models import Review, Question, ReviewResponse, QuestionResponse
-from main.models import CollectionPoint, Resource
+from main.models import CollectionPoint, Resource, ParentPackage, Service
 from main.forms import  NewUserChangeForm
 
 from .forms import MessageForm, ResponseForm, ColChangeForm, ColCreationForm
@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-
+from datetime import date
 
 
 class ColRegisterView(TemplateView):
@@ -106,7 +106,12 @@ class CollectionPointDetailView(TemplateView):
 	def get(self, request, col_pk):
 		try:
 			collector = CollectionPoint.objects.get(pk=col_pk)
-			return render(request, self.template_name, {'collector': collector})
+			if request.user == collector.collector or request.user.is_staff :
+				parent_package_list = ParentPackage.objects.filter(service__ship_to_col = collector).order_by('-shipped_date').distinct()
+				package_list = Service.objects.filter(ship_to_col = collector, parent_package = None).order_by('receiver')
+				return render(request, self.template_name, {'collector': collector, 'parent_package_list': parent_package_list, 'package_list': package_list})
+			else:
+				return render(request, self.template_name, {'collector': collector})
 
 		except ObjectDoesNotExist:
 			messages.error(request,"Cannot find the Collection Point")
@@ -156,3 +161,39 @@ class CollectionPointDetailView(TemplateView):
 				return render(request, self.template_name, {'collector': collector})
 
 		return redirect(reverse('collection_point_view',args = (col_pk,)))
+
+
+
+class ParentPackageDetail(TemplateView):
+	template_name = 'collector/parent_pack_detail.html'
+
+	def get(self, request, pack_id):
+		try:
+			parent_pack = ParentPackage.objects.get(id=pack_id)
+			if request.user.collectionpoint == parent_pack.service_set.first().ship_to_col or request.user.is_staff:
+				return render(request, self.template_name, {'parent_pack': parent_pack})
+			else:
+				messages.error(request,"You have no right to view the package!")
+				return render(request, reverse('collection_point_view'))
+
+		except ObjectDoesNotExist:
+			messages.error(request,"Cannot find the Package Point")
+			return render(request, reverse('collection_point_view'))
+
+
+def parentPackageReceived(request, pack_id):
+	if request.POST:
+		package = ParentPackage.objects.get(id=pack_id)
+		if not package.received_date:
+			package.received_date = date.today()
+			package.save()
+		return HttpResponse()
+
+def pickedUp(request, service_id):
+	if request.POST:
+		package = Service.objects.get(id=service_id)
+		if not package.picked_up:
+			package.picked_up = True
+			package.picked_up_date = date.today()
+			package.save()
+		return HttpResponse()

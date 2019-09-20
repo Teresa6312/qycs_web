@@ -127,18 +127,20 @@
 
 
 {% block sidebar %}
-<div class="w3-container w3-cell w3-mobile w3-margin-top" style="width:300px;">
-    <div class="w3-card-2 w3-round w3-container w3-padding-16" id="payment_sidebar">
-        <div class="text-medium">{% trans 'Place Packages' %}:</div>
-        <div id="selected_list">
+    {% if parent_package_list or order_list or co_shipping_list or direct_shipping_list %}
+    <div class="w3-container w3-cell w3-mobile w3-margin-top" style="width:300px;">
+        <div class="w3-card-2 w3-round w3-container w3-padding-16" id="payment_sidebar">
+            <div class="text-medium">{% trans 'Place Packages' %}:</div>
+            <div id="selected_list">
+            </div>
+            <hr class="w3-border-grey"/>
+              <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="code" id="id_code" class="w3-input w3-border"><span class="w3-text-blue w3-right "  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
+              <hr class="w3-border-black"/>
+            <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
+            <div class="w3-row">{{order.insurance.label_tag}}<span class="w3-right" id="id_total_amount">{{order.insurance}}</span></div>
+            <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
         </div>
-        <hr class="w3-border-grey"/>
-          <div class="w3-row" id="coupon_block">{% trans 'Coupon' %}:<input type="hidden" name="code" id="id_code" class="w3-input w3-border"><span class="w3-text-blue w3-right "  onclick="apply_coupon('{{ csrf_token }}','{% url 'coupon' %}')" id="apply_coupon">{% trans 'Apply' %}</span></div>
-          <hr class="w3-border-black"/>
-        <div id="amount_block">{% trans 'Total Amount' %}:<span class="w3-right" id="id_total_amount">0.00</span></div>
-        <div class="w3-row">{{order.insurance.label_tag}}<span class="w3-right" id="id_total_amount">{{order.insurance}}</span></div>
-        <input type="submit" value="{% trans 'Submit' %}" class="w3-right logo-red">
     </div>
-</div>
+    {% endif %}
 </form>
 {% endblock %}

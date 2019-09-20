@@ -21,15 +21,14 @@
         {% if user.is_staff or user.is_superuser %}
             <a href="{% url 'wh_home' %}">{% trans "WH" %}</a>
         {% endif %}
-        <a href="{% url 'shopping' %}">{% trans "Global Shop" %}</a>
         <a href="{% url 'price_list'%}">{% trans "Price List" %}</a>
             {% if user.is_authenticated %}
-                {% if user.default_col %}
+                <!-- {% if user.default_col %}
                 <a href="{% url 'add_co_shipping' user.default_col.pk %}">
                   {% trans "Quick Co-shipping" %}
                 </a>
-                {% endif %}
-                <a href="{% url 'add_direct_shipping' %}">{% trans "Quick Direct Shipping" %}</a>
+                {% endif %} -->
+                <!-- <a href="{% url 'add_direct_shipping' %}">{% trans "Quick Direct Shipping" %}</a> -->
                 <div class="dropdown">
                     <button type="button" class="dropbtn">
                       <span class="logo-text-blue">{{user.username}}</span>
@@ -60,6 +59,7 @@
                                 <option value="en-us">English</option>
                                 <option value="zh-Hans">简体中文</option>
                           </select>
+                      <br/>
                       <input type="submit" value="Change"/>
                   </form>
                 </div>
@@ -113,20 +113,15 @@
   <hr/>
   {% endblock%}
   <div class="w3-row w3-padding-small">
-    <div class="w3-third w3-container">
+    <!-- <div class="w3-third w3-container">
 
         <h5>{% trans "China Warehouse" %}</h5>
         <div class="w3-row">
-
-          {% trans "Name" %}: QYCS-{% trans "Your Name" %}<br>
-          {% trans "Phone Number" %}: 15994868603<br>
-          {% trans "Address" %}: 广东省广州市花都区新华街花港大道83号<br>
-          {% trans "Zip Code" %}: 510800
-
+          <h5>No service!</h5>
         </div>
 
-    </div>
-    <div class="w3-twothird">
+    </div> -->
+    <div class="content_center">
       <div class="w3-row">
 
         <div class="w3-col m3 l2" id="myqycs_block">

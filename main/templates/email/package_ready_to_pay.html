@@ -1,0 +1,24 @@
+{% load i18n static %}
+
+{% autoescape off %}
+Hi {{ username }},
+
+{% trans 'Thank you for using our service!' %}
+
+{% trans 'Your following package is ready to pay:' %}
+
+  {{parent_pack.created_date|date:"m/d/Y"}} - {{parent_pack.service_set.first.ship_to_add}}
+
+    {% for package in parent_pack.service_set.all %}
+    {{package.get_cust_carrier_display}} - {{package.cust_tracking_num}}
+    {% endfor %}
+
+{% if coupon %}
+{% trans 'Get 10% off by using coupon "' %}{{coupon.code}}"
+{% endif %}
+{% trans 'Please do not reply this email!' %}
+
+{% trans 'If you want to contact us, please send email to ' %}myqycs@gmail.com.
+
+MYQYCS.com
+{% endautoescape %}

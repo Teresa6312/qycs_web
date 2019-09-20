@@ -87,7 +87,7 @@ text-italic-bold{
 }
 
 a{
-  color: #fff;
+  color: #2196f3;
 }
 a:link, a:visited{
   text-decoration: none;
@@ -321,6 +321,10 @@ a:hover{
   height: 100%;
   float:right;
   width: 16vw;
+}
+
+.half_circle_left a,.half_circle_right a, #shipping_full_circle a, #tracking_half_circle a, .circle a, .hidden a{
+  color: #fff;
 }
 
 .circle{
